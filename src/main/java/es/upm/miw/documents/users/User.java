@@ -3,7 +3,6 @@ package es.upm.miw.documents.users;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import org.assertj.core.util.Arrays;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -44,7 +43,7 @@ public class User {
         this.setPassword(password);
         this.registrationDate = new Date();
         this.active = active;
-        this.roles = Arrays.array(Role.CUSTOMER);
+        this.roles = new Role[] {Role.CUSTOMER};
     }
 
     public User(long mobile, String username, String password) {
