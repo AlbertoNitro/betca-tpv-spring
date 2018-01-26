@@ -6,8 +6,9 @@ import org.junit.runners.Suite.SuiteClasses;
 
 @RunWith(Suite.class)
 @SuiteClasses({
-    AppicationTest.class
+    ApplicationTest.class,
+    ApplicationIT.class,
+    ApplicationFunctionalTesting.class
 })
 public class AllMiwTests {
-
 }
