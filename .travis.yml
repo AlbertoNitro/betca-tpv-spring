@@ -24,4 +24,6 @@ script:
      then  mvn -Dtest=**/*FunctionalTesting verify;
      else  echo "ERRORES!!! ... se abortan resto de test"; 
   fi
+# Sonarcloud
+- mvn org.jacoco:jacoco-maven-plugin:prepare-agent verify
 - mvn sonar:sonar -Dsonar.organization=miw-upm-github -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=$SONAR
