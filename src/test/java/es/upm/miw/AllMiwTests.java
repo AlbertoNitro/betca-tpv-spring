@@ -4,11 +4,16 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
+import es.upm.miw.documents.users.AllMiwDocumentsUsersTests;
+import es.upm.miw.repositories.users.AllMiwRepositoriesUsersIntegrationTests;
+
 @RunWith(Suite.class)
 @SuiteClasses({
     ApplicationTest.class,
     ApplicationIT.class,
-    ApplicationFunctionalTesting.class
+    ApplicationFunctionalTesting.class,
+    AllMiwDocumentsUsersTests.class,
+    AllMiwRepositoriesUsersIntegrationTests.class
 })
 public class AllMiwTests {
 }
