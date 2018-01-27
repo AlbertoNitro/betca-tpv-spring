@@ -34,7 +34,7 @@ public class User {
     public User() {
     }
 
-    public User(long mobile, String username, String password, String dni, String address, String email, boolean active) {
+    public User(long mobile, String username, String password, String dni, String address, String email) {
         this.mobile = mobile;
         this.username = username;
         this.dni = dni;
@@ -42,12 +42,12 @@ public class User {
         this.email = email;
         this.setPassword(password);
         this.registrationDate = new Date();
-        this.active = active;
+        this.active = true;
         this.roles = new Role[] {Role.CUSTOMER};
     }
 
     public User(long mobile, String username, String password) {
-        this(mobile, username, password, "", "", "", true);
+        this(mobile, username, password, "", "", "");
     }
 
     public long getMobile() {
