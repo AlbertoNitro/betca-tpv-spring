@@ -25,6 +25,7 @@ public class Application implements CommandLineRunner {
     @Value("${miw.admin.password}")
     private String password;
 
+    // mvn clean spring-boot:run
     public static void main(String[] args) {
         SpringApplication.run(Application.class, args);
     }
