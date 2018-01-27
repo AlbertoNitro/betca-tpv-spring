@@ -35,18 +35,19 @@ public class TokenResourceFunctionalTesting {
     @Test
     public void testLoginAdminUnauthorized() {
         thrown.expect(new HttpMatcher(HttpStatus.UNAUTHORIZED));
-        restService.restBuilder().path(TokenResource.TOKENS).basicAuth(this.restService.getAdminMobile(), "kk").post().build();
+        restService.logout().restBuilder().path(TokenResource.TOKENS).basicAuth(this.restService.getAdminMobile(), "kk").post().build();
     }
 
     @Test
     public void testLoginUnauthorized() {
         thrown.expect(new HttpMatcher(HttpStatus.UNAUTHORIZED));
-        restService.restBuilder().path(TokenResource.TOKENS).basicAuth("kk", "kk").post().build();
+        restService.logout().restBuilder().path(TokenResource.TOKENS).basicAuth("kk", "kk").post().build();
     }
 
-    @Test(expected = Exception.class)
+    @Test 
     public void testLoginNoHeaderUnauthorized() {
-        restService.restBuilder().path(TokenResource.TOKENS).post().build();
+        thrown.expect(new HttpMatcher(HttpStatus.UNAUTHORIZED));
+        restService.logout().restBuilder().path(TokenResource.TOKENS).post().build();
     }
 
 }
