@@ -2,6 +2,7 @@ package es.upm.miw.resources;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.log4j.Logger;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -40,5 +41,14 @@ public class ApiExceptionHandler {
         ErrorMessage errorMessage = new ErrorMessage(exception, "");
         return errorMessage;
     }
+    
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    @ExceptionHandler({Exception.class})
+    public void unauthorizedRequest(Exception exception) {
+        ErrorMessage errorMessage = new ErrorMessage(exception, "");
+        Logger.getLogger(this.getClass()).info("Error!!! "+ errorMessage);
+    }
+
+
 
 }
