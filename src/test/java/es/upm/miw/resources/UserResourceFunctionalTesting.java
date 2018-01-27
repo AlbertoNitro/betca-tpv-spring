@@ -59,9 +59,8 @@ public class UserResourceFunctionalTesting {
         restService.restBuilder().path(UserResource.USERS).body(userDto).post().build();
     }
 
-    @Test
+    @Test(expected = Exception.class)
     public void testCreateUnauthorized() {
-        thrown.expect(new HttpMatcher(HttpStatus.UNAUTHORIZED));
         restService.logout().restBuilder().path(UserResource.USERS).body(userDto).post().build();
     }
 

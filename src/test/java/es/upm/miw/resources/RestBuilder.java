@@ -55,7 +55,7 @@ public class RestBuilder<T> {
         this.expandList = new ArrayList<>();
         headerValues = new HashMap<>();
         params = new HttpHeaders();
-        log = true;
+        log = false;
     }
 
     public RestBuilder() {
