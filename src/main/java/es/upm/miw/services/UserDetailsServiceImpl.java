@@ -28,7 +28,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     public UserDetails loadUserByUsername(final String mobileOrTokenValue) throws UsernameNotFoundException {
         User user = userRepository.findByTokenValue(mobileOrTokenValue);
         if (user != null) {
-            return this.userBuilder(Long.toString(user.getMobile()), new BCryptPasswordEncoder().encode(""), user.getRoles());
+            return this.userBuilder(Long.toString(user.getMobile()), new BCryptPasswordEncoder().encode(""), user.getRoles(),
+                    user.isActive());
         } else {
             try {
                 user = userRepository.findOne(Long.valueOf(mobileOrTokenValue));
@@ -36,15 +37,16 @@ public class UserDetailsServiceImpl implements UserDetailsService {
                 throw new UsernameNotFoundException("Usuario no encontrado");
             }
             if (user != null) {
-                return this.userBuilder(String.valueOf(user.getMobile()), user.getPassword(), new Role[] {Role.AUTHENTICATED});
+                return this.userBuilder(String.valueOf(user.getMobile()), user.getPassword(), new Role[] {Role.AUTHENTICATED},
+                        user.isActive());
             } else {
                 throw new UsernameNotFoundException("Usuario no encontrado");
             }
         }
     }
 
-    private org.springframework.security.core.userdetails.User userBuilder(String mobile, String password, Role[] roles) {
-        boolean enabled = true;
+    private org.springframework.security.core.userdetails.User userBuilder(String mobile, String password, Role[] roles, boolean active) {
+        boolean enabled = active;
         boolean accountNonExpired = true;
         boolean credentialsNonExpired = true;
         boolean accountNonLocked = true;

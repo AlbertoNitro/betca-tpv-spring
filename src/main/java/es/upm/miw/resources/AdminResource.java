@@ -12,11 +12,9 @@ public class AdminResource {
 
     public static final String STATE = "/state";
 
-    // Se puede comprobar con un navegador
     @RequestMapping(value = STATE, method = RequestMethod.GET)
     public String state() {
         return "{\"state\":\"ok\"}";
     }
-
 
 }
