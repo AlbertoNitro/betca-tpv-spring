@@ -14,7 +14,6 @@ public class TokenController {
     @Autowired
     private UserRepository userRepository;
 
-    
     public TokenDto login(long mobile) {
         User user = userRepository.findOne(mobile);
         assert user != null;

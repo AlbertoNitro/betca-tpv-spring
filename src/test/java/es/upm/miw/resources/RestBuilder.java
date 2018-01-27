@@ -54,7 +54,7 @@ public class RestBuilder<T> {
         this.expandList = new ArrayList<>();
         headerValues = new HashMap<>();
         params = new HttpHeaders();
-        log = false;
+        log = true;
     }
 
     public RestBuilder() {
@@ -86,9 +86,8 @@ public class RestBuilder<T> {
         return this;
     }
 
-    public RestBuilder<T> authorization(String authorizationValue) {
-        this.authorization = authorizationValue;
-        return this;
+    public RestBuilder<T> basicAuth(String token) {
+        return basicAuth(token, "");
     }
 
     public RestBuilder<T> basicAuth(String nick, String pass) {
@@ -160,7 +159,7 @@ public class RestBuilder<T> {
 
     public T build() {
         if (log) {
-            Logger.getLogger(this.getClass().getSimpleName()).info(method + " " + this.path + this.headers() + "{" + this.body + "}");
+            Logger.getLogger(this.getClass()).info(method + " " + this.path + this.headers() + "{" + this.body + "}");
         }
         if (body != null && !method.equals(HttpMethod.GET)) {
             return restTemplate.exchange(this.uri(), method, new HttpEntity<Object>(body, this.headers()), clazz).getBody();

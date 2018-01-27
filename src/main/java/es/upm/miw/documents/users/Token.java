@@ -9,7 +9,7 @@ public class Token {
     private Date creationDate;
 
     public Token() {
-        this.value = new Encrypting().encryptInBase64UrlSafe("miw.tpv" + Long.toString(new Date().getTime()));
+        this.value = new Encrypting().encryptInBase64UrlSafe();
         this.creationDate = new Date();
     }
 

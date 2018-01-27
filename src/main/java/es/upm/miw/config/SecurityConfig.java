@@ -27,7 +27,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.csrf().disable().exceptionHandling().accessDeniedHandler(null).and().httpBasic();
+        http.csrf().disable().exceptionHandling().and().httpBasic();
     }
 
     @Bean

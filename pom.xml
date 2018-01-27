@@ -19,6 +19,7 @@
 		<swagger.version>2.7.0</swagger.version>
 		<encoding>UTF-8</encoding>
 
+
 		<deploy>${project.artifactId}-${project.version}</deploy>
 		<project.build.sourceEncoding>${encoding}</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>${encoding}</project.reporting.outputEncoding>
@@ -47,6 +48,11 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-mongodb</artifactId>
+		</dependency>
+		<!-- Api Rest. JSON -->
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
 		</dependency>
 		<!-- Swagger ====================================== -->
 		<dependency>
@@ -83,10 +89,10 @@
 		</dependency>
 	</dependencies>
 
-    <!-- ================ TEST  extensions================== -->
-    <!-- Unit Test: **/*Test -->
-    <!-- Integration Test: **/*IT -->
-    <!-- Functional Test: **/*FunctionalTesting -->
+	<!-- ================ TEST extensions================== -->
+	<!-- Unit Test: **/*Test -->
+	<!-- Integration Test: **/*IT -->
+	<!-- Functional Test: **/*FunctionalTesting -->
 	<build>
 		<plugins>
 			<plugin>

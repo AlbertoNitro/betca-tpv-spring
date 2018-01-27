@@ -31,6 +31,7 @@ public class Application implements CommandLineRunner {
 
     @Override
     public void run(String... args) {
+        this.userRepository.deleteAll();
         User user = new User(this.mobile, this.username, this.password);
         user.setRoles(new Role[] {Role.ADMIN});
         this.userRepository.save(user);

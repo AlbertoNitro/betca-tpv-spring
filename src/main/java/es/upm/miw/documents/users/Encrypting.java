@@ -4,6 +4,7 @@ import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Base64;
+import java.util.UUID;
 
 import org.apache.log4j.Logger;
 
@@ -59,10 +60,18 @@ public class Encrypting {
         return Base64.getEncoder().encodeToString(digest);
     }
 
+    public String encryptInBase64() {
+        return this.encryptInBase64(UUID.randomUUID().toString());
+    }
+
     public String encryptInBase64UrlSafe(String message) {
         byte[] digest = this.encrypt(message);
         String code64Url = Base64.getUrlEncoder().encodeToString(digest);
         return code64Url.substring(0, code64Url.indexOf("="));
+    }
+
+    public String encryptInBase64UrlSafe() {
+        return this.encryptInBase64UrlSafe(UUID.randomUUID().toString());
     }
 
 }
