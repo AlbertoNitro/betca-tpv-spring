@@ -13,6 +13,7 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.DefaultResponseErrorHandler;
@@ -158,13 +159,24 @@ public class RestBuilder<T> {
     }
 
     public T build() {
+        ResponseEntity<T> response;
         if (log) {
             Logger.getLogger(this.getClass()).info(method + " " + this.path + this.headers() + "{" + this.body + "}");
         }
         if (body != null && !method.equals(HttpMethod.GET)) {
-            return restTemplate.exchange(this.uri(), method, new HttpEntity<Object>(body, this.headers()), clazz).getBody();
+            response = restTemplate.exchange(this.uri(), method, new HttpEntity<Object>(body, this.headers()), clazz);
+            if (log) {
+                Logger.getLogger(this.getClass())
+                        .info(response.getStatusCode() + "--" + response.getStatusCodeValue() + "==" + response.getHeaders());
+            }
+            return response.getBody();
         } else {
-            return restTemplate.exchange(this.uri(), method, new HttpEntity<Object>(this.headers()), clazz).getBody();
+            response = restTemplate.exchange(this.uri(), method, new HttpEntity<Object>(this.headers()), clazz);
+            if (log) {
+                Logger.getLogger(this.getClass())
+                        .info(response.getStatusCode() + "--" + response.getStatusCodeValue() + "==" + response.getHeaders());
+            }
+            return response.getBody();
         }
     }
 
