@@ -24,10 +24,10 @@ public class UserRepositoryIT {
     @Autowired
     private UserRepository userRepository;
 
-    User user;
+    private User user;
 
     @Before
-    public void populate() {
+    public void seedDb() {
         this.user = new User(666001000L, "666001000", "666001000");
         this.userRepository.save(user);
     }
