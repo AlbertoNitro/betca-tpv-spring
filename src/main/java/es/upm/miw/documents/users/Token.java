@@ -21,6 +21,14 @@ public class Token {
         return creationDate;
     }
 
+    public void setValue(String value) {
+        this.value = value;
+    }
+
+    public void setCreationDate(Date creationDate) {
+        this.creationDate = creationDate;
+    }
+
     @Override
     public int hashCode() {
         return this.value.hashCode();
@@ -42,6 +50,6 @@ public class Token {
 
     @Override
     public String toString() {
-        return "Token [value=" + value + ", expirationDate=" + creationDate.toString() + "]";
+        return "Token [value=" + value + ", creationDate=" + creationDate.toString() + "]";
     }
 }

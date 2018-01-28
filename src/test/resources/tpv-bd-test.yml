@@ -1,0 +1,62 @@
+# SOLO SE PERMITE AÑADIR 
+tokenList:
+  - &t0
+    value: PaE8iPX3AekAaV945_ujcm7q1ik
+    creationDate: 2017-08-14
+  - &t1
+    value: 3vZy-CGx0SZ86DjbwqvRfx45hHU
+    creationDate: 2018-01-01
+  - &t2
+    value: 9wPhJxoFQvq4SND5ugNETxKwNKY
+    creationDate: 2018-01-14
+  - &t3
+    value: 64jcnKajqit2bP_npC5-ddMfh6Y
+  - &t4
+    value: otRnEQ7DSaBGnS7C5T8zgs4d06g
+    
+# mobiles: 666666000 a 666666666 RESERVADOS AQUI
+userList:
+  - mobile: 666666000
+    username: u000
+    password: p000
+    email: u000@gmail.com
+    dni: null
+    address: C/ TPV, 0, 1A, 28000 Madrid
+    roles:
+      - ADMIN
+      - MANAGER
+      - OPERATOR
+  - mobile: 666666001
+    username: u001
+    password: p001
+    email: u001@gmail.com
+    dni: 66666600L
+    address: C/ TPV, 1, 1A, 28000 Madrid
+    roles:
+      - MANAGER
+      - OPERATOR
+  - mobile: 666666002
+    username: u002
+    password: p002
+    roles:
+      - CUSTOMER
+    token: *t1
+  - mobile: 666666003
+    username: u003
+    password: p003
+    dni: 66666603E
+    address: C/ TPV, 2, 1A, 28000 Madrid
+    roles:
+      - CUSTOMER
+    token: *t2
+  - mobile: 666666004
+    username: u004
+    password: p004
+    email: u004@gmail.com
+    dni: 66666604T
+    address: C/ TPV, 2, 1A, 28000 Madrid
+    roles:
+      - CUSTOMER
+    
+
+  

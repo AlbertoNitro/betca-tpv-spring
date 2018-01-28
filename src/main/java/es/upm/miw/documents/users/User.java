@@ -32,17 +32,18 @@ public class User {
     private Token token;
 
     public User() {
+        this.registrationDate = new Date();
+        this.active = true;
     }
 
     public User(long mobile, String username, String password, String dni, String address, String email) {
+        this();
         this.mobile = mobile;
         this.username = username;
         this.dni = dni;
         this.address = address;
         this.email = email;
         this.setPassword(password);
-        this.registrationDate = new Date();
-        this.active = true;
         this.roles = new Role[] {Role.CUSTOMER};
     }
 
@@ -52,6 +53,10 @@ public class User {
 
     public long getMobile() {
         return mobile;
+    }
+
+    public void setMobile(long mobile) {
+        this.mobile = mobile;
     }
 
     public String getUsername() {
