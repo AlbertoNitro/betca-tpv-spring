@@ -28,6 +28,8 @@ public class Article {
     private BigDecimal wholesalePrice;
 
     private boolean discontinued;
+    
+    private Tax tax;
 
     @DBRef
     private Provider provider;
@@ -37,12 +39,13 @@ public class Article {
         this.discontinued = false;
     }
 
-    public Article(String code, String reference, String description, Provider provider) {
+    public Article(String code, String reference, String description, Provider provider, Tax tax) {
         this();
         this.code = code;
         this.reference = reference;
         this.description = description;
         this.provider = provider;
+        this.tax=tax;
     }
 
     public String getCode() {
@@ -115,6 +118,14 @@ public class Article {
 
     public void setProvider(Provider provider) {
         this.provider = provider;
+    }
+
+    public Tax getTax() {
+        return tax;
+    }
+
+    public void setTax(Tax tax) {
+        this.tax = tax;
     }
 
     public Date getRegistrationDate() {
