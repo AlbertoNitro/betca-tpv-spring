@@ -34,7 +34,7 @@ public class UserRepositoryIT {
 
     @Test
     public void testFindUser() {
-        User userBd = userRepository.findOne(666001000L);
+        User userBd = userRepository.findByMobile(666001000L);
         assertNotNull(userBd);
         assertEquals("666001000", userBd.getUsername());
     }

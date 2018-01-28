@@ -11,6 +11,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 public class User {
 
     @Id
+    private String id;
+    
     private long mobile;
 
     private String username;
@@ -49,6 +51,10 @@ public class User {
 
     public User(long mobile, String username, String password) {
         this(mobile, username, password, "", "", "");
+    }
+    
+    public String getId() {
+        return id;
     }
 
     public long getMobile() {

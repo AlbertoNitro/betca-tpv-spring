@@ -32,7 +32,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
                     user.isActive());
         } else {
             try {
-                user = userRepository.findOne(Long.valueOf(mobileOrTokenValue));
+                user = userRepository.findByMobile(Long.valueOf(mobileOrTokenValue));
             } catch (NumberFormatException nfe) {
                 throw new UsernameNotFoundException("Usuario no encontrado");
             }

@@ -29,7 +29,7 @@ public class DatabaseSeederServiceIT {
     public void testSeedDatabase() {
         this.databaseSeederService.deleteAllAndCreateAdmin();
         this.databaseSeederService.seedDatabase("tpv-bd-test.yml");
-        User user = userRepository.findOne(666666001L);
+        User user = userRepository.findByMobile(666666001L);
         assertNotNull(user);
         assertEquals("u001", user.getUsername());
         assertEquals("u001@gmail.com", user.getEmail());
