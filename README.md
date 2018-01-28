@@ -2,6 +2,8 @@
 #### Back-end con Tecnologías de Código Abierto (SPRING)
 #### [Máster en Ingeniería Web por la U.P.M.](http://miw.etsisi.upm.es)
 
+[![Build Status](https://travis-ci.org/miw-upm/betca-tpv-spring.svg?branch=develop)](https://travis-ci.org/miw-upm/betca-tpv-spring)
+
 > Proyecto básicos para el uso de la tecnología Spring
 
 ### Tecnologías necesarias
