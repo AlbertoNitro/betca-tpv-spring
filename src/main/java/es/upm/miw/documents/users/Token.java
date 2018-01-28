@@ -2,6 +2,8 @@ package es.upm.miw.documents.users;
 
 import java.util.Date;
 
+import es.upm.miw.utils.Encrypting;
+
 public class Token {
 
     private String value;

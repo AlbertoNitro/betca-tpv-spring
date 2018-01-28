@@ -1,4 +1,4 @@
-package es.upm.miw.documents.users;
+package es.upm.miw.utils;
 
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
