@@ -39,6 +39,7 @@ public class DatabaseSeederService {
     @PostConstruct
     public void seedDatabase() {
         //TODO solo en desarrollo
+        //TODO llevar el nombre de test a propiedades de test
         this.deleteAllAndCreateAdmin();
         Logger.getLogger(this.getClass()).error("------------------------- Seed: tpv-bd-test.yml-----------");
         this.seedDatabase("tpv-bd-test.yml");
