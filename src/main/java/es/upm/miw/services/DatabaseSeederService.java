@@ -15,6 +15,7 @@ import org.yaml.snakeyaml.constructor.Constructor;
 
 import es.upm.miw.documents.users.Role;
 import es.upm.miw.documents.users.User;
+import es.upm.miw.repositories.core.ProviderRepository;
 import es.upm.miw.repositories.core.VoucherRepository;
 import es.upm.miw.repositories.users.UserRepository;
 
@@ -35,6 +36,9 @@ public class DatabaseSeederService {
 
     @Autowired
     private VoucherRepository voucherRepository;
+
+    @Autowired
+    private ProviderRepository providerRepository;
     
     @PostConstruct
     public void seedDatabase() {
@@ -55,6 +59,7 @@ public class DatabaseSeederService {
             // Save Repositories -----------------------------------------------------
             userRepository.save(tpvGraph.getUserList());
             voucherRepository.save(tpvGraph.getVoucherList());
+            providerRepository.save(tpvGraph.getProviderList());
             // -----------------------------------------------------------------------
 
         } catch (IOException e) {

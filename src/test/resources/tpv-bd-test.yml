@@ -68,6 +68,17 @@ voucherList:
     value: 50
     creationDate: 2017-12-23
     dateOfUse: 2018-01-10
+# Providers
+providerList:
+  - &p1
+    id: provider1
+    company: company-p1
+    address: C/ TPV-provider, 2, 1A, 28000 Madrid
+    mobile: 666666101
+    phone: 9166666601
+    note: provider 1
+
+
 
     
 

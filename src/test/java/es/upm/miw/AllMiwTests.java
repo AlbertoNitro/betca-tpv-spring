@@ -5,6 +5,7 @@ import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
 import es.upm.miw.documents.users.AllMiwDocumentsUsersTests;
+import es.upm.miw.repositories.core.AllMiwRepositoriesCoreIntegrationTets;
 import es.upm.miw.repositories.users.AllMiwRepositoriesUsersIntegrationTests;
 import es.upm.miw.resources.AllMiwResourcesFunctionalTests;
 import es.upm.miw.services.DatabaseSeederServiceIT;
@@ -15,6 +16,7 @@ import es.upm.miw.services.DatabaseSeederServiceIT;
     AllMiwDocumentsUsersTests.class,
     
     AllMiwRepositoriesUsersIntegrationTests.class,
+    AllMiwRepositoriesCoreIntegrationTets.class,
     ApplicationIT.class,
     
     AllMiwResourcesFunctionalTests.class,
