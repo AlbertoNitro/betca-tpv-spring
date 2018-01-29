@@ -5,6 +5,7 @@ import java.util.List;
 import es.upm.miw.documents.core.Article;
 import es.upm.miw.documents.core.Invoice;
 import es.upm.miw.documents.core.Provider;
+import es.upm.miw.documents.core.Shopping;
 import es.upm.miw.documents.core.Ticket;
 import es.upm.miw.documents.core.Voucher;
 import es.upm.miw.documents.users.Token;
@@ -19,6 +20,7 @@ public class TpvGraph {
     private List<Article> articleList;
     private List<Voucher> voucherList;
     private List<Ticket> ticketList;
+    private List<Shopping> shoppingList;
     private List<Invoice> InvoiceList;
     
     public TpvGraph() {
@@ -70,6 +72,14 @@ public class TpvGraph {
 
     public void setTicketList(List<Ticket> ticketList) {
         this.ticketList = ticketList;
+    }
+
+    public List<Shopping> getShoppingList() {
+        return shoppingList;
+    }
+
+    public void setShoppingList(List<Shopping> shoppingList) {
+        this.shoppingList = shoppingList;
     }
 
     public List<Invoice> getInvoiceList() {

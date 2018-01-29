@@ -138,12 +138,10 @@ public class Article {
 
     @Override
     public String toString() {
-        String providerId = "null";
-        if (provider != null) {
-            providerId = "" + provider.getId();
-        }
-        return "Article [" + super.toString() + "stock=" + stock + ", wholesalePrice=" + wholesalePrice + ", providerId=" + providerId
-                + "]";
+        return "Article [code=" + code + ", registrationDate=" + registrationDate + ", reference=" + reference + ", description="
+                + description + ", retailPrice=" + retailPrice + ", image=" + image + ", stock=" + stock + ", wholesalePrice="
+                + wholesalePrice + ", discontinued=" + discontinued + ", tax=" + tax + ", provider=" + provider.getId() + "]";
     }
+
 
 }

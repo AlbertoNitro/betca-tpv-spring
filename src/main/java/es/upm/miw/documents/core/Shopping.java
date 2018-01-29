@@ -47,11 +47,11 @@ public class Shopping {
         this.discount = discount;
     }
 
-    public Article getProduct() {
+    public Article getArticle() {
         return article;
     }
 
-    public void setProduct(Article article) {
+    public void setArticle(Article article) {
         this.article = article;
     }
 
