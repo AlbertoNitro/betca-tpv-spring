@@ -1,6 +1,7 @@
 package es.upm.miw.repositories.core;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -20,6 +21,11 @@ public class VoucherRepositoryIT {
     @Test
     public void testFindVoucher() {
         assertEquals(28.34,voucherRepository.findOne("eAgq2L-qZj7QlDKhxVetXs9yzLo").getValue().doubleValue(),10e-5);
+    }
+    
+    @Test
+    public void testVoucherUsed() {
+        assertTrue(voucherRepository.findOne("XWGtHHGHG2Go17Pi4L36pPWmfiE").isUsed());
     }
 
 }

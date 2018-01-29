@@ -9,6 +9,8 @@ import es.upm.miw.documents.users.User;
 
 public interface TicketRepository extends MongoRepository<Ticket, String> {
     
-    List<User> findByUserOrderByCreationDateDesc(User user);
+    List<Ticket> findByUserOrderByCreationDateDesc(User user);
+
+    Ticket findByReference(String reference);
     
 }

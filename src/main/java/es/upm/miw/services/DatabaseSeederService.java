@@ -41,16 +41,17 @@ public class DatabaseSeederService {
 
     @Autowired
     private ProviderRepository providerRepository;
-    
+
     @Autowired
     private ArticleRepository articleRepository;
-    
+
     @Autowired
     public TicketRepository ticketRepository;
+
     @PostConstruct
     public void seedDatabase() {
-        //TODO solo en desarrollo
-        //TODO llevar el nombre de test a propiedades de test
+        // TODO solo en desarrollo
+        // TODO llevar el nombre de test a propiedades de test
         this.deleteAllAndCreateAdmin();
         Logger.getLogger(this.getClass()).error("------------------------- Seed: tpv-bd-test.yml-----------");
         this.seedDatabase("tpv-bd-test.yml");
@@ -69,7 +70,7 @@ public class DatabaseSeederService {
             providerRepository.save(tpvGraph.getProviderList());
             articleRepository.save(tpvGraph.getArticleList());
             ticketRepository.save(tpvGraph.getTicketList());
-            
+
             // -----------------------------------------------------------------------
 
         } catch (IOException e) {
@@ -80,6 +81,10 @@ public class DatabaseSeederService {
     public void deleteAllAndCreateAdmin() {
         Logger.getLogger(this.getClass()).error("------------------------- delete All And Create Admin-----------");
         this.userRepository.deleteAll();
+        this.ticketRepository.deleteAll();
+        this.articleRepository.deleteAll();
+        this.voucherRepository.deleteAll();
+        this.providerRepository.deleteAll();
         this.createAdmin();
     }
 

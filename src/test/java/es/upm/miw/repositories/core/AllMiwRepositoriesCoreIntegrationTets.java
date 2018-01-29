@@ -6,8 +6,11 @@ import org.junit.runners.Suite.SuiteClasses;
 
 @RunWith(Suite.class)
 @SuiteClasses({
+    ArticleRepositoryIT.class,
+    ProviderRepositoryIT.class,
+    TicketRepositoryIT.class,
     VoucherRepositoryIT.class,
-    ProviderRepositoryIT.class
+
     })
 public class AllMiwRepositoriesCoreIntegrationTets {
 

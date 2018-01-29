@@ -80,7 +80,7 @@ public class Shopping {
     }
 
     public BigDecimal getShoppingTotal() {
-        return this.getShoppingSubtotal().multiply(this.discount);
+        return this.getShoppingSubtotal().multiply(new BigDecimal(1).subtract(this.discount));
     }
 
     public BigDecimal getShoppingSubtotal() {
@@ -89,7 +89,7 @@ public class Shopping {
 
     @Override
     public String toString() {
-        return "Shopping [amount=" + amount + ", discount=" + discount + ", article=" + article + ", description=" + description
+        return "Shopping [amount=" + amount + ", discount=" + discount + ", article=" + article.getReference() + ", description=" + description
                 + ", retailPrice=" + retailPrice + ", shoppingState=" + shoppingState + "]";
     }
 

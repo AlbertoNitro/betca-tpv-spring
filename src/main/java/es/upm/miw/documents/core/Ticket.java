@@ -83,7 +83,7 @@ public class Ticket {
     public BigDecimal getTicketTotal() {
         BigDecimal total = new BigDecimal(0);
         for (Shopping shopping : shoppingList) {
-            total.add(shopping.getShoppingTotal());
+            total = total.add(shopping.getShoppingTotal());
         }
         return total;
     }
