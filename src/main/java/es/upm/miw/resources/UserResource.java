@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import es.upm.miw.controllers.UserController;
-import es.upm.miw.documents.users.Role;
+import es.upm.miw.documents.core.Role;
 import es.upm.miw.dtos.input.UserDto;
 import es.upm.miw.resources.exceptions.ForbiddenException;
 import es.upm.miw.resources.exceptions.UserFieldAlreadyExistException;

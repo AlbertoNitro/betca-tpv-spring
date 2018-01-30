@@ -1,4 +1,4 @@
-package es.upm.miw.repositories.users;
+package es.upm.miw.repositories.core;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -13,8 +13,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import es.upm.miw.documents.users.Token;
-import es.upm.miw.documents.users.User;
+import es.upm.miw.documents.core.Token;
+import es.upm.miw.documents.core.User;
+import es.upm.miw.repositories.core.UserRepository;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -24,17 +25,17 @@ public class UserRepositoryIT {
     @Autowired
     private UserRepository userRepository;
 
-    User user;
+    private User user;
 
     @Before
-    public void populate() {
+    public void seedDb() {
         this.user = new User(666001000L, "666001000", "666001000");
         this.userRepository.save(user);
     }
 
     @Test
     public void testFindUser() {
-        User userBd = userRepository.findOne(666001000L);
+        User userBd = userRepository.findByMobile(666001000L);
         assertNotNull(userBd);
         assertEquals("666001000", userBd.getUsername());
     }

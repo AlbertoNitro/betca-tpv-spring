@@ -13,9 +13,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import es.upm.miw.documents.users.Role;
-import es.upm.miw.documents.users.User;
-import es.upm.miw.repositories.users.UserRepository;
+import es.upm.miw.documents.core.Role;
+import es.upm.miw.documents.core.User;
+import es.upm.miw.repositories.core.UserRepository;
 
 @Service
 @Transactional
@@ -32,7 +32,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
                     user.isActive());
         } else {
             try {
-                user = userRepository.findOne(Long.valueOf(mobileOrTokenValue));
+                user = userRepository.findByMobile(Long.valueOf(mobileOrTokenValue));
             } catch (NumberFormatException nfe) {
                 throw new UsernameNotFoundException("Usuario no encontrado");
             }

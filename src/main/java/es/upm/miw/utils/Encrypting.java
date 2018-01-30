@@ -1,4 +1,4 @@
-package es.upm.miw.documents.users;
+package es.upm.miw.utils;
 
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
@@ -73,5 +73,11 @@ public class Encrypting {
     public String encryptInBase64UrlSafe() {
         return this.encryptInBase64UrlSafe(UUID.randomUUID().toString());
     }
-
+    
+public static void main(String[] args) {
+    Encrypting encrypting = new Encrypting();
+    for (int i = 0; i < 5; i++) {
+        System.out.println(encrypting.encryptInBase64UrlSafe());
+    }
+}
 }

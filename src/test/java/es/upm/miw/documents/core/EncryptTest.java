@@ -1,10 +1,12 @@
-package es.upm.miw.documents.users;
+package es.upm.miw.documents.core;
 
 import static org.junit.Assert.assertEquals;
 
 import java.util.Calendar;
 
 import org.junit.Test;
+
+import es.upm.miw.utils.Encrypting;
 
 public class EncryptTest {
 
