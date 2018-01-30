@@ -1,4 +1,4 @@
-package es.upm.miw.documents.users;
+package es.upm.miw.documents.core;
 
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
@@ -8,6 +8,6 @@ import org.junit.runners.Suite.SuiteClasses;
 @SuiteClasses({
     EncryptTest.class
 })
-public class AllMiwDocumentsUsersTests {
+public class AllMiwDocumentsCoreTests {
 
 }

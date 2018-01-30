@@ -1,4 +1,4 @@
-package es.upm.miw.documents.users;
+package es.upm.miw.documents.core;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;

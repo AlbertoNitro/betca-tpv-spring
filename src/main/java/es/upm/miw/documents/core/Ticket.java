@@ -9,7 +9,6 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import es.upm.miw.documents.users.User;
 import es.upm.miw.utils.Encrypting;
 
 @Document

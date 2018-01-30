@@ -1,4 +1,4 @@
-package es.upm.miw.documents.users;
+package es.upm.miw.documents.core;
 
 import static org.junit.Assert.assertEquals;
 

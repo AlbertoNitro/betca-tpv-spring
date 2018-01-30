@@ -7,9 +7,9 @@ import es.upm.miw.documents.core.Invoice;
 import es.upm.miw.documents.core.Provider;
 import es.upm.miw.documents.core.Shopping;
 import es.upm.miw.documents.core.Ticket;
+import es.upm.miw.documents.core.Token;
+import es.upm.miw.documents.core.User;
 import es.upm.miw.documents.core.Voucher;
-import es.upm.miw.documents.users.Token;
-import es.upm.miw.documents.users.User;
 
 public class TpvGraph {
 

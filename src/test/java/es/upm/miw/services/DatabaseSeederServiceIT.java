@@ -11,8 +11,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import es.upm.miw.documents.users.User;
-import es.upm.miw.repositories.users.UserRepository;
+import es.upm.miw.documents.core.User;
+import es.upm.miw.repositories.core.UserRepository;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest

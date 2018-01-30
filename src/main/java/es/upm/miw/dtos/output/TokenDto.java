@@ -2,8 +2,8 @@ package es.upm.miw.dtos.output;
 
 import java.util.Arrays;
 
-import es.upm.miw.documents.users.Role;
-import es.upm.miw.documents.users.User;
+import es.upm.miw.documents.core.Role;
+import es.upm.miw.documents.core.User;
 
 public class TokenDto {
 

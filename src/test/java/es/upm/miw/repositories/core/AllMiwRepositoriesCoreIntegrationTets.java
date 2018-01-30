@@ -9,8 +9,8 @@ import org.junit.runners.Suite.SuiteClasses;
     ArticleRepositoryIT.class,
     ProviderRepositoryIT.class,
     TicketRepositoryIT.class,
+    UserRepositoryIT.class,
     VoucherRepositoryIT.class,
-
     })
 public class AllMiwRepositoriesCoreIntegrationTets {
 

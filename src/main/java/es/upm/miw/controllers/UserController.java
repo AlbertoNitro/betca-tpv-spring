@@ -6,10 +6,10 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
-import es.upm.miw.documents.users.Role;
-import es.upm.miw.documents.users.User;
+import es.upm.miw.documents.core.Role;
+import es.upm.miw.documents.core.User;
 import es.upm.miw.dtos.input.UserDto;
-import es.upm.miw.repositories.users.UserRepository;
+import es.upm.miw.repositories.core.UserRepository;
 
 @Controller
 public class UserController {

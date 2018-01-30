@@ -1,9 +1,9 @@
-package es.upm.miw.repositories.users;
+package es.upm.miw.repositories.core;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
 
-import es.upm.miw.documents.users.User;
+import es.upm.miw.documents.core.User;
 
 public interface UserRepository extends MongoRepository<User, String> {
 

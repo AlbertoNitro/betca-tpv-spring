@@ -14,13 +14,13 @@ import org.springframework.stereotype.Service;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.Constructor;
 
-import es.upm.miw.documents.users.Role;
-import es.upm.miw.documents.users.User;
+import es.upm.miw.documents.core.Role;
+import es.upm.miw.documents.core.User;
 import es.upm.miw.repositories.core.ArticleRepository;
 import es.upm.miw.repositories.core.ProviderRepository;
 import es.upm.miw.repositories.core.TicketRepository;
+import es.upm.miw.repositories.core.UserRepository;
 import es.upm.miw.repositories.core.VoucherRepository;
-import es.upm.miw.repositories.users.UserRepository;
 
 @Service
 public class DatabaseSeederService {
