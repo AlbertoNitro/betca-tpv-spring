@@ -28,7 +28,7 @@ public class Article {
     private BigDecimal wholesalePrice;
 
     private boolean discontinued;
-    
+
     private Tax tax;
 
     @DBRef
@@ -45,7 +45,7 @@ public class Article {
         this.reference = reference;
         this.description = description;
         this.provider = provider;
-        this.tax=tax;
+        this.tax = tax;
     }
 
     public String getCode() {
@@ -142,6 +142,5 @@ public class Article {
                 + description + ", retailPrice=" + retailPrice + ", image=" + image + ", stock=" + stock + ", wholesalePrice="
                 + wholesalePrice + ", discontinued=" + discontinued + ", tax=" + tax + ", provider=" + provider.getId() + "]";
     }
-
 
 }

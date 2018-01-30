@@ -22,18 +22,14 @@ public class Voucher {
     private Date dateOfUse;
 
     public Voucher() {
-        this.reference=new Encrypting().encryptInBase64UrlSafe();
-        this.creationDate = new Date();
-        this.dateOfUse = null;
+        this(new BigDecimal(0));
     }
 
     public Voucher(BigDecimal value) {
-        this();
+        this.reference = new Encrypting().encryptInBase64UrlSafe();
+        this.creationDate = new Date();
+        this.dateOfUse = null;
         this.setValue(value);
-    }
-
-    public void setReference(String reference) {
-        this.reference = reference;
     }
 
     public String getReference() {
@@ -48,12 +44,8 @@ public class Voucher {
         this.value = value;
     }
 
-     public Date getCreationDate() {
+    public Date getCreationDate() {
         return creationDate;
-    }
-
-    public void setCreationDate(Date creationDate) {
-        this.creationDate = creationDate;
     }
 
     public Date getDateOfUse() {
@@ -101,7 +93,7 @@ public class Voucher {
         } else {
             useTime = "---";
         }
-        return "Voucher [reference=" + reference + ", value=" + value + ", creationDate=" + creationTime + ", dateOfUse=" + useTime + "]";
+        return "Voucher [reference=" + reference + ", value=" + value.doubleValue() + ", creationDate=" + creationTime + ", dateOfUse=" + useTime + "]";
     }
 
 }

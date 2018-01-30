@@ -1,7 +1,9 @@
 package es.upm.miw.repositories.core;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+
+import java.math.BigDecimal;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -19,13 +21,13 @@ public class VoucherRepositoryIT {
     private VoucherRepository voucherRepository;
 
     @Test
-    public void testFindVoucher() {
-        assertEquals(28.34,voucherRepository.findOne("eAgq2L-qZj7QlDKhxVetXs9yzLo").getValue().doubleValue(),10e-5);
+    public void testVoucherNotUsed() {
+        assertFalse(voucherRepository.findByValue(new BigDecimal("666.666")).get(0).isUsed());
     }
     
     @Test
     public void testVoucherUsed() {
-        assertTrue(voucherRepository.findOne("XWGtHHGHG2Go17Pi4L36pPWmfiE").isUsed());
+        assertTrue(voucherRepository.findByValue(new BigDecimal("0.666")).get(0).isUsed());
     }
 
 }

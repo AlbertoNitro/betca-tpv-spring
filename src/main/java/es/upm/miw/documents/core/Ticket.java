@@ -2,7 +2,6 @@ package es.upm.miw.documents.core;
 
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 
 import org.springframework.data.annotation.Id;
@@ -35,8 +34,7 @@ public class Ticket {
 
     public Ticket(int idOfday) {
         this();
-        String date = new SimpleDateFormat(DATE_FORMAT).format(Calendar.getInstance().getTime());
-        this.id = date + "-" + idOfday;
+        this.id = new SimpleDateFormat(DATE_FORMAT).format(new Date()) + "-" + idOfday;
     }
 
     public String getId() {

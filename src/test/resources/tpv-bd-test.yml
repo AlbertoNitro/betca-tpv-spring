@@ -4,13 +4,10 @@
 tokenList:
   - &to0
     value: PaE8iPX3AekAaV945_ujcm7q1ik
-    creationDate: 2017-08-14
   - &to1
     value: 3vZy-CGx0SZ86DjbwqvRfx45hHU
-    creationDate: 2018-01-01
   - &to2
     value: 9wPhJxoFQvq4SND5ugNETxKwNKY
-    creationDate: 2018-01-14
   - &to3
     value: 64jcnKajqit2bP_npC5-ddMfh6Y
   - &to4
@@ -64,12 +61,9 @@ userList:
       
 # Vouchers
 voucherList:
-  - reference: eAgq2L-qZj7QlDKhxVetXs9yzLo
-    value: 28.34
-  - reference: XWGtHHGHG2Go17Pi4L36pPWmfiE
-    value: 50
-    creationDate: 2017-12-23
-    dateOfUse: 2018-01-10
+  - value: 666.666
+  - value: 0.666
+    dateOfUse: 2018-01-01
     
 # Providers
 providerList:

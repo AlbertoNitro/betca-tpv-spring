@@ -11,8 +11,7 @@ public class Token {
     private Date creationDate;
 
     public Token() {
-        this.value = new Encrypting().encryptInBase64UrlSafe();
-        this.creationDate = new Date();
+        this.setValue(new Encrypting().encryptInBase64UrlSafe());
     }
 
     public String getValue() {
@@ -25,10 +24,7 @@ public class Token {
 
     public void setValue(String value) {
         this.value = value;
-    }
-
-    public void setCreationDate(Date creationDate) {
-        this.creationDate = creationDate;
+        this.creationDate = new Date();
     }
 
     @Override

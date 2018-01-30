@@ -59,7 +59,7 @@ public class DatabaseSeederService {
             Logger.getLogger(this.getClass()).warn("------------------------- Seed: tpv-bd-test.yml-----------");
             this.seedDatabase(ymlFileName.get());
         } else {
-            this.createAdmin();
+            this.createAdminIfNotExist();
         }
     }
 
@@ -85,16 +85,16 @@ public class DatabaseSeederService {
     }
 
     public void deleteAllAndCreateAdmin() {
-        Logger.getLogger(this.getClass()).error("------------------------- delete All And Create Admin-----------");
+        Logger.getLogger(this.getClass()).warn("------------------------- delete All And Create Admin-----------");
         this.userRepository.deleteAll();
         this.ticketRepository.deleteAll();
         this.articleRepository.deleteAll();
         this.voucherRepository.deleteAll();
         this.providerRepository.deleteAll();
-        this.createAdmin();
+        this.createAdminIfNotExist();
     }
 
-    public void createAdmin() {
+    public void createAdminIfNotExist() {
         if (this.userRepository.findByMobile(this.mobile) == null) {
             User user = new User(this.mobile, this.username, this.password);
             user.setRoles(new Role[] {Role.ADMIN});
