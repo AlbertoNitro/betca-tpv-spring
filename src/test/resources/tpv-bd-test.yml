@@ -126,4 +126,11 @@ ticketList:
     reference: 6P0ISee_twnGEzf8qd1Bd5sGQqE
     shoppingList: 
       - *sh1
-    user: *us4    
+    user: *us4
+    
+# Invoice
+invoiceList:
+  - id: 2018-1
+    ticket: *ti1
+  - id: 2018-2
+    ticket: *ti2

@@ -17,6 +17,7 @@ import org.yaml.snakeyaml.constructor.Constructor;
 import es.upm.miw.documents.core.Role;
 import es.upm.miw.documents.core.User;
 import es.upm.miw.repositories.core.ArticleRepository;
+import es.upm.miw.repositories.core.InvoiceRepository;
 import es.upm.miw.repositories.core.ProviderRepository;
 import es.upm.miw.repositories.core.TicketRepository;
 import es.upm.miw.repositories.core.UserRepository;
@@ -51,6 +52,9 @@ public class DatabaseSeederService {
 
     @Autowired
     public TicketRepository ticketRepository;
+    
+    @Autowired
+    public InvoiceRepository invoiceRepository;
 
     @PostConstruct
     public void seedDatabase() {
@@ -71,12 +75,12 @@ public class DatabaseSeederService {
             TpvGraph tpvGraph = (TpvGraph) yamlParser.load(input);
 
             // Save Repositories -----------------------------------------------------
-            userRepository.save(tpvGraph.getUserList());
-            voucherRepository.save(tpvGraph.getVoucherList());
-            providerRepository.save(tpvGraph.getProviderList());
-            articleRepository.save(tpvGraph.getArticleList());
-            ticketRepository.save(tpvGraph.getTicketList());
-
+            this.userRepository.save(tpvGraph.getUserList());
+            this.voucherRepository.save(tpvGraph.getVoucherList());
+            this.providerRepository.save(tpvGraph.getProviderList());
+            this.articleRepository.save(tpvGraph.getArticleList());
+            this.ticketRepository.save(tpvGraph.getTicketList());
+            this.invoiceRepository.save(tpvGraph.getInvoiceList());
             // -----------------------------------------------------------------------
 
         } catch (IOException e) {
@@ -91,6 +95,7 @@ public class DatabaseSeederService {
         this.articleRepository.deleteAll();
         this.voucherRepository.deleteAll();
         this.providerRepository.deleteAll();
+        this.invoiceRepository.deleteAll();
         this.createAdminIfNotExist();
     }
 

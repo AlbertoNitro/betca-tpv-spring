@@ -9,9 +9,11 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document
 public class Invoice {
+    
+    private static final String DATE_FORMAT = "yyyy-";
 
     @Id
-    private int id;
+    private String id;
 
     private Date creationDate;
 
@@ -22,17 +24,17 @@ public class Invoice {
         creationDate = new Date();
     }
 
-    public Invoice(int id, Ticket ticket) {
+    public Invoice(int idOfYear, Ticket ticket) {
         this();
-        this.id = id;
+        this.id = new SimpleDateFormat(DATE_FORMAT).format(new Date()) + idOfYear;
         this.ticket = ticket;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -54,7 +56,7 @@ public class Invoice {
 
     @Override
     public int hashCode() {
-        return id;
+        return id.hashCode();
     }
 
     @Override
@@ -73,8 +75,11 @@ public class Invoice {
 
     @Override
     public String toString() {
-        String date = new SimpleDateFormat("dd-MMM-yyyy").format(creationDate.getTime());
+        String date = new SimpleDateFormat("dd-MMM-yyyy HH:mm").format(creationDate.getTime());
         return "Invoice [id=" + id + ", created=" + date + ", ticket=" + ticket + "]";
     }
 
+    public static void main(String[] args) {
+        System.out.println(new Invoice(1,null));
+    }
 }

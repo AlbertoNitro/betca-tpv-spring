@@ -13,7 +13,7 @@ import es.upm.miw.utils.Encrypting;
 @Document
 public class Ticket {
 
-    private static final String DATE_FORMAT = "yyyyMMdd";
+    private static final String DATE_FORMAT = "yyyyMMdd-";
 
     @Id
     private String id;
@@ -34,7 +34,7 @@ public class Ticket {
 
     public Ticket(int idOfday) {
         this();
-        this.id = new SimpleDateFormat(DATE_FORMAT).format(new Date()) + "-" + idOfday;
+        this.id = new SimpleDateFormat(DATE_FORMAT).format(new Date()) + idOfday;
     }
 
     public String getId() {
