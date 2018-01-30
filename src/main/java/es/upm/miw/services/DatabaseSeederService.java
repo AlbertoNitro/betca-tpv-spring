@@ -2,6 +2,7 @@ package es.upm.miw.services;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Optional;
 
 import javax.annotation.PostConstruct;
 
@@ -33,6 +34,9 @@ public class DatabaseSeederService {
     @Value("${miw.admin.password}")
     private String password;
 
+    @Value("${miw.databaseSeeder.ymlFileName:#{null}}")
+    private Optional<String> ymlFileName;
+
     @Autowired
     private UserRepository userRepository;
 
@@ -50,11 +54,13 @@ public class DatabaseSeederService {
 
     @PostConstruct
     public void seedDatabase() {
-        // TODO solo en desarrollo
-        // TODO llevar el nombre de test a propiedades de test
-        this.deleteAllAndCreateAdmin();
-        Logger.getLogger(this.getClass()).error("------------------------- Seed: tpv-bd-test.yml-----------");
-        this.seedDatabase("tpv-bd-test.yml");
+        if (ymlFileName.isPresent()) {
+            this.deleteAllAndCreateAdmin();
+            Logger.getLogger(this.getClass()).warn("------------------------- Seed: tpv-bd-test.yml-----------");
+            this.seedDatabase(ymlFileName.get());
+        } else {
+            this.createAdmin();
+        }
     }
 
     public void seedDatabase(String ymlFileName) {
@@ -89,9 +95,11 @@ public class DatabaseSeederService {
     }
 
     public void createAdmin() {
-        User user = new User(this.mobile, this.username, this.password);
-        user.setRoles(new Role[] {Role.ADMIN});
-        this.userRepository.save(user);
+        if (this.userRepository.findByMobile(this.mobile) == null) {
+            User user = new User(this.mobile, this.username, this.password);
+            user.setRoles(new Role[] {Role.ADMIN});
+            this.userRepository.save(user);
+        }
     }
 
 }
