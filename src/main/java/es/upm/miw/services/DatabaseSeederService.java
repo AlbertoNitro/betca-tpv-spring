@@ -52,7 +52,7 @@ public class DatabaseSeederService {
 
     @Autowired
     public TicketRepository ticketRepository;
-    
+
     @Autowired
     public InvoiceRepository invoiceRepository;
 
@@ -60,36 +60,38 @@ public class DatabaseSeederService {
     public void seedDatabase() {
         if (ymlFileName.isPresent()) {
             this.deleteAllAndCreateAdmin();
-            Logger.getLogger(this.getClass()).warn("------------------------- Seed: tpv-bd-test.yml-----------");
-            this.seedDatabase(ymlFileName.get());
+            try {
+                this.seedDatabase(ymlFileName.get());
+            } catch (IOException e) {
+                Logger.getLogger(this.getClass()).error("File " + ymlFileName + " doesn't exist or can't be opened");
+            }
         } else {
             this.createAdminIfNotExist();
         }
     }
 
-    public void seedDatabase(String ymlFileName) {
+    public void seedDatabase(String ymlFileName) throws IOException {
         assert ymlFileName != null && !ymlFileName.isEmpty();
-        Yaml yamlParser = new Yaml(new Constructor(TpvGraph.class));
-        try {
-            InputStream input = new ClassPathResource(ymlFileName).getInputStream();
-            TpvGraph tpvGraph = (TpvGraph) yamlParser.load(input);
+        Yaml yamlParser = new Yaml(new Constructor(DatabaseGraph.class));
 
-            // Save Repositories -----------------------------------------------------
-            this.userRepository.save(tpvGraph.getUserList());
-            this.voucherRepository.save(tpvGraph.getVoucherList());
-            this.providerRepository.save(tpvGraph.getProviderList());
-            this.articleRepository.save(tpvGraph.getArticleList());
-            this.ticketRepository.save(tpvGraph.getTicketList());
-            this.invoiceRepository.save(tpvGraph.getInvoiceList());
-            // -----------------------------------------------------------------------
+        InputStream input = new ClassPathResource(ymlFileName).getInputStream();
+        DatabaseGraph tpvGraph = (DatabaseGraph) yamlParser.load(input);
 
-        } catch (IOException e) {
-            Logger.getLogger(this.getClass()).error("File " + ymlFileName + " doesn't exist or can't be opened");
-        }
+        // Save Repositories -----------------------------------------------------
+        this.userRepository.save(tpvGraph.getUserList());
+        this.voucherRepository.save(tpvGraph.getVoucherList());
+        this.providerRepository.save(tpvGraph.getProviderList());
+        this.articleRepository.save(tpvGraph.getArticleList());
+        this.ticketRepository.save(tpvGraph.getTicketList());
+        this.invoiceRepository.save(tpvGraph.getInvoiceList());
+        // -----------------------------------------------------------------------
+        
+        Logger.getLogger(this.getClass()).warn("------------------------- Seed: tpv-bd-test.yml-----------");
     }
 
     public void deleteAllAndCreateAdmin() {
         Logger.getLogger(this.getClass()).warn("------------------------- delete All And Create Admin-----------");
+        // Delete Repositories -----------------------------------------------------
         this.userRepository.deleteAll();
         this.ticketRepository.deleteAll();
         this.articleRepository.deleteAll();
@@ -97,6 +99,7 @@ public class DatabaseSeederService {
         this.providerRepository.deleteAll();
         this.invoiceRepository.deleteAll();
         this.createAdminIfNotExist();
+        // -----------------------------------------------------------------------
     }
 
     public void createAdminIfNotExist() {

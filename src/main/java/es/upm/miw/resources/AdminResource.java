@@ -1,12 +1,16 @@
 package es.upm.miw.resources;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import es.upm.miw.controllers.AdminController;
+import es.upm.miw.resources.exceptions.FileNotFoundException;
 
 @RestController
 @RequestMapping(AdminResource.ADMINS)
@@ -27,9 +31,20 @@ public class AdminResource {
     }
 
     @RequestMapping(value = DB, method = RequestMethod.DELETE)
-    @PreAuthorize("hasRole('ADMIN') or hasRole('MANAGER') or hasRole('OPERATOR')")
+    @PreAuthorize("hasRole('ADMIN')")
     public void deleteDb() {
         this.adminController.deleteDb();
     }
+    
+    @RequestMapping(value = DB, method = RequestMethod.POST)
+    @PreAuthorize("hasRole('ADMIN')")
+    public void seedDb(@RequestBody String ymlFileName) throws FileNotFoundException {
+        Optional<String> error = this.adminController.seedDatabase(ymlFileName);
+        if (error.isPresent()) {
+            throw new FileNotFoundException(error.get());
+        }
+    }
+    
+    
 
 }

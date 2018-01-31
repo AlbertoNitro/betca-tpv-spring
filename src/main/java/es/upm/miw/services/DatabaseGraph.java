@@ -11,7 +11,7 @@ import es.upm.miw.documents.core.Token;
 import es.upm.miw.documents.core.User;
 import es.upm.miw.documents.core.Voucher;
 
-public class TpvGraph {
+public class DatabaseGraph {
 
     private List<User> userList;
     private List<Token> tokenList;
@@ -23,7 +23,7 @@ public class TpvGraph {
     private List<Shopping> shoppingList;
     private List<Invoice> invoiceList;
     
-    public TpvGraph() {
+    public DatabaseGraph() {
         // Empty for framework
     }
 
