@@ -1,4 +1,6 @@
-package es.upm.miw.dtos.input;
+package es.upm.miw.dtos;
+
+import es.upm.miw.documents.core.User;
 
 public class UserDto {
 
@@ -28,6 +30,14 @@ public class UserDto {
 
     public UserDto(long mobile) {
         this(mobile, "name" + mobile, "pass" + mobile, null, null, null);
+    }
+
+    public UserDto(User user) {
+        this.mobile = user.getMobile();
+        this.username = user.getUsername();
+        this.email = user.getEmail();
+        this.dni = user.getDni();
+        this.address = user.getAddress();
     }
 
     public long getMobile() {

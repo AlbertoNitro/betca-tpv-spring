@@ -8,7 +8,7 @@ import org.springframework.stereotype.Controller;
 
 import es.upm.miw.documents.core.Role;
 import es.upm.miw.documents.core.User;
-import es.upm.miw.dtos.input.UserDto;
+import es.upm.miw.dtos.UserDto;
 import es.upm.miw.repositories.core.UserRepository;
 
 @Controller
@@ -37,6 +37,17 @@ public class UserController {
             return Optional.empty();
         } else {
             return Optional.of("No se tiene el rol suficiente para borrar al usr");
+        }
+    }
+
+    public Optional<UserDto> readUser(long mobile, Role[] roles) {
+        User userBd = this.userRepository.findByMobile(mobile);
+        if (userBd == null) {
+            return Optional.empty();
+        } else if (Arrays.asList(roles).containsAll(Arrays.asList(userBd.getRoles()))) {
+            return Optional.of(new UserDto(userBd));
+        } else {
+            return Optional.empty();
         }
     }
 
