@@ -22,7 +22,7 @@ public class ApiExceptionHandler {
     @ExceptionHandler({UserIdNotFoundException.class})
     @ResponseBody
     public ErrorMessage notFoundRequest(HttpServletRequest request, Exception exception) {
-        return new ErrorMessage(exception, request.getRequestURI().toString());
+        return new ErrorMessage(exception, request.getRequestURI());
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)

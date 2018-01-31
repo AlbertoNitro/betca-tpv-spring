@@ -44,7 +44,7 @@ public class Encrypting {
 
     public String encryptInString(String message) {
         byte[] digest = this.encrypt(message);
-        StringBuffer hash = new StringBuffer();
+        StringBuilder hash = new StringBuilder();
         for (byte digito : digest) {
             int b = digito & 0xff; // 0..255
             if (b < 16) {
