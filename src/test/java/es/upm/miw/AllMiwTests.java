@@ -7,19 +7,18 @@ import org.junit.runners.Suite.SuiteClasses;
 import es.upm.miw.documents.core.AllMiwDocumentsCoreTests;
 import es.upm.miw.repositories.core.AllMiwRepositoriesCoreIntegrationTets;
 import es.upm.miw.resources.AllMiwResourcesFunctionalTests;
-import es.upm.miw.services.DatabaseSeederServiceIT;
+import es.upm.miw.services.AllMiwServicesIntegrationTests;
+import es.upm.miw.utils.AllMiwUtilsTests;
 
 @RunWith(Suite.class)
 @SuiteClasses({
-    ApplicationTest.class,
     AllMiwDocumentsCoreTests.class,
+    AllMiwUtilsTests.class,
     
     AllMiwRepositoriesCoreIntegrationTets.class,
-    ApplicationIT.class,
+    AllMiwServicesIntegrationTests.class,
     
     AllMiwResourcesFunctionalTests.class,
-    ApplicationFunctionalTesting.class,
-    DatabaseSeederServiceIT.class
 })
 public class AllMiwTests {
 }
