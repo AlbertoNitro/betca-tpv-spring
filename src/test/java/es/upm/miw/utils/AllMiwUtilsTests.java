@@ -6,8 +6,7 @@ import org.junit.runners.Suite.SuiteClasses;
 
 @RunWith(Suite.class)
 @SuiteClasses({
-    BarcodeTest.class,
-    PdfBuilderTest.class
+    BarcodeTest.class
 })
 public class AllMiwUtilsTests {
 

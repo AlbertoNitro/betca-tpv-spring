@@ -6,7 +6,6 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 
 import es.upm.miw.documents.core.Article;
-import es.upm.miw.utils.PdfTag24Builder;
 
 @Service
 public class PdfService {

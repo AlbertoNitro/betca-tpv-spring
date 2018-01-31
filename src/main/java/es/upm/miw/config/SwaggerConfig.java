@@ -27,7 +27,7 @@ public class SwaggerConfig {
                 .apiInfo(apiInfo()); // .pathMapping("").globalOperationParameters(parameters);
     }
 
-    // http://localhost:8080/swagger-ui.html
+    // http://localhost:8080/api/v0/swagger-ui.html
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder().title("Máster en Ingeniería Web. Universidad Politécnica de Madrid")
                 .description("BETCA. Back-end con Tecnologías de Código Abierto (SPRING). https://github.com/miw-upm/BETCA-spring").build();

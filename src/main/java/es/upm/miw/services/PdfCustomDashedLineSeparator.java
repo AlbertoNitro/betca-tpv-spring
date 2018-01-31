@@ -1,10 +1,10 @@
-package es.upm.miw.utils;
+package es.upm.miw.services;
 
 import com.itextpdf.kernel.geom.Rectangle;
 import com.itextpdf.kernel.pdf.canvas.PdfCanvas;
 import com.itextpdf.kernel.pdf.canvas.draw.DottedLine;
 
-class CustomDashedLineSeparator extends DottedLine {
+class PdfCustomDashedLineSeparator extends DottedLine {
     protected float dash = 5;
     protected float phase = 2.5f;
 
