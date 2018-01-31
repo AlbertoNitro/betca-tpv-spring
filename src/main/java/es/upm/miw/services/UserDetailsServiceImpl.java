@@ -25,7 +25,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     private UserRepository userRepository;
 
     @Override
-    public UserDetails loadUserByUsername(final String mobileOrTokenValue) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(final String mobileOrTokenValue) {
         User user = userRepository.findByTokenValue(mobileOrTokenValue);
         if (user != null) {
             return this.userBuilder(Long.toString(user.getMobile()), new BCryptPasswordEncoder().encode(""), user.getRoles(),

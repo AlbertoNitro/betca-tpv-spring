@@ -22,31 +22,27 @@ public class ApiExceptionHandler {
     @ExceptionHandler({UserIdNotFoundException.class})
     @ResponseBody
     public ErrorMessage notFoundRequest(HttpServletRequest request, Exception exception) {
-        ErrorMessage errorMessage = new ErrorMessage(exception, request.getRequestURI().toString());
-        return errorMessage;
+        return new ErrorMessage(exception, request.getRequestURI().toString());
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler({UserFieldAlreadyExistException.class, UserFieldInvalidException.class})
     @ResponseBody
     public ErrorMessage badRequest(Exception exception) {
-        ErrorMessage errorMessage = new ErrorMessage(exception, "");
-        return errorMessage;
+        return new ErrorMessage(exception, "");
     }
     
     @ResponseStatus(HttpStatus.FORBIDDEN)
     @ExceptionHandler({ForbiddenException.class})
     @ResponseBody
     public ErrorMessage forbiddenRequest(Exception exception) {
-        ErrorMessage errorMessage = new ErrorMessage(exception, "");
-        return errorMessage;
+        return new ErrorMessage(exception, "");
     }
     
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     @ExceptionHandler({Exception.class})
     public void unauthorizedRequest(Exception exception) {
-        ErrorMessage errorMessage = new ErrorMessage(exception, "");
-        Logger.getLogger(this.getClass()).info("Error!!! "+ errorMessage);
+        Logger.getLogger(this.getClass()).info("Error!!! "+ new ErrorMessage(exception, ""));
     }
 
 

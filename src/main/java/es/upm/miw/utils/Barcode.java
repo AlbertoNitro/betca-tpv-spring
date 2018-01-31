@@ -18,14 +18,4 @@ public class Barcode {
         return code + this.ean13ControlCodeCalculator(code);
     }
 
-    public static void main(String[] args) {
-        for (int i = 24; i <= 40; i += 1) {
-            String base = "8400000150";
-            if (i < 10) {
-                base += "0";
-            }
-            System.out.println(base + (i) + new Barcode().ean13ControlCodeCalculator(base + (i)));
-        }
-    }
-
 }

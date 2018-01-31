@@ -13,7 +13,7 @@ public class AdminResource {
     public static final String STATE = "/state";
 
     @RequestMapping(value = STATE, method = RequestMethod.GET)
-    public String state() {
+    public String getState() {
         return "{\"state\":\"ok\"}";
     }
 

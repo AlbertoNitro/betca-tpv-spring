@@ -15,14 +15,15 @@ public class ApiLogs {
 
     @Pointcut("@annotation(org.springframework.web.bind.annotation.RequestMapping)")
     public void allResources() {
+        // don't need code
     }
 
     @Before("allResources()")
     public void apiRequestLog(JoinPoint jp) {
         LogManager.getLogger(jp.getSignature().getDeclaringTypeName()).info("------------------------- o -------------------------");
-        String log = jp.getSignature().getName() + " >>>";
+        StringBuilder log = new StringBuilder(jp.getSignature().getName() + " >>>");
         for (Object arg : jp.getArgs()) {
-            log += "\n   ARG: " + arg;
+            log.append("\n   ARG: " + arg);
         }
         LogManager.getLogger(jp.getSignature().getDeclaringTypeName()).info(log);
     }

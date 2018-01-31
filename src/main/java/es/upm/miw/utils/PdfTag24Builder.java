@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.util.Optional;
 
 import org.apache.log4j.Logger;
 
@@ -91,7 +92,7 @@ public class PdfTag24Builder {
         return this;
     }
 
-    public byte[] build() {
+    public Optional<byte[]> build() {
         while (tag24 % 3 != 0) {
             Cell cell = new Cell();
             cell.setBorder(Border.NO_BORDER);
@@ -101,11 +102,11 @@ public class PdfTag24Builder {
         }
         document.close();
         try {
-            return Files.readAllBytes(new File(fullPath).toPath());
+            return Optional.of(Files.readAllBytes(new File(fullPath).toPath()));
         } catch (IOException ioe) {
             Logger.getLogger(this.getClass()).error("IO: " + ioe);
         }
-        return null;
+        return Optional.empty();
     }
 
 }

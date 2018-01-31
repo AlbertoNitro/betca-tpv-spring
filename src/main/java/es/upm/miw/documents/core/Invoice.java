@@ -79,7 +79,4 @@ public class Invoice {
         return "Invoice [id=" + id + ", created=" + date + ", ticket=" + ticket + "]";
     }
 
-    public static void main(String[] args) {
-        System.out.println(new Invoice(1,null));
-    }
 }

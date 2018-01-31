@@ -21,9 +21,10 @@ public class TpvGraph {
     private List<Voucher> voucherList;
     private List<Ticket> ticketList;
     private List<Shopping> shoppingList;
-    private List<Invoice> InvoiceList;
+    private List<Invoice> invoiceList;
     
     public TpvGraph() {
+        // Empty for framework
     }
 
     public List<User> getUserList() {
@@ -83,11 +84,11 @@ public class TpvGraph {
     }
 
     public List<Invoice> getInvoiceList() {
-        return InvoiceList;
+        return invoiceList;
     }
 
     public void setInvoiceList(List<Invoice> invoiceList) {
-        InvoiceList = invoiceList;
+        this.invoiceList = invoiceList;
     }
 
 }

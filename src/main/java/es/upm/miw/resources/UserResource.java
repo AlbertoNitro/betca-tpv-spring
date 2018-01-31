@@ -42,7 +42,7 @@ public class UserResource {
     }
 
     @RequestMapping(value = MOBILE_ID, method = RequestMethod.DELETE)
-    public void deleteCustomer(@PathVariable long mobile) throws UserFieldInvalidException, ForbiddenException {
+    public void deleteCustomer(@PathVariable long mobile) throws ForbiddenException {
         Optional<String> error = this.userController.deleteUser(mobile, new Role[] {Role.CUSTOMER});
         if (error.isPresent()) {
             throw new ForbiddenException(error.get());

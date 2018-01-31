@@ -44,13 +44,13 @@ public class Encrypting {
 
     public String encryptInString(String message) {
         byte[] digest = this.encrypt(message);
-        String hash = "";
+        StringBuffer hash = new StringBuffer();
         for (byte digito : digest) {
             int b = digito & 0xff; // 0..255
             if (b < 16) {
-                hash += "0";
+                hash.append("0");
             } else
-                hash += (Integer.toHexString(b));
+                hash.append(Integer.toHexString(b));
         }
         return hash.toString();
     }
@@ -67,7 +67,7 @@ public class Encrypting {
     public String encryptInBase64UrlSafe(String message) {
         byte[] digest = this.encrypt(message);
         String code64Url = Base64.getUrlEncoder().encodeToString(digest);
-        return code64Url.substring(0, code64Url.indexOf("="));
+        return code64Url.substring(0, code64Url.indexOf('='));
     }
 
     public String encryptInBase64UrlSafe() {
@@ -77,7 +77,7 @@ public class Encrypting {
 public static void main(String[] args) {
     Encrypting encrypting = new Encrypting();
     for (int i = 0; i < 5; i++) {
-        System.out.println(encrypting.encryptInBase64UrlSafe());
+        Logger.getLogger("miw.debug").debug(encrypting.encryptInBase64UrlSafe());
     }
 }
 }

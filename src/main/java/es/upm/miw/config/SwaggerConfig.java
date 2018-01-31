@@ -17,12 +17,14 @@ public class SwaggerConfig {
 
     @Bean
     public Docket api() {
-        //List<Parameter> parameters = new ArrayList<Parameter>();
-        //ParameterBuilder parameterBuilder = new ParameterBuilder();
-        //parameters.add(parameterBuilder.name("Authorization").modelRef(new ModelRef("string")).parameterType("header").required(false).build());
+        /*
+         * List<Parameter> parameters = new ArrayList<Parameter>(); ParameterBuilder parameterBuilder = new ParameterBuilder();
+         * parameters.add(parameterBuilder.name("Authorization").modelRef(new
+         * ModelRef("string")).parameterType("header").required(false).build());
+         */
 
         return new Docket(DocumentationType.SWAGGER_2).select().apis(RequestHandlerSelectors.any()).paths(PathSelectors.any()).build()
-                .apiInfo(apiInfo());//.pathMapping("").globalOperationParameters(parameters);
+                .apiInfo(apiInfo()); // .pathMapping("").globalOperationParameters(parameters);
     }
 
     // http://localhost:8080/swagger-ui.html

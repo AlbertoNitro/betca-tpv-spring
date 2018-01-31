@@ -1,6 +1,7 @@
 package es.upm.miw.services;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
@@ -10,7 +11,7 @@ import es.upm.miw.utils.PdfTag24Builder;
 @Service
 public class PdfService {
 
-    public byte[] generateLabels24(List<Article> articles) {
+    public Optional<byte[]> generateLabels24(List<Article> articles) {
         final String path = "/labels/label24";
 
         PdfTag24Builder pdf = new PdfTag24Builder(path);
