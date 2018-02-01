@@ -59,19 +59,19 @@ public class AdminResourceFunctionalTesting {
         thrown.expect(new HttpMatcher(HttpStatus.NOT_FOUND));
         restService.loginAdmin().restBuilder().path(AdminResource.ADMINS).path(AdminResource.DB).body("not-file").post().build();
     }
-    
+
     @Test
     public void testDeleteBdManagerUnauthorized() {
         thrown.expect(new HttpMatcher(HttpStatus.UNAUTHORIZED));
         restService.loginManager().restBuilder().path(AdminResource.ADMINS).path(AdminResource.DB).delete().build();
     }
-    
+
     @Test
     public void testDeleteBdOperatorUnauthorized() {
         thrown.expect(new HttpMatcher(HttpStatus.UNAUTHORIZED));
         restService.loginOperator().restBuilder().path(AdminResource.ADMINS).path(AdminResource.DB).delete().build();
     }
-    
+
     @Test
     public void testSeedBdManagerUnauthorized() {
         thrown.expect(new HttpMatcher(HttpStatus.UNAUTHORIZED));

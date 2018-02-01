@@ -64,7 +64,7 @@ public class UserResourceFunctionalTesting {
         thrown.expect(new HttpMatcher(HttpStatus.UNAUTHORIZED));
         restService.logout().restBuilder().path(UserResource.USERS).body(userDto).post().build();
     }
-    
+
     @Test
     public void testReadUser() {
         restService.loginAdmin().restBuilder().path(UserResource.USERS).path(UserResource.MOBILE_ID).expand(666666002).get().build();
@@ -75,13 +75,13 @@ public class UserResourceFunctionalTesting {
         thrown.expect(new HttpMatcher(HttpStatus.NOT_FOUND));
         restService.loginAdmin().restBuilder().path(UserResource.USERS).path(UserResource.MOBILE_ID).expand(666666001).get().build();
     }
+
     @Test
     public void testReadUserUnauthorized() {
         thrown.expect(new HttpMatcher(HttpStatus.UNAUTHORIZED));
         restService.logout().restBuilder().path(UserResource.USERS).path(UserResource.MOBILE_ID).expand(666666001).get().build();
     }
 
-    
     @After
     public void delete() {
         this.restService.loginAdmin();

@@ -24,7 +24,7 @@ public class VoucherRepositoryIT {
     public void testVoucherNotUsed() {
         assertFalse(voucherRepository.findByValue(new BigDecimal("666.666")).get(0).isUsed());
     }
-    
+
     @Test
     public void testVoucherUsed() {
         assertTrue(voucherRepository.findByValue(new BigDecimal("0.666")).get(0).isUsed());

@@ -57,7 +57,7 @@ public class RestService {
                 .clazz(TokenDto.class).post().build();
         return this;
     }
-    
+
     public RestService loginOperator() {
         this.tokenDto = new RestBuilder<TokenDto>(this.port()).path(contextPath).path(TokenResource.TOKENS).basicAuth("666666005", "p005")
                 .clazz(TokenDto.class).post().build();

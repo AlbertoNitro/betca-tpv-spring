@@ -12,7 +12,7 @@ public class HttpMatcher extends TypeSafeMatcher<HttpClientErrorException> {
     public HttpMatcher(HttpStatus expectedHttpStatus) {
         this.expectedHttpStatus = expectedHttpStatus;
     }
-    
+
     @Override
     public void describeTo(Description description) {
         description.appendText(" esperado: ").appendValue(expectedHttpStatus);

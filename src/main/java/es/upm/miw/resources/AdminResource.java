@@ -30,21 +30,19 @@ public class AdminResource {
         return "{\"state\":\"ok\"}";
     }
 
-    @RequestMapping(value = DB, method = RequestMethod.DELETE)
     @PreAuthorize("hasRole('ADMIN')")
+    @RequestMapping(value = DB, method = RequestMethod.DELETE)
     public void deleteDb() {
         this.adminController.deleteDb();
     }
-    
-    @RequestMapping(value = DB, method = RequestMethod.POST)
+
     @PreAuthorize("hasRole('ADMIN')")
+    @RequestMapping(value = DB, method = RequestMethod.POST)
     public void seedDb(@RequestBody String ymlFileName) throws FileNotFoundException {
         Optional<String> error = this.adminController.seedDatabase(ymlFileName);
         if (error.isPresent()) {
             throw new FileNotFoundException(error.get());
         }
     }
-    
-    
 
 }

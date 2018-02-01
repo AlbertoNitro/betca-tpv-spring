@@ -19,7 +19,7 @@ public class ArticleRepositoryIT {
 
     @Test
     public void testFindProvider() {
-        assertEquals("article1",articleRepository.findOne("article1").getCode());
+        assertEquals("article1", articleRepository.findOne("article1").getCode());
     }
 
 }

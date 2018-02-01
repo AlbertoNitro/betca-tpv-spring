@@ -9,7 +9,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document
 public class Invoice {
-    
+
     private static final String DATE_FORMAT = "yyyy-";
 
     @Id

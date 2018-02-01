@@ -93,7 +93,8 @@ public class Voucher {
         } else {
             useTime = "---";
         }
-        return "Voucher [reference=" + reference + ", value=" + value.doubleValue() + ", creationDate=" + creationTime + ", dateOfUse=" + useTime + "]";
+        return "Voucher [reference=" + reference + ", value=" + value.doubleValue() + ", creationDate=" + creationTime + ", dateOfUse="
+                + useTime + "]";
     }
 
 }

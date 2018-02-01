@@ -14,15 +14,21 @@ import es.upm.miw.documents.core.Voucher;
 public class DatabaseGraph {
 
     private List<User> userList;
+
     private List<Token> tokenList;
-    
+
     private List<Provider> providerList;
+
     private List<Article> articleList;
+
     private List<Voucher> voucherList;
+
     private List<Ticket> ticketList;
+
     private List<Shopping> shoppingList;
+
     private List<Invoice> invoiceList;
-    
+
     public DatabaseGraph() {
         // Empty for framework
     }

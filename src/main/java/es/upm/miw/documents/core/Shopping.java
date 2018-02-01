@@ -89,8 +89,8 @@ public class Shopping {
 
     @Override
     public String toString() {
-        return "Shopping [amount=" + amount + ", discount=" + discount + ", article=" + article.getReference() + ", description=" + description
-                + ", retailPrice=" + retailPrice + ", shoppingState=" + shoppingState + "]";
+        return "Shopping [amount=" + amount + ", discount=" + discount + ", article=" + article.getReference() + ", description="
+                + description + ", retailPrice=" + retailPrice + ", shoppingState=" + shoppingState + "]";
     }
 
 }

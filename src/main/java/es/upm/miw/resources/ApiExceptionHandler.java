@@ -32,20 +32,18 @@ public class ApiExceptionHandler {
     public ErrorMessage badRequest(Exception exception) {
         return new ErrorMessage(exception, "");
     }
-    
+
     @ResponseStatus(HttpStatus.FORBIDDEN)
     @ExceptionHandler({ForbiddenException.class})
     @ResponseBody
     public ErrorMessage forbiddenRequest(Exception exception) {
         return new ErrorMessage(exception, "");
     }
-    
+
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     @ExceptionHandler({Exception.class})
     public void unauthorizedRequest(Exception exception) {
-        Logger.getLogger(this.getClass()).info("Error!!! "+ new ErrorMessage(exception, ""));
+        Logger.getLogger(this.getClass()).info("Error!!! " + new ErrorMessage(exception, ""));
     }
-
-
 
 }

@@ -13,7 +13,7 @@ public class AdminController {
 
     @Autowired
     private DatabaseSeederService databaseSeederService;
-    
+
     public void deleteDb() {
         this.databaseSeederService.deleteAllAndCreateAdmin();
     }

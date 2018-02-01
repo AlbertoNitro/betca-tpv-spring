@@ -19,7 +19,7 @@ public class ProviderRepositoryIT {
 
     @Test
     public void testFindOne() {
-        assertEquals("company-p1",providerRepository.findOne("provider1").getCompany());
+        assertEquals("company-p1", providerRepository.findOne("provider1").getCompany());
     }
 
 }

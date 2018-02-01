@@ -12,5 +12,4 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
         registry.addMapping("/**").allowedMethods("*").allowedOrigins("*").maxAge(3600);
     }
 
-
 }

@@ -44,7 +44,7 @@ public class TokenResourceFunctionalTesting {
         restService.restBuilder().path(TokenResource.TOKENS).basicAuth("kk", "kk").post().build();
     }
 
-    @Test 
+    @Test
     public void testLoginNoHeaderUnauthorized() {
         thrown.expect(new HttpMatcher(HttpStatus.UNAUTHORIZED));
         restService.logout().restBuilder().path(TokenResource.TOKENS).post().build();

@@ -6,6 +6,7 @@ import com.itextpdf.kernel.pdf.canvas.draw.DottedLine;
 
 class PdfCustomDashedLineSeparator extends DottedLine {
     protected float dash = 5;
+
     protected float phase = 2.5f;
 
     public float getDash() {
@@ -26,13 +27,7 @@ class PdfCustomDashedLineSeparator extends DottedLine {
 
     @Override
     public void draw(PdfCanvas canvas, Rectangle drawArea) {
-        canvas.saveState()
-                .setLineWidth(getLineWidth())
-                .setLineDash(dash, gap, phase)
-                .moveTo(drawArea.getX(), drawArea.getY())
-                .lineTo(drawArea.getX() + drawArea.getWidth(), drawArea.getY())
-                .stroke()
-                .restoreState();
+        canvas.saveState().setLineWidth(getLineWidth()).setLineDash(dash, gap, phase).moveTo(drawArea.getX(), drawArea.getY())
+                .lineTo(drawArea.getX() + drawArea.getWidth(), drawArea.getY()).stroke().restoreState();
     }
 }
-

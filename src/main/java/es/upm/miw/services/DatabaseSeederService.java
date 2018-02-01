@@ -85,7 +85,7 @@ public class DatabaseSeederService {
         this.ticketRepository.save(tpvGraph.getTicketList());
         this.invoiceRepository.save(tpvGraph.getInvoiceList());
         // -----------------------------------------------------------------------
-        
+
         Logger.getLogger(this.getClass()).warn("------------------------- Seed: tpv-bd-test.yml-----------");
     }
 

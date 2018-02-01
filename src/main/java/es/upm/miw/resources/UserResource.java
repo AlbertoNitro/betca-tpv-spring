@@ -18,9 +18,9 @@ import es.upm.miw.resources.exceptions.UserFieldAlreadyExistException;
 import es.upm.miw.resources.exceptions.UserFieldInvalidException;
 import es.upm.miw.resources.exceptions.UserIdNotFoundException;
 
+@PreAuthorize("hasRole('ADMIN') or hasRole('MANAGER') or hasRole('OPERATOR')")
 @RestController
 @RequestMapping(UserResource.USERS)
-@PreAuthorize("hasRole('ADMIN') or hasRole('MANAGER') or hasRole('OPERATOR')")
 public class UserResource {
 
     public static final String USERS = "/users";
@@ -52,7 +52,8 @@ public class UserResource {
 
     @RequestMapping(value = MOBILE_ID, method = RequestMethod.GET)
     public UserDto readCustomer(@PathVariable long mobile) throws UserIdNotFoundException {
-        return  this.userController.readUser(mobile, new Role[] {Role.CUSTOMER}).orElseThrow(() -> new UserIdNotFoundException(Long.toString(mobile)));
+        return this.userController.readUser(mobile, new Role[] {Role.CUSTOMER})
+                .orElseThrow(() -> new UserIdNotFoundException(Long.toString(mobile)));
     }
 
     private void validateFieldObject(Object objeto, String msg) throws UserFieldInvalidException {

@@ -166,15 +166,13 @@ public class RestBuilder<T> {
         if (body != null && !method.equals(HttpMethod.GET)) {
             response = restTemplate.exchange(this.uri(), method, new HttpEntity<Object>(body, this.headers()), clazz);
             if (log) {
-                Logger.getLogger(this.getClass())
-                        .info(response.getStatusCode() + "==" + response.getHeaders());
+                Logger.getLogger(this.getClass()).info(response.getStatusCode() + "==" + response.getHeaders());
             }
             return response.getBody();
         } else {
             response = restTemplate.exchange(this.uri(), method, new HttpEntity<Object>(this.headers()), clazz);
             if (log) {
-                Logger.getLogger(this.getClass())
-                        .info(response.getStatusCode() + "==" + response.getHeaders());
+                Logger.getLogger(this.getClass()).info(response.getStatusCode() + "==" + response.getHeaders());
             }
             return response.getBody();
         }
