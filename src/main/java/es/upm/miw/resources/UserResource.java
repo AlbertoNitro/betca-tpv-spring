@@ -12,10 +12,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import es.upm.miw.controllers.UserController;
 import es.upm.miw.documents.core.Role;
-import es.upm.miw.dtos.input.UserDto;
+import es.upm.miw.dtos.UserDto;
 import es.upm.miw.resources.exceptions.ForbiddenException;
 import es.upm.miw.resources.exceptions.UserFieldAlreadyExistException;
 import es.upm.miw.resources.exceptions.UserFieldInvalidException;
+import es.upm.miw.resources.exceptions.UserIdNotFoundException;
 
 @RestController
 @RequestMapping(UserResource.USERS)
@@ -47,6 +48,11 @@ public class UserResource {
         if (error.isPresent()) {
             throw new ForbiddenException(error.get());
         }
+    }
+
+    @RequestMapping(value = MOBILE_ID, method = RequestMethod.GET)
+    public UserDto readCustomer(@PathVariable long mobile) throws UserIdNotFoundException {
+        return  this.userController.readUser(mobile, new Role[] {Role.CUSTOMER}).orElseThrow(() -> new UserIdNotFoundException(Long.toString(mobile)));
     }
 
     private void validateFieldObject(Object objeto, String msg) throws UserFieldInvalidException {

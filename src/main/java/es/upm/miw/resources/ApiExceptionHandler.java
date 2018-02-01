@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 import es.upm.miw.resources.exceptions.ErrorMessage;
+import es.upm.miw.resources.exceptions.FileNotFoundException;
 import es.upm.miw.resources.exceptions.ForbiddenException;
 import es.upm.miw.resources.exceptions.UserIdNotFoundException;
 import es.upm.miw.resources.exceptions.UserFieldAlreadyExistException;
@@ -19,7 +20,7 @@ import es.upm.miw.resources.exceptions.UserFieldInvalidException;
 public class ApiExceptionHandler {
 
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    @ExceptionHandler({UserIdNotFoundException.class})
+    @ExceptionHandler({UserIdNotFoundException.class, FileNotFoundException.class})
     @ResponseBody
     public ErrorMessage notFoundRequest(HttpServletRequest request, Exception exception) {
         return new ErrorMessage(exception, request.getRequestURI());

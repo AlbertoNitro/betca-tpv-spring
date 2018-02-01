@@ -13,7 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import es.upm.miw.dtos.input.UserDto;
+import es.upm.miw.dtos.UserDto;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
@@ -64,7 +64,24 @@ public class UserResourceFunctionalTesting {
         thrown.expect(new HttpMatcher(HttpStatus.UNAUTHORIZED));
         restService.logout().restBuilder().path(UserResource.USERS).body(userDto).post().build();
     }
+    
+    @Test
+    public void testReadUser() {
+        restService.loginAdmin().restBuilder().path(UserResource.USERS).path(UserResource.MOBILE_ID).expand(666666002).get().build();
+    }
 
+    @Test
+    public void testReadUserNotRol() {
+        thrown.expect(new HttpMatcher(HttpStatus.NOT_FOUND));
+        restService.loginAdmin().restBuilder().path(UserResource.USERS).path(UserResource.MOBILE_ID).expand(666666001).get().build();
+    }
+    @Test
+    public void testReadUserUnauthorized() {
+        thrown.expect(new HttpMatcher(HttpStatus.UNAUTHORIZED));
+        restService.logout().restBuilder().path(UserResource.USERS).path(UserResource.MOBILE_ID).expand(666666001).get().build();
+    }
+
+    
     @After
     public void delete() {
         this.restService.loginAdmin();

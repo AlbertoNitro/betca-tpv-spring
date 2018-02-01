@@ -59,6 +59,15 @@ userList:
     address: C/ TPV, 2, 1A, 28000 Madrid
     roles:
       - CUSTOMER
+  - &us5
+    mobile: 666666005
+    username: u005
+    password: p005
+    email: u005@gmail.com
+    dni: 66666605R
+    address: C/ TPV, 2, 1A, 28000 Madrid
+    roles:
+      - OPERATOR
       
 # Vouchers
 voucherList:
