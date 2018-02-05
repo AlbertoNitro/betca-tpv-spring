@@ -73,7 +73,6 @@ public class DatabaseSeederService {
     public void seedDatabase(String ymlFileName) throws IOException {
         assert ymlFileName != null && !ymlFileName.isEmpty();
         Yaml yamlParser = new Yaml(new Constructor(DatabaseGraph.class));
-
         InputStream input = new ClassPathResource(ymlFileName).getInputStream();
         DatabaseGraph tpvGraph = (DatabaseGraph) yamlParser.load(input);
 
@@ -86,7 +85,7 @@ public class DatabaseSeederService {
         this.invoiceRepository.save(tpvGraph.getInvoiceList());
         // -----------------------------------------------------------------------
 
-        Logger.getLogger(this.getClass()).warn("------------------------- Seed: tpv-bd-test.yml-----------");
+        Logger.getLogger(this.getClass()).warn("------------------------- Seed: " + ymlFileName + "-----------");
     }
 
     public void deleteAllAndCreateAdmin() {

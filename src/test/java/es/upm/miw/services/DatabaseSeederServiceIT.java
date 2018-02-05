@@ -21,7 +21,7 @@ public class DatabaseSeederServiceIT {
 
     @Autowired
     private UserRepository userRepository;
-
+    
     @Test
     public void testSeedDatabase() {
         // this.databaseSeederService.deleteAllAndCreateAdmin();
@@ -33,5 +33,5 @@ public class DatabaseSeederServiceIT {
         assertEquals("66666600L", user.getDni());
         assertTrue(user.getRoles().length >= 2);
     }
-
+    
 }
