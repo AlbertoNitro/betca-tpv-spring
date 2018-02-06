@@ -8,34 +8,78 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document
 public class CashierClosure {
-    
+
     @Id
     private String id;
 
-    private BigDecimal amount;
-
     private Date openingDate;
+    
+    private BigDecimal initialCash;
 
-    private Date closureDate;
+    private BigDecimal salesCash;
 
+    private BigDecimal salesCard;
+
+    private BigDecimal finalCash;
+    
+    private BigDecimal deposit;
+
+    private BigDecimal extract;
+    
     private String comment;
+    
+    private Date closureDate;
 
     public CashierClosure() {
         this.openingDate = new Date();
     }
+    
+    public CashierClosure(BigDecimal initialCash) {
+        this();
+        this.initialCash = initialCash;
+    }
 
-    public void close(BigDecimal amount, String comment) {
-        this.amount = amount;
+    public void close(BigDecimal finalCash, BigDecimal salesCard, String comment) {
+        this.finalCash = finalCash;
+        this.salesCard = salesCard;
         this.comment = comment;
-        this.closureDate= new Date();
+        this.closureDate = new Date();
     }
 
     public String getId() {
         return id;
     }
 
-    public BigDecimal getAmount() {
-        return amount;
+    public BigDecimal getDeposit() {
+        return deposit;
+    }
+
+    public void setDeposit(BigDecimal deposit) {
+        this.deposit = deposit;
+    }
+
+    public BigDecimal getExtract() {
+        return extract;
+    }
+
+    public void setExtract(BigDecimal extract) {
+        this.extract = extract;
+    }
+
+    public BigDecimal getInitialCash() {
+        return initialCash;
+    }
+
+    public BigDecimal getSalesCash() {
+        return salesCash;
+    }
+
+    public BigDecimal getSalesCard() {
+        return salesCard;
+    }
+
+    public BigDecimal getFinalCash() {
+        return finalCash;
     }
 
     public Date getOpeningDate() {
