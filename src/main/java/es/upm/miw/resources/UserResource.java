@@ -15,7 +15,7 @@ import es.upm.miw.documents.core.Role;
 import es.upm.miw.dtos.UserDto;
 import es.upm.miw.resources.exceptions.ForbiddenException;
 import es.upm.miw.resources.exceptions.UserFieldAlreadyExistException;
-import es.upm.miw.resources.exceptions.UserFieldInvalidException;
+import es.upm.miw.resources.exceptions.FieldInvalidException;
 import es.upm.miw.resources.exceptions.UserIdNotFoundException;
 
 @PreAuthorize("hasRole('ADMIN') or hasRole('MANAGER') or hasRole('OPERATOR')")
@@ -31,7 +31,7 @@ public class UserResource {
     private UserController userController;
 
     @RequestMapping(method = RequestMethod.POST)
-    public void createCustomer(@RequestBody UserDto userDto) throws UserFieldInvalidException, UserFieldAlreadyExistException {
+    public void createCustomer(@RequestBody UserDto userDto) throws FieldInvalidException, UserFieldAlreadyExistException {
         this.validateFieldObject(userDto, "No se ha enviado el usuario");
         this.validateFieldObject(userDto.getMobile(), "Mobile invalido");
         this.validateFieldObject(userDto.getUsername(), "Nombre de usuario invalido");
@@ -56,9 +56,9 @@ public class UserResource {
                 .orElseThrow(() -> new UserIdNotFoundException(Long.toString(mobile)));
     }
 
-    private void validateFieldObject(Object objeto, String msg) throws UserFieldInvalidException {
+    private void validateFieldObject(Object objeto, String msg) throws FieldInvalidException {
         if (objeto == null) {
-            throw new UserFieldInvalidException(msg);
+            throw new FieldInvalidException(msg);
         }
     }
 

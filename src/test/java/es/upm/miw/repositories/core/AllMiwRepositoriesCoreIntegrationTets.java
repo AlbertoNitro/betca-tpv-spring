@@ -7,6 +7,7 @@ import org.junit.runners.Suite.SuiteClasses;
 @RunWith(Suite.class)
 @SuiteClasses({
     ArticleRepositoryIT.class,
+    CashierClosureRepositoryIT.class,
     InvoiceRepositoryIT.class,
     ProviderRepositoryIT.class,
     TicketRepositoryIT.class,

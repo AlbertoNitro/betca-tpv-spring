@@ -17,6 +17,7 @@ import org.yaml.snakeyaml.constructor.Constructor;
 import es.upm.miw.documents.core.Role;
 import es.upm.miw.documents.core.User;
 import es.upm.miw.repositories.core.ArticleRepository;
+import es.upm.miw.repositories.core.CashierClosureRepository;
 import es.upm.miw.repositories.core.InvoiceRepository;
 import es.upm.miw.repositories.core.ProviderRepository;
 import es.upm.miw.repositories.core.TicketRepository;
@@ -55,6 +56,9 @@ public class DatabaseSeederService {
 
     @Autowired
     public InvoiceRepository invoiceRepository;
+
+    @Autowired
+    public CashierClosureRepository cashierClosureRepository;
 
     @PostConstruct
     public void seedDatabase() {
@@ -97,6 +101,7 @@ public class DatabaseSeederService {
         this.voucherRepository.deleteAll();
         this.providerRepository.deleteAll();
         this.invoiceRepository.deleteAll();
+        this.cashierClosureRepository.deleteAll();
         this.createAdminIfNotExist();
         // -----------------------------------------------------------------------
     }

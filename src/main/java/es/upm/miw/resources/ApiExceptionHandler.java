@@ -9,12 +9,14 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+import es.upm.miw.resources.exceptions.CashierClosedException;
+import es.upm.miw.resources.exceptions.CashierCreateException;
 import es.upm.miw.resources.exceptions.ErrorMessage;
 import es.upm.miw.resources.exceptions.FileNotFoundException;
 import es.upm.miw.resources.exceptions.ForbiddenException;
 import es.upm.miw.resources.exceptions.UserIdNotFoundException;
 import es.upm.miw.resources.exceptions.UserFieldAlreadyExistException;
-import es.upm.miw.resources.exceptions.UserFieldInvalidException;
+import es.upm.miw.resources.exceptions.FieldInvalidException;
 
 @ControllerAdvice
 public class ApiExceptionHandler {
@@ -27,7 +29,8 @@ public class ApiExceptionHandler {
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ExceptionHandler({UserFieldAlreadyExistException.class, UserFieldInvalidException.class})
+    @ExceptionHandler({UserFieldAlreadyExistException.class, FieldInvalidException.class, CashierClosedException.class,
+            CashierCreateException.class})
     @ResponseBody
     public ErrorMessage badRequest(Exception exception) {
         return new ErrorMessage(exception, "");
