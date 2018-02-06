@@ -43,7 +43,7 @@ public class ApiExceptionHandler {
         return new ErrorMessage(exception, "");
     }
 
-    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler({Exception.class})
     public void unauthorizedRequest(Exception exception) {
         Logger.getLogger(this.getClass()).info("Error!!! " + new ErrorMessage(exception, ""));

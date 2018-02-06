@@ -19,7 +19,11 @@ public class CashierClosureController {
 
     public CashierClosureLastDto getCashierClosureLast() {
         CashierClosure cashierClosure = this.cashierClosureRepository.findFirstByOrderByOpeningDateDesc();
-        return new CashierClosureLastDto(cashierClosure);
+        if (cashierClosure != null) {
+            return new CashierClosureLastDto(cashierClosure);
+        } else {
+            return new CashierClosureLastDto(true, null);
+        }
     }
 
     public Optional<String> createCashierClosure() {
