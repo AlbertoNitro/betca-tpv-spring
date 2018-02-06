@@ -13,7 +13,7 @@ public class CashierClosure {
     private String id;
 
     private Date openingDate;
-    
+
     private BigDecimal initialCash;
 
     private BigDecimal salesCash;
@@ -21,19 +21,20 @@ public class CashierClosure {
     private BigDecimal salesCard;
 
     private BigDecimal finalCash;
-    
+
     private BigDecimal deposit;
 
     private BigDecimal extract;
-    
+
     private String comment;
-    
+
     private Date closureDate;
 
     public CashierClosure() {
         this.openingDate = new Date();
+        this.closureDate = null;
     }
-    
+
     public CashierClosure(BigDecimal initialCash) {
         this();
         this.initialCash = initialCash;
@@ -44,6 +45,10 @@ public class CashierClosure {
         this.salesCard = salesCard;
         this.comment = comment;
         this.closureDate = new Date();
+    }
+
+    public boolean isClosed() {
+        return getClosureDate() != null;
     }
 
     public String getId() {
@@ -92,6 +97,31 @@ public class CashierClosure {
 
     public String getComment() {
         return comment;
+    }
+    @Override
+    public int hashCode() {
+        return id.hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        return (id == ((CashierClosure) obj).id);
+    }
+
+    @Override
+    public String toString() {
+        return "CashierClosure [id=" + id + ", openingDate=" + openingDate + ", initialCash=" + initialCash + ", salesCash=" + salesCash
+                + ", salesCard=" + salesCard + ", finalCash=" + finalCash + ", deposit=" + deposit + ", extract=" + extract + ", comment="
+                + comment + ", closureDate=" + closureDate + "]";
     }
 
 }

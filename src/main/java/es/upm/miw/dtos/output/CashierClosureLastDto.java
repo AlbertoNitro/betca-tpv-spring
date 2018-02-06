@@ -25,7 +25,7 @@ public class CashierClosureLastDto {
     }
 
     public CashierClosureLastDto(CashierClosure cashierClosure) {
-        this(cashierClosure.getClosureDate() != null, cashierClosure.getClosureDate());
+        this(cashierClosure.isClosed(), cashierClosure.getClosureDate());
     }
 
     public boolean isClosed() {
@@ -42,6 +42,11 @@ public class CashierClosureLastDto {
 
     public void setClosureDate(Date closureDate) {
         this.closureDate = closureDate;
+    }
+
+    @Override
+    public String toString() {
+        return "CashierClosureLastDto [closed=" + closed + ", closureDate=" + closureDate + "]";
     }
 
 }

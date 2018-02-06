@@ -43,4 +43,9 @@ public class CashierClosureDto {
         this.comment = comment;
     }
 
+    @Override
+    public String toString() {
+        return "CashierClosureDto [finalCash=" + finalCash + ", salesCard=" + salesCard + ", comment=" + comment + "]";
+    }
+
 }
