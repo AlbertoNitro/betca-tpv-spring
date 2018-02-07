@@ -81,7 +81,7 @@ public class UserResourceFunctionalTesting {
         thrown.expect(new HttpMatcher(HttpStatus.UNAUTHORIZED));
         restService.logout().restBuilder().path(UserResource.USERS).path(UserResource.MOBILE_ID).expand(666666001).get().build();
     }
-
+    
     @After
     public void delete() {
         this.restService.loginAdmin();

@@ -50,4 +50,13 @@ public class TokenResourceFunctionalTesting {
         restService.logout().restBuilder().path(TokenResource.TOKENS).post().build();
     }
 
+    @Test
+    public void testTokenRoles() {
+        restService.loginAdmin();
+        Role[] roles = restService.restBuilder(new RestBuilder<Role[]>()).clazz(Role[].class).path(TokenResource.TOKENS)
+                .path(TokenResource.AUTHENTICATED_ROLES).get().build();
+        assertEquals(1, roles.length);
+        assertEquals(Role.ADMIN, roles[0]);
+    }
+
 }
