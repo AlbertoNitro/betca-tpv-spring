@@ -9,8 +9,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import es.upm.miw.controllers.TokenController;
-import es.upm.miw.controllers.UserController;
-import es.upm.miw.documents.core.Role;
 import es.upm.miw.dtos.output.TokenDto;
 
 @RestController
@@ -19,13 +17,10 @@ public class TokenResource {
 
     public static final String TOKENS = "/tokens";
 
-    public static final String AUTHENTICATED_ROLES = "/authenticated/roles";
+    public static final String AUTHENTICATED = "/authenticated";
 
     @Autowired
     private TokenController tokenController;
-
-    @Autowired
-    private UserController userController;
 
     @PreAuthorize("authenticated")
     @RequestMapping(method = RequestMethod.POST)
@@ -33,10 +28,10 @@ public class TokenResource {
         return tokenController.login(Long.parseLong(activeUser.getUsername()));
     }
 
-    @PreAuthorize("hasRole('ADMIN') or hasRole('MANAGER') or hasRole('OPERATOR') or hasRole('CUSTOMER')")
-    @RequestMapping(value = AUTHENTICATED_ROLES, method = RequestMethod.GET)
-    public Role[] tokenRoles(@AuthenticationPrincipal User activeUser) {
-        return userController.readUserAuthenticatedRoles(Long.parseLong(activeUser.getUsername()));
+    @PreAuthorize("hasRole('ADMIN') or hasRole('MANAGER') or hasRole('OPERATOR')")
+    @RequestMapping(value = AUTHENTICATED, method = RequestMethod.GET)
+    public boolean tokenRoles(@AuthenticationPrincipal User activeUser) {
+        return true;
     }
 
 }

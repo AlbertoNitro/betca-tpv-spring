@@ -1,6 +1,7 @@
 package es.upm.miw.resources;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Rule;
 import org.junit.Test;
@@ -46,17 +47,15 @@ public class TokenResourceFunctionalTesting {
 
     @Test
     public void testLoginNoHeaderUnauthorized() {
-        thrown.expect(new HttpMatcher(HttpStatus.UNAUTHORIZED));
+        thrown.expect(new HttpMatcher(HttpStatus.FORBIDDEN));
         restService.logout().restBuilder().path(TokenResource.TOKENS).post().build();
     }
 
     @Test
     public void testTokenRoles() {
         restService.loginAdmin();
-        Role[] roles = restService.restBuilder(new RestBuilder<Role[]>()).clazz(Role[].class).path(TokenResource.TOKENS)
-                .path(TokenResource.AUTHENTICATED_ROLES).get().build();
-        assertEquals(1, roles.length);
-        assertEquals(Role.ADMIN, roles[0]);
+        assertTrue(restService.restBuilder(new RestBuilder<Boolean>()).clazz(Boolean.class).path(TokenResource.TOKENS)
+                .path(TokenResource.AUTHENTICATED).get().build());
     }
 
 }

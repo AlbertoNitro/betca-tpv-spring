@@ -61,7 +61,7 @@ public class UserResourceFunctionalTesting {
 
     @Test
     public void testCreateUnauthorized() {
-        thrown.expect(new HttpMatcher(HttpStatus.UNAUTHORIZED));
+        thrown.expect(new HttpMatcher(HttpStatus.FORBIDDEN));
         restService.logout().restBuilder().path(UserResource.USERS).body(userDto).post().build();
     }
 
@@ -78,7 +78,7 @@ public class UserResourceFunctionalTesting {
 
     @Test
     public void testReadUserUnauthorized() {
-        thrown.expect(new HttpMatcher(HttpStatus.UNAUTHORIZED));
+        thrown.expect(new HttpMatcher(HttpStatus.FORBIDDEN));
         restService.logout().restBuilder().path(UserResource.USERS).path(UserResource.MOBILE_ID).expand(666666001).get().build();
     }
     

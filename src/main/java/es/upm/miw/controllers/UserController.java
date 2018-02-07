@@ -51,8 +51,4 @@ public class UserController {
         }
     }
     
-    public Role[] readUserAuthenticatedRoles(long mobile){
-        return this.userRepository.findByMobile(mobile).getRoles();
-    }
-
 }

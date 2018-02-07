@@ -62,25 +62,25 @@ public class AdminResourceFunctionalTesting {
 
     @Test
     public void testDeleteBdManagerUnauthorized() {
-        thrown.expect(new HttpMatcher(HttpStatus.UNAUTHORIZED));
+        thrown.expect(new HttpMatcher(HttpStatus.FORBIDDEN));
         restService.loginManager().restBuilder().path(AdminResource.ADMINS).path(AdminResource.DB).delete().build();
     }
 
     @Test
     public void testDeleteBdOperatorUnauthorized() {
-        thrown.expect(new HttpMatcher(HttpStatus.UNAUTHORIZED));
+        thrown.expect(new HttpMatcher(HttpStatus.FORBIDDEN));
         restService.loginOperator().restBuilder().path(AdminResource.ADMINS).path(AdminResource.DB).delete().build();
     }
 
     @Test
     public void testSeedBdManagerUnauthorized() {
-        thrown.expect(new HttpMatcher(HttpStatus.UNAUTHORIZED));
+        thrown.expect(new HttpMatcher(HttpStatus.FORBIDDEN));
         restService.loginManager().restBuilder().path(AdminResource.ADMINS).path(AdminResource.DB).body(TPV_DB_YML).post().build();
     }
 
     @Test
     public void testSeedBdOperatorUnauthorized() {
-        thrown.expect(new HttpMatcher(HttpStatus.UNAUTHORIZED));
+        thrown.expect(new HttpMatcher(HttpStatus.FORBIDDEN));
         restService.loginOperator().restBuilder().path(AdminResource.ADMINS).path(AdminResource.DB).body(TPV_DB_YML).post().build();
     }
 
