@@ -24,7 +24,7 @@ public class ArticleResource {
         if (code.equals("0")) {
             throw new ArticleCodeNotFoundException(code);
         } else {
-            return new ArticleDto(code, "R-" + code, "D:" + code, new BigDecimal("20.5"), new BigDecimal("0.21"), 10);
+            return new ArticleDto("varios", "", "Varios", new BigDecimal(code).divide(new BigDecimal("100")), 10);
         }
     }
 

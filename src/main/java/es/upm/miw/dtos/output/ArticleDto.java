@@ -12,19 +12,16 @@ public class ArticleDto {
 
     private BigDecimal retailPrice;
 
-    private BigDecimal tax;
-
     private int stock;
 
     public ArticleDto() {
     }
 
-    public ArticleDto(String code, String reference, String description, BigDecimal retailPrice, BigDecimal tax, int stock) {
+    public ArticleDto(String code, String reference, String description, BigDecimal retailPrice, int stock) {
         this.code = code;
         this.reference = reference;
         this.description = description;
         this.retailPrice = retailPrice;
-        this.tax = tax;
         this.stock = stock;
     }
 
@@ -60,14 +57,6 @@ public class ArticleDto {
         this.retailPrice = retailPrice;
     }
 
-    public BigDecimal getTax() {
-        return tax;
-    }
-
-    public void setTax(BigDecimal tax) {
-        this.tax = tax;
-    }
-
     public int getStock() {
         return stock;
     }
@@ -79,7 +68,7 @@ public class ArticleDto {
     @Override
     public String toString() {
         return "ArticleDto [code=" + code + ", reference=" + reference + ", description=" + description + ", retailPrice=" + retailPrice
-                + ", tax=" + tax + ", stock=" + stock + "]";
+                + ", stock=" + stock + "]";
     }
     
 }
