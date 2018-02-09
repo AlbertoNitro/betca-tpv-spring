@@ -19,10 +19,10 @@ import es.upm.miw.resources.exceptions.FieldInvalidException;
 
 @PreAuthorize("hasRole('ADMIN') or hasRole('MANAGER') or hasRole('OPERATOR')")
 @RestController
-@RequestMapping(CashierClosureResource.CASHIER_CLOUSURES)
+@RequestMapping(CashierClosureResource.CASHIER_CLOSURES)
 public class CashierClosureResource {
 
-    public static final String CASHIER_CLOUSURES = "/cashier-closures";
+    public static final String CASHIER_CLOSURES = "/cashier-closures";
 
     public static final String LAST = "/last";
 

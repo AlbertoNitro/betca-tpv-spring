@@ -56,7 +56,7 @@ public class Invoice {
 
     @Override
     public int hashCode() {
-        return id.hashCode();
+        return this.id.hashCode();
     }
 
     @Override
@@ -70,7 +70,7 @@ public class Invoice {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        return (id == ((Invoice) obj).id);
+        return (id.equals(((Invoice) obj).id));
     }
 
     @Override

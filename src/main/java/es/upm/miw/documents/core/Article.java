@@ -137,6 +137,25 @@ public class Article {
     }
 
     @Override
+    public int hashCode() {
+        return this.code.hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        return (code.equals(((Article) obj).code));
+    }
+
+    @Override
     public String toString() {
         return "Article [code=" + code + ", registrationDate=" + registrationDate + ", reference=" + reference + ", description="
                 + description + ", retailPrice=" + retailPrice + ", image=" + image + ", stock=" + stock + ", wholesalePrice="

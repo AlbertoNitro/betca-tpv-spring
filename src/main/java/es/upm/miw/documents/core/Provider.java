@@ -80,7 +80,7 @@ public class Provider {
 
     @Override
     public int hashCode() {
-        return id.hashCode();
+        return this.id.hashCode();
     }
 
     @Override
@@ -94,7 +94,7 @@ public class Provider {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        return id == ((Provider) obj).id;
+        return (id.equals(((Provider) obj).id));
     }
 
     @Override

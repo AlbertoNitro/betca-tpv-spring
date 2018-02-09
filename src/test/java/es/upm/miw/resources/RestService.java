@@ -9,6 +9,8 @@ import es.upm.miw.dtos.output.TokenDto;
 
 @Service
 public class RestService {
+    
+    private static final String TPV_DB_TEST_YML = "tpv-db-test.yml";
 
     @Autowired
     private Environment environment;
@@ -67,6 +69,11 @@ public class RestService {
     public RestService logout() {
         this.tokenDto = null;
         return this;
+    }
+    
+    public void reLoadTestDB() {
+        this.loginAdmin().restBuilder().path(AdminResource.ADMINS).path(AdminResource.DB).delete().build();
+        this.loginAdmin().restBuilder().path(AdminResource.ADMINS).path(AdminResource.DB).body(TPV_DB_TEST_YML).post().build();        
     }
 
     public TokenDto getTokenDto() {

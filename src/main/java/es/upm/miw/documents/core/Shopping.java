@@ -80,11 +80,7 @@ public class Shopping {
     }
 
     public BigDecimal getShoppingTotal() {
-        return this.getShoppingSubtotal().multiply(new BigDecimal(1).subtract(this.discount));
-    }
-
-    public BigDecimal getShoppingSubtotal() {
-        return retailPrice.multiply(new BigDecimal(amount));
+        return retailPrice.multiply(new BigDecimal(amount)).multiply(new BigDecimal("1").subtract(this.discount.divide(new BigDecimal("100"))));
     }
 
     @Override

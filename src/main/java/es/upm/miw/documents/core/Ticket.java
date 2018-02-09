@@ -2,6 +2,7 @@ package es.upm.miw.documents.core;
 
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Date;
 
 import org.springframework.data.annotation.Id;
@@ -24,6 +25,8 @@ public class Ticket {
 
     private Shopping[] shoppingList;
 
+    private BigDecimal cashDeposited;
+
     @DBRef
     private User user;
 
@@ -32,9 +35,11 @@ public class Ticket {
         this.reference = new Encrypting().encryptInBase64UrlSafe();
     }
 
-    public Ticket(int idOfday) {
-        this();
+    public Ticket(String idOfday, Shopping[] shoppingList, BigDecimal cashDeposited, User user) {
         this.id = new SimpleDateFormat(DATE_FORMAT).format(new Date()) + idOfday;
+        this.shoppingList = shoppingList;
+        this.cashDeposited = cashDeposited;
+        this.user = user;
     }
 
     public String getId() {
@@ -77,6 +82,10 @@ public class Ticket {
         this.reference = reference;
     }
 
+    public BigDecimal getCashDeposited() {
+        return cashDeposited;
+    }
+
     public BigDecimal getTicketTotal() {
         BigDecimal total = new BigDecimal(0);
         for (Shopping shopping : shoppingList) {
@@ -101,14 +110,15 @@ public class Ticket {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        return (id == ((Ticket) obj).id);
+        return (id.equals(((Ticket) obj).id));
     }
 
     @Override
     public String toString() {
         String createTime = new SimpleDateFormat("dd-MMM-yyyy HH:mm").format(this.creationDate.getTime());
         StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append("Ticket[" + id + ": created=" + createTime + ", shoppingList=" + shoppingList);
+        stringBuilder.append("Ticket[" + id + ": created=" + createTime + ", reference=" + reference + ", shoppingList="
+                + Arrays.toString(shoppingList) + ", cashDeposited=" + cashDeposited);
         if (user != null) {
             stringBuilder.append(", userId=" + user.getMobile());
         }

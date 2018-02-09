@@ -6,7 +6,9 @@ import org.junit.runners.Suite.SuiteClasses;
 
 @RunWith(Suite.class)
 @SuiteClasses({
-    EncryptTest.class
+    EncryptTest.class,
+    ShoppingTest.class,
+    TicketTest.class
 })
 public class AllMiwDocumentsCoreTests {
 

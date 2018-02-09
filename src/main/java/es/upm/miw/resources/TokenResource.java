@@ -17,6 +17,8 @@ public class TokenResource {
 
     public static final String TOKENS = "/tokens";
 
+    public static final String AUTHENTICATED = "/authenticated";
+
     @Autowired
     private TokenController tokenController;
 
@@ -24,6 +26,12 @@ public class TokenResource {
     @RequestMapping(method = RequestMethod.POST)
     public TokenDto login(@AuthenticationPrincipal User activeUser) {
         return tokenController.login(Long.parseLong(activeUser.getUsername()));
+    }
+
+    @PreAuthorize("hasRole('ADMIN') or hasRole('MANAGER') or hasRole('OPERATOR')")
+    @RequestMapping(value = AUTHENTICATED, method = RequestMethod.GET)
+    public boolean tokenRoles(@AuthenticationPrincipal User activeUser) {
+        return true;
     }
 
 }
