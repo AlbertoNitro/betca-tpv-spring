@@ -20,11 +20,13 @@ public class CashierClosure {
 
     private BigDecimal salesCard;
 
+    private BigDecimal usedVouchers;
+
     private BigDecimal finalCash;
 
     private BigDecimal deposit;
 
-    private BigDecimal extract;
+    private BigDecimal withdrawal;
 
     private String comment;
 
@@ -33,6 +35,10 @@ public class CashierClosure {
     public CashierClosure() {
         this.openingDate = new Date();
         this.closureDate = null;
+        this.comment = "";
+        this.deposit = new BigDecimal("0");
+        this.withdrawal = new BigDecimal("0");
+        this.initialCash = new BigDecimal("0");
     }
 
     public CashierClosure(BigDecimal initialCash) {
@@ -40,10 +46,22 @@ public class CashierClosure {
         this.initialCash = initialCash;
     }
 
-    public void close(BigDecimal finalCash, BigDecimal salesCard, String comment) {
+    public void deposit(BigDecimal cash, String comment) {
+        this.deposit = this.deposit.add(cash);
+        this.comment += "Deposit (" + cash.setScale(2).toString() + "): " + comment + ". ";
+    }
+
+    public void withdrawal(BigDecimal cash, String comment) {
+        this.withdrawal = this.withdrawal.add(cash);
+        this.comment += "Withdrawal (" + cash.setScale(2).toString() + "): " + comment + ". ";
+    }
+
+    public void close(BigDecimal finalCash, BigDecimal salesCash, BigDecimal salesCard, BigDecimal usedVouchers, String comment) {
         this.finalCash = finalCash;
+        this.salesCash = salesCash;
         this.salesCard = salesCard;
-        this.comment = comment;
+        this.usedVouchers = usedVouchers;
+        this.comment += comment + ". ";
         this.closureDate = new Date();
     }
 
@@ -63,12 +81,8 @@ public class CashierClosure {
         this.deposit = deposit;
     }
 
-    public BigDecimal getExtract() {
-        return extract;
-    }
-
-    public void setExtract(BigDecimal extract) {
-        this.extract = extract;
+    public BigDecimal getWithdrawal() {
+        return withdrawal;
     }
 
     public BigDecimal getInitialCash() {
@@ -98,9 +112,14 @@ public class CashierClosure {
     public String getComment() {
         return comment;
     }
+
+    public void setComment(String comment) {
+        this.comment = comment;
+    }
+
     @Override
     public int hashCode() {
-        return id.hashCode();
+        return this.id.hashCode();
     }
 
     @Override
@@ -114,14 +133,14 @@ public class CashierClosure {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        return (id == ((CashierClosure) obj).id);
+        return (id.equals(((CashierClosure) obj).id));
     }
 
     @Override
     public String toString() {
         return "CashierClosure [id=" + id + ", openingDate=" + openingDate + ", initialCash=" + initialCash + ", salesCash=" + salesCash
-                + ", salesCard=" + salesCard + ", finalCash=" + finalCash + ", deposit=" + deposit + ", extract=" + extract + ", comment="
-                + comment + ", closureDate=" + closureDate + "]";
+                + ", salesCard=" + salesCard + ", usedVouchers=" + usedVouchers + ", finalCash=" + finalCash + ", deposit=" + deposit
+                + ", withdrawal=" + withdrawal + ", comment=" + comment + ", closureDate=" + closureDate + "]";
     }
 
 }

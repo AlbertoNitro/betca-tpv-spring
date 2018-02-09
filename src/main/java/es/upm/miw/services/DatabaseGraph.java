@@ -3,6 +3,7 @@ package es.upm.miw.services;
 import java.util.List;
 
 import es.upm.miw.documents.core.Article;
+import es.upm.miw.documents.core.CashierClosure;
 import es.upm.miw.documents.core.Invoice;
 import es.upm.miw.documents.core.Provider;
 import es.upm.miw.documents.core.Shopping;
@@ -28,6 +29,8 @@ public class DatabaseGraph {
     private List<Shopping> shoppingList;
 
     private List<Invoice> invoiceList;
+    
+    private List<CashierClosure> cashierClosureList;
 
     public DatabaseGraph() {
         // Empty for framework
@@ -95,6 +98,14 @@ public class DatabaseGraph {
 
     public void setInvoiceList(List<Invoice> invoiceList) {
         this.invoiceList = invoiceList;
+    }
+
+    public List<CashierClosure> getCashierClosureList() {
+        return cashierClosureList;
+    }
+
+    public void setCashierClosureList(List<CashierClosure> cashierClosureList) {
+        this.cashierClosureList = cashierClosureList;
     }
 
 }

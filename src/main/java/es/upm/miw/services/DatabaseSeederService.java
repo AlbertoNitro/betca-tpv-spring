@@ -81,6 +81,7 @@ public class DatabaseSeederService {
         DatabaseGraph tpvGraph = (DatabaseGraph) yamlParser.load(input);
 
         // Save Repositories -----------------------------------------------------
+        this.cashierClosureRepository.save(tpvGraph.getCashierClosureList());
         this.userRepository.save(tpvGraph.getUserList());
         this.voucherRepository.save(tpvGraph.getVoucherList());
         this.providerRepository.save(tpvGraph.getProviderList());

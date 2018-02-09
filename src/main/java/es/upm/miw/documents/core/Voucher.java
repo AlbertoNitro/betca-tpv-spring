@@ -81,7 +81,7 @@ public class Voucher {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        return reference == ((Voucher) obj).reference;
+        return reference.equals(((Voucher) obj).reference);
     }
 
     @Override

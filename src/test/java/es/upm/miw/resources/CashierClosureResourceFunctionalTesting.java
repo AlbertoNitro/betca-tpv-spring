@@ -2,8 +2,6 @@ package es.upm.miw.resources;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
 
 import java.math.BigDecimal;
 
@@ -44,49 +42,28 @@ public class CashierClosureResourceFunctionalTesting {
     }
 
     @Test
-    public void testCreateAndCloseCashierClosure() {
-        this.createCashier();
-        this.closeCashier();
-    }
-
-    @Test
     public void testCreateAndCreateCashierClosureException() {
+        thrown.expect(new HttpMatcher(HttpStatus.BAD_REQUEST));
         this.createCashier();
-        try {
-            createCashier();
-        } catch (HttpClientErrorException httpError) {
-            assertEquals(HttpStatus.BAD_REQUEST, httpError.getStatusCode());
-        }
-        this.closeCashier();
     }
 
     @Test
     public void testCloseCashierClosureException() {
-        this.createCashier();
         this.closeCashier();
-        thrown.expect(new HttpMatcher(HttpStatus.BAD_REQUEST));
-        this.closeCashier();
-    }
-
-    @Test
-    public void testCloseCashierClosureNullException() {
-        thrown.expect(new HttpMatcher(HttpStatus.BAD_REQUEST));
-        closeCashier();
+        try {
+            this.closeCashier();
+        } catch (HttpClientErrorException httpError) {
+            assertEquals(HttpStatus.BAD_REQUEST, httpError.getStatusCode());
+        }
+        restService.reLoadTestDB();
     }
 
     @Test
     public void testGetCashierClosureLast() {
-        this.createCashier();
         CashierClosureLastDto cashierClosureLastDto = restService.loginAdmin().restBuilder(new RestBuilder<CashierClosureLastDto>())
                 .clazz(CashierClosureLastDto.class).path(CashierClosureResource.CASHIER_CLOSURES).path(CashierClosureResource.LAST).get()
                 .build();
         assertFalse(cashierClosureLastDto.isClosed());
-        this.closeCashier();
-        cashierClosureLastDto = restService.loginAdmin().restBuilder(new RestBuilder<CashierClosureLastDto>())
-                .clazz(CashierClosureLastDto.class).path(CashierClosureResource.CASHIER_CLOSURES).path(CashierClosureResource.LAST).get()
-                .build();
-        assertTrue(cashierClosureLastDto.isClosed());
-        assertNotNull(cashierClosureLastDto.getClosureDate());
     }
 
 }
