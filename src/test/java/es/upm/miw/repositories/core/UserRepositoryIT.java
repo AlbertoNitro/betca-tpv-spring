@@ -55,7 +55,7 @@ public class UserRepositoryIT {
         userRepository.save(this.user);
         assertEquals(user, userRepository.findByTokenValue(token.getValue()));
     }
-
+    
     @After
     public void delete() {
         this.userRepository.delete(user);

@@ -1,5 +1,6 @@
 package es.upm.miw.services;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,6 +12,8 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import es.upm.miw.documents.core.Article;
+import es.upm.miw.documents.core.Shopping;
+import es.upm.miw.documents.core.Ticket;
 import es.upm.miw.utils.Barcode;
 
 @RunWith(SpringRunner.class)
@@ -29,5 +32,15 @@ public class PdfServiceIT {
         }
         pdfService.generateLabels24(articles);
     }
-
+    
+    @Test
+    public void testgenerateTicket() {
+        Article article = new Article();
+        article.setRetailPrice(new BigDecimal("100.10"));
+        Shopping[] shoppingList = new Shopping[2];
+        shoppingList[0] = new Shopping(2, new BigDecimal("20"), article);
+        shoppingList[1] = new Shopping(3, new BigDecimal("40"), article);
+        Ticket ticket = new Ticket(1,new BigDecimal("20"),shoppingList,null);
+        pdfService.generateTicket(ticket);
+    }
 }

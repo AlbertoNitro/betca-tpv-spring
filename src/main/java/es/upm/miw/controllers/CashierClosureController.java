@@ -34,7 +34,10 @@ public class CashierClosureController {
         if (cashierClosure != null) {
             return new CashierClosureLastDto(cashierClosure);
         } else {
-            return new CashierClosureLastDto(true, null);
+            cashierClosure = new CashierClosure(new BigDecimal("0"));
+            cashierClosure.close(new BigDecimal("0"), new BigDecimal("0"), new BigDecimal("0"), new BigDecimal("0"), "Initial");
+            this.cashierClosureRepository.save(cashierClosure);
+            return new CashierClosureLastDto(cashierClosure);
         }
     }
 

@@ -2,7 +2,6 @@ package es.upm.miw.services;
 
 import org.junit.Test;
 
-import es.upm.miw.services.PdfTag24Builder;
 import es.upm.miw.utils.Barcode;
 
 public class PdfBuilderTest {
@@ -16,4 +15,5 @@ public class PdfBuilderTest {
         }
         pdf.build();
     }
+
 }

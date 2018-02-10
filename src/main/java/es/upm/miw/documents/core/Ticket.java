@@ -35,10 +35,12 @@ public class Ticket {
         this.reference = new Encrypting().encryptInBase64UrlSafe();
     }
 
-    public Ticket(String idOfday, Shopping[] shoppingList, BigDecimal cashDeposited, User user) {
+    //TODO test
+    public Ticket(int idOfday, BigDecimal cashDeposited, Shopping[] shoppingList, User user) {
+        this();
         this.id = new SimpleDateFormat(DATE_FORMAT).format(new Date()) + idOfday;
-        this.shoppingList = shoppingList;
         this.cashDeposited = cashDeposited;
+        this.shoppingList = shoppingList;
         this.user = user;
     }
 
@@ -50,8 +52,8 @@ public class Ticket {
         this.id = id;
     }
 
-    public long simpleId() {
-        return Long.parseLong(String.valueOf(id).substring(DATE_FORMAT.length() + 1));
+    public int simpleId() {
+        return Integer.parseInt(String.valueOf(id).substring(DATE_FORMAT.length()));
     }
 
     public Date getCreationDate() {
