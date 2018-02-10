@@ -19,6 +19,7 @@ import es.upm.miw.dtos.input.TicketCreationDto;
 import es.upm.miw.repositories.core.ArticleRepository;
 import es.upm.miw.repositories.core.TicketRepository;
 import es.upm.miw.repositories.core.UserRepository;
+import es.upm.miw.services.PdfService;
 
 @Controller
 public class TicketController {
@@ -32,19 +33,22 @@ public class TicketController {
     @Autowired
     private ArticleRepository articleRepository;
 
-    public Optional<String> createTicket(TicketCreationDto ticketCreationDto) {
+    @Autowired
+    private PdfService pdfService;
+
+    public Optional<byte[]> createTicket(TicketCreationDto ticketCreationDto) {
         User user = this.userRepository.findByMobile(ticketCreationDto.getUserMobile());
         List<Shopping> shoppingList = new ArrayList<Shopping>();
         for (ShoppingDto item : ticketCreationDto.getShoppingCart()) {
             Article article = this.articleRepository.findOne(item.getCode());
             if (article == null) {
-                return Optional.of("Article: " + item.getCode());
+                return Optional.empty();
             }
             shoppingList.add(new Shopping(item.getAmount(), item.getDiscount(), article));
         }
         Ticket ticket = new Ticket(this.nextId(), ticketCreationDto.getCash(), shoppingList.toArray(new Shopping[0]), user);
         this.ticketRepository.save(ticket);
-        return Optional.empty();
+        return pdfService.generateTicket(ticket);
     }
 
     private int nextId() {

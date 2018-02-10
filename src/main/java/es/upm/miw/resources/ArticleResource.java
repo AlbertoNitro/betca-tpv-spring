@@ -26,15 +26,14 @@ public class ArticleResource {
     private ArticleRepository articleRepository;
 
     @RequestMapping(value = CODE_ID, method = RequestMethod.GET)
+    //TODO TERMINARLO BIEN
     public ArticleDto readArticle(@PathVariable String code) throws ArticleCodeNotFoundException {
-
         Article article = this.articleRepository.findOne(code);
+        if (article == null && code.length() < 5) {
+            article = this.articleRepository.findOne(VARIOS);
+        }
         if (article == null) {
-            if (code.length() < 5) {
-                article = this.articleRepository.findOne(VARIOS);
-            } else {
-                throw new ArticleCodeNotFoundException(code);
-            }
+            throw new ArticleCodeNotFoundException(code);
         }
         return new ArticleDto(article);
 

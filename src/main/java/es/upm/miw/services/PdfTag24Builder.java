@@ -55,11 +55,10 @@ public class PdfTag24Builder {
         }
     }
 
-    private PdfTag24Builder prepareTags24() {
+    private void prepareTags24() {
         table = new Table(new float[] {1, 1, 1}, true);
         table.setBorder(Border.NO_BORDER);
         document.setMargins(35, 15, 0, 15);
-        return this;
     }
 
     public PdfTag24Builder addTag24(String description, String code) {
