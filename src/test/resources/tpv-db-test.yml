@@ -85,6 +85,8 @@ voucherList:
     dateOfUse: 2018-01-06 18:00:23  
 # Providers
 providerList:
+  - &pr0
+    id: varios
   - &pr1
     id: provider1
     company: company-p1
@@ -95,6 +97,14 @@ providerList:
     
 # Articles
 articleList:
+  - &ar0
+    code: 1
+    reference: varios
+    description: Varios
+    retailPrice: 100
+    wholesalePrice: 50
+    tax: GENERAL
+    provider: *pr0
   - &ar1
     code: article1
     reference: ref-a1

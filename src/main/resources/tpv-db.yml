@@ -13,6 +13,11 @@ tokenList:
   - &to4
     value: otRnEQ7DSaBGnS7C5T8zgs4d06g
     
+# CashierClosures
+cashierClosureList:
+  - &cc0
+    comment: test...
+    
 # Users
 # mobiles: 666666000 a 666666666 RESERVADOS AQUI
 userList:
@@ -59,15 +64,29 @@ userList:
     address: C/ TPV, 2, 1A, 28000 Madrid
     roles:
       - CUSTOMER
+  - &us5
+    mobile: 666666005
+    username: u005
+    password: p005
+    email: u005@gmail.com
+    dni: 66666605R
+    address: C/ TPV, 2, 1A, 28000 Madrid
+    roles:
+      - OPERATOR
       
 # Vouchers
 voucherList:
   - value: 666.666
   - value: 0.666
     dateOfUse: 2018-01-01
-    
+  - value: 30.3
+    dateOfUse: 2018-01-06 12:00:23  
+  - value: 50.6
+    dateOfUse: 2018-01-06 18:00:23  
 # Providers
 providerList:
+  - &pr0
+    id: varios
   - &pr1
     id: provider1
     company: company-p1
@@ -78,6 +97,14 @@ providerList:
     
 # Articles
 articleList:
+  - &ar0
+    code: 1
+    reference: varios
+    description: Varios
+    retailPrice: 100
+    wholesalePrice: 50
+    tax: GENERAL
+    provider: *pr0
   - &ar1
     code: article1
     reference: ref-a1
@@ -105,7 +132,7 @@ shoppingList:
   - &sh2
     amount: 10
     retailPrice: 30
-    discount: 0.50
+    discount: 50.00
     article: *ar2
   - &sh3
     amount: 1
@@ -126,7 +153,7 @@ ticketList:
     id: 20180112-2
     reference: 6P0ISee_twnGEzf8qd1Bd5sGQqE
     shoppingList: 
-      - *sh1
+      - *sh3
     user: *us4
     
 # Invoice

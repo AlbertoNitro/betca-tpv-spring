@@ -2,6 +2,8 @@ package es.upm.miw.dtos.output;
 
 import java.math.BigDecimal;
 
+import es.upm.miw.documents.core.Article;
+
 public class ArticleDto {
 
     private String code;
@@ -23,6 +25,10 @@ public class ArticleDto {
         this.description = description;
         this.retailPrice = retailPrice;
         this.stock = stock;
+    }
+
+    public ArticleDto(Article article) {
+        this(article.getCode(), article.getReference(), article.getDescription(), article.getRetailPrice(), article.getStock());
     }
 
     public String getCode() {
@@ -70,5 +76,5 @@ public class ArticleDto {
         return "ArticleDto [code=" + code + ", reference=" + reference + ", description=" + description + ", retailPrice=" + retailPrice
                 + ", stock=" + stock + "]";
     }
-    
+
 }
