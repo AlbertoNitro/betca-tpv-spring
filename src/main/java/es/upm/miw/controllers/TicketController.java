@@ -12,6 +12,7 @@ import org.springframework.stereotype.Controller;
 
 import es.upm.miw.documents.core.Article;
 import es.upm.miw.documents.core.Shopping;
+import es.upm.miw.documents.core.ShoppingState;
 import es.upm.miw.documents.core.Ticket;
 import es.upm.miw.documents.core.User;
 import es.upm.miw.dtos.ShoppingDto;
@@ -44,7 +45,13 @@ public class TicketController {
             if (article == null) {
                 return Optional.empty();
             }
-            shoppingList.add(new Shopping(item.getAmount(), item.getDiscount(), article));
+            Shopping shopping = new Shopping(item.getAmount(), item.getDiscount(), article);
+            if (item.isCommitted()) {
+                shopping.setShoppingState(ShoppingState.COMMITTED);
+            } else {
+                shopping.setShoppingState(ShoppingState.OPENED);
+            }
+            shoppingList.add(shopping);
         }
         Ticket ticket = new Ticket(this.nextId(), ticketCreationDto.getCash(), shoppingList.toArray(new Shopping[0]), user);
         this.ticketRepository.save(ticket);

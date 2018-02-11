@@ -35,11 +35,15 @@ public class PdfServiceIT {
     
     @Test
     public void testgenerateTicket() {
-        Article article = new Article();
+        Article article = new Article("23581","referencia","Descripción articulo",null,null);
         article.setRetailPrice(new BigDecimal("100.10"));
-        Shopping[] shoppingList = new Shopping[2];
+        Shopping[] shoppingList = new Shopping[6];
         shoppingList[0] = new Shopping(2, new BigDecimal("20"), article);
         shoppingList[1] = new Shopping(3, new BigDecimal("40"), article);
+        shoppingList[2] = new Shopping(2, new BigDecimal("20"), article);
+        shoppingList[3] = new Shopping(3, new BigDecimal("90"), article);
+        shoppingList[4] = new Shopping(2, new BigDecimal("85"), article);
+        shoppingList[5] = new Shopping(3, new BigDecimal("50"), article);
         Ticket ticket = new Ticket(1,new BigDecimal("20"),shoppingList,null);
         pdfService.generateTicket(ticket);
     }
