@@ -1,7 +1,6 @@
 package es.upm.miw.services;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
@@ -17,9 +16,6 @@ import com.itextpdf.barcodes.BarcodeQRCode;
 import com.itextpdf.io.image.ImageDataFactory;
 import com.itextpdf.kernel.color.Color;
 import com.itextpdf.kernel.geom.PageSize;
-import com.itextpdf.kernel.pdf.PdfDocument;
-import com.itextpdf.kernel.pdf.PdfWriter;
-import com.itextpdf.layout.Document;
 import com.itextpdf.layout.border.SolidBorder;
 import com.itextpdf.layout.element.Cell;
 import com.itextpdf.layout.element.Image;
@@ -30,13 +26,8 @@ import com.itextpdf.layout.property.HorizontalAlignment;
 import com.itextpdf.layout.property.TextAlignment;
 import com.itextpdf.layout.property.VerticalAlignment;
 
-public class PdfTicketBuilder {
-    private static final String USER_HOME = "user.home";
-
-    private static final String ROOT_PDFS = "/tpv/pdfs";
-
-    private static final String PDF_FILE_EXT = ".pdf";
-
+public class PdfTicketBuilder extends PdfBuilder{
+    
     private static final int TERMIC_FONT_SIZE = 7;
 
     private static final int TERMIC_FONT_SIZE_EMPHASIZEDD = 9;
@@ -55,62 +46,44 @@ public class PdfTicketBuilder {
 
     private static final int IMAGE_WIDTH = 80;
 
-    private String fullPath;
-
-    private Document document;
-    
-    private Table table;
-
     public PdfTicketBuilder(String path) {
-        fullPath = System.getProperty(USER_HOME) + ROOT_PDFS + path + PDF_FILE_EXT;
+        super(path);
         this.prepareDocument(new PageSize(TERMIC_PAGE_WIDHT, TERMIC_PAGE_HEIGHT));
-        document.setMargins(TERMIC_MARGIN, TERMIC_MARGIN, TERMIC_MARGIN, TERMIC_MARGIN);
-        document.setFontSize(TERMIC_FONT_SIZE);
-        document.setTextAlignment(TextAlignment.LEFT);
-    }
-
-    private void prepareDocument(PageSize pageSize) {
-        File file = new File(fullPath);
-        if (!file.exists()) {
-            file.getParentFile().mkdirs();
-        }
-        try {
-            document = new Document(new PdfDocument(new PdfWriter(fullPath)), pageSize);
-        } catch (FileNotFoundException fnfe) {
-            Logger.getLogger(this.getClass()).error("File: " + fnfe);
-        }
+        this.getDocument().setMargins(TERMIC_MARGIN, TERMIC_MARGIN, TERMIC_MARGIN, TERMIC_MARGIN);
+        this.getDocument().setFontSize(TERMIC_FONT_SIZE);
+        this.getDocument().setTextAlignment(TextAlignment.LEFT);
     }
 
     public PdfTicketBuilder paragraphEmphasized(String text) {
-        document.add(new Paragraph(text).setBold().setFontSize(TERMIC_FONT_SIZE_EMPHASIZEDD));
+        this.getDocument().add(new Paragraph(text).setBold().setFontSize(TERMIC_FONT_SIZE_EMPHASIZEDD));
         return this;
     }
 
     public PdfTicketBuilder paragraph(String text) {
-        document.add(new Paragraph(text));
+        this.getDocument().add(new Paragraph(text));
         return this;
     }
 
     public PdfTicketBuilder barCode(String code) {
-        Barcode128 code128 = new Barcode128(document.getPdfDocument());
+        Barcode128 code128 = new Barcode128(this.getDocument().getPdfDocument());
         code128.setCodeType(Barcode128.CODE128);
         code128.setCode(code.trim());
-        Image code128Image = new Image(code128.createFormXObject(document.getPdfDocument()));
+        Image code128Image = new Image(code128.createFormXObject(this.getDocument().getPdfDocument()));
         code128Image.setWidthPercent(50);
         code128Image.setHorizontalAlignment(HorizontalAlignment.CENTER);
-        document.add(code128Image);
+        this.getDocument().add(code128Image);
         return this;
     }
     
     public PdfTicketBuilder qrCode(String code) {
         BarcodeQRCode qrcode = new BarcodeQRCode(code.trim());
-        Image qrcodeImage = new Image(qrcode.createFormXObject(document.getPdfDocument()));
+        Image qrcodeImage = new Image(qrcode.createFormXObject(this.getDocument().getPdfDocument()));
         qrcodeImage.setHorizontalAlignment(HorizontalAlignment.CENTER);
         qrcodeImage.setWidthPercent(50);
-        document.add(qrcodeImage);
+        this.getDocument().add(qrcodeImage);
         Paragraph paragraph = new Paragraph("Ref. " + code);
         paragraph.setTextAlignment(TextAlignment.CENTER);
-        document.add(paragraph);
+        this.getDocument().add(paragraph);
         return this;
     }
 
@@ -119,7 +92,7 @@ public class PdfTicketBuilder {
         separator.setDash(LINE_DASH);
         separator.setGap(LINE_GAP);
         separator.setLineWidth(LINE_WIDTH);
-        document.add(new LineSeparator(separator));
+        this.getDocument().add(new LineSeparator(separator));
         return this;
     }
 
@@ -138,7 +111,7 @@ public class PdfTicketBuilder {
             Image img = new Image(ImageDataFactory.create(this.absolutePathOfResource("img/" + fileName)));
             img.setWidth(IMAGE_WIDTH);
             img.setHorizontalAlignment(HorizontalAlignment.CENTER);
-            document.add(img);
+            this.getDocument().add(img);
         } catch (MalformedURLException mue) {
             Logger.getLogger(this.getClass()).error("File: " + mue);
         }
@@ -146,42 +119,42 @@ public class PdfTicketBuilder {
     }
     
     public PdfTicketBuilder TableColumnsSizes(float... widths) {
-        table = new Table(widths, true);
-        table.setBorder(new SolidBorder(Color.WHITE, 2));
-        table.setVerticalAlignment(VerticalAlignment.MIDDLE);
-        table.setHorizontalAlignment(HorizontalAlignment.CENTER);
-        table.setTextAlignment(TextAlignment.RIGHT);
+        this.setTable(new Table(widths, true));
+        this.getTable().setBorder(new SolidBorder(Color.WHITE, 2));
+        this.getTable().setVerticalAlignment(VerticalAlignment.MIDDLE);
+        this.getTable().setHorizontalAlignment(HorizontalAlignment.CENTER);
+        this.getTable().setTextAlignment(TextAlignment.RIGHT);
         return this;
     }
 
     public PdfTicketBuilder tableColumnsHeader(String... headers) {
         for (String header : headers) {
-            table.addHeaderCell(header);
+            this.getTable().addHeaderCell(header);
         }
         return this;
     }
 
     public PdfTicketBuilder tableCell(String... cells) {
         for (String cell : cells) {
-            table.addCell(cell);
+            this.getTable().addCell(cell);
         }
         return this;
     }
 
     public PdfTicketBuilder tableColspanRight(String value) {
-        Cell cell = new Cell(1, table.getNumberOfColumns());
+        Cell cell = new Cell(1, this.getTable().getNumberOfColumns());
         cell.setTextAlignment(TextAlignment.RIGHT).setBold().setFontSize(TERMIC_FONT_SIZE_EMPHASIZEDD);
         cell.add(value);
-        table.addCell(cell);
-        document.add(table);
+        this.getTable().addCell(cell);
+        this.getDocument().add(this.getTable());
         return this;
     }
 
 
     public Optional<byte[]> build() {
-        document.close();
+        this.getDocument().close();
         try {
-            return Optional.of(Files.readAllBytes(new File(fullPath).toPath()));
+            return Optional.of(Files.readAllBytes(new File(this.getFullPath()).toPath()));
         } catch (IOException ioe) {
             Logger.getLogger(this.getClass()).error("IO: " + ioe);
         }

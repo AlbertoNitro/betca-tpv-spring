@@ -36,7 +36,8 @@ public class PdfService {
 
         PdfTicketBuilder pdf = new PdfTicketBuilder(path);
         pdf.addImage("logo-upm.png");
-        pdf.paragraphEmphasized("Tfno: +(34) 913365483").paragraph("NIF: Q2818015F").paragraph("Calle Alan Turing s/n, 28031 Madrid");
+        pdf.paragraphEmphasized("Master en Ingeniería Web. BETCA");
+        pdf.paragraphEmphasized("Tfno: +(34) 913366000").paragraph("NIF: Q2818015F").paragraph("Calle Alan Turing s/n, 28031 Madrid");
         pdf.barCode(ticket.getId()).separator();
         SimpleDateFormat formatter = new SimpleDateFormat(DATE_FORMAT);
         pdf.paragraphEmphasized(formatter.format(ticket.getCreationDate()));
