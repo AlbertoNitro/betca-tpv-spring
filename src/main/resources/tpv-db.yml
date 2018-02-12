@@ -12,12 +12,7 @@ tokenList:
     value: 64jcnKajqit2bP_npC5-ddMfh6Y
   - &to4
     value: otRnEQ7DSaBGnS7C5T8zgs4d06g
-    
-# CashierClosures
-cashierClosureList:
-  - &cc0
-    comment: test...
-    
+      
 # Users
 # mobiles: 666666000 a 666666666 RESERVADOS AQUI
 userList:
