@@ -39,8 +39,7 @@ public class UserResourceFunctionalTesting {
     }
 
     @Test
-    public void testCreateCustomerPassNullUserFieldInvalidException() {
-        thrown.expect(new HttpMatcher(HttpStatus.BAD_REQUEST));
+    public void testCreateCustomerPassNull() {
         this.userDto.setPassword(null);
         restService.loginAdmin().restBuilder().path(UserResource.USERS).body(this.userDto).post().build();
     }

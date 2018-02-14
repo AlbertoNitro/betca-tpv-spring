@@ -35,6 +35,9 @@ public class UserResource {
         this.validateFieldObject(userDto, "No se ha enviado el usuario");
         this.validateFieldObject(userDto.getMobile(), "Mobile invalido");
         this.validateFieldObject(userDto.getUsername(), "Nombre de usuario invalido");
+        if(userDto.getPassword()==null) {
+            userDto.setPassword("miw.Tpv.2017");
+        }
         this.validateFieldObject(userDto.getPassword(), "Nombre de clave invalida");
         Optional<String> error = this.userController.createUser(userDto, new Role[] {Role.CUSTOMER});
         if (error.isPresent()) {
