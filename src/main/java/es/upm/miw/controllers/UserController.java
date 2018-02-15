@@ -1,6 +1,8 @@
 package es.upm.miw.controllers;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +30,23 @@ public class UserController {
         return Optional.empty();
     }
 
+    public Optional<String> putUser(UserDto userDto, Role[] roles) {
+        User user = this.userRepository.findByMobile(userDto.getMobile());
+        if (user == null) {
+            return Optional.of("Mobile no existente");
+        } else if (Arrays.asList(roles).containsAll(Arrays.asList(user.getRoles()))) {
+            user.setUsername(userDto.getUsername());
+            user.setEmail(userDto.getEmail());
+            user.setDni(userDto.getDni());
+            user.setAddress(userDto.getAddress());
+            user.setActive(userDto.isActive());
+            this.userRepository.save(user);
+        } else {
+            return Optional.of("No se tiene el rol suficiente para actualizar al usr");
+        }
+        return Optional.empty();
+    }
+
     public Optional<String> deleteUser(long mobile, Role[] roles) {
         User userBd = this.userRepository.findByMobile(mobile);
         if (userBd == null) {
@@ -50,5 +69,16 @@ public class UserController {
             return Optional.empty();
         }
     }
-    
+
+    public List<UserDto> readAll(Role[] roles) {
+        List<User> userList = this.userRepository.findAll();
+        List<UserDto> userDtoList = new ArrayList<>();
+        for (User user : userList) {
+            if (Arrays.asList(roles).containsAll(Arrays.asList(user.getRoles()))) {
+                userDtoList.add(new UserDto(user));                
+            }
+        }
+        return userDtoList;
+    }
+
 }

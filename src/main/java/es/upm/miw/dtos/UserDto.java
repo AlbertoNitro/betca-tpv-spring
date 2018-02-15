@@ -1,5 +1,7 @@
 package es.upm.miw.dtos;
 
+import java.util.Date;
+
 import es.upm.miw.documents.core.User;
 
 public class UserDto {
@@ -15,21 +17,26 @@ public class UserDto {
     private String dni;
 
     private String address;
-    
+
+    private boolean active;
+
+    private Date registrationDate;
+
     public UserDto() {
     }
 
-    public UserDto(long mobile, String username, String password, String email, String dni, String address) {
+    public UserDto(long mobile, String username, String password, String email, String dni, String address, boolean active) {
         this.mobile = mobile;
         this.username = username;
         this.password = password;
         this.email = email;
         this.dni = dni;
         this.address = address;
+        this.active = active;
     }
 
     public UserDto(long mobile) {
-        this(mobile, "name" + mobile, "pass" + mobile, null, null, null);
+        this(mobile, "name" + mobile, "pass" + mobile, null, null, null, true);
     }
 
     public UserDto(User user) {
@@ -38,6 +45,8 @@ public class UserDto {
         this.email = user.getEmail();
         this.dni = user.getDni();
         this.address = user.getAddress();
+        this.active = user.isActive();
+        this.registrationDate=user.getRegistrationDate();
     }
 
     public long getMobile() {
@@ -88,10 +97,26 @@ public class UserDto {
         this.address = address;
     }
 
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
+
+    public Date getRegistrationDate() {
+        return registrationDate;
+    }
+
+    public void setRegistrationDate(Date registrationDate) {
+        this.registrationDate = registrationDate;
+    }
+
     @Override
     public String toString() {
         return "UserDto [mobile=" + mobile + ", username=" + username + ", password=" + password + ", email=" + email + ", dni=" + dni
-                + ", address=" + address + "]";
+                + ", address=" + address + ", active=" + active + ", registrationDate=" + registrationDate + "]";
     }
 
 }

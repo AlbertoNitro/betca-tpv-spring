@@ -1,5 +1,6 @@
 package es.upm.miw.resources;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,7 +36,7 @@ public class UserResource {
         this.validateFieldObject(userDto, "No se ha enviado el usuario");
         this.validateFieldObject(userDto.getMobile(), "Mobile invalido");
         this.validateFieldObject(userDto.getUsername(), "Nombre de usuario invalido");
-        if(userDto.getPassword()==null) {
+        if (userDto.getPassword() == null) {
             userDto.setPassword("miw.Tpv.2017");
         }
         this.validateFieldObject(userDto.getPassword(), "Nombre de clave invalida");
@@ -44,6 +45,18 @@ public class UserResource {
             throw new UserFieldAlreadyExistException(error.get());
         }
     }
+    
+    @RequestMapping(method = RequestMethod.PUT)
+    public void putCustomer(@RequestBody UserDto userDto) throws FieldInvalidException, UserFieldAlreadyExistException {
+        this.validateFieldObject(userDto, "No se ha enviado el usuario");
+        this.validateFieldObject(userDto.getMobile(), "Mobile invalido");
+        this.validateFieldObject(userDto.getUsername(), "Nombre de usuario invalido");
+        Optional<String> error = this.userController.putUser(userDto, new Role[] {Role.CUSTOMER});
+        if (error.isPresent()) {
+            throw new UserFieldAlreadyExistException(error.get());
+        }
+    }
+    
 
     @RequestMapping(value = MOBILE_ID, method = RequestMethod.DELETE)
     public void deleteCustomer(@PathVariable long mobile) throws ForbiddenException {
@@ -57,6 +70,11 @@ public class UserResource {
     public UserDto readCustomer(@PathVariable long mobile) throws UserIdNotFoundException {
         return this.userController.readUser(mobile, new Role[] {Role.CUSTOMER})
                 .orElseThrow(() -> new UserIdNotFoundException(Long.toString(mobile)));
+    }
+
+    @RequestMapping(method = RequestMethod.GET)
+    public List<UserDto> readAll() {
+        return this.userController.readAll(new Role[] {Role.CUSTOMER});
     }
 
     private void validateFieldObject(Object objeto, String msg) throws FieldInvalidException {
