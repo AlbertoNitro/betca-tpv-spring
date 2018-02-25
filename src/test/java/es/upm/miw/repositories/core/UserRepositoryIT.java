@@ -56,6 +56,11 @@ public class UserRepositoryIT {
         assertEquals(user, userRepository.findByTokenValue(token.getValue()));
     }
     
+    @Test
+    public void testFindCustomerAll() {
+        System.out.println(userRepository.findCustomerAll());
+    }
+    
     @After
     public void delete() {
         this.userRepository.delete(user);

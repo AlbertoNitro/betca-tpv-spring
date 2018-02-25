@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import es.upm.miw.controllers.UserController;
 import es.upm.miw.documents.core.Role;
 import es.upm.miw.dtos.UserDto;
+import es.upm.miw.dtos.UserMinimumDto;
 import es.upm.miw.resources.exceptions.ForbiddenException;
 import es.upm.miw.resources.exceptions.UserFieldAlreadyExistException;
 import es.upm.miw.resources.exceptions.FieldInvalidException;
@@ -42,19 +43,25 @@ public class UserResource {
         if (this.userController.existsMobile(userDto.getMobile())) {
             throw new UserFieldAlreadyExistException("Mobile ya existente");
         }
-        if (this.userController.existsEmail(userDto.getEmail())) {
+        if (this.userController.emailRepeated(userDto)) {
             throw new UserFieldAlreadyExistException("Email ya existente");
         }
-        if (this.userController.existsDni(userDto.getDni())) {
+        if (this.userController.dniRepeated(userDto)) {
             throw new UserFieldAlreadyExistException("Dni ya existente");
         }
         this.userController.createUser(userDto, new Role[] {Role.CUSTOMER});
     }
 
     @RequestMapping(method = RequestMethod.PUT)
-    public void putCustomer(@Valid @RequestBody UserDto userDto) throws ForbiddenException, UserIdNotFoundException {
+    public void putCustomer(@Valid @RequestBody UserDto userDto) throws ForbiddenException, UserIdNotFoundException, UserFieldAlreadyExistException {
         if (!this.userController.existsMobile(userDto.getMobile())) {
             throw new UserIdNotFoundException("Mobile no existente");
+        }
+        if (this.userController.emailRepeated(userDto)) {
+            throw new UserFieldAlreadyExistException("Email ya existente");
+        }
+        if (this.userController.dniRepeated(userDto)) {
+            throw new UserFieldAlreadyExistException("Dni ya existente");
         }
         if (!this.userController.putUser(userDto, new Role[] {Role.CUSTOMER})) {
             throw new ForbiddenException("No se tiene el rol suficiente para actualizar al usr");
@@ -64,7 +71,7 @@ public class UserResource {
     @RequestMapping(value = MOBILE_ID, method = RequestMethod.DELETE)
     public void deleteCustomer(@PathVariable String mobile) throws ForbiddenException {
         if (!this.userController.deleteUser(mobile, new Role[] {Role.CUSTOMER})) {
-            throw new ForbiddenException("No se tiene el rol suficiente para borrar al usr");
+            throw new ForbiddenException();
         }
     }
 
@@ -74,8 +81,8 @@ public class UserResource {
     }
 
     @RequestMapping(method = RequestMethod.GET)
-    public List<UserDto> readAll() {
-        return this.userController.readAll(new Role[] {Role.CUSTOMER});
+    public List<UserMinimumDto> readCustomerAll() {
+        return this.userController.readCustomerAll();
     }
 
 }
