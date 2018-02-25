@@ -16,7 +16,7 @@ import es.upm.miw.documents.core.ShoppingState;
 import es.upm.miw.documents.core.Ticket;
 import es.upm.miw.documents.core.User;
 import es.upm.miw.dtos.ShoppingDto;
-import es.upm.miw.dtos.input.TicketCreationDto;
+import es.upm.miw.dtos.TicketCreationInputDto;
 import es.upm.miw.repositories.core.ArticleRepository;
 import es.upm.miw.repositories.core.TicketRepository;
 import es.upm.miw.repositories.core.UserRepository;
@@ -37,7 +37,7 @@ public class TicketController {
     @Autowired
     private PdfService pdfService;
 
-    public Optional<byte[]> createTicket(TicketCreationDto ticketCreationDto) {
+    public Optional<byte[]> createTicket(TicketCreationInputDto ticketCreationDto) {
         User user = this.userRepository.findByMobile(ticketCreationDto.getUserMobile());
         List<Shopping> shoppingList = new ArrayList<Shopping>();
         for (ShoppingDto item : ticketCreationDto.getShoppingCart()) {

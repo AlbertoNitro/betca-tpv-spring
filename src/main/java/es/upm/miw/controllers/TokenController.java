@@ -5,7 +5,7 @@ import org.springframework.stereotype.Controller;
 
 import es.upm.miw.documents.core.Token;
 import es.upm.miw.documents.core.User;
-import es.upm.miw.dtos.output.TokenDto;
+import es.upm.miw.dtos.TokenOutputDto;
 import es.upm.miw.repositories.core.UserRepository;
 
 @Controller
@@ -14,12 +14,12 @@ public class TokenController {
     @Autowired
     private UserRepository userRepository;
 
-    public TokenDto login(String mobile) {
+    public TokenOutputDto login(String mobile) {
         User user = userRepository.findByMobile(mobile);
         assert user != null;
         user.setToken(new Token());
         userRepository.save(user);
-        return new TokenDto(user);
+        return new TokenOutputDto(user);
     }
 
 }

@@ -1,13 +1,13 @@
-package es.upm.miw.dtos.output;
+package es.upm.miw.dtos;
 
-public class PdfDto {
+public class PdfOutputDto {
     
     private byte[] pdf;
 
-    public PdfDto() {
+    public PdfOutputDto() {
     }
 
-    public PdfDto(byte[] pdf) {
+    public PdfOutputDto(byte[] pdf) {
         super();
         this.pdf = pdf;
     }

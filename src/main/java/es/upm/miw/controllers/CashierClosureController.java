@@ -11,8 +11,8 @@ import org.springframework.stereotype.Controller;
 import es.upm.miw.documents.core.CashierClosure;
 import es.upm.miw.documents.core.Ticket;
 import es.upm.miw.documents.core.Voucher;
-import es.upm.miw.dtos.input.CashierClosureDto;
-import es.upm.miw.dtos.output.CashierClosureLastDto;
+import es.upm.miw.dtos.CashierClosureInputDto;
+import es.upm.miw.dtos.CashierClosureLastOutputDto;
 import es.upm.miw.repositories.core.CashierClosureRepository;
 import es.upm.miw.repositories.core.TicketRepository;
 import es.upm.miw.repositories.core.VoucherRepository;
@@ -29,15 +29,15 @@ public class CashierClosureController {
     @Autowired
     private TicketRepository ticketRepository;
 
-    public CashierClosureLastDto getCashierClosureLast() {
+    public CashierClosureLastOutputDto getCashierClosureLast() {
         CashierClosure cashierClosure = this.cashierClosureRepository.findFirstByOrderByOpeningDateDesc();
         if (cashierClosure != null) {
-            return new CashierClosureLastDto(cashierClosure);
+            return new CashierClosureLastOutputDto(cashierClosure);
         } else {
             cashierClosure = new CashierClosure(new BigDecimal("0"));
             cashierClosure.close(new BigDecimal("0"), new BigDecimal("0"), new BigDecimal("0"), new BigDecimal("0"), "Initial");
             this.cashierClosureRepository.save(cashierClosure);
-            return new CashierClosureLastDto(cashierClosure);
+            return new CashierClosureLastOutputDto(cashierClosure);
         }
     }
 
@@ -55,7 +55,7 @@ public class CashierClosureController {
     }
 
     //TODO realizar TEST
-    public Optional<String> close(CashierClosureDto cashierClosureDto) {
+    public Optional<String> close(CashierClosureInputDto cashierClosureDto) {
         CashierClosure lastCashierClosure = this.cashierClosureRepository.findFirstByOrderByOpeningDateDesc();
 
         if (lastCashierClosure != null && !lastCashierClosure.isClosed()) {

@@ -1,20 +1,20 @@
-package es.upm.miw.dtos.output;
+package es.upm.miw.dtos;
 
 import java.util.Arrays;
 
 import es.upm.miw.documents.core.Role;
 import es.upm.miw.documents.core.User;
 
-public class TokenDto {
+public class TokenOutputDto {
 
     private String token;
 
     private Role[] roles;
 
-    public TokenDto() {
+    public TokenOutputDto() {
     }
 
-    public TokenDto(User user) {
+    public TokenOutputDto(User user) {
         this.token = user.getToken().getValue();
         this.roles = user.getRoles();
     }

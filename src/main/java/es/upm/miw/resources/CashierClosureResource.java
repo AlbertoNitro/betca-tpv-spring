@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import es.upm.miw.controllers.CashierClosureController;
-import es.upm.miw.dtos.input.CashierClosureDto;
-import es.upm.miw.dtos.output.CashierClosureLastDto;
+import es.upm.miw.dtos.CashierClosureInputDto;
+import es.upm.miw.dtos.CashierClosureLastOutputDto;
 import es.upm.miw.resources.exceptions.CashierClosedException;
 import es.upm.miw.resources.exceptions.CashierCreateException;
 import es.upm.miw.resources.exceptions.FieldInvalidException;
@@ -30,7 +30,7 @@ public class CashierClosureResource {
     private CashierClosureController cashierClosureController;
 
     @RequestMapping(value = LAST, method = RequestMethod.GET)
-    public CashierClosureLastDto getCashierClosureLast() {
+    public CashierClosureLastOutputDto getCashierClosureLast() {
         return cashierClosureController.getCashierClosureLast();
     }
 
@@ -43,7 +43,7 @@ public class CashierClosureResource {
     }
 
     @RequestMapping(value = LAST, method = RequestMethod.PATCH)
-    public void closeCashierClosure(@RequestBody CashierClosureDto cashierClosureDto) throws  CashierClosedException, FieldInvalidException {
+    public void closeCashierClosure(@RequestBody CashierClosureInputDto cashierClosureDto) throws  CashierClosedException, FieldInvalidException {
         this.validateFieldObject(cashierClosureDto, "No se ha enviado el cierre de caja");
         this.validateFieldObject(cashierClosureDto.getFinalCash(), "Final Cash invalido");
         this.validateFieldObject(cashierClosureDto.getSalesCard(), "Sales Card invalido");

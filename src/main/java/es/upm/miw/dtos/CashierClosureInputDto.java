@@ -1,8 +1,8 @@
-package es.upm.miw.dtos.input;
+package es.upm.miw.dtos;
 
 import java.math.BigDecimal;
 
-public class CashierClosureDto {
+public class CashierClosureInputDto {
 
     private BigDecimal finalCash;
 
@@ -10,10 +10,10 @@ public class CashierClosureDto {
 
     private String comment;
 
-    public CashierClosureDto() {
+    public CashierClosureInputDto() {
     }
 
-    public CashierClosureDto(BigDecimal finalCash, BigDecimal salesCard, String comment) {
+    public CashierClosureInputDto(BigDecimal finalCash, BigDecimal salesCard, String comment) {
         this.finalCash = finalCash;
         this.salesCard = salesCard;
         this.comment = comment;

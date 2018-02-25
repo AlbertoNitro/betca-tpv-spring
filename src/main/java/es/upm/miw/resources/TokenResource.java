@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import es.upm.miw.controllers.TokenController;
-import es.upm.miw.dtos.output.TokenDto;
+import es.upm.miw.dtos.TokenOutputDto;
 
 @RestController
 @RequestMapping(TokenResource.TOKENS)
@@ -24,7 +24,7 @@ public class TokenResource {
 
     @PreAuthorize("authenticated")
     @RequestMapping(method = RequestMethod.POST)
-    public TokenDto login(@AuthenticationPrincipal User activeUser) {
+    public TokenOutputDto login(@AuthenticationPrincipal User activeUser) {
         return tokenController.login(activeUser.getUsername());
     }
 

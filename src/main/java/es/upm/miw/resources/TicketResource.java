@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import es.upm.miw.controllers.TicketController;
-import es.upm.miw.dtos.input.TicketCreationDto;
+import es.upm.miw.dtos.TicketCreationInputDto;
 import es.upm.miw.resources.exceptions.FieldInvalidException;
 
 @PreAuthorize("hasRole('ADMIN') or hasRole('MANAGER') or hasRole('OPERATOR')")
@@ -25,7 +25,7 @@ public class TicketResource {
     private TicketController ticketController;
 
     @RequestMapping(method = RequestMethod.POST, produces = "application/pdf")
-    public @ResponseBody byte[] createTicket(@RequestBody TicketCreationDto ticketCreationDto) throws FieldInvalidException {
+    public @ResponseBody byte[] createTicket(@RequestBody TicketCreationInputDto ticketCreationDto) throws FieldInvalidException {
         this.validateFieldObject(ticketCreationDto.getCard(), "Card debe ser positivo");
         this.validateFieldObject(ticketCreationDto.getCash(), "Cash debe ser positivo");
         this.validateFieldObject(ticketCreationDto.getVoucher(), "Voucher debe ser positivo");

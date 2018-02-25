@@ -5,7 +5,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 
-import es.upm.miw.dtos.output.TokenDto;
+import es.upm.miw.dtos.TokenOutputDto;
 
 @Service
 public class RestService {
@@ -24,7 +24,7 @@ public class RestService {
     @Value("${miw.admin.password}")
     private String adminPassword;
 
-    private TokenDto tokenDto;
+    private TokenOutputDto tokenDto;
 
     private int port() {
         return Integer.parseInt(environment.getProperty("local.server.port"));
@@ -49,20 +49,20 @@ public class RestService {
     }
 
     public RestService loginAdmin() {
-        this.tokenDto = new RestBuilder<TokenDto>(this.port()).path(contextPath).path(TokenResource.TOKENS)
-                .basicAuth(this.adminMobile, this.adminPassword).clazz(TokenDto.class).post().build();
+        this.tokenDto = new RestBuilder<TokenOutputDto>(this.port()).path(contextPath).path(TokenResource.TOKENS)
+                .basicAuth(this.adminMobile, this.adminPassword).clazz(TokenOutputDto.class).post().build();
         return this;
     }
 
     public RestService loginManager() {
-        this.tokenDto = new RestBuilder<TokenDto>(this.port()).path(contextPath).path(TokenResource.TOKENS).basicAuth("666666001", "p001")
-                .clazz(TokenDto.class).post().build();
+        this.tokenDto = new RestBuilder<TokenOutputDto>(this.port()).path(contextPath).path(TokenResource.TOKENS).basicAuth("666666001", "p001")
+                .clazz(TokenOutputDto.class).post().build();
         return this;
     }
 
     public RestService loginOperator() {
-        this.tokenDto = new RestBuilder<TokenDto>(this.port()).path(contextPath).path(TokenResource.TOKENS).basicAuth("666666005", "p005")
-                .clazz(TokenDto.class).post().build();
+        this.tokenDto = new RestBuilder<TokenOutputDto>(this.port()).path(contextPath).path(TokenResource.TOKENS).basicAuth("666666005", "p005")
+                .clazz(TokenOutputDto.class).post().build();
         return this;
     }
 
@@ -76,11 +76,11 @@ public class RestService {
         this.loginAdmin().restBuilder().path(AdminResource.ADMINS).path(AdminResource.DB).body(TPV_DB_TEST_YML).post().build();        
     }
 
-    public TokenDto getTokenDto() {
+    public TokenOutputDto getTokenDto() {
         return tokenDto;
     }
 
-    public void setTokenDto(TokenDto tokenDto) {
+    public void setTokenDto(TokenOutputDto tokenDto) {
         this.tokenDto = tokenDto;
     }
 

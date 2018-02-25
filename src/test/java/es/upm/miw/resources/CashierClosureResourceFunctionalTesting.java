@@ -17,8 +17,8 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.web.client.HttpClientErrorException;
 
-import es.upm.miw.dtos.input.CashierClosureDto;
-import es.upm.miw.dtos.output.CashierClosureLastDto;
+import es.upm.miw.dtos.CashierClosureInputDto;
+import es.upm.miw.dtos.CashierClosureLastOutputDto;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
@@ -36,7 +36,7 @@ public class CashierClosureResourceFunctionalTesting {
     }
 
     private void closeCashier() {
-        CashierClosureDto cashierClosureDto = new CashierClosureDto(new BigDecimal(23), new BigDecimal(10), "test");
+        CashierClosureInputDto cashierClosureDto = new CashierClosureInputDto(new BigDecimal(23), new BigDecimal(10), "test");
         restService.loginAdmin().restBuilder().path(CashierClosureResource.CASHIER_CLOSURES).path(CashierClosureResource.LAST)
                 .body(cashierClosureDto).patch().build();
     }
@@ -60,8 +60,8 @@ public class CashierClosureResourceFunctionalTesting {
 
     @Test
     public void testGetCashierClosureLast() {
-        CashierClosureLastDto cashierClosureLastDto = restService.loginAdmin().restBuilder(new RestBuilder<CashierClosureLastDto>())
-                .clazz(CashierClosureLastDto.class).path(CashierClosureResource.CASHIER_CLOSURES).path(CashierClosureResource.LAST).get()
+        CashierClosureLastOutputDto cashierClosureLastDto = restService.loginAdmin().restBuilder(new RestBuilder<CashierClosureLastOutputDto>())
+                .clazz(CashierClosureLastOutputDto.class).path(CashierClosureResource.CASHIER_CLOSURES).path(CashierClosureResource.LAST).get()
                 .build();
         assertTrue(cashierClosureLastDto.isClosed());
     }

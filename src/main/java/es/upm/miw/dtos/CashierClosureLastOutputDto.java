@@ -1,4 +1,4 @@
-package es.upm.miw.dtos.output;
+package es.upm.miw.dtos;
 
 import java.util.Date;
 
@@ -7,7 +7,7 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 import es.upm.miw.documents.core.CashierClosure;
 
-public class CashierClosureLastDto {
+public class CashierClosureLastOutputDto {
 
     private boolean closed;
 
@@ -15,16 +15,16 @@ public class CashierClosureLastDto {
     @JsonInclude(Include.NON_NULL)
     private Date closureDate;
 
-    public CashierClosureLastDto() {
+    public CashierClosureLastOutputDto() {
     }
 
-    public CashierClosureLastDto(boolean closed, Date closureDate) {
+    public CashierClosureLastOutputDto(boolean closed, Date closureDate) {
         super();
         this.closed = closed;
         this.closureDate = closureDate;
     }
 
-    public CashierClosureLastDto(CashierClosure cashierClosure) {
+    public CashierClosureLastOutputDto(CashierClosure cashierClosure) {
         this(cashierClosure.isClosed(), cashierClosure.getClosureDate());
     }
 

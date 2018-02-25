@@ -11,7 +11,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import es.upm.miw.dtos.input.CashierClosureDto;
+import es.upm.miw.dtos.CashierClosureInputDto;
 import es.upm.miw.services.DatabaseSeederService;
 
 @RunWith(SpringRunner.class)
@@ -32,7 +32,7 @@ public class CashierClosureControllerIT {
     @Test
     public void testClose() throws IOException {
         cashierClosureController.createCashierClosure();
-        CashierClosureDto cashierClosureDto = new CashierClosureDto(new BigDecimal("100"), new BigDecimal("50"), "testClose");
+        CashierClosureInputDto cashierClosureDto = new CashierClosureInputDto(new BigDecimal("100"), new BigDecimal("50"), "testClose");
         cashierClosureController.close(cashierClosureDto);
         //assertEquals(new BigDecimal("153.20"),cashierClosureRepository.findAll().get(0).getSalesCash());
         this.databaseSeederService.deleteAllAndCreateAdmin();

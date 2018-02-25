@@ -1,11 +1,9 @@
-package es.upm.miw.dtos.input;
+package es.upm.miw.dtos;
 
 import java.math.BigDecimal;
 import java.util.List;
 
-import es.upm.miw.dtos.ShoppingDto;
-
-public class TicketCreationDto {
+public class TicketCreationInputDto {
     private String userMobile;
 
     private BigDecimal cash;
@@ -16,11 +14,11 @@ public class TicketCreationDto {
 
     private List<ShoppingDto> shoppingCart;
 
-    public TicketCreationDto() {
+    public TicketCreationInputDto() {
         // Empty for JSON
     }
 
-    public TicketCreationDto(String userMobile, BigDecimal cash, BigDecimal card, BigDecimal voucher, List<ShoppingDto> shoppingCart) {
+    public TicketCreationInputDto(String userMobile, BigDecimal cash, BigDecimal card, BigDecimal voucher, List<ShoppingDto> shoppingCart) {
         this.userMobile = userMobile;
         this.cash = cash;
         this.card = card;
