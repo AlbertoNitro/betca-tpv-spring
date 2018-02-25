@@ -22,6 +22,7 @@ public class ArticleResource {
     @Autowired
     private ArticleController articleController;
 
+    // TODO Test
     @RequestMapping(value = CODE_ID, method = RequestMethod.GET)
     public ArticleOutputDto readArticle(@PathVariable String code) throws ArticleCodeNotFoundException {
         return this.articleController.readArticle(code).orElseThrow(() -> new ArticleCodeNotFoundException(code));

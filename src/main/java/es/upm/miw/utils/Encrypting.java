@@ -42,42 +42,13 @@ public class Encrypting {
         return digest;
     }
 
-    public String encryptInString(String message) {
-        byte[] digest = this.encrypt(message);
-        StringBuilder hash = new StringBuilder();
-        for (byte digito : digest) {
-            int b = digito & 0xff; // 0..255
-            if (b < 16) {
-                hash.append("0");
-            } else
-                hash.append(Integer.toHexString(b));
-        }
-        return hash.toString();
-    }
-
-    public String encryptInBase64(String message) {
-        byte[] digest = this.encrypt(message);
-        return Base64.getEncoder().encodeToString(digest);
-    }
-
     public String encryptInBase64() {
-        return this.encryptInBase64(UUID.randomUUID().toString());
-    }
-
-    public String encryptInBase64UrlSafe(String message) {
-        byte[] digest = this.encrypt(message);
-        String code64Url = Base64.getUrlEncoder().encodeToString(digest);
-        return code64Url.substring(0, code64Url.indexOf('='));
+        return Base64.getEncoder().encodeToString(this.encrypt(UUID.randomUUID().toString()));
     }
 
     public String encryptInBase64UrlSafe() {
-        return this.encryptInBase64UrlSafe(UUID.randomUUID().toString());
+        String code64Url = Base64.getUrlEncoder().encodeToString(this.encrypt(UUID.randomUUID().toString()));
+        return code64Url.substring(0, code64Url.indexOf('='));
     }
 
-    public static void main(String[] args) {
-        Encrypting encrypting = new Encrypting();
-        for (int i = 0; i < 5; i++) {
-            Logger.getLogger("miw.debug").debug(encrypting.encryptInBase64UrlSafe());
-        }
-    }
 }

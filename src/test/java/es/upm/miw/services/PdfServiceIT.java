@@ -25,7 +25,7 @@ public class PdfServiceIT {
     private PdfService pdfService;
 
     @Test
-    public void testgenerateLabels24() {
+    public void testGenerateLabels24() {
         List<Article> articles = new ArrayList<>();
         for (int i = 0; i < 25; i++) {
             articles.add(new Article(new Barcode().generateEan13code(i), "", "description " + i, null, null));
@@ -34,7 +34,7 @@ public class PdfServiceIT {
     }
     
     @Test
-    public void testgenerateTicket() {
+    public void testGenerateTicket() {
         Article article = new Article("23581","referencia","Descripción articulo",null,null);
         article.setRetailPrice(new BigDecimal("100.10"));
         Shopping[] shoppingList = new Shopping[6];

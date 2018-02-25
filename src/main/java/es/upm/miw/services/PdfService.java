@@ -2,6 +2,7 @@ package es.upm.miw.services;
 
 import java.math.RoundingMode;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,7 +23,7 @@ public class PdfService {
     private static final String DATE_FORMAT = "yyyy-MM-dd HH:mm";
 
     public Optional<byte[]> generateLabels24(List<Article> articles) {
-        final String path = "/labels/label24";
+        final String path = "/labels/label24-"+ new SimpleDateFormat("yyyyMMdd-HH-mm").format(new Date().getTime());
         PdfTag24Builder pdf = new PdfTag24Builder(path);
         
         for (Article article : articles) {
