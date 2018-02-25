@@ -23,8 +23,8 @@ public class PdfService {
 
     public Optional<byte[]> generateLabels24(List<Article> articles) {
         final String path = "/labels/label24";
-
         PdfTag24Builder pdf = new PdfTag24Builder(path);
+        
         for (Article article : articles) {
             pdf.addTag24(article.getDescription(), article.getCode());
         }
@@ -33,7 +33,6 @@ public class PdfService {
 
     public Optional<byte[]> generateTicket(Ticket ticket) {
         final String path = "/tickets/ticket-" + ticket.getId();
-
         PdfTicketBuilder pdf = new PdfTicketBuilder(path);
         pdf.addImage("logo-upm.png");
         pdf.paragraphEmphasized("Master en Ingeniería Web. BETCA");
@@ -41,8 +40,6 @@ public class PdfService {
         pdf.barCode(ticket.getId()).separator();
         SimpleDateFormat formatter = new SimpleDateFormat(DATE_FORMAT);
         pdf.paragraphEmphasized(formatter.format(ticket.getCreationDate()));
-
-
         pdf.TableColumnsSizes(TABLE_COLUMNS_SIZES).tableColumnsHeader(TABLE_COLUMNS_HEADERS);
         for (int i = 0; i < ticket.getShoppingList().length; i++) {
             Shopping shopping = ticket.getShoppingList()[i];
@@ -55,7 +52,7 @@ public class PdfService {
                     shopping.getShoppingTotal().setScale(2, RoundingMode.HALF_UP) + "€", state);
         }
         pdf.tableColspanRight("TOTAL: " + ticket.getTicketTotal().setScale(2, RoundingMode.HALF_UP) + "€");
-        
+
         pdf.separator().paragraph("Periodo de devolución o cambio: 15 dias a partir de la fecha del ticket");
         pdf.paragraphEmphasized("Gracias por su compra");
         pdf.qrCode(ticket.getReference());

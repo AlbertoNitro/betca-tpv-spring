@@ -12,6 +12,7 @@ public class TokenOutputDto {
     private Role[] roles;
 
     public TokenOutputDto() {
+        // Empty for framework
     }
 
     public TokenOutputDto(User user) {

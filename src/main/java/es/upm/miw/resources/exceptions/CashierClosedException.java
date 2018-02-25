@@ -6,7 +6,7 @@ public class CashierClosedException extends Exception {
     public static final String DESCRIPTION = "Cashier closed exception";
 
     public CashierClosedException() {
-        this("");
+        super(DESCRIPTION);
     }
 
     public CashierClosedException(String detail) {

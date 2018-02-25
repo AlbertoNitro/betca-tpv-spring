@@ -6,7 +6,7 @@ public class UserIdNotFoundException extends Exception {
     public static final String DESCRIPTION = "User id not found";
 
     public UserIdNotFoundException() {
-        this("");
+        super(DESCRIPTION);
     }
 
     public UserIdNotFoundException(String detail) {

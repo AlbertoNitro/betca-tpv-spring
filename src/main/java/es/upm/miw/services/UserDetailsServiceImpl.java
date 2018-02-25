@@ -21,6 +21,8 @@ import es.upm.miw.repositories.core.UserRepository;
 @Transactional
 public class UserDetailsServiceImpl implements UserDetailsService {
 
+    private static final String TOKEN_PASSWORD = "";
+
     @Autowired
     private UserRepository userRepository;
 
@@ -28,28 +30,24 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     public UserDetails loadUserByUsername(final String mobileOrTokenValue) {
         User user = userRepository.findByTokenValue(mobileOrTokenValue);
         if (user != null) {
-            return this.userBuilder(user.getMobile(), new BCryptPasswordEncoder().encode(""), user.getRoles(),
-                    user.isActive());
+            return this.userBuilder(user.getMobile(), new BCryptPasswordEncoder().encode(TOKEN_PASSWORD), user.getRoles(), user.isActive());
         } else {
-            try {
-                user = userRepository.findByMobile(mobileOrTokenValue);
-            } catch (NumberFormatException nfe) {
-                throw new UsernameNotFoundException("Usuario no encontrado");
-            }
+            user = userRepository.findByMobile(mobileOrTokenValue);
             if (user != null) {
                 return this.userBuilder(String.valueOf(user.getMobile()), user.getPassword(), new Role[] {Role.AUTHENTICATED},
                         user.isActive());
             } else {
-                throw new UsernameNotFoundException("Usuario no encontrado");
+                throw new UsernameNotFoundException("Username Not Found. " + mobileOrTokenValue);
             }
         }
     }
 
     private org.springframework.security.core.userdetails.User userBuilder(String mobile, String password, Role[] roles, boolean active) {
-        boolean enabled = active;
         boolean accountNonExpired = true;
         boolean credentialsNonExpired = true;
         boolean accountNonLocked = true;
+
+        boolean enabled = active;
         List<GrantedAuthority> authorities = new ArrayList<>();
         for (Role role : roles) {
             authorities.add(new SimpleGrantedAuthority(role.roleName()));

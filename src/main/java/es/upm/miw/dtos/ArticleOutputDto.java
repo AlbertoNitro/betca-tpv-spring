@@ -15,6 +15,7 @@ public class ArticleOutputDto {
     private Integer stock;
 
     public ArticleOutputDto() {
+        // Empty for framework
     }
 
     public String getCode() {

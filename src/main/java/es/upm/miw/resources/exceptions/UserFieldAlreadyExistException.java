@@ -6,7 +6,7 @@ public class UserFieldAlreadyExistException extends Exception {
     public static final String DESCRIPTION = "User Field Already Exist";
 
     public UserFieldAlreadyExistException() {
-        this("");
+        super(DESCRIPTION);
     }
 
     public UserFieldAlreadyExistException(String detail) {

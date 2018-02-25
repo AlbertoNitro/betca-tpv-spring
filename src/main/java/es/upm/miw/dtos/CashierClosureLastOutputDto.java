@@ -16,6 +16,7 @@ public class CashierClosureLastOutputDto {
     private Date closureDate;
 
     public CashierClosureLastOutputDto() {
+        // Empty for framework
     }
 
     public CashierClosureLastOutputDto(boolean closed, Date closureDate) {

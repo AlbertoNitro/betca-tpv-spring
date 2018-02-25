@@ -26,8 +26,8 @@ import com.itextpdf.layout.property.HorizontalAlignment;
 import com.itextpdf.layout.property.TextAlignment;
 import com.itextpdf.layout.property.VerticalAlignment;
 
-public class PdfTicketBuilder extends PdfBuilder{
-    
+public class PdfTicketBuilder extends PdfBuilder {
+
     private static final int TERMIC_FONT_SIZE = 7;
 
     private static final int TERMIC_FONT_SIZE_EMPHASIZEDD = 9;
@@ -74,7 +74,7 @@ public class PdfTicketBuilder extends PdfBuilder{
         this.getDocument().add(code128Image);
         return this;
     }
-    
+
     public PdfTicketBuilder qrCode(String code) {
         BarcodeQRCode qrcode = new BarcodeQRCode(code.trim());
         Image qrcodeImage = new Image(qrcode.createFormXObject(this.getDocument().getPdfDocument()));
@@ -117,7 +117,7 @@ public class PdfTicketBuilder extends PdfBuilder{
         }
         return this;
     }
-    
+
     public PdfTicketBuilder TableColumnsSizes(float... widths) {
         this.setTable(new Table(widths, true));
         this.getTable().setBorder(new SolidBorder(Color.WHITE, 2));
@@ -149,7 +149,6 @@ public class PdfTicketBuilder extends PdfBuilder{
         this.getDocument().add(this.getTable());
         return this;
     }
-
 
     public Optional<byte[]> build() {
         this.getDocument().close();

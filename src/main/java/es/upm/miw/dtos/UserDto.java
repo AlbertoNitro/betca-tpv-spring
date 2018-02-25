@@ -11,7 +11,8 @@ public class UserDto {
 
     private static final String NINE_DIGITS = "\\d{9}";
 
-    @NotNull @Pattern(regexp = NINE_DIGITS)
+    @NotNull
+    @Pattern(regexp = NINE_DIGITS)
     private String mobile;
 
     @NotNull
@@ -30,6 +31,7 @@ public class UserDto {
     private Date registrationDate;
 
     public UserDto() {
+        // Empty for framework
     }
 
     public UserDto(String mobile, String username, String password, String email, String dni, String address, Boolean active) {
@@ -47,7 +49,7 @@ public class UserDto {
     }
 
     public UserDto(User user) {
-        this.mobile =String.valueOf(user.getMobile());
+        this.mobile = String.valueOf(user.getMobile());
         this.username = user.getUsername();
         this.email = user.getEmail();
         this.dni = user.getDni();
@@ -77,7 +79,7 @@ public class UserDto {
     }
 
     public void setPassword(String password) {
-            this.password = password;
+        this.password = password;
     }
 
     public String getEmail() {

@@ -28,7 +28,7 @@ public class DatabaseGraph {
     private List<Shopping> shoppingList;
 
     private List<Invoice> invoiceList;
-    
+
     public DatabaseGraph() {
         // Empty for framework
     }

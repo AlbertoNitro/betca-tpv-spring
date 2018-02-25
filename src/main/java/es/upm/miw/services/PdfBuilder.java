@@ -27,7 +27,7 @@ public class PdfBuilder {
 
     public PdfBuilder(String path) {
         fullPath = System.getProperty(USER_HOME) + ROOT_PDFS + path + PDF_FILE_EXT;
-   }
+    }
 
     public String getFullPath() {
         return fullPath;

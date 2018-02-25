@@ -22,14 +22,6 @@ public class Provider {
     public Provider() {
     }
 
-    public Provider(String company, String address, long mobile, long phone, String note) {
-        this.company = company;
-        this.address = address;
-        this.mobile = mobile;
-        this.phone = phone;
-        this.note = note;
-    }
-
     public String getCompany() {
         return company;
     }

@@ -52,7 +52,7 @@ public class User {
     }
 
     public User(String mobile, String username, String password) {
-        this(mobile, username, password, "", "", "");
+        this(mobile, username, password, null, null, null);
     }
 
     public String getId() {

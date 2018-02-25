@@ -6,7 +6,7 @@ public class ArticleCodeNotFoundException extends Exception {
     public static final String DESCRIPTION = "Article code not found";
 
     public ArticleCodeNotFoundException() {
-        this("");
+        super(DESCRIPTION);
     }
 
     public ArticleCodeNotFoundException(String detail) {

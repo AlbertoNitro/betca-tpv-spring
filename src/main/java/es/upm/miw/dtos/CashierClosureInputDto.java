@@ -15,6 +15,7 @@ public class CashierClosureInputDto {
     private String comment;
 
     public CashierClosureInputDto() {
+        // Empty for framework
     }
 
     public CashierClosureInputDto(BigDecimal finalCash, BigDecimal salesCard, String comment) {

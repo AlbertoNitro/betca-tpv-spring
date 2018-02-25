@@ -6,7 +6,7 @@ public class ForbiddenException extends Exception {
     public static final String DESCRIPTION = "Forbidden. Insufficient role";
 
     public ForbiddenException() {
-        this("");
+        super(DESCRIPTION);
     }
 
     public ForbiddenException(String detail) {

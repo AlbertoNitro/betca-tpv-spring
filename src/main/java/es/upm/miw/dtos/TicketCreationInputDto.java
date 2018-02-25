@@ -22,8 +22,9 @@ public class TicketCreationInputDto {
     private List<ShoppingDto> shoppingCart;
 
     public TicketCreationInputDto() {
+        // Empty for framework
     }
-    
+
     public TicketCreationInputDto(BigDecimal cash, BigDecimal card, BigDecimal voucher, List<ShoppingDto> shoppingCart) {
         this.cash = cash;
         this.card = card;
@@ -73,8 +74,8 @@ public class TicketCreationInputDto {
 
     @Override
     public String toString() {
-        return "TicketCreationDto [userMobile=" + userMobile + ", cash=" + cash + ", card=" + card + ", voucher=" + voucher + ", shoppingCart="
-                + shoppingCart + "]";
+        return "TicketCreationDto [userMobile=" + userMobile + ", cash=" + cash + ", card=" + card + ", voucher=" + voucher
+                + ", shoppingCart=" + shoppingCart + "]";
     }
 
 }

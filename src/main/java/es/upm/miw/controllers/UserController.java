@@ -33,7 +33,7 @@ public class UserController {
 
     public boolean emailRepeated(UserDto userDto) {
         User user = this.userRepository.findByEmail(userDto.getEmail());
-        return userDto.getEmail() != null &&  user != null && !user.getMobile().equals(userDto.getMobile());
+        return userDto.getEmail() != null && user != null && !user.getMobile().equals(userDto.getMobile());
     }
 
     public boolean existsMobile(String mobile) {

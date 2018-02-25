@@ -3,9 +3,9 @@ package es.upm.miw.dtos;
 import java.math.BigDecimal;
 
 public class ShoppingDto {
-    
+
     private String code;
-    
+
     private String description;
 
     private BigDecimal retailPrice;
@@ -13,12 +13,13 @@ public class ShoppingDto {
     private int amount;
 
     private BigDecimal discount;
-    
+
     private BigDecimal total;
-    
+
     private boolean committed;
 
     public ShoppingDto() {
+        // Empty for framework
     }
 
     public ShoppingDto(String code, String description, BigDecimal retailPrice, int amount, BigDecimal discount, BigDecimal total,
@@ -94,4 +95,4 @@ public class ShoppingDto {
                 + ", discount=" + discount + ", total=" + total + ", committed=" + committed + "]";
     }
 
- }
+}

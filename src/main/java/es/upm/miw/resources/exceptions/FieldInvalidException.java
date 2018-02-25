@@ -6,7 +6,7 @@ public class FieldInvalidException extends Exception {
     public static final String DESCRIPTION = "Invalid Field";
 
     public FieldInvalidException() {
-        this("");
+        super(DESCRIPTION);
     }
 
     public FieldInvalidException(String detail) {

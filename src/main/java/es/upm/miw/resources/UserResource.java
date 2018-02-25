@@ -53,7 +53,8 @@ public class UserResource {
     }
 
     @RequestMapping(method = RequestMethod.PUT)
-    public void putCustomer(@Valid @RequestBody UserDto userDto) throws ForbiddenException, UserIdNotFoundException, UserFieldAlreadyExistException {
+    public void putCustomer(@Valid @RequestBody UserDto userDto)
+            throws ForbiddenException, UserIdNotFoundException, UserFieldAlreadyExistException {
         if (!this.userController.existsMobile(userDto.getMobile())) {
             throw new UserIdNotFoundException("Not existing mobile");
         }

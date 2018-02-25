@@ -9,9 +9,9 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 import es.upm.miw.documents.core.Voucher;
 
 public interface VoucherRepository extends MongoRepository<Voucher, String> {
-    
+
     List<Voucher> findByValue(BigDecimal value);
-    
+
     List<Voucher> findByDateOfUseGreaterThan(Date date);
 
 }

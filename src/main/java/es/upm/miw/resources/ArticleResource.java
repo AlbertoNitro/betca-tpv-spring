@@ -24,7 +24,7 @@ public class ArticleResource {
 
     @RequestMapping(value = CODE_ID, method = RequestMethod.GET)
     public ArticleOutputDto readArticle(@PathVariable String code) throws ArticleCodeNotFoundException {
-        return this.articleController.readArticle(code).orElseThrow( ()-> new ArticleCodeNotFoundException(code));
+        return this.articleController.readArticle(code).orElseThrow(() -> new ArticleCodeNotFoundException(code));
     }
 
 }

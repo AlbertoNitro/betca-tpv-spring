@@ -6,7 +6,7 @@ public class FileException extends Exception {
     public static final String DESCRIPTION = "File exception";
 
     public FileException() {
-        this("");
+        super(DESCRIPTION);
     }
 
     public FileException(String detail) {
