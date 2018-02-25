@@ -10,8 +10,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import es.upm.miw.controllers.AdminController;
-import es.upm.miw.resources.exceptions.FileNotFoundException;
+import es.upm.miw.resources.exceptions.FileException;
 
+@PreAuthorize("hasRole('ADMIN')")
 @RestController
 @RequestMapping(AdminResource.ADMINS)
 public class AdminResource {
@@ -25,23 +26,22 @@ public class AdminResource {
     @Autowired
     private AdminController adminController;
 
+    @PreAuthorize("permitAll")
     @RequestMapping(value = STATE, method = RequestMethod.GET)
     public String getState() {
         return "{\"state\":\"ok\"}";
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
     @RequestMapping(value = DB, method = RequestMethod.DELETE)
     public void deleteDb() {
         this.adminController.deleteDb();
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
     @RequestMapping(value = DB, method = RequestMethod.POST)
-    public void seedDb(@RequestBody String ymlFileName) throws FileNotFoundException {
+    public void seedDb(@RequestBody String ymlFileName) throws FileException {
         Optional<String> error = this.adminController.seedDatabase(ymlFileName);
         if (error.isPresent()) {
-            throw new FileNotFoundException(error.get());
+            throw new FileException(error.get());
         }
     }
 
