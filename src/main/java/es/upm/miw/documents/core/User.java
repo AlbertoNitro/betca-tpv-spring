@@ -4,6 +4,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
@@ -13,7 +14,8 @@ public class User {
     @Id
     private String id;
 
-    private long mobile;
+    @Indexed(unique = true)
+    private String mobile;
 
     private String username;
 
@@ -38,7 +40,7 @@ public class User {
         this.active = true;
     }
 
-    public User(long mobile, String username, String password, String dni, String address, String email) {
+    public User(String mobile, String username, String password, String dni, String address, String email) {
         this();
         this.mobile = mobile;
         this.username = username;
@@ -49,7 +51,7 @@ public class User {
         this.roles = new Role[] {Role.CUSTOMER};
     }
 
-    public User(long mobile, String username, String password) {
+    public User(String mobile, String username, String password) {
         this(mobile, username, password, "", "", "");
     }
 
@@ -57,11 +59,11 @@ public class User {
         return id;
     }
 
-    public long getMobile() {
+    public String getMobile() {
         return mobile;
     }
 
-    public void setMobile(long mobile) {
+    public void setMobile(String mobile) {
         this.mobile = mobile;
     }
 
@@ -135,10 +137,7 @@ public class User {
 
     @Override
     public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + (int) (mobile ^ (mobile >>> 32));
-        return result;
+        return this.mobile.hashCode();
     }
 
     @Override
@@ -152,7 +151,7 @@ public class User {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        return mobile == ((User) obj).mobile;
+        return mobile.equals(((User) obj).mobile);
     }
 
     @Override

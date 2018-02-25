@@ -28,11 +28,11 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     public UserDetails loadUserByUsername(final String mobileOrTokenValue) {
         User user = userRepository.findByTokenValue(mobileOrTokenValue);
         if (user != null) {
-            return this.userBuilder(Long.toString(user.getMobile()), new BCryptPasswordEncoder().encode(""), user.getRoles(),
+            return this.userBuilder(user.getMobile(), new BCryptPasswordEncoder().encode(""), user.getRoles(),
                     user.isActive());
         } else {
             try {
-                user = userRepository.findByMobile(Long.valueOf(mobileOrTokenValue));
+                user = userRepository.findByMobile(mobileOrTokenValue);
             } catch (NumberFormatException nfe) {
                 throw new UsernameNotFoundException("Usuario no encontrado");
             }

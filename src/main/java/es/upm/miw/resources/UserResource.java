@@ -1,7 +1,8 @@
 package es.upm.miw.resources;
 
 import java.util.List;
-import java.util.Optional;
+
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -24,6 +25,8 @@ import es.upm.miw.resources.exceptions.UserIdNotFoundException;
 @RequestMapping(UserResource.USERS)
 public class UserResource {
 
+    private static final String DEFAULT_PASSWORD = "miw.Tpv.2017";
+
     public static final String USERS = "/users";
 
     public static final String MOBILE_ID = "/{mobile}";
@@ -32,55 +35,47 @@ public class UserResource {
     private UserController userController;
 
     @RequestMapping(method = RequestMethod.POST)
-    public void createCustomer(@RequestBody UserDto userDto) throws FieldInvalidException, UserFieldAlreadyExistException {
-        this.validateFieldObject(userDto, "No se ha enviado el usuario");
-        this.validateFieldObject(userDto.getMobile(), "Mobile invalido");
-        this.validateFieldObject(userDto.getUsername(), "Nombre de usuario invalido");
+    public void createCustomer(@Valid @RequestBody UserDto userDto) throws FieldInvalidException, UserFieldAlreadyExistException {
         if (userDto.getPassword() == null) {
-            userDto.setPassword("miw.Tpv.2017");
+            userDto.setPassword(DEFAULT_PASSWORD);
         }
-        this.validateFieldObject(userDto.getPassword(), "Nombre de clave invalida");
-        Optional<String> error = this.userController.createUser(userDto, new Role[] {Role.CUSTOMER});
-        if (error.isPresent()) {
-            throw new UserFieldAlreadyExistException(error.get());
+        if (this.userController.existsMobile(userDto.getMobile())) {
+            throw new UserFieldAlreadyExistException("Mobile ya existente");
         }
+        if (this.userController.existsEmail(userDto.getEmail())) {
+            throw new UserFieldAlreadyExistException("Email ya existente");
+        }
+        if (this.userController.existsDni(userDto.getDni())) {
+            throw new UserFieldAlreadyExistException("Dni ya existente");
+        }
+        this.userController.createUser(userDto, new Role[] {Role.CUSTOMER});
     }
-    
+
     @RequestMapping(method = RequestMethod.PUT)
-    public void putCustomer(@RequestBody UserDto userDto) throws FieldInvalidException, UserFieldAlreadyExistException {
-        this.validateFieldObject(userDto, "No se ha enviado el usuario");
-        this.validateFieldObject(userDto.getMobile(), "Mobile invalido");
-        this.validateFieldObject(userDto.getUsername(), "Nombre de usuario invalido");
-        Optional<String> error = this.userController.putUser(userDto, new Role[] {Role.CUSTOMER});
-        if (error.isPresent()) {
-            throw new UserFieldAlreadyExistException(error.get());
+    public void putCustomer(@Valid @RequestBody UserDto userDto) throws ForbiddenException, UserIdNotFoundException {
+        if (!this.userController.existsMobile(userDto.getMobile())) {
+            throw new UserIdNotFoundException("Mobile no existente");
+        }
+        if (!this.userController.putUser(userDto, new Role[] {Role.CUSTOMER})) {
+            throw new ForbiddenException("No se tiene el rol suficiente para actualizar al usr");
         }
     }
-    
 
     @RequestMapping(value = MOBILE_ID, method = RequestMethod.DELETE)
-    public void deleteCustomer(@PathVariable long mobile) throws ForbiddenException {
-        Optional<String> error = this.userController.deleteUser(mobile, new Role[] {Role.CUSTOMER});
-        if (error.isPresent()) {
-            throw new ForbiddenException(error.get());
+    public void deleteCustomer(@PathVariable String mobile) throws ForbiddenException {
+        if (!this.userController.deleteUser(mobile, new Role[] {Role.CUSTOMER})) {
+            throw new ForbiddenException("No se tiene el rol suficiente para borrar al usr");
         }
     }
 
     @RequestMapping(value = MOBILE_ID, method = RequestMethod.GET)
-    public UserDto readCustomer(@PathVariable long mobile) throws UserIdNotFoundException {
-        return this.userController.readUser(mobile, new Role[] {Role.CUSTOMER})
-                .orElseThrow(() -> new UserIdNotFoundException(Long.toString(mobile)));
+    public UserDto readCustomer(@PathVariable String mobile) throws UserIdNotFoundException {
+        return this.userController.readUser(mobile, new Role[] {Role.CUSTOMER}).orElseThrow(() -> new UserIdNotFoundException(mobile));
     }
 
     @RequestMapping(method = RequestMethod.GET)
     public List<UserDto> readAll() {
         return this.userController.readAll(new Role[] {Role.CUSTOMER});
-    }
-
-    private void validateFieldObject(Object objeto, String msg) throws FieldInvalidException {
-        if (objeto == null) {
-            throw new FieldInvalidException(msg);
-        }
     }
 
 }

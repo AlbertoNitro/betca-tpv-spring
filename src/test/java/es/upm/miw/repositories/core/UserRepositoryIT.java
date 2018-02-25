@@ -29,20 +29,20 @@ public class UserRepositoryIT {
 
     @Before
     public void seedDb() {
-        this.user = new User(666001000L, "666001000", "666001000");
+        this.user = new User("666001000", "666001000", "666001000");
         this.userRepository.save(user);
     }
 
     @Test
     public void testFindUser() {
-        User userBd = userRepository.findByMobile(666001000L);
+        User userBd = userRepository.findByMobile("666001000");
         assertNotNull(userBd);
         assertEquals("666001000", userBd.getUsername());
     }
 
     @Test
     public void testFindUserNameByMobile() {
-        User userBd = userRepository.findUsernameByMobile(666001000L);
+        User userBd = userRepository.findUsernameByMobile("666001000");
         assertNotNull(userBd);
         assertEquals("666001000", userBd.getUsername());
         assertNull(userBd.getPassword());

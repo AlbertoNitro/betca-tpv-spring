@@ -30,7 +30,7 @@ public class UserResourceFunctionalTesting {
 
     @Before
     public void before() {
-        this.userDto = new UserDto(666000000L);
+        this.userDto = new UserDto("666000000");
     }
 
     @Test
@@ -45,10 +45,24 @@ public class UserResourceFunctionalTesting {
     }
 
     @Test
-    public void testCreateCustomerUsernameNullUserFieldInvalidException() {
+    public void testCreateCustomerWithoutUserException() {
+        thrown.expect(new HttpMatcher(HttpStatus.BAD_REQUEST));
+        this.userDto.setUsername(null);
+        restService.loginAdmin().restBuilder().path(UserResource.USERS).post().build();
+    }
+
+    @Test
+    public void testCreateCustomerUsernameNullException() {
         thrown.expect(new HttpMatcher(HttpStatus.BAD_REQUEST));
         this.userDto.setUsername(null);
         restService.loginAdmin().restBuilder().path(UserResource.USERS).body(this.userDto).post().build();
+    }
+
+    @Test
+    public void testCreateCustomerMobilePatternException() {
+        thrown.expect(new HttpMatcher(HttpStatus.BAD_REQUEST));
+        this.userDto.setMobile("123");
+        restService.loginAdmin().restBuilder().path(UserResource.USERS).body(userDto).post().build();
     }
 
     @Test
@@ -56,6 +70,26 @@ public class UserResourceFunctionalTesting {
         thrown.expect(new HttpMatcher(HttpStatus.BAD_REQUEST));
         restService.loginAdmin().restBuilder().path(UserResource.USERS).body(userDto).post().build();
         restService.restBuilder().path(UserResource.USERS).body(userDto).post().build();
+    }
+
+    @Test
+    public void testCreateCustomerEmailRepeatUserFieldAlreadyExistException() {
+        thrown.expect(new HttpMatcher(HttpStatus.BAD_REQUEST));
+        this.userDto.setEmail("repeat@gmail.com");
+        restService.loginAdmin().restBuilder().path(UserResource.USERS).body(this.userDto).post().build();
+        UserDto userDto2 = new UserDto("6660000002");     
+        userDto2.setEmail("repeat@gmail.com");
+        restService.restBuilder().path(UserResource.USERS).body(userDto2).post().build();
+    }
+
+    @Test
+    public void testCreateCustomerDniRepeatUserFieldAlreadyExistException() {
+        thrown.expect(new HttpMatcher(HttpStatus.BAD_REQUEST));
+        this.userDto.setDni("12345678Z");
+        restService.loginAdmin().restBuilder().path(UserResource.USERS).body(this.userDto).post().build();
+        UserDto userDto2 = new UserDto("6660000002");     
+        userDto2.setDni("12345678Z");
+        restService.restBuilder().path(UserResource.USERS).body(userDto2).post().build();
     }
 
     @Test
@@ -80,7 +114,7 @@ public class UserResourceFunctionalTesting {
         thrown.expect(new HttpMatcher(HttpStatus.FORBIDDEN));
         restService.logout().restBuilder().path(UserResource.USERS).path(UserResource.MOBILE_ID).expand(666666001).get().build();
     }
-    
+
     @After
     public void delete() {
         this.restService.loginAdmin();

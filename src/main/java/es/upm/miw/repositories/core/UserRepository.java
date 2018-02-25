@@ -8,10 +8,10 @@ import es.upm.miw.documents.core.User;
 public interface UserRepository extends MongoRepository<User, String> {
 
     @Query(value = "{ 'mobile' : ?0 }", fields = "{ 'username' : 1}")
-    public User findUsernameByMobile(Long mobile);
+    public User findUsernameByMobile(String mobile);
 
     // @Query("{ 'mobile' : ?0 }")
-    public User findByMobile(Long mobile);
+    public User findByMobile(String mobile);
 
     public User findByEmail(String email);
 

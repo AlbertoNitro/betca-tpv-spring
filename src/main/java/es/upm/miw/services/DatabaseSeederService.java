@@ -28,7 +28,7 @@ import es.upm.miw.repositories.core.VoucherRepository;
 public class DatabaseSeederService {
 
     @Value("${miw.admin.mobile}")
-    private long mobile;
+    private String mobile;
 
     @Value("${miw.admin.username}")
     private String username;

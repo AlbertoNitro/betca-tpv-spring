@@ -28,7 +28,7 @@ public class TicketRepositoryIT {
 
     @Test
     public void testFindTicketMobile() {
-        assertEquals(666666004, ticketRepository.findByReference("t2j_u9M9CisFmYGRFs1Uulgn7hI").getUser().getMobile());
+        assertEquals("666666004", ticketRepository.findByReference("t2j_u9M9CisFmYGRFs1Uulgn7hI").getUser().getMobile());
     }
 
     @Test

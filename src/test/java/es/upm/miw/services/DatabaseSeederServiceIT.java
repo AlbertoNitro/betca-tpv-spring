@@ -26,7 +26,7 @@ public class DatabaseSeederServiceIT {
     public void testUserSeedDatabase() {
         // this.databaseSeederService.deleteAllAndCreateAdmin();
         // this.databaseSeederService.seedDatabase("tpv-db-test.yml");
-        User user = userRepository.findByMobile(666666001L);
+        User user = userRepository.findByMobile("666666001");
         assertNotNull(user);
         assertEquals("u001", user.getUsername());
         assertEquals("u001@gmail.com", user.getEmail());

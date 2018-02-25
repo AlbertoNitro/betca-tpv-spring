@@ -6,7 +6,7 @@ import java.util.List;
 import es.upm.miw.dtos.ShoppingDto;
 
 public class TicketCreationDto {
-    private Long userMobile;
+    private String userMobile;
 
     private BigDecimal cash;
 
@@ -20,7 +20,7 @@ public class TicketCreationDto {
         // Empty for JSON
     }
 
-    public TicketCreationDto(Long userMobile, BigDecimal cash, BigDecimal card, BigDecimal voucher, List<ShoppingDto> shoppingCart) {
+    public TicketCreationDto(String userMobile, BigDecimal cash, BigDecimal card, BigDecimal voucher, List<ShoppingDto> shoppingCart) {
         this.userMobile = userMobile;
         this.cash = cash;
         this.card = card;
@@ -29,11 +29,11 @@ public class TicketCreationDto {
     }
 
 
-    public Long getUserMobile() {
+    public String getUserMobile() {
         return userMobile;
     }
 
-    public void setUserMobile(Long userMobile) {
+    public void setUserMobile(String userMobile) {
         this.userMobile = userMobile;
     }
 

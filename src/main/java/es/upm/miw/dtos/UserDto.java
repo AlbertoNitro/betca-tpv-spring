@@ -2,12 +2,19 @@ package es.upm.miw.dtos;
 
 import java.util.Date;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+
 import es.upm.miw.documents.core.User;
 
 public class UserDto {
 
-    private long mobile;
+    private static final String NINE_DIGITS = "[0-9]{9}";
 
+    @NotNull @Pattern(regexp = NINE_DIGITS)
+    private String mobile;
+
+    @NotNull
     private String username;
 
     private String password;
@@ -18,14 +25,14 @@ public class UserDto {
 
     private String address;
 
-    private boolean active;
+    private Boolean active;
 
     private Date registrationDate;
 
     public UserDto() {
     }
 
-    public UserDto(long mobile, String username, String password, String email, String dni, String address, boolean active) {
+    public UserDto(String mobile, String username, String password, String email, String dni, String address, Boolean active) {
         this.mobile = mobile;
         this.username = username;
         this.password = password;
@@ -35,25 +42,25 @@ public class UserDto {
         this.active = active;
     }
 
-    public UserDto(long mobile) {
-        this(mobile, "name" + mobile, "pass" + mobile, null, null, null, true);
+    public UserDto(String mobile) {
+        this(mobile, "name" + mobile, "pass" + mobile, null, null, null, null);
     }
 
     public UserDto(User user) {
-        this.mobile = user.getMobile();
+        this.mobile =String.valueOf(user.getMobile());
         this.username = user.getUsername();
         this.email = user.getEmail();
         this.dni = user.getDni();
         this.address = user.getAddress();
         this.active = user.isActive();
-        this.registrationDate=user.getRegistrationDate();
+        this.registrationDate = user.getRegistrationDate();
     }
 
-    public long getMobile() {
+    public String getMobile() {
         return mobile;
     }
 
-    public void setMobile(long mobile) {
+    public void setMobile(String mobile) {
         this.mobile = mobile;
     }
 
@@ -70,7 +77,7 @@ public class UserDto {
     }
 
     public void setPassword(String password) {
-        this.password = password;
+            this.password = password;
     }
 
     public String getEmail() {
@@ -97,11 +104,11 @@ public class UserDto {
         this.address = address;
     }
 
-    public boolean isActive() {
+    public Boolean isActive() {
         return active;
     }
 
-    public void setActive(boolean active) {
+    public void setActive(Boolean active) {
         this.active = active;
     }
 

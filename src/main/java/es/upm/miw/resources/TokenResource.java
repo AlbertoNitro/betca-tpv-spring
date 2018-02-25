@@ -25,7 +25,7 @@ public class TokenResource {
     @PreAuthorize("authenticated")
     @RequestMapping(method = RequestMethod.POST)
     public TokenDto login(@AuthenticationPrincipal User activeUser) {
-        return tokenController.login(Long.parseLong(activeUser.getUsername()));
+        return tokenController.login(activeUser.getUsername());
     }
 
     @PreAuthorize("hasRole('ADMIN') or hasRole('MANAGER') or hasRole('OPERATOR')")
