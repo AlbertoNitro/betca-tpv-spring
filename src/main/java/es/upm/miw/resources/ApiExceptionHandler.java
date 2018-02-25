@@ -2,7 +2,6 @@ package es.upm.miw.resources;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.log4j.Logger;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -31,7 +30,7 @@ public class ApiExceptionHandler {
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ExceptionHandler({UserFieldAlreadyExistException.class, FieldInvalidException.class, CashierClosedException.class,
+    @ExceptionHandler({Exception.class, UserFieldAlreadyExistException.class, FieldInvalidException.class, CashierClosedException.class,
             CashierCreateException.class})
     @ResponseBody
     public ErrorMessage badRequest(Exception exception) {
@@ -44,11 +43,4 @@ public class ApiExceptionHandler {
     public ErrorMessage forbiddenRequest(Exception exception) {
         return new ErrorMessage(exception, "");
     }
-
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ExceptionHandler({Exception.class})
-    public void unauthorizedRequest(Exception exception) {
-        Logger.getLogger(this.getClass()).info("Error!!! " + new ErrorMessage(exception, ""));
-    }
-
 }
