@@ -2,6 +2,8 @@ package es.upm.miw.resources;
 
 import java.util.Optional;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -15,7 +17,6 @@ import es.upm.miw.dtos.CashierClosureLastOutputDto;
 import es.upm.miw.resources.exceptions.CashierClosedException;
 import es.upm.miw.resources.exceptions.CashierCreateException;
 import es.upm.miw.resources.exceptions.FieldInvalidException;
-
 
 @PreAuthorize("hasRole('ADMIN') or hasRole('MANAGER') or hasRole('OPERATOR')")
 @RestController
@@ -43,19 +44,11 @@ public class CashierClosureResource {
     }
 
     @RequestMapping(value = LAST, method = RequestMethod.PATCH)
-    public void closeCashierClosure(@RequestBody CashierClosureInputDto cashierClosureDto) throws  CashierClosedException, FieldInvalidException {
-        this.validateFieldObject(cashierClosureDto, "No se ha enviado el cierre de caja");
-        this.validateFieldObject(cashierClosureDto.getFinalCash(), "Final Cash invalido");
-        this.validateFieldObject(cashierClosureDto.getSalesCard(), "Sales Card invalido");
-        Optional<String> error = cashierClosureController.close(cashierClosureDto);        
+    public void closeCashierClosure(@Valid @RequestBody CashierClosureInputDto cashierClosureDto)
+            throws CashierClosedException, FieldInvalidException {
+        Optional<String> error = cashierClosureController.close(cashierClosureDto);
         if (error.isPresent()) {
             throw new CashierClosedException(error.get());
-        }
-    }
-
-    private void validateFieldObject(Object objeto, String msg) throws FieldInvalidException{
-        if (objeto == null) {
-            throw new FieldInvalidException(msg);
         }
     }
 

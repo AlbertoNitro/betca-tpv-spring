@@ -2,10 +2,14 @@ package es.upm.miw.dtos;
 
 import java.math.BigDecimal;
 
+import javax.validation.constraints.NotNull;
+
 public class CashierClosureInputDto {
 
+    @NotNull
     private BigDecimal finalCash;
 
+    @NotNull
     private BigDecimal salesCard;
 
     private String comment;

@@ -22,7 +22,7 @@ public class AdminResource {
     public static final String STATE = "/state";
 
     public static final String DB = "/db";
-
+    
     @Autowired
     private AdminController adminController;
 

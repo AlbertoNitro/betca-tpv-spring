@@ -41,13 +41,13 @@ public class UserResource {
             userDto.setPassword(DEFAULT_PASSWORD);
         }
         if (this.userController.existsMobile(userDto.getMobile())) {
-            throw new UserFieldAlreadyExistException("Mobile ya existente");
+            throw new UserFieldAlreadyExistException("Existing mobile");
         }
         if (this.userController.emailRepeated(userDto)) {
-            throw new UserFieldAlreadyExistException("Email ya existente");
+            throw new UserFieldAlreadyExistException("Existing email");
         }
         if (this.userController.dniRepeated(userDto)) {
-            throw new UserFieldAlreadyExistException("Dni ya existente");
+            throw new UserFieldAlreadyExistException("Existing dni");
         }
         this.userController.createUser(userDto, new Role[] {Role.CUSTOMER});
     }
@@ -55,16 +55,16 @@ public class UserResource {
     @RequestMapping(method = RequestMethod.PUT)
     public void putCustomer(@Valid @RequestBody UserDto userDto) throws ForbiddenException, UserIdNotFoundException, UserFieldAlreadyExistException {
         if (!this.userController.existsMobile(userDto.getMobile())) {
-            throw new UserIdNotFoundException("Mobile no existente");
+            throw new UserIdNotFoundException("Not existing mobile");
         }
         if (this.userController.emailRepeated(userDto)) {
-            throw new UserFieldAlreadyExistException("Email ya existente");
+            throw new UserFieldAlreadyExistException("Existing email");
         }
         if (this.userController.dniRepeated(userDto)) {
-            throw new UserFieldAlreadyExistException("Dni ya existente");
+            throw new UserFieldAlreadyExistException("Existing dni");
         }
         if (!this.userController.putUser(userDto, new Role[] {Role.CUSTOMER})) {
-            throw new ForbiddenException("No se tiene el rol suficiente para actualizar al usr");
+            throw new ForbiddenException();
         }
     }
 

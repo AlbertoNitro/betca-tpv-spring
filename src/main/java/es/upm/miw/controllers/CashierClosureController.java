@@ -50,11 +50,11 @@ public class CashierClosureController {
             this.cashierClosureRepository.save(new CashierClosure(lastCashierClosure.getFinalCash()));
             return Optional.empty();
         } else {
-            return Optional.of("Opened: " + lastCashierClosure.getId());
+            return Optional.of("Already opened: " + lastCashierClosure.getId());
         }
     }
 
-    //TODO realizar TEST
+    //TODO TEST
     public Optional<String> close(CashierClosureInputDto cashierClosureDto) {
         CashierClosure lastCashierClosure = this.cashierClosureRepository.findFirstByOrderByOpeningDateDesc();
 
@@ -66,7 +66,7 @@ public class CashierClosureController {
             return Optional.empty();
 
         } else {
-            return Optional.of("Closed");
+            return Optional.of("Already closed");
         }
     }
 

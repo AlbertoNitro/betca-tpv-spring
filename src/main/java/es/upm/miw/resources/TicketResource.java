@@ -1,7 +1,8 @@
 package es.upm.miw.resources;
 
-import java.math.BigDecimal;
 import java.util.Optional;
+
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -24,25 +25,13 @@ public class TicketResource {
     @Autowired
     private TicketController ticketController;
 
-    @RequestMapping(method = RequestMethod.POST, produces = "application/pdf")
-    public @ResponseBody byte[] createTicket(@RequestBody TicketCreationInputDto ticketCreationDto) throws FieldInvalidException {
-        this.validateFieldObject(ticketCreationDto.getCard(), "Card debe ser positivo");
-        this.validateFieldObject(ticketCreationDto.getCash(), "Cash debe ser positivo");
-        this.validateFieldObject(ticketCreationDto.getVoucher(), "Voucher debe ser positivo");
-        if (ticketCreationDto.getShoppingCart() == null || ticketCreationDto.getShoppingCart().isEmpty()) {
-            throw new FieldInvalidException("Shopping no debe estar vacia");
-        }
+    @RequestMapping(method = RequestMethod.POST, produces = {"application/pdf", "application/json"})
+    public @ResponseBody byte[] createTicket(@Valid @RequestBody TicketCreationInputDto ticketCreationDto) throws FieldInvalidException {
         Optional<byte[]> pdf = this.ticketController.createTicket(ticketCreationDto);
         if (!pdf.isPresent()) {
-            throw new FieldInvalidException("Codigo de articulo no encontrado");
+            throw new FieldInvalidException("Article exception");
         } else {
             return pdf.get();
-        }
-    }
-
-    private void validateFieldObject(BigDecimal decimal, String msg) throws FieldInvalidException {
-        if (decimal == null || decimal.signum() == -1) {
-            throw new FieldInvalidException(msg);
         }
     }
 

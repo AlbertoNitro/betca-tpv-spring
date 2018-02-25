@@ -3,29 +3,33 @@ package es.upm.miw.dtos;
 import java.math.BigDecimal;
 import java.util.List;
 
+import es.upm.miw.dtos.validations.BigDecimalPositive;
+import es.upm.miw.dtos.validations.ListNotEmpty;
+
 public class TicketCreationInputDto {
     private String userMobile;
 
+    @BigDecimalPositive
     private BigDecimal cash;
 
+    @BigDecimalPositive
     private BigDecimal card;
 
+    @BigDecimalPositive
     private BigDecimal voucher;
 
+    @ListNotEmpty
     private List<ShoppingDto> shoppingCart;
 
     public TicketCreationInputDto() {
-        // Empty for JSON
     }
-
-    public TicketCreationInputDto(String userMobile, BigDecimal cash, BigDecimal card, BigDecimal voucher, List<ShoppingDto> shoppingCart) {
-        this.userMobile = userMobile;
+    
+    public TicketCreationInputDto(BigDecimal cash, BigDecimal card, BigDecimal voucher, List<ShoppingDto> shoppingCart) {
         this.cash = cash;
         this.card = card;
         this.voucher = voucher;
         this.shoppingCart = shoppingCart;
     }
-
 
     public String getUserMobile() {
         return userMobile;

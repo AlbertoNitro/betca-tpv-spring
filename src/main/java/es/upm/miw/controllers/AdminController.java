@@ -22,8 +22,8 @@ public class AdminController {
         try {
             this.databaseSeederService.seedDatabase(ymlFileName);
             return Optional.empty();
-        } catch (IOException e) {
-            return Optional.of(e.getMessage());
+        } catch (IOException ioe) {
+            return Optional.of(ioe.getMessage());
         }
     }
 

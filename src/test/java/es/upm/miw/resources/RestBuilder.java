@@ -13,6 +13,7 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.util.MultiValueMap;
@@ -35,6 +36,8 @@ public class RestBuilder<T> {
 
     private Map<String, String> headerValues;
 
+    private List<MediaType> mediaTytes;
+
     private String authorization = null;
 
     private Object body = null;
@@ -53,9 +56,10 @@ public class RestBuilder<T> {
         this.port = port;
         this.path = "";
         this.expandList = new ArrayList<>();
-        headerValues = new HashMap<>();
-        params = new HttpHeaders();
-        log = false;
+        this.headerValues = new HashMap<>();
+        this.mediaTytes = new ArrayList<>();
+        this.params = new HttpHeaders();
+        this.log = false;
     }
 
     public RestBuilder() {
@@ -109,6 +113,14 @@ public class RestBuilder<T> {
         return this;
     }
 
+    public RestBuilder<T> accept(MediaType mediaType) {
+        if(this.mediaTytes.isEmpty()) {
+            this.mediaTytes.add(MediaType.APPLICATION_JSON);
+        }
+        this.mediaTytes.add(mediaType);
+        return this;
+    }
+
     public RestBuilder<T> body(Object body) {
         this.body = body;
         return this;
@@ -135,6 +147,9 @@ public class RestBuilder<T> {
         }
         if (authorization != null) {
             headers.set("Authorization", authorization);
+        }
+        if (this.mediaTytes.isEmpty()) {
+            headers.setAccept(this.mediaTytes);
         }
         return headers;
     }

@@ -9,7 +9,7 @@ import es.upm.miw.documents.core.User;
 
 public class UserDto {
 
-    private static final String NINE_DIGITS = "[0-9]{9}";
+    private static final String NINE_DIGITS = "\\d{9}";
 
     @NotNull @Pattern(regexp = NINE_DIGITS)
     private String mobile;
