@@ -21,7 +21,7 @@ import es.upm.miw.repositories.core.UserRepository;
 @Transactional
 public class UserDetailsServiceImpl implements UserDetailsService {
 
-    private static final String TOKEN_PASSWORD = "";
+    public static final String P_TOKEN = "";
 
     @Autowired
     private UserRepository userRepository;
@@ -30,7 +30,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     public UserDetails loadUserByUsername(final String mobileOrTokenValue) {
         User user = userRepository.findByTokenValue(mobileOrTokenValue);
         if (user != null) {
-            return this.userBuilder(user.getMobile(), new BCryptPasswordEncoder().encode(TOKEN_PASSWORD), user.getRoles(), user.isActive());
+            return this.userBuilder(user.getMobile(), new BCryptPasswordEncoder().encode(P_TOKEN), user.getRoles(), user.isActive());
         } else {
             user = userRepository.findByMobile(mobileOrTokenValue);
             if (user != null) {

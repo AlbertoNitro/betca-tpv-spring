@@ -1,10 +1,7 @@
 package es.upm.miw.repositories.core;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
 
-import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -28,20 +25,10 @@ public class VoucherRepositoryIT {
     private VoucherRepository voucherRepository;
 
     @Test
-    public void testVoucherNotUsed() {
-        assertFalse(this.voucherRepository.findByValue(new BigDecimal("666.666")).get(0).isUsed());
-    }
-
-    @Test
-    public void testVoucherUsed() {
-        assertTrue(this.voucherRepository.findByValue(new BigDecimal("0.666")).get(0).isUsed());
-    }
-
-    @Test
     public void testFindByDateOfUseGreaterThan() throws ParseException {
         Date date = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss").parse("2018-01-06 00:00:22");
         List<Voucher> voucherList = this.voucherRepository.findByDateOfUseGreaterThan(date);
-        assertEquals(30.3, voucherList.get(0).getValue().doubleValue(),10-10);
+        assertEquals(30.3, voucherList.get(0).getValue().doubleValue(), 10 - 10);
     }
 
 }

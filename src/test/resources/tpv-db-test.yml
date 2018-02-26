@@ -94,8 +94,8 @@ providerList:
 articleList:
   - &ar0
     code: 1
-    reference: varios
-    description: Varios
+    reference: various
+    description: Various
     retailPrice: 100
     wholesalePrice: 50
     tax: GENERAL

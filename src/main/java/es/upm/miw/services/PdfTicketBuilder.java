@@ -116,7 +116,7 @@ public class PdfTicketBuilder extends PdfBuilder {
         return this;
     }
 
-    public PdfTicketBuilder TableColumnsSizes(float... widths) {
+    public PdfTicketBuilder tableColumnsSizes(float... widths) {
         this.setTable(new Table(widths, true));
         this.getTable().setBorder(new SolidBorder(Color.WHITE, 2));
         this.getTable().setVerticalAlignment(VerticalAlignment.MIDDLE);

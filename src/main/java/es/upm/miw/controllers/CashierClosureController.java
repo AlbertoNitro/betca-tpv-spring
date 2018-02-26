@@ -54,7 +54,6 @@ public class CashierClosureController {
         }
     }
 
-    // TODO TEST
     public Optional<String> close(CashierClosureInputDto cashierClosureDto) {
         CashierClosure lastCashierClosure = this.cashierClosureRepository.findFirstByOrderByOpeningDateDesc();
 

@@ -39,7 +39,7 @@ public class UserDto {
         this.username = username;
         this.password = password;
         this.email = email;
-        this.dni = dni;
+        this.setDni(dni);
         this.address = address;
         this.active = active;
     }
@@ -87,7 +87,11 @@ public class UserDto {
     }
 
     public void setEmail(String email) {
-        this.email = email;
+        if (email != null) {
+            this.email = email.toLowerCase();
+        } else {
+            this.email = email;
+        }
     }
 
     public String getDni() {
@@ -95,7 +99,11 @@ public class UserDto {
     }
 
     public void setDni(String dni) {
-        this.dni = dni;
+        if (dni != null) {
+            this.dni = dni.toUpperCase();
+        } else {
+            this.dni = dni;
+        }
     }
 
     public String getAddress() {

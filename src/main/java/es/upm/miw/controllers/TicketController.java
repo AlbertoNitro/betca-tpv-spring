@@ -39,14 +39,14 @@ public class TicketController {
 
     public Optional<byte[]> createTicket(TicketCreationInputDto ticketCreationDto) {
         User user = this.userRepository.findByMobile(ticketCreationDto.getUserMobile());
-        List<Shopping> shoppingList = new ArrayList<Shopping>();
-        for (ShoppingDto item : ticketCreationDto.getShoppingCart()) {
-            Article article = this.articleRepository.findOne(item.getCode());
+        List<Shopping> shoppingList = new ArrayList<>();
+        for (ShoppingDto shoppingDto : ticketCreationDto.getShoppingCart()) {
+            Article article = this.articleRepository.findOne(shoppingDto.getCode());
             if (article == null) {
                 return Optional.empty();
             }
-            Shopping shopping = new Shopping(item.getAmount(), item.getDiscount(), article);
-            if (item.isCommitted()) {
+            Shopping shopping = new Shopping(shoppingDto.getAmount(), shoppingDto.getDiscount(), article);
+            if (shoppingDto.isCommitted()) {
                 shopping.setShoppingState(ShoppingState.COMMITTED);
             } else {
                 shopping.setShoppingState(ShoppingState.OPENED);

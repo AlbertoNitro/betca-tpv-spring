@@ -22,7 +22,13 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import es.upm.miw.services.UserDetailsServiceImpl;
+
 public class RestBuilder<T> {
+
+    private static final String SERVER_URI_DEFAULT = "http://localhost";
+    
+    private static final int PORT_DEFAULT = 8080;
 
     private RestTemplate restTemplate = new RestTemplate();
 
@@ -63,15 +69,15 @@ public class RestBuilder<T> {
     }
 
     public RestBuilder() {
-        this("http://localhost", 8080);
+        this(SERVER_URI_DEFAULT, PORT_DEFAULT);
     }
 
     public RestBuilder(int port) {
-        this("http://localhost", port);
+        this(SERVER_URI_DEFAULT, port);
     }
 
     public RestBuilder(String serverUri) {
-        this(serverUri, 8080);
+        this(serverUri, PORT_DEFAULT);
     }
 
     public RestBuilder<T> port(int port) {
@@ -92,7 +98,7 @@ public class RestBuilder<T> {
     }
 
     public RestBuilder<T> basicAuth(String token) {
-        return basicAuth(token, "");
+        return basicAuth(token, UserDetailsServiceImpl.P_TOKEN);
     }
 
     public RestBuilder<T> basicAuth(String nick, String pass) {

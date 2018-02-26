@@ -16,7 +16,6 @@ import es.upm.miw.dtos.CashierClosureInputDto;
 import es.upm.miw.dtos.CashierClosureLastOutputDto;
 import es.upm.miw.resources.exceptions.CashierClosedException;
 import es.upm.miw.resources.exceptions.CashierCreateException;
-import es.upm.miw.resources.exceptions.FieldInvalidException;
 
 @PreAuthorize("hasRole('ADMIN') or hasRole('MANAGER') or hasRole('OPERATOR')")
 @RestController
@@ -44,8 +43,7 @@ public class CashierClosureResource {
     }
 
     @RequestMapping(value = LAST, method = RequestMethod.PATCH)
-    public void closeCashierClosure(@Valid @RequestBody CashierClosureInputDto cashierClosureDto)
-            throws CashierClosedException, FieldInvalidException {
+    public void closeCashierClosure(@Valid @RequestBody CashierClosureInputDto cashierClosureDto) throws CashierClosedException {
         Optional<String> error = cashierClosureController.close(cashierClosureDto);
         if (error.isPresent()) {
             throw new CashierClosedException(error.get());

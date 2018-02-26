@@ -14,6 +14,6 @@ import org.junit.runners.Suite.SuiteClasses;
     UserRepositoryIT.class,
     VoucherRepositoryIT.class,
     })
-public class AllMiwRepositoriesCoreIntegrationTets {
+public class AllMiwRepositoriesCoreIntegrationTests {
 
 }

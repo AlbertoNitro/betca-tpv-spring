@@ -16,7 +16,6 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import es.upm.miw.documents.core.Ticket;
-import es.upm.miw.documents.core.User;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -27,20 +26,9 @@ public class TicketRepositoryIT {
     private TicketRepository ticketRepository;
 
     @Test
-    public void testFindTicketMobile() {
+    public void testFindByReference() {
         assertEquals("666666004", ticketRepository.findByReference("t2j_u9M9CisFmYGRFs1Uulgn7hI").getUser().getMobile());
-    }
-
-    @Test
-    public void testFindTicketTotal() {
         assertEquals(151, ticketRepository.findByReference("t2j_u9M9CisFmYGRFs1Uulgn7hI").getTicketTotal().doubleValue(), 10E-5);
-    }
-
-    @Test
-    public void testFindByUserOrderByCreationDateDesc() {
-        User user = ticketRepository.findByReference("t2j_u9M9CisFmYGRFs1Uulgn7hI").getUser();
-        assertTrue(ticketRepository.findByUserOrderByCreationDateDesc(user).get(0).getCreationDate()
-                .after(ticketRepository.findByUserOrderByCreationDateDesc(user).get(1).getCreationDate()));
     }
 
     @Test
@@ -49,5 +37,9 @@ public class TicketRepositoryIT {
         List<Ticket> ticketList= ticketRepository.findByCreationDateGreaterThan(date);
         assertTrue(ticketList.contains(ticketRepository.findByReference("t2j_u9M9CisFmYGRFs1Uulgn7hI")));
         assertTrue(ticketList.contains(ticketRepository.findByReference("6P0ISee_twnGEzf8qd1Bd5sGQqE")));
+    }
+    
+    @Test
+    public void testFindFirstByOrderByCreationDateDescIdDesc() {
     }
 }

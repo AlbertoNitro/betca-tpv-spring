@@ -8,7 +8,6 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -26,19 +25,13 @@ public class AdminResourceFunctionalTesting {
     @Rule
     public ExpectedException thrown = ExpectedException.none();
 
-    @Value("${local.server.port}")
-    private int port;
-
-    @Value("${server.contextPath}")
-    private String contextPath;
-
     @Autowired
     private RestService restService;
 
     @Test
     public void testState() {
-        String json = new RestBuilder<String>(port).path(contextPath).path(AdminResource.ADMINS).path(AdminResource.STATE)
-                .clazz(String.class).get().build();
+        String json = restService.restBuilder(new RestBuilder<String>()).clazz(String.class).path(AdminResource.ADMINS)
+                .path(AdminResource.STATE).get().build();
         assertEquals("{\"state\":\"ok\"}", json);
     }
 

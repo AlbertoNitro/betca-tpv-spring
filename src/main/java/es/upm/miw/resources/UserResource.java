@@ -1,6 +1,7 @@
 package es.upm.miw.resources;
 
 import java.util.List;
+import java.util.UUID;
 
 import javax.validation.Valid;
 
@@ -18,15 +19,12 @@ import es.upm.miw.dtos.UserDto;
 import es.upm.miw.dtos.UserMinimumDto;
 import es.upm.miw.resources.exceptions.ForbiddenException;
 import es.upm.miw.resources.exceptions.UserFieldAlreadyExistException;
-import es.upm.miw.resources.exceptions.FieldInvalidException;
 import es.upm.miw.resources.exceptions.UserIdNotFoundException;
 
 @PreAuthorize("hasRole('ADMIN') or hasRole('MANAGER') or hasRole('OPERATOR')")
 @RestController
 @RequestMapping(UserResource.USERS)
 public class UserResource {
-
-    private static final String DEFAULT_PASSWORD = "miw.Tpv.2017";
 
     public static final String USERS = "/users";
 
@@ -36,9 +34,9 @@ public class UserResource {
     private UserController userController;
 
     @RequestMapping(method = RequestMethod.POST)
-    public void createCustomer(@Valid @RequestBody UserDto userDto) throws FieldInvalidException, UserFieldAlreadyExistException {
+    public void createCustomer(@Valid @RequestBody UserDto userDto) throws UserFieldAlreadyExistException {
         if (userDto.getPassword() == null) {
-            userDto.setPassword(DEFAULT_PASSWORD);
+            userDto.setPassword(UUID.randomUUID().toString());
         }
         if (this.userController.existsMobile(userDto.getMobile())) {
             throw new UserFieldAlreadyExistException("Existing mobile");

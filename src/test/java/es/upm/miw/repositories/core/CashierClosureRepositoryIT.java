@@ -43,11 +43,6 @@ public class CashierClosureRepositoryIT {
     
     @Test
     public void testFindFirstByOrderByClosureDateDesc() {
-        CashierClosure cashierClosure1 = new CashierClosure();
-        cashierClosure1.close(new BigDecimal("100"), new BigDecimal("200"),  new BigDecimal("100"),  new BigDecimal("0"), "");
-        cashierClosureRepository.save(cashierClosure1);
-        CashierClosure cashierClosure2 = new CashierClosure();
-        cashierClosureRepository.save(cashierClosure2);
         assertEquals(cashierClosure1.getId(),cashierClosureRepository.findFirstByOrderByClosureDateDesc().getId());
     }
     
@@ -56,6 +51,5 @@ public class CashierClosureRepositoryIT {
         cashierClosureRepository.delete(cashierClosure1);
         cashierClosureRepository.delete(cashierClosure2);
     }
-    
 
 }

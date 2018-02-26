@@ -10,8 +10,6 @@ import es.upm.miw.dtos.TokenOutputDto;
 @Service
 public class RestService {
     
-    private static final String TPV_DB_TEST_YML = "tpv-db-test.yml";
-
     @Autowired
     private Environment environment;
 
@@ -23,6 +21,9 @@ public class RestService {
 
     @Value("${miw.admin.password}")
     private String adminPassword;
+    
+    @Value("${miw.databaseSeeder.ymlFileName}")
+    private String testFile;
 
     private TokenOutputDto tokenDto;
 
@@ -66,6 +67,12 @@ public class RestService {
         return this;
     }
 
+    public RestService loginCustomer() {
+        this.tokenDto = new RestBuilder<TokenOutputDto>(this.port()).path(contextPath).path(TokenResource.TOKENS).basicAuth("666666002", "p002")
+                .clazz(TokenOutputDto.class).post().build();
+        return this;
+    }
+
     public RestService logout() {
         this.tokenDto = null;
         return this;
@@ -73,7 +80,7 @@ public class RestService {
     
     public void reLoadTestDB() {
         this.loginAdmin().restBuilder().path(AdminResource.ADMINS).path(AdminResource.DB).delete().build();
-        this.loginAdmin().restBuilder().path(AdminResource.ADMINS).path(AdminResource.DB).body(TPV_DB_TEST_YML).post().build();        
+        this.loginAdmin().restBuilder().path(AdminResource.ADMINS).path(AdminResource.DB).body(testFile).post().build();        
     }
 
     public TokenOutputDto getTokenDto() {

@@ -1,8 +1,10 @@
 package es.upm.miw.repositories.core;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
+
+import java.util.List;
 
 import org.junit.After;
 import org.junit.Before;
@@ -15,6 +17,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import es.upm.miw.documents.core.Token;
 import es.upm.miw.documents.core.User;
+import es.upm.miw.dtos.UserMinimumDto;
 import es.upm.miw.repositories.core.UserRepository;
 
 @RunWith(SpringRunner.class)
@@ -34,18 +37,10 @@ public class UserRepositoryIT {
     }
 
     @Test
-    public void testFindUser() {
+    public void testFindByMobile() {
         User userBd = userRepository.findByMobile("666001000");
         assertNotNull(userBd);
         assertEquals("666001000", userBd.getUsername());
-    }
-
-    @Test
-    public void testFindUserNameByMobile() {
-        User userBd = userRepository.findUsernameByMobile("666001000");
-        assertNotNull(userBd);
-        assertEquals("666001000", userBd.getUsername());
-        assertNull(userBd.getPassword());
     }
 
     @Test
@@ -58,7 +53,10 @@ public class UserRepositoryIT {
     
     @Test
     public void testFindCustomerAll() {
-        System.out.println(userRepository.findCustomerAll());
+        List<UserMinimumDto> userList = userRepository.findCustomerAll();
+        for (UserMinimumDto userMinimumDto : userList) {
+            assertFalse(userMinimumDto.getMobile().equals("666666000"));
+        }
     }
     
     @After

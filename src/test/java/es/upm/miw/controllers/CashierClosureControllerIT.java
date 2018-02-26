@@ -22,9 +22,6 @@ public class CashierClosureControllerIT {
     @Autowired
     private CashierClosureController cashierClosureController;
 
-//    @Autowired
-//    private CashierClosureRepository cashierClosureRepository;
-    
     @Autowired
     private DatabaseSeederService databaseSeederService;
     
@@ -34,7 +31,6 @@ public class CashierClosureControllerIT {
         cashierClosureController.createCashierClosure();
         CashierClosureInputDto cashierClosureDto = new CashierClosureInputDto(new BigDecimal("100"), new BigDecimal("50"), "testClose");
         cashierClosureController.close(cashierClosureDto);
-        //assertEquals(new BigDecimal("153.20"),cashierClosureRepository.findAll().get(0).getSalesCash());
         this.databaseSeederService.deleteAllAndCreateAdmin();
         this.databaseSeederService.seedDatabase("tpv-db-test.yml");
 
