@@ -38,7 +38,7 @@ public class PdfService {
         pdf.addImage("logo-upm.png");
         pdf.paragraphEmphasized("Master en Ingeniería Web. BETCA");
         pdf.paragraphEmphasized("Tfno: +(34) 913366000").paragraph("NIF: Q2818015F").paragraph("Calle Alan Turing s/n, 28031 Madrid");
-        pdf.barCode(ticket.getId()).separator();
+        pdf.barCode(ticket.getId()).line();
         SimpleDateFormat formatter = new SimpleDateFormat(DATE_FORMAT);
         pdf.paragraphEmphasized(formatter.format(ticket.getCreationDate()));
         pdf.TableColumnsSizes(TABLE_COLUMNS_SIZES).tableColumnsHeader(TABLE_COLUMNS_HEADERS);
@@ -54,7 +54,7 @@ public class PdfService {
         }
         pdf.tableColspanRight("TOTAL: " + ticket.getTicketTotal().setScale(2, RoundingMode.HALF_UP) + "€");
 
-        pdf.separator().paragraph("Periodo de devolución o cambio: 15 dias a partir de la fecha del ticket");
+        pdf.line().paragraph("Periodo de devolución o cambio: 15 dias a partir de la fecha del ticket");
         pdf.paragraphEmphasized("Gracias por su compra");
         pdf.qrCode(ticket.getReference());
 

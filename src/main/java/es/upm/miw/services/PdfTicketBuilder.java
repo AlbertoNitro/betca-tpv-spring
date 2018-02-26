@@ -16,6 +16,7 @@ import com.itextpdf.barcodes.BarcodeQRCode;
 import com.itextpdf.io.image.ImageDataFactory;
 import com.itextpdf.kernel.color.Color;
 import com.itextpdf.kernel.geom.PageSize;
+import com.itextpdf.kernel.pdf.canvas.draw.DottedLine;
 import com.itextpdf.layout.border.SolidBorder;
 import com.itextpdf.layout.element.Cell;
 import com.itextpdf.layout.element.Image;
@@ -41,8 +42,6 @@ public class PdfTicketBuilder extends PdfBuilder {
     private static final float LINE_WIDTH = 0.5f;
 
     private static final int LINE_GAP = 2;
-
-    private static final int LINE_DASH = 1;
 
     private static final int IMAGE_WIDTH = 80;
 
@@ -87,9 +86,8 @@ public class PdfTicketBuilder extends PdfBuilder {
         return this;
     }
 
-    public PdfTicketBuilder separator() {
-        PdfCustomDashedLineSeparator separator = new PdfCustomDashedLineSeparator();
-        separator.setDash(LINE_DASH);
+    public PdfTicketBuilder line() {
+        DottedLine separator = new DottedLine();
         separator.setGap(LINE_GAP);
         separator.setLineWidth(LINE_WIDTH);
         this.getDocument().add(new LineSeparator(separator));
