@@ -119,16 +119,16 @@ public class RestBuilder<T> {
         return this;
     }
 
+    public RestBuilder<T> body(Object body) {
+        this.body = body;
+        return this;
+    }
+
     public RestBuilder<T> accept(MediaType mediaType) {
         if(this.mediaTytes.isEmpty()) {
             this.mediaTytes.add(MediaType.APPLICATION_JSON);
         }
         this.mediaTytes.add(mediaType);
-        return this;
-    }
-
-    public RestBuilder<T> body(Object body) {
-        this.body = body;
         return this;
     }
 
@@ -154,7 +154,7 @@ public class RestBuilder<T> {
         if (authorization != null) {
             headers.set("Authorization", authorization);
         }
-        if (this.mediaTytes.isEmpty()) {
+        if (!this.mediaTytes.isEmpty()) {
             headers.setAccept(this.mediaTytes);
         }
         return headers;

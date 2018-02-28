@@ -20,6 +20,7 @@ public class Provider {
     private String note;
 
     public Provider() {
+        // Empty for framework
     }
 
     public String getCompany() {
