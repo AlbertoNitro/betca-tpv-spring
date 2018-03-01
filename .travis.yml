@@ -27,3 +27,12 @@ script:
 # Sonarcloud
 - mvn org.jacoco:jacoco-maven-plugin:prepare-agent verify
 - mvn sonar:sonar -Dsonar.organization=miw-upm-github -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=$SONAR
+# Deploy in Heroku
+deploy:
+  provider: heroku
+  api_key:
+    secure: dY3++dk3w5ezkQmBoKoeIGTCxwZ4p/Y0zU7v1sf8SEu1K0d+JUxzutHM9beBNUeMx0UtQHSqzYrCzPSl7Y9KNTU2kwGfFX3AEL5GCV7JY7CD7iXu9Rn98sLkYO3+gEe3s+3RPwHgy4vM1bl9NRgdIoN5OAh66WkmwzvFMswyx/PJN3E1nfnroNcmYOMkbnS1Z+Jg43U5LqxxrUHuz6CoYlB+jKv8rziByeW7dRsPEPQocv5gV7m9rt1xpwlENJfCPiiwqYIpGjm+8JwcWUV5ZHDKAUaVnVckBSikHhUnYbhBzlsPk3PVOeqeZoiqkIYy//U5+6SpfNx2IRQBQjlurZ7Y360y85saDMiUlFo1fFP9Z0A6wJOE2F19NAJ96PvevdBeirkZd5h1Cr817N95UzwZGTVG9gCtpg39xAfuJGyZTwcetOI6IerJqpRcgEpSUKsDhCsVdWQ/CHigAFFJiHJKdX1woGF0fR8pX2R8TAUhrr3t3NiFHcPad6YT66K/d/XuviAUB7bA5DKi5KvLv1NuAEgCHJGvLPIEVPQI6xr/CYwlrNejwnCTDLbMImHbqkq3ySvzgrubCUrcpHiDmnV+cinRUjREvt3lu0eRmIIssk7YobxxPIfPeCi2UVne3RPg2rQ/qUl68dvdB2AAIJmcLbg5BJuwZWKOYYIYxZY=
+  app: betca-tpv-spring
+  on:
+    repo: miw-upm/betca-tpv-spring
+    branch: develop
