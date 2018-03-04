@@ -22,6 +22,8 @@ public class AdminResourceFunctionalTesting {
 
     private static final String TPV_DB_TEST_YML = "tpv-db-test.yml";
 
+    private static final String TPV_DB_YML = "tpv-db.yml";
+
     @Rule
     public ExpectedException thrown = ExpectedException.none();
 
@@ -45,6 +47,13 @@ public class AdminResourceFunctionalTesting {
             assertEquals(HttpStatus.NOT_FOUND, httpError.getStatusCode());
         }
         restService.loginAdmin().restBuilder().path(AdminResource.ADMINS).path(AdminResource.DB).body(TPV_DB_TEST_YML).post().build();
+    }
+
+    @Test
+    public void testDeleteAndSeedDbProduction() {
+        restService.loginAdmin().restBuilder().path(AdminResource.ADMINS).path(AdminResource.DB).delete().build();
+        restService.loginAdmin().restBuilder().path(AdminResource.ADMINS).path(AdminResource.DB).body(TPV_DB_YML).post().build();
+        restService.reLoadTestDB();
     }
 
     @Test

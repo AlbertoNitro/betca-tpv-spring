@@ -44,8 +44,8 @@ public class UserDto {
         this.active = active;
     }
 
-    public UserDto(String mobile) {
-        this(mobile, "name" + mobile, "pass" + mobile, null, null, null, null);
+    public UserDto(String mobileNamePass) {
+        this(mobileNamePass, "name" + mobileNamePass, "pass" + mobileNamePass, null, null, null, null);
     }
 
     public UserDto(User user) {

@@ -26,24 +26,38 @@ public class UserController {
         this.userRepository.save(user);
     }
 
-    public boolean dniRepeated(UserDto userDto) {
+    public boolean mobileRepeated(String oldMobile, UserDto userDto) {
+        User user = this.userRepository.findByMobile(userDto.getMobile());
+        return user != null && !user.getMobile().equals(oldMobile);
+    }
+
+    public boolean dniRepeated(String mobile, UserDto userDto) {
         User user = this.userRepository.findByDni(userDto.getDni());
-        return userDto.getDni() != null && user != null && !user.getMobile().equals(userDto.getMobile());
+        return userDto.getDni() != null && user != null && !user.getMobile().equals(mobile);
+    }
+
+    public boolean dniRepeated(UserDto userDto) {
+        return this.dniRepeated(userDto.getMobile(), userDto);
+    }
+
+    public boolean emailRepeated(String mobile, UserDto userDto) {
+        User user = this.userRepository.findByEmail(userDto.getEmail());
+        return userDto.getEmail() != null && user != null && !user.getMobile().equals(mobile);
     }
 
     public boolean emailRepeated(UserDto userDto) {
-        User user = this.userRepository.findByEmail(userDto.getEmail());
-        return userDto.getEmail() != null && user != null && !user.getMobile().equals(userDto.getMobile());
+        return this.emailRepeated(userDto.getMobile(), userDto);
     }
 
     public boolean existsMobile(String mobile) {
         return this.userRepository.findByMobile(mobile) != null;
     }
 
-    public boolean putUser(UserDto userDto, Role[] roles) {
-        User user = this.userRepository.findByMobile(userDto.getMobile());
+    public boolean putUser(String mobile, UserDto userDto, Role[] roles) {
+        User user = this.userRepository.findByMobile(mobile);
         assert user != null;
         if (Arrays.asList(roles).containsAll(Arrays.asList(user.getRoles()))) {
+            user.setMobile(userDto.getMobile());
             user.setUsername(userDto.getUsername());
             user.setEmail(userDto.getEmail());
             user.setDni(userDto.getDni());

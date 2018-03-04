@@ -1,5 +1,7 @@
 package es.upm.miw.resources;
 
+import static org.junit.Assert.assertEquals;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
@@ -77,7 +79,7 @@ public class UserResourceFunctionalTesting {
         thrown.expect(new HttpMatcher(HttpStatus.BAD_REQUEST));
         this.userDto.setEmail("repeat@gmail.com");
         restService.loginAdmin().restBuilder().path(UserResource.USERS).body(this.userDto).post().build();
-        UserDto userDto2 = new UserDto("6660000002");     
+        UserDto userDto2 = new UserDto("6660000002");
         userDto2.setEmail("repeat@gmail.com");
         restService.restBuilder().path(UserResource.USERS).body(userDto2).post().build();
     }
@@ -87,9 +89,54 @@ public class UserResourceFunctionalTesting {
         thrown.expect(new HttpMatcher(HttpStatus.BAD_REQUEST));
         this.userDto.setDni("12345678Z");
         restService.loginAdmin().restBuilder().path(UserResource.USERS).body(this.userDto).post().build();
-        UserDto userDto2 = new UserDto("6660000002");     
+        UserDto userDto2 = new UserDto("6660000002");
         userDto2.setDni("12345678Z");
         restService.restBuilder().path(UserResource.USERS).body(userDto2).post().build();
+    }
+
+    @Test
+    public void testPutCustomer() {
+        restService.loginAdmin().restBuilder().path(UserResource.USERS).body(this.userDto).post().build();
+        userDto.setMobile("666000003");
+        userDto.setEmail("new@gmail.com");
+        restService.restBuilder().path(UserResource.USERS).path(UserResource.MOBILE_ID).expand("666000000").body(this.userDto).put()
+                .build();
+        UserDto userDto2 = restService.restBuilder(new RestBuilder<UserDto>()).clazz(UserDto.class).path(UserResource.USERS)
+                .path(UserResource.MOBILE_ID).expand("666000003").get().build();
+        assertEquals("new@gmail.com", userDto2.getEmail());
+    }
+
+    @Test
+    public void testPutCustomerMobileNotExistsUserIdNotFoundException() {
+        thrown.expect(new HttpMatcher(HttpStatus.NOT_FOUND));
+        restService.loginAdmin().restBuilder().path(UserResource.USERS).path(UserResource.MOBILE_ID).expand(this.userDto.getMobile())
+                .body(this.userDto).put().build();
+    }
+
+    @Test
+    public void testPutCustomerMobileRepeatUserIdFieldAlreadyExistException() {
+        thrown.expect(new HttpMatcher(HttpStatus.BAD_REQUEST));
+        UserDto userDto2 = new UserDto("666666004");
+        restService.loginAdmin().restBuilder().path(UserResource.USERS).path(UserResource.MOBILE_ID).expand("666666003").body(userDto2)
+                .put().build();
+    }
+
+    @Test
+    public void testPutCustomerDniRepeatUserIdFieldAlreadyExistException() {
+        thrown.expect(new HttpMatcher(HttpStatus.BAD_REQUEST));
+        UserDto userDto2 = new UserDto("666666003");
+        userDto2.setDni("66666604T");
+        restService.loginAdmin().restBuilder().path(UserResource.USERS).path(UserResource.MOBILE_ID).expand("666666003").body(userDto2)
+                .put().build();
+    }
+
+    @Test
+    public void testPutCustomerEmailRepeatUserIdFieldAlreadyExistException() {
+        thrown.expect(new HttpMatcher(HttpStatus.BAD_REQUEST));
+        UserDto userDto2 = new UserDto("666666003");
+        userDto2.setEmail("u004@gmail.com");
+        restService.loginAdmin().restBuilder().path(UserResource.USERS).path(UserResource.MOBILE_ID).expand("666666003").body(userDto2)
+                .put().build();
     }
 
     @Test

@@ -1,4 +1,4 @@
-package es.upm.miw.aspect;
+package es.upm.miw;
 
 import org.apache.log4j.LogManager;
 import org.aspectj.lang.JoinPoint;
@@ -36,7 +36,8 @@ public class ApiLogs {
 
     @AfterThrowing(pointcut = "allResources()", throwing = "exception")
     public void apiResponseExceptionLog(JoinPoint jp, Exception exception) {
-        String log = "<<< Return Exception << " + jp.getSignature().getName() + ": " + exception.getClass().getSimpleName();
+        String log = "<<< Return Exception << " + jp.getSignature().getName() + ": " + exception.getClass().getSimpleName() + "->"
+                + exception.getMessage();
         LogManager.getLogger(jp.getSignature().getDeclaringTypeName()).info(log);
     }
 

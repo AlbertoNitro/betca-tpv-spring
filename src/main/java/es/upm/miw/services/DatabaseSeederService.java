@@ -81,12 +81,24 @@ public class DatabaseSeederService {
         DatabaseGraph tpvGraph = (DatabaseGraph) yamlParser.load(input);
 
         // Save Repositories -----------------------------------------------------
-        this.userRepository.save(tpvGraph.getUserList());
-        this.voucherRepository.save(tpvGraph.getVoucherList());
-        this.providerRepository.save(tpvGraph.getProviderList());
-        this.articleRepository.save(tpvGraph.getArticleList());
-        this.ticketRepository.save(tpvGraph.getTicketList());
-        this.invoiceRepository.save(tpvGraph.getInvoiceList());
+        if (tpvGraph.getUserList() != null) {
+            this.userRepository.save(tpvGraph.getUserList());
+        }
+        if (tpvGraph.getVoucherList() != null) {
+            this.voucherRepository.save(tpvGraph.getVoucherList());
+        }
+        if (tpvGraph.getProviderList() != null) {
+            this.providerRepository.save(tpvGraph.getProviderList());
+        }
+        if (tpvGraph.getArticleList() != null) {
+            this.articleRepository.save(tpvGraph.getArticleList());
+        }
+        if (tpvGraph.getTicketList() != null) {
+            this.ticketRepository.save(tpvGraph.getTicketList());
+        }
+        if (tpvGraph.getInvoiceList() != null) {
+            this.invoiceRepository.save(tpvGraph.getInvoiceList());
+        }
         // -----------------------------------------------------------------------
 
         Logger.getLogger(this.getClass()).warn("------------------------- Seed: " + ymlFileName + "-----------");

@@ -50,19 +50,22 @@ public class UserResource {
         this.userController.createUser(userDto, new Role[] {Role.CUSTOMER});
     }
 
-    @RequestMapping(method = RequestMethod.PUT)
-    public void putCustomer(@Valid @RequestBody UserDto userDto)
+    @RequestMapping(value = MOBILE_ID, method = RequestMethod.PUT)
+    public void putCustomer(@PathVariable String mobile, @Valid @RequestBody UserDto userDto)
             throws ForbiddenException, UserIdNotFoundException, UserFieldAlreadyExistException {
-        if (!this.userController.existsMobile(userDto.getMobile())) {
+        if (!this.userController.existsMobile(mobile)) {
             throw new UserIdNotFoundException("Not existing mobile");
         }
-        if (this.userController.emailRepeated(userDto)) {
-            throw new UserFieldAlreadyExistException("Existing email");
+        if (this.userController.mobileRepeated(mobile, userDto)) {
+            throw new UserFieldAlreadyExistException("Existing mobile");
         }
-        if (this.userController.dniRepeated(userDto)) {
+        if (this.userController.emailRepeated(mobile, userDto)) {
+           throw new UserFieldAlreadyExistException("Existing email");
+        }
+        if (this.userController.dniRepeated(mobile, userDto)) {
             throw new UserFieldAlreadyExistException("Existing dni");
         }
-        if (!this.userController.putUser(userDto, new Role[] {Role.CUSTOMER})) {
+        if (!this.userController.putUser(mobile, userDto, new Role[] {Role.CUSTOMER})) {
             throw new ForbiddenException();
         }
     }
