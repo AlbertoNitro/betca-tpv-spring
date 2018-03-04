@@ -107,6 +107,7 @@ articleList:
     retailPrice: 20
     wholesalePrice: 10
     tax: GENERAL
+    stock: 0
     provider: *pr1
   - &ar2
     code: article2
@@ -115,6 +116,7 @@ articleList:
     retailPrice: 27.8
     wholesalePrice: 12.5
     tax: FREE
+    stock: 0
     provider: *pr1
 
 # Shopping

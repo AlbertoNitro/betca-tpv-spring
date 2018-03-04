@@ -13,9 +13,9 @@ public class Provider {
 
     private String address;
 
-    private long mobile;
+    private String mobile;
 
-    private long phone;
+    private String phone;
 
     private String note;
 
@@ -39,19 +39,19 @@ public class Provider {
         this.address = address;
     }
 
-    public long getMobile() {
+    public String getMobile() {
         return mobile;
     }
 
-    public void setMobile(long mobile) {
+    public void setMobile(String mobile) {
         this.mobile = mobile;
     }
 
-    public long getPhone() {
+    public String getPhone() {
         return phone;
     }
 
-    public void setPhone(long phone) {
+    public void setPhone(String phone) {
         this.phone = phone;
     }
 

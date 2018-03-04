@@ -23,11 +23,11 @@ public class Article {
 
     private String image;
 
-    private int stock;
+    private Integer stock;
 
     private BigDecimal wholesalePrice;
 
-    private boolean discontinued;
+    private Boolean discontinued;
 
     private Tax tax;
 
@@ -37,6 +37,7 @@ public class Article {
     public Article() {
         this.registrationDate = new Date();
         this.discontinued = false;
+        this.stock = 0;
     }
 
     public Article(String code, String reference, String description, Provider provider, Tax tax) {
@@ -88,11 +89,11 @@ public class Article {
         this.image = image;
     }
 
-    public int getStock() {
+    public Integer getStock() {
         return stock;
     }
 
-    public void setStock(int stock) {
+    public void setStock(Integer stock) {
         this.stock = stock;
     }
 
@@ -108,7 +109,7 @@ public class Article {
         return discontinued;
     }
 
-    public void setDiscontinued(boolean discontinued) {
+    public void setDiscontinued(Boolean discontinued) {
         this.discontinued = discontinued;
     }
 
