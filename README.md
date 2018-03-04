@@ -1,4 +1,4 @@
-# Tecnología Spring: Proyecto TPV - Front-end
+# Tecnología Spring: Proyecto TPV - Back-end
 #### Back-end con Tecnologías de Código Abierto (SPRING)
 #### [Máster en Ingeniería Web por la U.P.M.](http://miw.etsisi.upm.es)
 
@@ -10,16 +10,15 @@
 
 ### Tecnologías necesarias
 * Java
-* Spring
-* Eclipse
 * Maven
+* Spring
 * Mongodb
 
 
 ### Importar el proyecto mediante Eclipse
 1. Clonar mediante Eclipse este repositorio en la máquina local: https://youtu.be/rQNixJQQ25g
 1. Importar el repositorio clonado: https://youtu.be/yYvD8ZJtWwI
-1. Utiliza una Base de Datos llamada: `tpv` en `localhost` y puerto `27017`, con usuario en `blanco` y clave en `blanco`
+1. Utiliza una Base de Datos de Mongodb llamada: `tpv` en `localhost` y puerto `27017`, con usuario en `blanco` y clave en `blanco`
 
 
 ###### Autor: Jesús Bernal Bermúdez U.P.M.

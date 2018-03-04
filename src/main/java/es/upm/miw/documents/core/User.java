@@ -16,20 +16,20 @@ public class User {
 
     @Indexed(unique = true)
     private String mobile;
-
+    
+    private Date registrationDate;
+    
     private String username;
 
     private String password;
 
-    private boolean active;
+    private Boolean active;
 
     private String email;
 
     private String dni;
 
     private String address;
-
-    private Date registrationDate;
 
     private Role[] roles;
 
@@ -83,11 +83,11 @@ public class User {
         this.password = new BCryptPasswordEncoder().encode(password);
     }
 
-    public boolean isActive() {
+    public Boolean isActive() {
         return active;
     }
 
-    public void setActive(boolean active) {
+    public void setActive(Boolean active) {
         this.active = active;
     }
 
@@ -158,7 +158,7 @@ public class User {
     public String toString() {
         String date = "null";
         if (registrationDate != null) {
-            date = new SimpleDateFormat("dd-MMM-yyyy ").format(registrationDate.getTime());
+            date = new SimpleDateFormat("dd-MMM-yyyy").format(registrationDate.getTime());
         }
         return "User [mobile=" + mobile + ", username=" + username + ", password=" + password + ", active=" + active + ", email=" + email
                 + ", dni=" + dni + ", address=" + address + ", registrationDate=" + date + ", roles=" + java.util.Arrays.toString(roles)
