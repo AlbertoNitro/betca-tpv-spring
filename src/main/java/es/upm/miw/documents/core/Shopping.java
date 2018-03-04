@@ -6,23 +6,23 @@ import org.springframework.data.mongodb.core.mapping.DBRef;
 
 public class Shopping {
 
-    private int amount;
+    private Integer amount;
 
     private BigDecimal discount;
-
-    @DBRef
-    private Article article;
 
     private String description;
 
     private BigDecimal retailPrice;
 
     private ShoppingState shoppingState;
+    
+    @DBRef
+    private Article article;
 
     public Shopping() {
     }
 
-    public Shopping(int amount, BigDecimal discount, Article article) {
+    public Shopping(Integer amount, BigDecimal discount, Article article) {
         this.amount = amount;
         this.discount = discount;
         this.article = article;
@@ -31,11 +31,11 @@ public class Shopping {
         this.shoppingState = ShoppingState.COMMITTED;
     }
 
-    public int getAmount() {
+    public Integer getAmount() {
         return amount;
     }
 
-    public void setAmount(int amount) {
+    public void setAmount(Integer amount) {
         this.amount = amount;
     }
 

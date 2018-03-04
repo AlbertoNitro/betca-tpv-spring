@@ -10,7 +10,6 @@ import es.upm.miw.dtos.UserMinimumDto;
 
 public interface UserRepository extends MongoRepository<User, String> {
 
-    // @Query("{ 'mobile' : ?0 }")
     public User findByMobile(String mobile);
 
     public User findByEmail(String email);

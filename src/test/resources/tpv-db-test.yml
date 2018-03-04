@@ -46,7 +46,7 @@ userList:
     username: u003
     password: p003
     dni: 66666603E
-    address: C/ TPV, 2, 1A, 28000 Madrid
+    address: C/ TPV, 3, 1A, 28000 Madrid
     roles:
       - CUSTOMER
     token: *to2
@@ -56,7 +56,7 @@ userList:
     password: p004
     email: u004@gmail.com
     dni: 66666604T
-    address: C/ TPV, 2, 1A, 28000 Madrid
+    address: C/ TPV, 4, 1A, 28000 Madrid
     roles:
       - CUSTOMER
   - &us5
@@ -65,7 +65,7 @@ userList:
     password: p005
     email: u005@gmail.com
     dni: 66666605R
-    address: C/ TPV, 2, 1A, 28000 Madrid
+    address: C/ TPV, 5, 1A, 28000 Madrid
     roles:
       - OPERATOR
       

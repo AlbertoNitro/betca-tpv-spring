@@ -35,7 +35,6 @@ public class Ticket {
         this.reference = new Encrypting().encryptInBase64UrlSafe();
     }
 
-    //TODO test
     public Ticket(int idOfday, BigDecimal cashDeposited, Shopping[] shoppingList, User user) {
         this();
         this.id = new SimpleDateFormat(DATE_FORMAT).format(new Date()) + idOfday;
