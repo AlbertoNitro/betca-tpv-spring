@@ -2,21 +2,13 @@ package es.upm.miw.dtos;
 
 import java.util.Date;
 
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 import es.upm.miw.documents.core.User;
 
-public class UserDto {
-
-    private static final String NINE_DIGITS = "\\d{9}";
-
-    @NotNull
-    @Pattern(regexp = NINE_DIGITS)
-    private String mobile;
-
-    @NotNull
-    private String username;
+@JsonInclude(Include.NON_NULL)
+public class UserDto extends UserMinimumDto {
 
     private String password;
 
@@ -35,8 +27,7 @@ public class UserDto {
     }
 
     public UserDto(String mobile, String username, String password, String email, String dni, String address, Boolean active) {
-        this.mobile = mobile;
-        this.username = username;
+        super(mobile, username);
         this.password = password;
         this.email = email;
         this.setDni(dni);
@@ -49,29 +40,12 @@ public class UserDto {
     }
 
     public UserDto(User user) {
-        this.mobile = String.valueOf(user.getMobile());
-        this.username = user.getUsername();
+        super(user.getMobile(), user.getUsername());
         this.email = user.getEmail();
         this.dni = user.getDni();
         this.address = user.getAddress();
         this.active = user.isActive();
         this.registrationDate = user.getRegistrationDate();
-    }
-
-    public String getMobile() {
-        return mobile;
-    }
-
-    public void setMobile(String mobile) {
-        this.mobile = mobile;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
     }
 
     public String getPassword() {
@@ -132,8 +106,8 @@ public class UserDto {
 
     @Override
     public String toString() {
-        return "UserDto [mobile=" + mobile + ", username=" + username + ", password=" + password + ", email=" + email + ", dni=" + dni
-                + ", address=" + address + ", active=" + active + ", registrationDate=" + registrationDate + "]";
+        return "[" + super.toString() + "UserDto [password=" + password + ", email=" + email + ", dni=" + dni + ", address=" + address
+                + ", active=" + active + ", registrationDate=" + registrationDate + "] ]";
     }
 
 }

@@ -9,9 +9,8 @@ import es.upm.miw.documents.core.CashierClosure;
 
 public class CashierClosureLastOutputDto {
 
-    private boolean closed;
+    private Boolean closed;
 
-    // @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="dd-MMM-yyyy HH:mm")
     @JsonInclude(Include.NON_NULL)
     private Date closureDate;
 
@@ -19,7 +18,7 @@ public class CashierClosureLastOutputDto {
         // Empty for framework
     }
 
-    public CashierClosureLastOutputDto(boolean closed, Date closureDate) {
+    public CashierClosureLastOutputDto(Boolean closed, Date closureDate) {
         super();
         this.closed = closed;
         this.closureDate = closureDate;
@@ -29,11 +28,11 @@ public class CashierClosureLastOutputDto {
         this(cashierClosure.isClosed(), cashierClosure.getClosureDate());
     }
 
-    public boolean isClosed() {
+    public Boolean isClosed() {
         return closed;
     }
 
-    public void setClosed(boolean closed) {
+    public void setClosed(Boolean closed) {
         this.closed = closed;
     }
 

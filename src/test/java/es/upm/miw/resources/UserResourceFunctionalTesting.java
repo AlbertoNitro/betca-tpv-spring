@@ -147,7 +147,8 @@ public class UserResourceFunctionalTesting {
 
     @Test
     public void testReadUser() {
-        restService.loginAdmin().restBuilder().path(UserResource.USERS).path(UserResource.MOBILE_ID).expand(666666002).get().build();
+        String json=restService.loginAdmin().restBuilder(new RestBuilder<String>()).clazz(String.class).path(UserResource.USERS).path(UserResource.MOBILE_ID).expand(666666002).get().build();
+        System.out.println("------------>"+json);
     }
 
     @Test
