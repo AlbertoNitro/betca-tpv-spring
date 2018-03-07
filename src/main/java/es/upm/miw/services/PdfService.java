@@ -38,6 +38,7 @@ public class PdfService {
         pdf.addImage("logo-upm.png");
         pdf.paragraphEmphasized("Master en Ingeniería Web. BETCA");
         pdf.paragraphEmphasized("Tfno: +(34) 913366000").paragraph("NIF: Q2818015F").paragraph("Calle Alan Turing s/n, 28031 Madrid");
+        pdf.line().paragraphEmphasized("TICKET");
         pdf.barCode(ticket.getId()).line();
         SimpleDateFormat formatter = new SimpleDateFormat(DATE_FORMAT);
         pdf.paragraphEmphasized(formatter.format(ticket.getCreationDate()));
