@@ -6,9 +6,11 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import es.upm.miw.controllers.CashierClosureController;
@@ -29,12 +31,12 @@ public class CashierClosureResource {
     @Autowired
     private CashierClosureController cashierClosureController;
 
-    @RequestMapping(value = LAST, method = RequestMethod.GET)
+    @GetMapping(value = LAST)
     public CashierClosureLastOutputDto getCashierClosureLast() {
         return cashierClosureController.getCashierClosureLast();
     }
 
-    @RequestMapping(method = RequestMethod.POST)
+    @PostMapping
     public void createCashierClosure() throws CashierCreateException {
         Optional<String> error = cashierClosureController.createCashierClosure();
         if (error.isPresent()) {
@@ -42,7 +44,7 @@ public class CashierClosureResource {
         }
     }
 
-    @RequestMapping(value = LAST, method = RequestMethod.PATCH)
+    @PatchMapping(value = LAST)
     public void closeCashierClosure(@Valid @RequestBody CashierClosureInputDto cashierClosureDto) throws CashierClosedException {
         Optional<String> error = cashierClosureController.close(cashierClosureDto);
         if (error.isPresent()) {
