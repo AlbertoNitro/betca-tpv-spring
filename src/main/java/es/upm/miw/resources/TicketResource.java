@@ -6,9 +6,9 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -25,7 +25,7 @@ public class TicketResource {
     @Autowired
     private TicketController ticketController;
 
-    @RequestMapping(method = RequestMethod.POST, produces = {"application/pdf", "application/json"})
+    @PostMapping(produces = {"application/pdf", "application/json"})
     public @ResponseBody byte[] createTicket(@Valid @RequestBody TicketCreationInputDto ticketCreationDto) throws FieldInvalidException {
         Optional<byte[]> pdf = this.ticketController.createTicket(ticketCreationDto);
         if (!pdf.isPresent()) {

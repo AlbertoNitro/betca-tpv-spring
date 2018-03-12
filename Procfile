@@ -1,1 +1,2 @@
-web: java -Dserver.port=$PORT -jar  target/betca-tpv-spring-1.0.0-SNAPSHOT.jar
+# web: java -Dserver.port=$PORT -jar  target/betca-tpv-spring-1.1.0-SNAPSHOT.jar -Dspring.profiles.active=prod
+web: java -Dserver.port=$PORT -jar  target/betca-tpv-spring-1.1.0-SNAPSHOT.jar

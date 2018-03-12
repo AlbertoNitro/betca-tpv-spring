@@ -29,6 +29,7 @@ public class ApiExceptionHandler {
         return new ErrorMessage(exception, request.getRequestURI());
     }
 
+    // Exception
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler({Exception.class, UserFieldAlreadyExistException.class, FieldInvalidException.class, CashierClosedException.class,
             CashierCreateException.class})
