@@ -46,7 +46,7 @@ public class PdfService {
         for (int i = 0; i < ticket.getShoppingList().length; i++) {
             Shopping shopping = ticket.getShoppingList()[i];
             String state = "";
-            if (shopping.getShoppingState() != ShoppingState.COMMITTED) {
+            if (shopping.getShoppingState() != ShoppingState.DELIVERED) {
                 state = "N";
             }
             pdf.tableCell(String.valueOf(i + 1), shopping.getDescription(), "" + shopping.getAmount(),
