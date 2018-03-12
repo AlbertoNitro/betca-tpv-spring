@@ -18,6 +18,8 @@ public class Provider {
     private String phone;
 
     private String note;
+    
+    private Boolean active;
 
     public Provider() {
         // Empty for framework
@@ -70,6 +72,14 @@ public class Provider {
     public void setId(String id) {
         this.id = id;
     }
+    
+    public Boolean isActive() {
+        return active;
+    }
+
+    public void setActive(Boolean active) {
+        this.active = active;
+    }
 
     @Override
     public int hashCode() {
@@ -93,7 +103,7 @@ public class Provider {
     @Override
     public String toString() {
         return "Provider[" + id + ": company=" + company + ", address=" + address + ", mobile=" + mobile + ", phone=" + phone + ", note="
-                + note + "]";
+                + note + ", active=" + active + "]";
     }
 
 }
