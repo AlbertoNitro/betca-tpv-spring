@@ -47,9 +47,9 @@ public class TicketController {
             }
             Shopping shopping = new Shopping(shoppingDto.getAmount(), shoppingDto.getDiscount(), article);
             if (shoppingDto.isCommitted()) {
-                shopping.setShoppingState(ShoppingState.DELIVERED);
+                shopping.setShoppingState(ShoppingState.COMITTED);
             } else {
-                shopping.setShoppingState(ShoppingState.NOT_DELIVERED);
+                shopping.setShoppingState(ShoppingState.NOT_COMMITTED);
             }
             shoppingList.add(shopping);
         }
