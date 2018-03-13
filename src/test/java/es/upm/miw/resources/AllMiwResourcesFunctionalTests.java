@@ -8,6 +8,7 @@ import org.junit.runners.Suite.SuiteClasses;
 @SuiteClasses({
     AdminResourceFunctionalTesting.class,
     ArticleResourceFunctionalTesting.class,
+    BudgetResourceFunctionalTesting.class,
     CashierClosureResourceFunctionalTesting.class,
     TicketResourceFunctionalTesting.class,
     TokenResourceFunctionalTesting.class,
