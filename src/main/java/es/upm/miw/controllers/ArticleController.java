@@ -5,6 +5,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
+import es.upm.miw.documents.core.Article;
 import es.upm.miw.dtos.ArticleOutputDto;
 import es.upm.miw.repositories.core.ArticleRepository;
 
@@ -27,5 +28,11 @@ public class ArticleController {
             return Optional.of(articleOutputDto);
         }
     }
-
+    
+	public ArticleOutputDto postFastArticle(ArticleOutputDto articleOuputDto) {
+		Article articulo = new Article(articleOuputDto.getCode(), articleOuputDto.getDescription(),
+				articleOuputDto.getRetailPrice());
+		this.articleRepository.save(articulo);
+		return articleOuputDto;
+	}
 }

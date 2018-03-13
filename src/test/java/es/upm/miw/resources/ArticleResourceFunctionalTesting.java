@@ -2,6 +2,8 @@ package es.upm.miw.resources;
 
 import static org.junit.Assert.assertEquals;
 
+import java.math.BigDecimal;
+
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -14,6 +16,7 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import es.upm.miw.dtos.ArticleOutputDto;
+import es.upm.miw.repositories.core.ArticleRepository;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
@@ -25,6 +28,9 @@ public class ArticleResourceFunctionalTesting {
 
     @Autowired
     private RestService restService;
+    
+	@Autowired
+	private ArticleRepository articleRepository;
 
     @Test
     public void testReadArticle() {
@@ -41,6 +47,17 @@ public class ArticleResourceFunctionalTesting {
                 .build();
         assertEquals("article1", articleOutputDto.getCode());
     }
+    
+	@Test
+	public void testpostFastArticle() {
+		ArticleOutputDto articulo = new ArticleOutputDto();
+		articulo.setCode("1");
+		articulo.setDescription("blabla");
+		Number retailPrice = 2;
+		articulo.setRetailPrice(new BigDecimal(retailPrice.toString()));
+		restService.loginAdmin().restBuilder().path(ArticleResource.ARTICLES).body(articulo).post().build();
+		assertEquals("blabla", this.articleRepository.findArticleByDescription("blabla").getDescription());
+	}
 
     @Test
     public void testReadArticleOperator() {
