@@ -1,6 +1,5 @@
 package es.upm.miw.controllers;
 
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -22,7 +21,7 @@ public class BudgetController {
 
     @Autowired
     private ArticleRepository articleRepository;
-    
+
     @Autowired
     private PdfService pdfService;
 

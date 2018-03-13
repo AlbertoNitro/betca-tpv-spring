@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import es.upm.miw.controllers.BudgetController;
 import es.upm.miw.dtos.BudgetCreationInputDto;
-import es.upm.miw.dtos.TicketCreationInputDto;
 import es.upm.miw.resources.exceptions.FieldInvalidException;
 
 @PreAuthorize("hasRole('ADMIN') or hasRole('MANAGER') or hasRole('OPERATOR')")
@@ -23,7 +22,7 @@ import es.upm.miw.resources.exceptions.FieldInvalidException;
 public class BudgetResource {
 
     public static final String BUDGETS = "/budgets";
-    
+
     @Autowired
     private BudgetController budgetController;
 
@@ -34,6 +33,6 @@ public class BudgetResource {
             throw new FieldInvalidException("Article exception");
         } else {
             return pdf.get();
-        }      
+        }
     }
 }

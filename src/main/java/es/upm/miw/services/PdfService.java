@@ -87,9 +87,9 @@ public class PdfService {
                     shopping.getShoppingTotal().setScale(2, RoundingMode.HALF_UP) + "€", state);
         }
         pdf.tableColspanRight("TOTAL: " + budget.getBudgetTotal().setScale(2, RoundingMode.HALF_UP) + "€");
-       
-        pdf.line().paragraph("Este presupuesto es válido durante 15 días. A partir de esa fecha los precios pueden variar.");
-        
+
+        pdf.line().paragraph("Este presupuesto es válido durante 15 días.");
+        pdf.line().paragraph("A partir de esa fecha los precios pueden variar.");
         return pdf.build();
     }
 
