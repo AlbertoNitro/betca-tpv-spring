@@ -1,6 +1,9 @@
 package es.upm.miw.controllers;
 
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -14,10 +17,14 @@ import es.upm.miw.documents.core.ShoppingState;
 import es.upm.miw.dtos.BudgetCreationInputDto;
 import es.upm.miw.dtos.ShoppingDto;
 import es.upm.miw.repositories.core.ArticleRepository;
+import es.upm.miw.repositories.core.BudgetRepository;
 import es.upm.miw.services.PdfService;
 
 @Controller
 public class BudgetController {
+
+    @Autowired
+    private BudgetRepository budgetRepository;
 
     @Autowired
     private ArticleRepository articleRepository;
@@ -40,7 +47,20 @@ public class BudgetController {
             }
             shoppingList.add(shopping);
         }
-        Budget budget = new Budget(111, shoppingList.toArray(new Shopping[0]));
+        Budget budget = new Budget(this.nextId(), shoppingList.toArray(new Shopping[0]));
+        this.budgetRepository.save(budget);
         return pdfService.generateBudget(budget);
+    }
+
+    private int nextId() {
+        int nextId = 1;
+        Budget budget = budgetRepository.findFirstByOrderByCreationDateDescIdDesc();
+        if (budget != null) {
+            Date startOfDay = Date.from(LocalDate.now().atStartOfDay(ZoneId.systemDefault()).toInstant());
+            if (budget.getCreationDate().compareTo(startOfDay) >= 0) {
+                nextId = budget.simpleId() + 1;
+            }
+        }
+        return nextId;
     }
 }
