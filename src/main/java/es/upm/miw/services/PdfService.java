@@ -75,7 +75,6 @@ public class PdfService {
         pdf.paragraphEmphasized(formatter.format(budget.getCreationDate()));
 
         pdf.tableColumnsSizes(TABLE_COLUMNS_SIZES).tableColumnsHeader(TABLE_COLUMNS_HEADERS);
-        System.out.println("SHOPPIN" + budget.getShoppingList());
         for (int i = 0; i < budget.getShoppingList().length; i++) {
             Shopping shopping = budget.getShoppingList()[i];
             String state = "";
@@ -88,8 +87,7 @@ public class PdfService {
         }
         pdf.tableColspanRight("TOTAL: " + budget.getBudgetTotal().setScale(2, RoundingMode.HALF_UP) + "€");
 
-        pdf.line().paragraph("Este presupuesto es válido durante 15 días.");
-        pdf.line().paragraph("A partir de esa fecha los precios pueden variar.");
+        pdf.line().paragraph("Este presupuesto es válido durante 15 días. A partir de esa fecha los precios pueden variar.");
         return pdf.build();
     }
 
