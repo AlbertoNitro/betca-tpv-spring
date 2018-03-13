@@ -28,7 +28,7 @@ public class Shopping {
         this.article = article;
         this.description = article.getDescription();
         this.retailPrice = article.getRetailPrice();
-        this.shoppingState = ShoppingState.DELIVERED;
+        this.shoppingState = ShoppingState.COMMITTED;
     }
 
     public Integer getAmount() {
