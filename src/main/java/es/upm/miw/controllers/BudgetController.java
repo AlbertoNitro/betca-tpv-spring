@@ -23,7 +23,7 @@ public class BudgetController {
     private ArticleRepository articleRepository;
 
     @Autowired
-    private PdfService pdfService;
+    private PdfService pdfService; 
 
     public Optional<byte[]> createBudget(BudgetCreationInputDto budgetCreationDto) {
         List<Shopping> shoppingList = new ArrayList<>();
