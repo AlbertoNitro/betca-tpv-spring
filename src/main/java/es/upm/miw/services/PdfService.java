@@ -64,7 +64,7 @@ public class PdfService {
     }
 
     public Optional<byte[]> generateBudget(Budget budget) {
-        final String path = "/budgets/budget-";
+        final String path = "/budgets/budget-" + budget.getId();
         PdfTicketBuilder pdf = new PdfTicketBuilder(path);
         pdf.addImage("logo-upm.png");
         pdf.paragraphEmphasized("Master en Ingeniería Web. BETCA");
