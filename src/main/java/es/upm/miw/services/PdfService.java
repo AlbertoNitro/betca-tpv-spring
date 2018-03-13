@@ -62,4 +62,11 @@ public class PdfService {
         return pdf.build();
     }
 
+    public Optional<byte[]> generateBudget() {
+        final String path = "/budgets/budget-";
+        PdfTicketBuilder pdf = new PdfTicketBuilder(path);
+        pdf.addImage("logo-upm.png");
+        return pdf.build();
+    }
+
 }
