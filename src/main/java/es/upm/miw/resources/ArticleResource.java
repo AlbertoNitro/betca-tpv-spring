@@ -1,5 +1,7 @@
 package es.upm.miw.resources;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -35,5 +37,10 @@ public class ArticleResource {
 		return this.articleController.postFastArticle(articleOuputDto);
 
 	}
-
+	
+	@RequestMapping(method = RequestMethod.GET)
+    public List<ArticleOutputDto> readAllArticles() {
+    		System.out.println("---------------ReadAllArticles");
+        return this.articleController.readAll();
+    }
 }
