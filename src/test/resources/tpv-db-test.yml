@@ -1,3 +1,4 @@
+
 # RECOMENDABLE SOLO AÑADIR 
 
 # Tokens
@@ -89,6 +90,23 @@ providerList:
     mobile: 666666101
     phone: 9166666601
     note: provider 1
+    active: true
+  - &pr2
+    id: provider2
+    company: company-p2
+    address: C/ TPV-provider, 2, 1A, 28000 Madrid
+    mobile: 666666101
+    phone: 9166666601
+    note: provider 2
+    active: false  
+  - &pr3
+    id: provider3
+    company: company-p3
+    address: C/ TPV-provider, 2, 1A, 28000 Madrid
+    mobile: 666666101
+    phone: 9166666601
+    note: provider 3
+    active: true
     
 # Articles
 articleList:
@@ -118,6 +136,20 @@ articleList:
     tax: FREE
     stock: 0
     provider: *pr1
+  - &ar3
+    code: 13245
+    description: Various
+    retailPrice: 100
+    wholesalePrice: 50
+    tax: GENERAL
+    provider: *pr0
+  - &ar4
+    code: 13247
+    description: Various
+    retailPrice: 100
+    wholesalePrice: 50
+    tax: GENERAL
+    provider: *pr0
 
 # Shopping
 shoppingList:

@@ -85,6 +85,16 @@ public class ArticleResourceFunctionalTesting {
     }
 
     @Test
+    public void testReadAllIncompletes() {
+        List<ArticleOutputDto> articleOutputDto = Arrays.asList(restService.loginAdmin().restBuilder(new RestBuilder<ArticleOutputDto[]>())
+                .clazz(ArticleOutputDto[].class).path(ArticleResource.ARTICLES).path(ArticleResource.INCOMPLETES).get()
+                .build());
+        List<ArticleOutputDto> articleOutputDto_ = articleController.readAllIncompletes();
+        assertEquals(articleOutputDto_.size(), articleOutputDto.size());
+    
+    }
+    
+    @Test
     public void testReadArticleCustomer() {
         thrown.expect(new HttpMatcher(HttpStatus.FORBIDDEN));
         restService.loginCustomer().restBuilder().path(ArticleResource.ARTICLES).path(ArticleResource.CODE_ID).expand("article1").get().build();
