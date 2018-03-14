@@ -1,10 +1,14 @@
 package es.upm.miw.resources;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import es.upm.miw.controllers.ArticleController;
@@ -26,5 +30,17 @@ public class ArticleResource {
     public ArticleOutputDto readArticle(@PathVariable String code) throws ArticleCodeNotFoundException {
         return this.articleController.readArticle(code).orElseThrow(() -> new ArticleCodeNotFoundException(code));
     }
+    
+	@RequestMapping(method = RequestMethod.POST)
+	public ArticleOutputDto postArticle(@RequestBody ArticleOutputDto articleOuputDto) {
+		System.out.println("Llega a el recurso");
+		return this.articleController.postFastArticle(articleOuputDto);
 
+	}
+	
+	@RequestMapping(method = RequestMethod.GET)
+    public List<ArticleOutputDto> readAllArticles() {
+    		System.out.println("---------------ReadAllArticles");
+        return this.articleController.readAll();
+    }
 }

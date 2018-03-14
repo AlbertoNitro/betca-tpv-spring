@@ -10,5 +10,9 @@ public interface ArticleRepository extends MongoRepository<Article, String> {
 
     @Query(value = "{'code' : ?0}", fields = "{'reference' : 1, 'description' : 1, 'retailPrice' : 1, 'stock' : 1}")
     ArticleOutputDto findMinimumByCode(String code);
+    
+	Article findArticleByCode(String string);
+
+	Article findArticleByDescription(String string);
 
 }
