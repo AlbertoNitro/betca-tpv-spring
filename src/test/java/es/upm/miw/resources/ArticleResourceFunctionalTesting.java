@@ -3,6 +3,8 @@ package es.upm.miw.resources;
 import static org.junit.Assert.assertEquals;
 
 import java.math.BigDecimal;
+import java.util.Arrays;
+import java.util.List;
 
 import org.junit.Rule;
 import org.junit.Test;
@@ -15,6 +17,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import es.upm.miw.controllers.ArticleController;
 import es.upm.miw.dtos.ArticleOutputDto;
 import es.upm.miw.repositories.core.ArticleRepository;
 
@@ -31,6 +34,9 @@ public class ArticleResourceFunctionalTesting {
     
 	@Autowired
 	private ArticleRepository articleRepository;
+	
+	@Autowired
+	private ArticleController articleController;
 
     @Test
     public void testReadArticle() {
@@ -65,6 +71,17 @@ public class ArticleResourceFunctionalTesting {
                 .clazz(ArticleOutputDto.class).path(ArticleResource.ARTICLES).path(ArticleResource.CODE_ID).expand("article1").get()
                 .build();
         assertEquals("article1", articleOutputDto.getCode());
+    }
+    
+    @Test
+    public void testReadAll() {
+        List<ArticleOutputDto> articleOutputDto = Arrays.asList(restService.loginAdmin().restBuilder(new RestBuilder<ArticleOutputDto[]>())
+                .clazz(ArticleOutputDto[].class).path(ArticleResource.ARTICLES).get()
+                .build());
+        List<ArticleOutputDto> articleOutputDto_ = articleController.readAll();
+        
+        assertEquals(articleOutputDto_.size(), articleOutputDto.size());
+    
     }
 
     @Test

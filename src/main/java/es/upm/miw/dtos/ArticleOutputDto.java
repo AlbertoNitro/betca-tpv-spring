@@ -6,7 +6,7 @@ public class ArticleOutputDto {
 
     private String code;
 
-    private String reference;
+	private String reference;
 
     private String description;
 
@@ -17,12 +17,21 @@ public class ArticleOutputDto {
     public ArticleOutputDto() {
         // Empty for framework
     }
-
+    
+    public ArticleOutputDto(String code, String reference, String description, BigDecimal retailPrice, Integer stock) {
+		super();
+		this.code = code;
+		this.reference = reference;
+		this.description = description;
+		this.retailPrice = retailPrice;
+		this.stock = stock;
+	}
+    
     public String getCode() {
-        return code;
-    }
+		return code;
+	}
 
-    public void setCode(String code) {
+	public void setCode(String code) {
         this.code = code;
     }
 
