@@ -60,7 +60,7 @@ public class PdfServiceIT {
         shoppingList[3] = new Shopping(3, new BigDecimal("90"), article);
         shoppingList[4] = new Shopping(2, new BigDecimal("85"), article);
         shoppingList[5] = new Shopping(3, new BigDecimal("50"), article);
-        Budget budget = new Budget(1, shoppingList);
+        Budget budget = new Budget(shoppingList);
         pdfService.generateBudget(budget);
     }
 }

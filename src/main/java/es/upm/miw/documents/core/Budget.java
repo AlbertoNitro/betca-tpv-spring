@@ -1,15 +1,14 @@
 package es.upm.miw.documents.core;
 
 import java.math.BigDecimal;
-import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
+@Document
 public class Budget {
-
-    private static final String DATE_FORMAT = "yyyyMMdd-";
 
     @Id
     private String id;
@@ -22,22 +21,13 @@ public class Budget {
         this.creationDate = new Date();
     }
 
-    public Budget(int idOfday, Shopping[] shoppingList) {
+    public Budget(Shopping[] shoppingList) {
         this();
-        this.id = new SimpleDateFormat(DATE_FORMAT).format(new Date()) + idOfday;
         this.shoppingList = shoppingList;
     }
 
     public String getId() {
         return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public int simpleId() {
-        return Integer.parseInt(String.valueOf(id).substring(DATE_FORMAT.length()));
     }
 
     public Date getCreationDate() {
@@ -52,6 +42,7 @@ public class Budget {
         this.shoppingList = shoppingList;
     }
 
+    //TODO
     public BigDecimal getBudgetTotal() {
         BigDecimal total = new BigDecimal(0);
         for (Shopping shopping : shoppingList) {
