@@ -45,7 +45,7 @@ public class VoucherResource {
     	}else {
     		throw new Exception();
     	}
-        
+    	
         return voucherDto;
     }
     
