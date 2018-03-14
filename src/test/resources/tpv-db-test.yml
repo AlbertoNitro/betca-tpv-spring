@@ -136,7 +136,7 @@ articleList:
     tax: FREE
     stock: 0
     provider: *pr1
-    - &ar3
+  - &ar3
     code: 13245
     description: Various
     retailPrice: 100
