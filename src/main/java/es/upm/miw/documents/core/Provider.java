@@ -24,6 +24,16 @@ public class Provider {
     public Provider() {
         // Empty for framework
     }
+    
+    public Provider(String company, String address, String mobile, String phone, String note, Boolean active) {
+        super();
+        this.company = company;
+        this.address = address;
+        this.mobile = mobile;
+        this.phone = phone;
+        this.note = note;
+        this.active = active;
+    }
 
     public String getCompany() {
         return company;
