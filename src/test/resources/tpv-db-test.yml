@@ -1,3 +1,4 @@
+
 # RECOMENDABLE SOLO AÑADIR 
 
 # Tokens
@@ -135,6 +136,20 @@ articleList:
     tax: FREE
     stock: 0
     provider: *pr1
+  - &ar3
+    code: 13245
+    description: Various
+    retailPrice: 100
+    wholesalePrice: 50
+    tax: GENERAL
+    provider: *pr0
+  - &ar4
+    code: 13247
+    description: Various
+    retailPrice: 100
+    wholesalePrice: 50
+    tax: GENERAL
+    provider: *pr0
 
 # Shopping
 shoppingList:
