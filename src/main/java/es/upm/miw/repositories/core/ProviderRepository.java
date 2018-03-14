@@ -1,9 +1,18 @@
 package es.upm.miw.repositories.core;
 
+import java.util.List;
+
 import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.data.mongodb.repository.Query;
 
 import es.upm.miw.documents.core.Provider;
+import es.upm.miw.dtos.ProviderMinimumDto;
 
 public interface ProviderRepository extends MongoRepository<Provider, String> {
+    
+    public Provider findById(String id);
+    
+    @Query(value = "{'active' : true}", fields = "{ '_id' : 1, 'company' : 1}")
+    public List<ProviderMinimumDto> findProviderAll();
 
 }
