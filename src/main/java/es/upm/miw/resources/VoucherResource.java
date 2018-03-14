@@ -27,7 +27,7 @@ public class VoucherResource {
 
     public static final String REFERENCE = "/{reference}";
     
-    private VoucherDto voucher1;
+    private VoucherDto voucher1 = new VoucherDto( "1", new BigDecimal(11) );
     
     @PostMapping
     public void createVoucher(@Valid @RequestBody VoucherDto voucherDto) throws Exception {
@@ -52,7 +52,7 @@ public class VoucherResource {
     @PatchMapping(value = REFERENCE)
     public void consumeVoucher(@PathVariable String reference) throws Exception {
         //TODO
-    	if ( reference == "1" ) {
+    	if ( reference.equals( "1" ) ) {
    		 	this.voucher1.setUsed( true );
 	   	}else {
 	   		throw new Exception();
@@ -64,7 +64,6 @@ public class VoucherResource {
     	
     	List<VoucherDto> vouchersList = new ArrayList<VoucherDto>();
         
-        this.voucher1 = new VoucherDto( "1", new BigDecimal(11) );
         VoucherDto voucher2 = new VoucherDto( "2", new BigDecimal(22) );
         VoucherDto voucher3 = new VoucherDto( "3", new BigDecimal(33) );
         
