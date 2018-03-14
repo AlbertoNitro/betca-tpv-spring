@@ -49,4 +49,18 @@ public class ArticleController {
 		return articleListDto;
 
 	}
+	
+	public List<ArticleOutputDto> readAllIncompletes() {
+
+		List<Article> articleList = this.articleRepository.findAll();
+		List<ArticleOutputDto> articleListDto = new ArrayList<ArticleOutputDto>();
+		for (Article articulo : articleList) {
+			if(articulo.getReference() == null || articulo.getStock() == null ) {
+				articleListDto.add(new ArticleOutputDto(articulo.getCode(), articulo.getReference(),
+					articulo.getDescription(), articulo.getRetailPrice(), articulo.getStock()));
+			}
+		}
+		return articleListDto;
+
+	}
 }

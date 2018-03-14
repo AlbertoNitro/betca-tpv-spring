@@ -20,6 +20,8 @@ import es.upm.miw.resources.exceptions.ArticleCodeNotFoundException;
 @RequestMapping(ArticleResource.ARTICLES)
 public class ArticleResource {
     public static final String ARTICLES = "/articles";
+    
+    public static final String INCOMPLETES = "/incompletos";
 
     public static final String CODE_ID = "/{code}";
 
@@ -33,14 +35,17 @@ public class ArticleResource {
     
 	@RequestMapping(method = RequestMethod.POST)
 	public ArticleOutputDto postArticle(@RequestBody ArticleOutputDto articleOuputDto) {
-		System.out.println("Llega a el recurso");
 		return this.articleController.postFastArticle(articleOuputDto);
 
 	}
 	
 	@RequestMapping(method = RequestMethod.GET)
     public List<ArticleOutputDto> readAllArticles() {
-    		System.out.println("---------------ReadAllArticles");
         return this.articleController.readAll();
+    }
+	
+    @GetMapping(value = INCOMPLETES)
+    public List<ArticleOutputDto> readAllArticlesIncompletes(){
+        return this.articleController.readAllIncompletes();
     }
 }
