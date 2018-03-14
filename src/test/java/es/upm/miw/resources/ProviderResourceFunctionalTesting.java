@@ -23,7 +23,7 @@ public class ProviderResourceFunctionalTesting {
 
     @Test
     public void testReadProvider() {
-        String json=restService.loginAdmin().restBuilder(new RestBuilder<String>()).clazz(String.class).path(ProviderResource.PROVIDERS).path(ProviderResource.ID).expand("p1").get().build();
+        String json=restService.loginAdmin().restBuilder(new RestBuilder<String>()).clazz(String.class).path(ProviderResource.PROVIDERS).path(ProviderResource.ID).expand("provider1").get().build();
         System.out.println("------------>"+json);
     }
     
