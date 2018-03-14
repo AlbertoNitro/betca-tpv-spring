@@ -40,7 +40,7 @@ public class VoucherResource {
     	
     	VoucherDto voucherDto;
     	
-    	if ( reference == "1" ) {
+    	if ( reference.equals( "1" ) ) {
     		voucherDto = this.voucher1;
     	}else {
     		throw new Exception();
