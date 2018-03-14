@@ -2,12 +2,11 @@ package es.upm.miw.dtos;
 
 import java.math.BigDecimal;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import es.upm.miw.utils.Encrypting;
 
-@JsonInclude(Include.NON_NULL)
 public class VoucherDto {
 	
+	private String reference;
 	private BigDecimal value;
 	private boolean used;
 	
@@ -16,6 +15,13 @@ public class VoucherDto {
 	}
 	
 	public VoucherDto(BigDecimal value) {
+		this.reference = new Encrypting().encryptInBase64UrlSafe();
+        this.value = value;
+        this.used = false;
+    }
+	
+	public VoucherDto(String reference, BigDecimal value) {
+		this.reference = reference;
         this.value = value;
         this.used = false;
     }
@@ -34,6 +40,14 @@ public class VoucherDto {
 
 	public void setUsed(boolean used) {
 		this.used = used;
+	}
+
+	public String getReference() {
+		return reference;
+	}
+
+	public void setReference(String reference) {
+		this.reference = reference;
 	}
 
 	@Override
