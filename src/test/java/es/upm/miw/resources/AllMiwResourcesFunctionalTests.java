@@ -10,6 +10,7 @@ import org.junit.runners.Suite.SuiteClasses;
     ArticleResourceFunctionalTesting.class,
     BudgetResourceFunctionalTesting.class,
     CashierClosureResourceFunctionalTesting.class,
+    ProviderResourceFunctionalTesting.class,
     TicketResourceFunctionalTesting.class,
     TokenResourceFunctionalTesting.class,
     UserResourceFunctionalTesting.class
