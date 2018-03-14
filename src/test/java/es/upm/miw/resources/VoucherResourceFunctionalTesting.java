@@ -2,6 +2,10 @@ package es.upm.miw.resources;
 
 import static org.junit.Assert.assertEquals;
 
+import java.math.BigDecimal;
+import java.util.Arrays;
+import java.util.List;
+
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -27,14 +31,21 @@ public class VoucherResourceFunctionalTesting {
 	
 	@Test
     public void testReadVoucher() {
-        String json=restService.loginAdmin().restBuilder(new RestBuilder<String>()).clazz(String.class).path(VoucherResource.VOUCHERS).path(VoucherResource.REFERENCE).expand("1").get().build();
-        System.out.println("------------>"+json);
+		VoucherDto voucherDto = restService.loginAdmin().restBuilder(new RestBuilder<VoucherDto>())
+                .clazz(VoucherDto.class).path(VoucherResource.VOUCHERS).path(VoucherResource.REFERENCE).expand("1").get()
+                .build();
+    	
+    	assertEquals( new BigDecimal( 11 ), voucherDto.getValue() );
     }
     
     @Test
     public void testReadVoucherAll() {
-        String json=restService.loginAdmin().restBuilder(new RestBuilder<String>()).clazz(String.class).path(VoucherResource.VOUCHERS).get().build();
-        System.out.println("------------>"+json);
+    	
+    	List<VoucherDto> voucherDtoList = Arrays.asList(restService.loginAdmin().restBuilder(new RestBuilder<VoucherDto[]>())
+                .clazz(VoucherDto[].class).path(VoucherResource.VOUCHERS).get().build());
+    	
+    	assertEquals( 3, voucherDtoList.size() );
+    	
     }
     
     @Test
