@@ -51,7 +51,7 @@ public class VoucherResource {
     }
     
     @PatchMapping(value = REFERENCE)
-    public void consumeVoucher(@PathVariable String reference) throws VoucherReferenceNotFoundException, VoucherConsumedException {
+    public VoucherDto consumeVoucher(@PathVariable String reference) throws VoucherReferenceNotFoundException, VoucherConsumedException {
         
     	if ( !this.voucherController.existsVoucher( reference ) ) {
     		throw new VoucherReferenceNotFoundException();
@@ -61,7 +61,7 @@ public class VoucherResource {
     		throw new VoucherConsumedException();
     	}
     	
-    	this.voucherController.consumeVoucher( reference );
+    	return this.voucherController.consumeVoucher( reference );
     }
     
     @GetMapping
