@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 @Aspect
 public class ApiLogs {
 
-    @Pointcut("@annotation(org.springframework.web.bind.annotation.RequestMapping)")
+    @Pointcut("@within(org.springframework.web.bind.annotation.RestController)")
     public void allResources() {
         // don't need code
     }

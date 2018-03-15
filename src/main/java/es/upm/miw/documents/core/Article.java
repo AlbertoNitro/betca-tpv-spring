@@ -39,6 +39,12 @@ public class Article {
         this.discontinued = false;
         this.stock = 0;
     }
+    
+	public Article(String code, String description, Number retailPrice) {
+		this.code = code;
+		this.description = description;
+		this.retailPrice = new BigDecimal(retailPrice.toString());
+	}
 
     public Article(String code, String reference, String description, Provider provider, Tax tax) {
         this();
