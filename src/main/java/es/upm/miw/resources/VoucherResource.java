@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import es.upm.miw.dtos.VoucherDto;
+import es.upm.miw.resources.exceptions.VoucherReferenceNotFoundException;
 
 @PreAuthorize("hasRole('ADMIN') or hasRole('MANAGER') or hasRole('OPERATOR')")
 @RestController
@@ -30,32 +31,32 @@ public class VoucherResource {
     private VoucherDto voucher1 = new VoucherDto( "1", new BigDecimal(11) );
     
     @PostMapping
-    public void createVoucher(@Valid @RequestBody VoucherDto voucherDto) throws Exception {
+    public void createVoucher(@Valid @RequestBody VoucherDto voucherDto) {
         //TODO
     	// Empty for the mock
     }
     
     @RequestMapping(value = REFERENCE, method = RequestMethod.GET)
-    public VoucherDto readVoucher(@PathVariable String reference) throws Exception {
+    public VoucherDto readVoucher(@PathVariable String reference) throws VoucherReferenceNotFoundException {
     	
     	VoucherDto voucherDto;
     	
     	if ( reference.equals( "1" ) ) {
     		voucherDto = this.voucher1;
     	}else {
-    		throw new Exception();
+    		throw new VoucherReferenceNotFoundException();
     	}
     	
         return voucherDto;
     }
     
     @PatchMapping(value = REFERENCE)
-    public void consumeVoucher(@PathVariable String reference) throws Exception {
+    public void consumeVoucher(@PathVariable String reference) throws VoucherReferenceNotFoundException {
         //TODO
     	if ( reference.equals( "1" ) ) {
    		 	this.voucher1.setUsed( true );
 	   	}else {
-	   		throw new Exception();
+	   		throw new VoucherReferenceNotFoundException();
 	   	}
     }
     
