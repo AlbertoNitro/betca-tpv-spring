@@ -63,4 +63,10 @@ public class PdfServiceIT {
         Budget budget = new Budget(1, shoppingList);
         pdfService.generateBudget(budget);
     }
+    
+    @Test
+    public void testGenerateInvoice() {
+
+        pdfService.generateInvioce();
+    }
 }

@@ -1,5 +1,6 @@
 package es.upm.miw.services;
 
+import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -7,7 +8,6 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
-
 import es.upm.miw.documents.core.Article;
 import es.upm.miw.documents.core.Budget;
 import es.upm.miw.documents.core.Shopping;
@@ -90,9 +90,40 @@ public class PdfService {
         pdf.line().paragraph("Este presupuesto es válido durante 15 días. A partir de esa fecha los precios pueden variar.");
         return pdf.build();
     }
-    
-    public Optional<byte[]> generateInvioce(){
-        return null;
+
+    public Optional<byte[]> generateInvioce() {
+        Double baseImpobibleTotal = 0.0;
+        Double ivaTotal = 0.0;
+        final String path = "/invoices/invoice-" + "test";
+        PdfTicketBuilder pdf = new PdfTicketBuilder(path);
+        pdf.addImage("logo-upm.png");
+        pdf.paragraphEmphasized("Master en Ingeniería Web. BETCA");
+        pdf.paragraphEmphasized("Tfno: +(34) 913366000").paragraph("NIF: Q2818015F").paragraph("Calle Alan Turing s/n, 28031 Madrid");
+        pdf.line();
+        pdf.paragraphEmphasized("Datos Cliente:").paragraph("DNI: 1111111111").paragraph("Nombre: Cliente Test")
+                .paragraph("Dirección: Direccion Test");
+        pdf.line();
+        pdf.line().paragraphEmphasized("FACTURA N° 11111");
+        pdf.line();
+        pdf.paragraphEmphasized("Fecha de creacion de factura");
+
+        pdf.tableColumnsSizes(TABLE_COLUMNS_SIZES).tableColumnsHeader(TABLE_COLUMNS_HEADERS);
+
+        for (int i = 1; i < 3; i++) {
+            Double baseImpobible = ((((20.3 * i)) - ((20.3 * i) * 0.1)) / 1.21);
+            Double iva = baseImpobible * 0.21;
+            pdf.tableCell(String.valueOf(i + 1), "Prod" + i, "" + i, 10 + "%", new BigDecimal(baseImpobible).setScale(2, RoundingMode.HALF_UP) + "€", "");
+            baseImpobibleTotal += baseImpobible;
+            ivaTotal += iva;
+        }
+
+        pdf.tableColspanRight("BASE IMPONIBLE: " + new BigDecimal(baseImpobibleTotal).setScale(2, RoundingMode.HALF_UP)+"€");
+        pdf.tableColspanRight("IVA: " + new BigDecimal(ivaTotal).setScale(2, RoundingMode.HALF_UP)+"€");
+        pdf.tableColspanRight("TOTAL: " + (baseImpobibleTotal + ivaTotal)+"€");
+        pdf.line();
+        pdf.line().paragraph("Gracias por su compra");
+
+        return pdf.build();
     }
 
 }
