@@ -1,6 +1,8 @@
 package es.upm.miw.controllers;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -48,4 +50,12 @@ public class TicketControllerIT {
         this.ticketRepository.delete(ticket1);
         this.ticketRepository.delete(ticket2);
     }
+    
+    @Test
+    public void testExistTicket() {
+        assertTrue(this.ticketController.existTicket("20180112-1"));
+        assertFalse(this.ticketController.existTicket("20180112-5"));
+    }
+    
+    
 }
