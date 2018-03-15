@@ -57,6 +57,9 @@ public class TicketController {
         this.ticketRepository.save(ticket);
         return pdfService.generateTicket(ticket);
     }
+    
+    //public Optional<byte[]> modifyTicket(TicketCreationInputDto ticketCreationDto) {
+    //}
 
     private int nextId() {
         int nextId = 1;
