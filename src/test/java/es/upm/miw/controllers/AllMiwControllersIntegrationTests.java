@@ -10,7 +10,8 @@ import org.junit.runners.Suite.SuiteClasses;
     BudgetControllerIT.class,
     CashierClosureControllerIT.class,
     TicketControllerIT.class,
-    UserControllerIT.class
+    UserControllerIT.class,
+    VoucherControllerIT.class
 })
 public class AllMiwControllersIntegrationTests {
 

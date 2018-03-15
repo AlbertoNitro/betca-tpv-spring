@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import es.upm.miw.dtos.VoucherDto;
+import es.upm.miw.resources.exceptions.VoucherConsumedException;
 import es.upm.miw.resources.exceptions.VoucherReferenceNotFoundException;
 
 @PreAuthorize("hasRole('ADMIN') or hasRole('MANAGER') or hasRole('OPERATOR')")
@@ -27,6 +28,9 @@ public class VoucherResource {
 	public static final String VOUCHERS = "/vouchers";
 
     public static final String REFERENCE = "/{reference}";
+    
+    /*@Autowired
+    private VoucherController voucherController;*/
     
     private VoucherDto voucher1 = new VoucherDto( "1", new BigDecimal(11) );
     
@@ -41,6 +45,10 @@ public class VoucherResource {
     	
     	VoucherDto voucherDto;
     	
+    	/*if ( !this.voucherController.existsVoucher( reference ) ) {
+    		throw new VoucherReferenceNotFoundException();
+    	}*/
+    	
     	if ( reference.equals( "1" ) ) {
     		voucherDto = this.voucher1;
     	}else {
@@ -51,8 +59,16 @@ public class VoucherResource {
     }
     
     @PatchMapping(value = REFERENCE)
-    public void consumeVoucher(@PathVariable String reference) throws VoucherReferenceNotFoundException {
-        //TODO
+    public void consumeVoucher(@PathVariable String reference) throws VoucherReferenceNotFoundException, VoucherConsumedException {
+        
+    	/*if ( !this.voucherController.existsVoucher( reference ) ) {
+    		throw new VoucherReferenceNotFoundException();
+    	}
+    	
+    	if ( this.voucherController.consumedVoucher( reference ) ) {
+    		throw new VoucherConsumedException();
+    	}*/
+    	
     	if ( reference.equals( "1" ) ) {
    		 	this.voucher1.setUsed( true );
 	   	}else {
