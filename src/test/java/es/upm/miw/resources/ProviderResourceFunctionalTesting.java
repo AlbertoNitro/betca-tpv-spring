@@ -1,5 +1,9 @@
 package es.upm.miw.resources;
 
+import static org.junit.Assert.assertEquals;
+
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -9,6 +13,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
+
+import es.upm.miw.dtos.ProviderDto;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
@@ -20,18 +26,46 @@ public class ProviderResourceFunctionalTesting {
     
     @Autowired
     private RestService restService;
+    
+    private ProviderDto providerDto;
+    
+    @Before
+    public void before() {
+        this.restService.loginAdmin();
+        this.providerDto = new ProviderDto("TP","TCompany",null,null,null,null,true);
+    }
+    
+    @Test
+    public void testCreateProvider() {
+        restService.restBuilder().path(ProviderResource.PROVIDERS).body(this.providerDto).post().build();
+    }
+    
+    @Test
+    public void testPutProvider() {
+        restService.restBuilder().path(ProviderResource.PROVIDERS).body(this.providerDto).post().build();
+        providerDto.setAddress("TAddress");
+        restService.restBuilder().path(ProviderResource.PROVIDERS).path(ProviderResource.ID).expand("TP").body(this.providerDto).put()
+                .build();
+        ProviderDto providerDto2 = restService.restBuilder(new RestBuilder<ProviderDto>()).clazz(ProviderDto.class).path(ProviderResource.PROVIDERS)
+                .path(ProviderResource.ID).expand("TP").get().build();
+        assertEquals("TAddress", providerDto2.getAddress());
+    }
 
     @Test
     public void testReadProvider() {
-        String json=restService.loginAdmin().restBuilder(new RestBuilder<String>()).clazz(String.class).path(ProviderResource.PROVIDERS).path(ProviderResource.ID).expand("provider1").get().build();
+        String json=restService.restBuilder(new RestBuilder<String>()).clazz(String.class).path(ProviderResource.PROVIDERS).path(ProviderResource.ID).expand("provider1").get().build();
         System.out.println("------------>"+json);
     }
     
     @Test
     public void testReadProviderAll() {
-        String json=restService.loginAdmin().restBuilder(new RestBuilder<String>()).clazz(String.class).path(ProviderResource.PROVIDERS).get().build();
+        String json=restService.restBuilder(new RestBuilder<String>()).clazz(String.class).path(ProviderResource.PROVIDERS).get().build();
         System.out.println("------------>"+json);
     }
-
+    
+    @After
+    public void delete() {
+        restService.restBuilder().path(ProviderResource.PROVIDERS).path(ProviderResource.ID).expand("TP").delete().build();
+    }
 
 }
