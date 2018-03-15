@@ -18,6 +18,7 @@ import es.upm.miw.controllers.TicketController;
 import es.upm.miw.dtos.TicketCreationInputDto;
 import es.upm.miw.dtos.TicketUpdationInputDto;
 import es.upm.miw.resources.exceptions.FieldInvalidException;
+import es.upm.miw.resources.exceptions.TicketIdNotFoundException;
 
 @PreAuthorize("hasRole('ADMIN') or hasRole('MANAGER') or hasRole('OPERATOR')")
 @RestController
@@ -41,6 +42,6 @@ public class TicketResource {
     }
     
     @RequestMapping(value = ID, method = RequestMethod.PATCH)
-    public void updateAmountAndStateTicket(@PathVariable(value="id") String id, @RequestBody TicketUpdationInputDto ticketUpdationInputDto) throws FieldInvalidException {
+    public void updateAmountAndStateTicket(@PathVariable(value="id") String id, @Valid @RequestBody TicketUpdationInputDto ticketUpdationInputDto) throws TicketIdNotFoundException {
     }
 }
