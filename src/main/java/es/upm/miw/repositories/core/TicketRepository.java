@@ -17,6 +17,7 @@ public interface TicketRepository extends MongoRepository<Ticket, String> {
     List<Ticket> findByCreationDateGreaterThan(Date date);
 
     Ticket findFirstByOrderByCreationDateDescIdDesc();
+    
+    List<Ticket> findByCreationDateBetween(Date initialDate, Date finalDate);
 
-    //dfsfsdfsd
 }
