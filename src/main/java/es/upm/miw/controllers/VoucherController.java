@@ -1,18 +1,15 @@
 package es.upm.miw.controllers;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
-import es.upm.miw.documents.core.Role;
-import es.upm.miw.documents.core.User;
 import es.upm.miw.documents.core.Voucher;
-import es.upm.miw.dtos.UserDto;
-import es.upm.miw.dtos.UserMinimumDto;
 import es.upm.miw.dtos.VoucherDto;
 import es.upm.miw.repositories.core.VoucherRepository;
 
@@ -49,6 +46,14 @@ public class VoucherController {
 		
 		return voucherDtoList;
     }
+	
+	public BigDecimal consumeVoucher( String reference ) {
+		Voucher voucher = this.voucherRepository.findByReference( reference );
+		assert voucher != null;
+		voucher.setDateOfUse( new Date() );
+		this.voucherRepository.save( voucher );
+		return voucher.getValue();
+	}
 	
 	public boolean existsVoucher( String reference ) {
 		return this.voucherRepository.findByReference(reference) != null;

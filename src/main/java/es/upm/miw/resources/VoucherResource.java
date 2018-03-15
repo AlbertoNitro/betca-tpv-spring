@@ -1,9 +1,7 @@
 package es.upm.miw.resources;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 import javax.validation.Valid;
 
@@ -20,7 +18,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import es.upm.miw.controllers.VoucherController;
 import es.upm.miw.dtos.VoucherDto;
-import es.upm.miw.resources.exceptions.UserIdNotFoundException;
 import es.upm.miw.resources.exceptions.VoucherConsumedException;
 import es.upm.miw.resources.exceptions.VoucherReferenceNotFoundException;
 
@@ -35,9 +32,7 @@ public class VoucherResource {
     
     @Autowired
     private VoucherController voucherController;
-    
-    private VoucherDto voucher1 = new VoucherDto( "1", new BigDecimal(11) );
-    
+        
     @PostMapping
     public void createVoucher(@Valid @RequestBody VoucherDto voucherDto) {
     	
@@ -57,19 +52,15 @@ public class VoucherResource {
     @PatchMapping(value = REFERENCE)
     public void consumeVoucher(@PathVariable String reference) throws VoucherReferenceNotFoundException, VoucherConsumedException {
         
-    	/*if ( !this.voucherController.existsVoucher( reference ) ) {
+    	if ( !this.voucherController.existsVoucher( reference ) ) {
     		throw new VoucherReferenceNotFoundException();
     	}
     	
     	if ( this.voucherController.consumedVoucher( reference ) ) {
     		throw new VoucherConsumedException();
-    	}*/
+    	}
     	
-    	if ( reference.equals( "1" ) ) {
-   		 	this.voucher1.setUsed( true );
-	   	}else {
-	   		throw new VoucherReferenceNotFoundException();
-	   	}
+    	this.voucherController.consumeVoucher( reference );
     }
     
     @GetMapping
