@@ -5,6 +5,7 @@ import org.springframework.data.mongodb.repository.Query;
 
 import es.upm.miw.documents.core.Article;
 import es.upm.miw.dtos.ArticleOutputDto;
+import java.util.List;
 
 public interface ArticleRepository extends MongoRepository<Article, String> {
 
@@ -15,4 +16,7 @@ public interface ArticleRepository extends MongoRepository<Article, String> {
 
 	Article findArticleByDescription(String string);
 
+    @Query(value =  "{$or:[{'reference': {'$regex': ?0}},{'description': {'$regex': ?1}}]}", fields = "{'reference' : 1, 'description' : 1, 'retailPrice' : 1, 'stock' : 1}")
+    List<ArticleOutputDto> findByCoderOrDescriptionLike(String reference,String description);
+	 
 }

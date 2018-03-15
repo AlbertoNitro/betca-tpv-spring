@@ -44,6 +44,7 @@ public class Article {
 		this.code = code;
 		this.description = description;
 		this.retailPrice = new BigDecimal(retailPrice.toString());
+		
 	}
 
     public Article(String code, String reference, String description, Provider provider, Tax tax) {
@@ -53,6 +54,16 @@ public class Article {
         this.description = description;
         this.provider = provider;
         this.tax = tax;
+    }
+    
+    public Article reference(String reference) {
+    		this.setReference(reference);
+    		return this;
+    }
+    
+    public Article stock(Integer stock) {
+		this.setStock(stock);
+		return this;
     }
 
     public String getCode() {
@@ -161,12 +172,17 @@ public class Article {
         }
         return (code.equals(((Article) obj).code));
     }
+    
 
     @Override
     public String toString() {
         return "Article [code=" + code + ", registrationDate=" + registrationDate + ", reference=" + reference + ", description="
                 + description + ", retailPrice=" + retailPrice + ", image=" + image + ", stock=" + stock + ", wholesalePrice="
                 + wholesalePrice + ", discontinued=" + discontinued + ", tax=" + tax + ", provider=" + provider.getId() + "]";
+    }
+    
+    public Article build() {
+    		return this;
     }
 
 }

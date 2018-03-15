@@ -42,4 +42,14 @@ public class TicketRepositoryIT {
     @Test
     public void testFindFirstByOrderByCreationDateDescIdDesc() {
     }
+    
+    @Test
+    public void findByCreationDateBetween() throws ParseException {
+        Date initialDate = new SimpleDateFormat("yyyy-mm-dd").parse("2017-01-11");
+        List<Ticket> ticketListByRangeDates = ticketRepository.findByCreationDateBetween(initialDate, new Date());
+        List<Ticket> ticketAllList = ticketRepository.findAll();
+        assertTrue(ticketListByRangeDates.size() >= ticketAllList.size());
+    }
+    
+    
 }

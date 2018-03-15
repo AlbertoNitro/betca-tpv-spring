@@ -25,6 +25,8 @@ public class ArticleResource {
 
     public static final String CODE_ID = "/{code}";
 
+    public static final String FILTER ="/filter";
+
     @Autowired
     private ArticleController articleController;
 
@@ -47,5 +49,9 @@ public class ArticleResource {
     @GetMapping(value = INCOMPLETES)
     public List<ArticleOutputDto> readAllArticlesIncompletes(){
         return this.articleController.readAllIncompletes();
+    }
+    @RequestMapping(value = FILTER , method = RequestMethod.POST)
+    public List<ArticleOutputDto> readFilterArticle(@RequestBody ArticleOutputDto dto){
+        return this.articleController.readFilterArticle(dto);
     }
 }

@@ -37,18 +37,22 @@ public class ProviderResource {
     
     @PostMapping
     public void createProvider(@Valid @RequestBody ProviderDto providerDto) throws UserFieldAlreadyExistException {
-        //TODO
+        this.providerController.createProvider(providerDto);
     }
 
     @PutMapping(value = ID)
     public void putProvider(@PathVariable String id, @Valid @RequestBody ProviderDto providerDto)
-            throws ForbiddenException, UserIdNotFoundException, UserFieldAlreadyExistException {
-        //TODO
+            throws ForbiddenException, UserIdNotFoundException {
+        if (!this.providerController.putProvider(id, providerDto)) {
+            throw new ForbiddenException();
+        }
     }
     
     @DeleteMapping(value = ID)
-    public void deleteCustomer(@PathVariable String mobile) throws ForbiddenException {
-        //TODO
+    public void deleteCustomer(@PathVariable String id) throws ForbiddenException {
+        if (!this.providerController.deleteProvider(id)) {
+            throw new ForbiddenException();
+        }
     }
 
     @RequestMapping(value = ID, method = RequestMethod.GET)

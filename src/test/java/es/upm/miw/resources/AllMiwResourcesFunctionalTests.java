@@ -13,7 +13,8 @@ import org.junit.runners.Suite.SuiteClasses;
     ProviderResourceFunctionalTesting.class,
     TicketResourceFunctionalTesting.class,
     TokenResourceFunctionalTesting.class,
-    UserResourceFunctionalTesting.class
+    UserResourceFunctionalTesting.class,
+    VoucherResourceFunctionalTesting.class
 })
 public class AllMiwResourcesFunctionalTests {
 

@@ -32,8 +32,15 @@ public class ArticleController {
 	}
 
 	public ArticleOutputDto postFastArticle(ArticleOutputDto articleOuputDto) {
+		System.out.println("--------------<<<<<********");
+		System.out.println(articleOuputDto.getCode());
+		System.out.println(articleOuputDto.getDescription());
+		System.out.println(articleOuputDto.getRetailPrice());
+		System.out.print(articleOuputDto.getReference());
+
 		Article articulo = new Article(articleOuputDto.getCode(), articleOuputDto.getDescription(),
-				articleOuputDto.getRetailPrice());
+				articleOuputDto.getRetailPrice()).reference(articleOuputDto.getReference())
+						.stock(articleOuputDto.getStock()).build();
 		this.articleRepository.save(articulo);
 		return articleOuputDto;
 	}
@@ -49,18 +56,22 @@ public class ArticleController {
 		return articleListDto;
 
 	}
-	
+
 	public List<ArticleOutputDto> readAllIncompletes() {
 
 		List<Article> articleList = this.articleRepository.findAll();
 		List<ArticleOutputDto> articleListDto = new ArrayList<ArticleOutputDto>();
 		for (Article articulo : articleList) {
-			if(articulo.getReference() == null || articulo.getStock() == null ) {
+			if (articulo.getReference() == null || articulo.getStock() == null) {
 				articleListDto.add(new ArticleOutputDto(articulo.getCode(), articulo.getReference(),
-					articulo.getDescription(), articulo.getRetailPrice(), articulo.getStock()));
+						articulo.getDescription(), articulo.getRetailPrice(), articulo.getStock()));
 			}
 		}
 		return articleListDto;
 
 	}
-}
+    public List<ArticleOutputDto> readFilterArticle(ArticleOutputDto dto) {
+		List<ArticleOutputDto> articleOutputDto = this.articleRepository.findByCoderOrDescriptionLike(dto.getReference(),dto.getDescription());
+		return articleOutputDto;
+	}
+	}
