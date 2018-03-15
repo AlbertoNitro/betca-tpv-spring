@@ -58,7 +58,7 @@ public class TicketController {
         return pdfService.generateTicket(ticket);
     }
     
-    //public Optional<byte[]> modifyTicket(TicketCreationInputDto ticketCreationDto) {
+    //public Optional<byte[]> updateAmountShoppingListTicket() {    
     //}
 
     private int nextId() {
