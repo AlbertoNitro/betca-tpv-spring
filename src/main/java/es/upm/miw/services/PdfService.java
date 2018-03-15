@@ -90,5 +90,9 @@ public class PdfService {
         pdf.line().paragraph("Este presupuesto es válido durante 15 días. A partir de esa fecha los precios pueden variar.");
         return pdf.build();
     }
+    
+    public Optional<byte[]> generateInvioce(){
+        return null;
+    }
 
 }
