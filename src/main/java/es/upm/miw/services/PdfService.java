@@ -1,5 +1,6 @@
 package es.upm.miw.services;
 
+import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -19,7 +20,11 @@ public class PdfService {
 
     private static final float[] TABLE_COLUMNS_SIZES = {20, 85, 20, 30, 40, 15};
 
+    private static final float[] TABLE_COLUMNS_SIZES_BUDGETS = {20, 85, 20, 40, 40};
+
     private static final String[] TABLE_COLUMNS_HEADERS = {" ", "Desc.", "Ud.", "Dto.", "€", "E."};
+
+    private static final String[] TABLE_COLUMNS_HEADERS_BUDGETS = {" ", "Desc.", "Ud.", "Dto.", "€"};
 
     private static final String DATE_FORMAT = "yyyy-MM-dd HH:mm";
 
@@ -35,10 +40,8 @@ public class PdfService {
 
     public Optional<byte[]> generateTicket(Ticket ticket) {
         final String path = "/tickets/ticket-" + ticket.getId();
-        PdfTicketBuilder pdf = new PdfTicketBuilder(path);
-        pdf.addImage("logo-upm.png");
-        pdf.paragraphEmphasized("Master en Ingeniería Web. BETCA");
-        pdf.paragraphEmphasized("Tfno: +(34) 913366000").paragraph("NIF: Q2818015F").paragraph("Calle Alan Turing s/n, 28031 Madrid");
+        PdfTicketBuilder pdf = this.headerData(path);
+
         pdf.line().paragraphEmphasized("TICKET");
         pdf.barCode(ticket.getId()).line();
         SimpleDateFormat formatter = new SimpleDateFormat(DATE_FORMAT);
@@ -54,8 +57,7 @@ public class PdfService {
                     shopping.getDiscount().setScale(2, RoundingMode.HALF_UP) + "%",
                     shopping.getShoppingTotal().setScale(2, RoundingMode.HALF_UP) + "€", state);
         }
-        pdf.tableColspanRight("TOTAL: " + ticket.getTicketTotal().setScale(2, RoundingMode.HALF_UP) + "€");
-
+        this.totalPrice(pdf, ticket.getTicketTotal());
         pdf.line().paragraph("Periodo de devolución o cambio: 15 dias a partir de la fecha del ticket");
         pdf.paragraphEmphasized("Gracias por su compra");
         pdf.qrCode(ticket.getReference());
@@ -65,30 +67,37 @@ public class PdfService {
 
     public Optional<byte[]> generateBudget(Budget budget) {
         final String path = "/budgets/budget-" + budget.getId();
+        PdfTicketBuilder pdf = this.headerData(path);
+
+        pdf.line().paragraphEmphasized("PRESUPUESTO");
+        pdf.barCode(budget.getId()).line();
+
+        SimpleDateFormat formatter = new SimpleDateFormat(DATE_FORMAT);
+        pdf.paragraphEmphasized(formatter.format(budget.getCreationDate()));
+
+        pdf.tableColumnsSizes(TABLE_COLUMNS_SIZES_BUDGETS).tableColumnsHeader(TABLE_COLUMNS_HEADERS_BUDGETS);
+        for (int i = 0; i < budget.getShoppingList().length; i++) {
+            Shopping shopping = budget.getShoppingList()[i];
+            pdf.tableCell(String.valueOf(i + 1), shopping.getDescription(), "" + shopping.getAmount(),
+                    shopping.getDiscount().setScale(2, RoundingMode.HALF_UP) + "%",
+                    shopping.getShoppingTotal().setScale(2, RoundingMode.HALF_UP) + "€");
+        }
+        this.totalPrice(pdf, budget.getBudgetTotal());
+        pdf.line().paragraph("Este presupuesto es válido durante 15 días. A partir de esa fecha los precios pueden variar.");
+        
+        return pdf.build();
+    }
+
+    private PdfTicketBuilder headerData(String path) {
         PdfTicketBuilder pdf = new PdfTicketBuilder(path);
         pdf.addImage("logo-upm.png");
         pdf.paragraphEmphasized("Master en Ingeniería Web. BETCA");
         pdf.paragraphEmphasized("Tfno: +(34) 913366000").paragraph("NIF: Q2818015F").paragraph("Calle Alan Turing s/n, 28031 Madrid");
-        pdf.line().paragraphEmphasized("PRESUPUESTO");
-        pdf.barCode("PR" + budget.getId()).line();
-        SimpleDateFormat formatter = new SimpleDateFormat(DATE_FORMAT);
-        pdf.paragraphEmphasized(formatter.format(budget.getCreationDate()));
-
-        pdf.tableColumnsSizes(TABLE_COLUMNS_SIZES).tableColumnsHeader(TABLE_COLUMNS_HEADERS);
-        for (int i = 0; i < budget.getShoppingList().length; i++) {
-            Shopping shopping = budget.getShoppingList()[i];
-            String state = "";
-            if (shopping.getShoppingState() != ShoppingState.COMMITTED) {
-                state = "N";
-            }
-            pdf.tableCell(String.valueOf(i + 1), shopping.getDescription(), "" + shopping.getAmount(),
-                    shopping.getDiscount().setScale(2, RoundingMode.HALF_UP) + "%",
-                    shopping.getShoppingTotal().setScale(2, RoundingMode.HALF_UP) + "€", state);
-        }
-        pdf.tableColspanRight("TOTAL: " + budget.getBudgetTotal().setScale(2, RoundingMode.HALF_UP) + "€");
-
-        pdf.line().paragraph("Este presupuesto es válido durante 15 días. A partir de esa fecha los precios pueden variar.");
-        return pdf.build();
+        return pdf;
     }
-
+    
+    private PdfTicketBuilder totalPrice(PdfTicketBuilder pdf, BigDecimal total) {
+        pdf.tableColspanRight("TOTAL: " + total.setScale(2, RoundingMode.HALF_UP) + "€");
+        return pdf;
+    }
 }
