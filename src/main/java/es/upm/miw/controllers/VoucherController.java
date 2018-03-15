@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
 import es.upm.miw.documents.core.Voucher;
+import es.upm.miw.dtos.VoucherDto;
 import es.upm.miw.repositories.core.VoucherRepository;
 
 @Controller
@@ -11,6 +12,10 @@ public class VoucherController {
 	
 	@Autowired
     private VoucherRepository voucherRepository;
+	
+	public void createVoucher( VoucherDto voucherDto ) {
+		
+	}
 	
 	public boolean existsVoucher( String reference ) {
 		return this.voucherRepository.findByReference(reference) != null;
