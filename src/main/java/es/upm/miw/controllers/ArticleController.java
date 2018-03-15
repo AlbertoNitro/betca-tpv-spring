@@ -63,5 +63,8 @@ public class ArticleController {
 		return articleListDto;
 
 	}
-	
-}
+    public List<ArticleOutputDto> readFilterArticle(ArticleOutputDto dto) {
+		List<ArticleOutputDto> articleOutputDto = this.articleRepository.findByCoderOrDescriptionLike(dto.getReference(),dto.getDescription());
+		return articleOutputDto;
+	}
+	}
