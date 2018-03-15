@@ -119,21 +119,87 @@ public class CashierClosure {
 
     @Override
     public int hashCode() {
-        return this.id.hashCode();
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((closureDate == null) ? 0 : closureDate.hashCode());
+        result = prime * result + ((comment == null) ? 0 : comment.hashCode());
+        result = prime * result + ((deposit == null) ? 0 : deposit.hashCode());
+        result = prime * result + ((finalCash == null) ? 0 : finalCash.hashCode());
+        result = prime * result + ((id == null) ? 0 : id.hashCode());
+        result = prime * result + ((initialCash == null) ? 0 : initialCash.hashCode());
+        result = prime * result + ((openingDate == null) ? 0 : openingDate.hashCode());
+        result = prime * result + ((salesCard == null) ? 0 : salesCard.hashCode());
+        result = prime * result + ((salesCash == null) ? 0 : salesCash.hashCode());
+        result = prime * result + ((usedVouchers == null) ? 0 : usedVouchers.hashCode());
+        result = prime * result + ((withdrawal == null) ? 0 : withdrawal.hashCode());
+        return result;
     }
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj) {
+        if (this == obj)
             return true;
-        }
-        if (obj == null) {
+        if (obj == null)
             return false;
-        }
-        if (getClass() != obj.getClass()) {
+        if (getClass() != obj.getClass())
             return false;
-        }
-        return (id.equals(((CashierClosure) obj).id));
+        CashierClosure other = (CashierClosure) obj;
+        if (closureDate == null) {
+            if (other.closureDate != null)
+                return false;
+        } else if (!closureDate.equals(other.closureDate))
+            return false;
+        if (comment == null) {
+            if (other.comment != null)
+                return false;
+        } else if (!comment.equals(other.comment))
+            return false;
+        if (deposit == null) {
+            if (other.deposit != null)
+                return false;
+        } else if (!deposit.equals(other.deposit))
+            return false;
+        if (finalCash == null) {
+            if (other.finalCash != null)
+                return false;
+        } else if (!finalCash.equals(other.finalCash))
+            return false;
+        if (id == null) {
+            if (other.id != null)
+                return false;
+        } else if (!id.equals(other.id))
+            return false;
+        if (initialCash == null) {
+            if (other.initialCash != null)
+                return false;
+        } else if (!initialCash.equals(other.initialCash))
+            return false;
+        if (openingDate == null) {
+            if (other.openingDate != null)
+                return false;
+        } else if (!openingDate.equals(other.openingDate))
+            return false;
+        if (salesCard == null) {
+            if (other.salesCard != null)
+                return false;
+        } else if (!salesCard.equals(other.salesCard))
+            return false;
+        if (salesCash == null) {
+            if (other.salesCash != null)
+                return false;
+        } else if (!salesCash.equals(other.salesCash))
+            return false;
+        if (usedVouchers == null) {
+            if (other.usedVouchers != null)
+                return false;
+        } else if (!usedVouchers.equals(other.usedVouchers))
+            return false;
+        if (withdrawal == null) {
+            if (other.withdrawal != null)
+                return false;
+        } else if (!withdrawal.equals(other.withdrawal))
+            return false;
+        return true;
     }
 
     @Override
