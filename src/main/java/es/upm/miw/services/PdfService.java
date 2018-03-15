@@ -70,7 +70,8 @@ public class PdfService {
         PdfTicketBuilder pdf = this.headerData(path);
 
         pdf.line().paragraphEmphasized("PRESUPUESTO");
-        pdf.barCode("PR" + budget.getId()).line();
+        pdf.barCode(budget.getId()).line();
+
         SimpleDateFormat formatter = new SimpleDateFormat(DATE_FORMAT);
         pdf.paragraphEmphasized(formatter.format(budget.getCreationDate()));
 

@@ -29,6 +29,10 @@ public class Budget {
     public String getId() {
         return id;
     }
+    
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public Date getCreationDate() {
         return creationDate;
@@ -42,7 +46,6 @@ public class Budget {
         this.shoppingList = shoppingList;
     }
 
-    //TODO
     public BigDecimal getBudgetTotal() {
         BigDecimal total = new BigDecimal(0);
         for (Shopping shopping : shoppingList) {

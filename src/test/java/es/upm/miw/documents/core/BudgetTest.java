@@ -8,7 +8,16 @@ import org.junit.Test;
 
 public class BudgetTest {
 
-    //TODO
+    @Test
+    public void testGetShoppingList() {
+        Article article = new Article();
+        article.setRetailPrice(new BigDecimal("50"));
+        Shopping[] shoppingList = new Shopping[1];
+        shoppingList[0] = new Shopping(2, new BigDecimal("20"), article);
+        Budget budget = new Budget(shoppingList);
+        assertEquals(1, budget.getShoppingList().length);
+    }
+    
     @Test
     public void testGetBudgetTotal() {
         Article article = new Article();
