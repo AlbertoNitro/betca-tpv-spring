@@ -65,6 +65,7 @@ public class TicketController {
     }
     
     public void updateAmountAndStateTicket(String id, TicketUpdationInputDto ticketUpdationInputDto) {    
+    
     }
 
     private int nextId() {
