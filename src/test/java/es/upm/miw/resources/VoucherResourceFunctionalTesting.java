@@ -41,7 +41,6 @@ public class VoucherResourceFunctionalTesting {
 		this.restService.loginAdmin().restBuilder().path(VoucherResource.VOUCHERS).body(this.voucherDto).post().build();
 		List<VoucherDto> voucherDtoList = readVoucherAll();
 		this.voucherDto = voucherDtoList.get( voucherDtoList.size() - 1 );
-		
 	}
 	
 	@After
