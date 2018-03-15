@@ -40,7 +40,7 @@ public class VoucherResource {
             voucherDto.setValue( new BigDecimal(11) );
         }
     	
-        this.voucherController.createVoucher( voucherDto );
+        this.voucherController.createVoucher( voucherDto.getValue() );
     }
     
     @RequestMapping(value = REFERENCE, method = RequestMethod.GET)

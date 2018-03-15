@@ -19,8 +19,8 @@ public class VoucherController {
 	@Autowired
     private VoucherRepository voucherRepository;
 	
-	public void createVoucher( VoucherDto voucherDto ) {
-		Voucher voucher = new Voucher( voucherDto.getValue() );
+	public void createVoucher( BigDecimal value ) {
+		Voucher voucher = new Voucher( value );
 		this.voucherRepository.save( voucher );
 	}
 	
