@@ -65,7 +65,16 @@ public class TicketController {
     }
     
     public void updateAmountAndStateTicket(String id, TicketUpdationInputDto ticketUpdationInputDto) {    
-    
+        List<Integer> listAmounts = ticketUpdationInputDto.getListAmounts();
+        List<Boolean> listCommitteds = ticketUpdationInputDto.getListCommitteds();
+        Ticket ticket = this.ticketRepository.findOne(id);
+        Shopping[] shopping = ticket.getShoppingList();
+        for (int i=0; i<shopping.length; i++) {
+            shopping[i].setAmount(listAmounts.get(i));
+            ShoppingState shoppingState = listCommitteds.get(i)? ShoppingState.COMMITTED : ShoppingState.NOT_COMMITTED;
+            shopping[i].setShoppingState(shoppingState);
+        }
+        this.ticketRepository.save(ticket);
     }
 
     private int nextId() {

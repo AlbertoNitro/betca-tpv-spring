@@ -9,12 +9,18 @@ public class TicketUpdationInputDto {
     private List<Integer> listAmounts;
     
     @ListNotEmpty
-    private List<Integer> listCommitteds;
+    private List<Boolean> listCommitteds;
     
     public TicketUpdationInputDto() {
      // Empty for framework
     }
     
+    public TicketUpdationInputDto(List<Integer> listAmounts, List<Boolean> listCommitteds) {
+        super();
+        this.listAmounts = listAmounts;
+        this.listCommitteds = listCommitteds;
+    }
+
     public List<Integer> getListAmounts() {
         return listAmounts;
     }
@@ -23,11 +29,11 @@ public class TicketUpdationInputDto {
         this.listAmounts = listAmounts;
     }
 
-    public List<Integer> getListCommitteds() {
+    public List<Boolean> getListCommitteds() {
         return listCommitteds;
     }
 
-    public void setListCommitteds(List<Integer> listCommitteds) {
+    public void setListCommitteds(List<Boolean> listCommitteds) {
         this.listCommitteds = listCommitteds;
     }
 
