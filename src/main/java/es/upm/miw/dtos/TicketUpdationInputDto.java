@@ -2,9 +2,13 @@ package es.upm.miw.dtos;
 
 import java.util.List;
 
+import es.upm.miw.dtos.validations.ListNotEmpty;
+
 public class TicketUpdationInputDto {
+    @ListNotEmpty
     private List<Integer> listAmounts;
     
+    @ListNotEmpty
     private List<Integer> listCommitteds;
     
     public TicketUpdationInputDto() {

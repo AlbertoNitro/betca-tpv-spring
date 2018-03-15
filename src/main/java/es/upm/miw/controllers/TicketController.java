@@ -17,6 +17,7 @@ import es.upm.miw.documents.core.Ticket;
 import es.upm.miw.documents.core.User;
 import es.upm.miw.dtos.ShoppingDto;
 import es.upm.miw.dtos.TicketCreationInputDto;
+import es.upm.miw.dtos.TicketUpdationInputDto;
 import es.upm.miw.repositories.core.ArticleRepository;
 import es.upm.miw.repositories.core.TicketRepository;
 import es.upm.miw.repositories.core.UserRepository;
@@ -58,8 +59,13 @@ public class TicketController {
         return pdfService.generateTicket(ticket);
     }
     
-    //public Optional<byte[]> updateAmountShoppingListTicket() {    
-    //}
+    public boolean existTicket(String id) {
+        Ticket ticket = this.ticketRepository.findOne(id);
+        return ticket!=null;
+    }
+    
+    public void updateAmountAndStateTicket(String id, TicketUpdationInputDto ticketUpdationInputDto) {    
+    }
 
     private int nextId() {
         int nextId = 1;

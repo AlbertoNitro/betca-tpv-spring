@@ -43,5 +43,10 @@ public class TicketResource {
     
     @RequestMapping(value = ID, method = RequestMethod.PATCH)
     public void updateAmountAndStateTicket(@PathVariable(value="id") String id, @Valid @RequestBody TicketUpdationInputDto ticketUpdationInputDto) throws TicketIdNotFoundException {
+        if (this.ticketController.existTicket(id)) {
+            this.ticketController.updateAmountAndStateTicket(id, ticketUpdationInputDto);
+        } else {
+            throw new TicketIdNotFoundException(id);
+        }
     }
 }
