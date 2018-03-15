@@ -7,6 +7,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -68,6 +69,13 @@ public class VoucherResource {
     	
     	return this.voucherController.readVoucherAll();
 
+    }
+    
+    @DeleteMapping(value = REFERENCE)
+    public void deleteVoucher(@PathVariable String reference) throws VoucherReferenceNotFoundException {
+        if (!this.voucherController.deleteVoucher(reference) ) {
+            throw new VoucherReferenceNotFoundException();
+        }
     }
 
 }

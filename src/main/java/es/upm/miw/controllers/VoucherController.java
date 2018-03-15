@@ -55,6 +55,16 @@ public class VoucherController {
 		return voucher.getValue();
 	}
 	
+	public boolean deleteVoucher(String reference) {
+        Voucher voucherBd = this.voucherRepository.findByReference(reference);
+        if (voucherBd != null) {
+            this.voucherRepository.delete( voucherBd );
+            return true;
+        } else {
+            return false;
+        }
+    }
+	
 	public boolean existsVoucher( String reference ) {
 		return this.voucherRepository.findByReference(reference) != null;
 	}
