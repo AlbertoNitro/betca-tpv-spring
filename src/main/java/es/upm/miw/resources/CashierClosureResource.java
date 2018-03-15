@@ -1,5 +1,8 @@
 package es.upm.miw.resources;
 
+import java.math.BigDecimal;
+import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 import javax.validation.Valid;
@@ -11,11 +14,14 @@ import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import es.upm.miw.controllers.CashierClosureController;
 import es.upm.miw.dtos.CashierClosureInputDto;
 import es.upm.miw.dtos.CashierClosureLastOutputDto;
+import es.upm.miw.dtos.CashierClosureOutputDto;
 import es.upm.miw.resources.exceptions.CashierClosedException;
 import es.upm.miw.resources.exceptions.CashierCreateException;
 
@@ -27,6 +33,8 @@ public class CashierClosureResource {
     public static final String CASHIER_CLOSURES = "/cashier-closures";
 
     public static final String LAST = "/last";
+    
+    public static final String SEARCH = "/search";
 
     @Autowired
     private CashierClosureController cashierClosureController;
@@ -50,6 +58,12 @@ public class CashierClosureResource {
         if (error.isPresent()) {
             throw new CashierClosedException(error.get());
         }
+    }
+    
+    @GetMapping(value=SEARCH)
+    public List<CashierClosureOutputDto> findAll(@RequestParam(value = "openingDate") String dateStart, @RequestParam(value = "closureDate") String dateFinish) {
+    	System.out.println(dateStart);
+    	return this.cashierClosureController.readDatesAll(dateStart, dateFinish);
     }
 
 }

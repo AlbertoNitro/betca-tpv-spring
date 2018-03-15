@@ -13,6 +13,7 @@ import es.upm.miw.documents.core.Ticket;
 import es.upm.miw.documents.core.Voucher;
 import es.upm.miw.dtos.CashierClosureInputDto;
 import es.upm.miw.dtos.CashierClosureLastOutputDto;
+import es.upm.miw.dtos.CashierClosureOutputDto;
 import es.upm.miw.repositories.core.CashierClosureRepository;
 import es.upm.miw.repositories.core.TicketRepository;
 import es.upm.miw.repositories.core.VoucherRepository;
@@ -85,6 +86,10 @@ public class CashierClosureController {
             total = total.add(ticket.getTicketTotal());
         }
         return total;
+    }
+
+	    public List<CashierClosureOutputDto> readDatesAll(String dateStart, String dateFinish){
+    	return this.cashierClosureRepository.findAllStatics(dateStart, dateFinish);
     }
 
 }
