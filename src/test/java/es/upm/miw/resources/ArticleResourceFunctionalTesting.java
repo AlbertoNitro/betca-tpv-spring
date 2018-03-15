@@ -38,7 +38,7 @@ public class ArticleResourceFunctionalTesting {
 	@Autowired
 	private ArticleController articleController;
 
-    @Test
+	@Test
     public void testReadArticle() {
         ArticleOutputDto articleOutputDto = restService.loginAdmin().restBuilder(new RestBuilder<ArticleOutputDto>())
                 .clazz(ArticleOutputDto.class).path(ArticleResource.ARTICLES).path(ArticleResource.CODE_ID).expand("article1").get()
@@ -105,5 +105,28 @@ public class ArticleResourceFunctionalTesting {
         thrown.expect(new HttpMatcher(HttpStatus.FORBIDDEN));
         restService.logout().restBuilder().path(ArticleResource.ARTICLES).path(ArticleResource.CODE_ID).expand("article1").get().build();
     }
+    
+	@Test
+	public void testFilterArticle() {
+		
+		//agregar articulo
+		ArticleOutputDto articulo = new ArticleOutputDto();
+		articulo.setCode("zea");
+		articulo.setDescription("zea");
+		Number retailPrice = 2;
+		articulo.setRetailPrice(new BigDecimal(retailPrice.toString()));
+		restService.loginAdmin().restBuilder().path(ArticleResource.ARTICLES).body(articulo).post().build();
+		
+		//buscar articulo
+		ArticleOutputDto articuloFilter = new ArticleOutputDto();
+		articuloFilter.setReference("zea");
+		articuloFilter.setDescription("zea");
 
+        List<ArticleOutputDto> articleOutputDto = Arrays.asList(restService.loginAdmin().restBuilder(new RestBuilder<ArticleOutputDto[]>())
+                .clazz(ArticleOutputDto[].class).path(ArticleResource.ARTICLES).path(ArticleResource.FILTER).body(articuloFilter).post()
+                .build());
+      
+       assertEquals(1, articleOutputDto.size());
+       //eliminar articulo       
+	}
 }
