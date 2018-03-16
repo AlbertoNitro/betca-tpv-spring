@@ -67,9 +67,11 @@ public class PdfService {
             if (shopping.getShoppingState() != ShoppingState.COMMITTED) {
                 state = "N";
             }
+            
             pdf.tableCell(String.valueOf(i + 1), shopping.getDescription(), "" + shopping.getAmount(),
                     shopping.getDiscount().setScale(2, RoundingMode.HALF_UP) + "%",
                     shopping.getShoppingTotal().setScale(2, RoundingMode.HALF_UP) + "€", state);
+        
         }
         this.totalPrice(pdf, ticket.getTicketTotal());
         pdf.line().paragraph("Periodo de devolución o cambio: 15 dias a partir de la fecha del ticket");
