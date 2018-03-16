@@ -2,6 +2,7 @@ package es.upm.miw.resources;
 
 import java.util.List;
 
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,13 +16,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import es.upm.miw.controllers.ArticleController;
-import es.upm.miw.documents.core.Role;
 import es.upm.miw.dtos.ArticleOutputDto;
-import es.upm.miw.dtos.UserDto;
 import es.upm.miw.resources.exceptions.ArticleCodeNotFoundException;
-import es.upm.miw.resources.exceptions.ForbiddenException;
-import es.upm.miw.resources.exceptions.UserFieldAlreadyExistException;
-import es.upm.miw.resources.exceptions.UserIdNotFoundException;
 
 @PreAuthorize("hasRole('ADMIN') or hasRole('MANAGER') or hasRole('OPERATOR')")
 @RestController
@@ -64,7 +60,7 @@ public class ArticleResource {
     }
     
     @PutMapping(value = CODE_ID)
-    public void putCustomer(@PathVariable String code, @Valid @RequestBody ArticleOutputDto articleDto) {
+    public void putArticle(@PathVariable String code, @Valid @RequestBody ArticleOutputDto articleDto) {
     		this.articleController.putArticle(code,articleDto);
     }
 }
