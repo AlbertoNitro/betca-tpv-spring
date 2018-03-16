@@ -2,6 +2,7 @@ package es.upm.miw.dtos;
 
 import java.math.BigDecimal;
 
+import es.upm.miw.documents.core.Voucher;
 import es.upm.miw.utils.Encrypting;
 
 public class VoucherDto {
@@ -24,6 +25,12 @@ public class VoucherDto {
 		this.reference = reference;
         this.value = value;
         this.used = false;
+    }
+	
+	public VoucherDto(Voucher voucher) {
+		this.reference = voucher.getReference();
+		this.value = voucher.getValue();
+		this.used = voucher.isUsed();
     }
 	
 	public BigDecimal getValue() {
