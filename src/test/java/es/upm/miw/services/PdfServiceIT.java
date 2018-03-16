@@ -90,6 +90,6 @@ public class PdfServiceIT {
         shoppingList[7] = new Shopping(3, new BigDecimal("40"), articleTaxGeneral);
         Ticket ticket = new Ticket(1, new BigDecimal("20"), shoppingList, user);
         Invoice invoice =  new Invoice(1, ticket);
-        pdfService.generateInvioce(invoice);
+        pdfService.generateInvioce(invoice); 
     }
 }
