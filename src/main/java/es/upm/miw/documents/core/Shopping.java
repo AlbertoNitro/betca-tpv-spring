@@ -88,51 +88,65 @@ public class Shopping {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((amount == null) ? 0 : amount.hashCode());
-        result = prime * result + ((article == null) ? 0 : article.hashCode());
-        result = prime * result + ((description == null) ? 0 : description.hashCode());
-        result = prime * result + ((discount == null) ? 0 : discount.hashCode());
-        result = prime * result + ((retailPrice == null) ? 0 : retailPrice.hashCode());
-        result = prime * result + ((shoppingState == null) ? 0 : shoppingState.hashCode());
+        result = (prime * result) + ((amount == null) ? 0 : amount.hashCode());
+        result = (prime * result) + ((article == null) ? 0 : article.hashCode());
+        result = (prime * result) + ((description == null) ? 0 : description.hashCode());
+        result = (prime * result) + ((discount == null) ? 0 : discount.hashCode());
+        result = (prime * result) + ((retailPrice == null) ? 0 : retailPrice.hashCode());
+        result = (prime * result) + ((shoppingState == null) ? 0 : shoppingState.hashCode());
         return result;
     }
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj)
+        if (this == obj) {
             return true;
-        if (obj == null)
+        }
+        if (obj == null) {
             return false;
-        if (getClass() != obj.getClass())
+        }
+        if (getClass() != obj.getClass()) {
             return false;
+        }
         Shopping other = (Shopping) obj;
         if (amount == null) {
-            if (other.amount != null)
+            if (other.amount != null) {
                 return false;
-        } else if (!amount.equals(other.amount))
+            }
+        } else if (!amount.equals(other.amount)) {
             return false;
+        }
         if (article == null) {
-            if (other.article != null)
+            if (other.article != null) {
                 return false;
-        } else if (!article.equals(other.article))
+            }
+        } else if (!article.equals(other.article)) {
             return false;
+        }
         if (description == null) {
-            if (other.description != null)
+            if (other.description != null) {
                 return false;
-        } else if (!description.equals(other.description))
+            }
+        } else if (!description.equals(other.description)) {
             return false;
+        }
         if (discount == null) {
-            if (other.discount != null)
+            if (other.discount != null) {
                 return false;
-        } else if (!discount.equals(other.discount))
+            }
+        } else if (!discount.equals(other.discount)) {
             return false;
+        }
         if (retailPrice == null) {
-            if (other.retailPrice != null)
+            if (other.retailPrice != null) {
                 return false;
-        } else if (!retailPrice.equals(other.retailPrice))
+            }
+        } else if (!retailPrice.equals(other.retailPrice)) {
             return false;
-        if (shoppingState != other.shoppingState)
+        }
+        if (shoppingState != other.shoppingState) {
             return false;
+        }
         return true;
     }
 

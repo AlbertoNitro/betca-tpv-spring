@@ -58,20 +58,20 @@ public class TicketController {
         this.ticketRepository.save(ticket);
         return pdfService.generateTicket(ticket);
     }
-    
+
     public boolean existTicket(String id) {
         Ticket ticket = this.ticketRepository.findOne(id);
-        return ticket!=null;
+        return ticket != null;
     }
-    
-    public void updateAmountAndStateTicket(String id, TicketUpdationInputDto ticketUpdationInputDto) {    
+
+    public void updateAmountAndStateTicket(String id, TicketUpdationInputDto ticketUpdationInputDto) {
         List<Integer> listAmounts = ticketUpdationInputDto.getListAmounts();
         List<Boolean> listCommitteds = ticketUpdationInputDto.getListCommitteds();
         Ticket ticket = this.ticketRepository.findOne(id);
         Shopping[] shopping = ticket.getShoppingList();
-        for (int i=0; i<shopping.length; i++) {
+        for (int i = 0; i < shopping.length; i++) {
             shopping[i].setAmount(listAmounts.get(i));
-            ShoppingState shoppingState = listCommitteds.get(i)? ShoppingState.COMMITTED : ShoppingState.NOT_COMMITTED;
+            ShoppingState shoppingState = listCommitteds.get(i) ? ShoppingState.COMMITTED : ShoppingState.NOT_COMMITTED;
             shopping[i].setShoppingState(shoppingState);
         }
         this.ticketRepository.save(ticket);
@@ -87,6 +87,11 @@ public class TicketController {
             }
         }
         return nextId;
+    }
+
+    public Optional<byte[]> getTicket(String id) {
+        Ticket ticket = this.ticketRepository.findOne(id);
+        return this.pdfService.generateTicket(ticket);
     }
 
 }

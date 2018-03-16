@@ -45,4 +45,5 @@ public class ApiExceptionHandler {
     public ErrorMessage forbiddenRequest(Exception exception) {
         return new ErrorMessage(exception, "");
     }
+    
 }
