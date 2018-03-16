@@ -7,6 +7,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import es.upm.miw.documents.core.Article;
 import es.upm.miw.documents.core.Budget;
@@ -18,6 +19,18 @@ import es.upm.miw.documents.core.Ticket;
 
 @Service
 public class PdfService {
+
+    @Value("${iva.general}")
+    private String ivaGeneral;
+
+    @Value("${iva.reduced}")
+    private String ivaReduced;
+
+    @Value("${iva.super.reduced}")
+    private String ivaSuperReduced;
+
+    @Value("${iva.free}")
+    private String ivaFree;
 
     private static final float[] TABLE_COLUMNS_SIZES = {20, 85, 20, 30, 40, 15};
 
@@ -103,10 +116,7 @@ public class PdfService {
         BigDecimal ivaTotal = BigDecimal.ZERO;
 
         final String path = "/invoices/invoice-" + invoice.getId();
-        PdfTicketBuilder pdf = new PdfTicketBuilder(path);
-        pdf.addImage("logo-upm.png");
-        pdf.paragraphEmphasized("Master en Ingeniería Web. BETCA");
-        pdf.paragraphEmphasized("Tfno: +(34) 913366000").paragraph("NIF: Q2818015F").paragraph("Calle Alan Turing s/n, 28031 Madrid");
+        PdfTicketBuilder pdf = this.headerData(path);
         pdf.line();
         pdf.paragraphEmphasized("Datos Cliente:").paragraph("DNI: " + invoice.getTicket().getUser().getDni())
                 .paragraph("Nombre: " + invoice.getTicket().getUser().getUsername())
@@ -144,45 +154,43 @@ public class PdfService {
     }
 
     private BigDecimal getTaxBase(BigDecimal value, Tax tax) {
-        BigDecimal result = BigDecimal.ZERO;
         switch (tax) {
         case GENERAL:
-            result = value.divide(new BigDecimal(1.21), 2, RoundingMode.HALF_UP);
-            break;
+            return value.divide(new BigDecimal(String.valueOf(ivaGeneral)).add(new BigDecimal(1)), 2, RoundingMode.HALF_UP);
+           
         case REDUCED:
-            result = value.divide(new BigDecimal(1.10), 2, RoundingMode.HALF_UP);
-            break;
+            return value.divide(new BigDecimal(String.valueOf(ivaReduced)).add(new BigDecimal(1)), 2, RoundingMode.HALF_UP);
+            
         case SUPER_REDUCED:
-            result = value.divide(new BigDecimal(1.04), 2, RoundingMode.HALF_UP);
-            break;
+            return value.divide(new BigDecimal(String.valueOf(ivaSuperReduced)).add(new BigDecimal(1)), 2, RoundingMode.HALF_UP);
+     
         case FREE:
-            result = value;
-            break;
+            return value.divide(new BigDecimal(String.valueOf(ivaFree)).add(new BigDecimal(1)), 2, RoundingMode.HALF_UP);
         default:
-            break;
+           return value;
         }
-        return result;
+
     }
 
     private BigDecimal getIva(BigDecimal value, Tax tax) {
-        BigDecimal result = BigDecimal.ZERO;
+       
         switch (tax) {
         case GENERAL:
-            result = value.multiply(new BigDecimal(0.21));
-            break;
+            return value.multiply(new BigDecimal(String.valueOf(ivaGeneral)));
+
         case REDUCED:
-            result = value.multiply(new BigDecimal(0.10));
-            break;
+           return value.multiply(new BigDecimal(String.valueOf(ivaReduced)));
+
         case SUPER_REDUCED:
-            result = value.multiply(new BigDecimal(0.04));
-            break;
+       return value.multiply(new BigDecimal(String.valueOf(ivaSuperReduced)));
+         
         case FREE:
-            result = value;
-            break;
+        return value.multiply(new BigDecimal(String.valueOf(ivaFree)));
+        
         default:
-            break;
+            return new BigDecimal(0.0);
         }
-        return result;
+
     }
 
     private PdfTicketBuilder totalPrice(PdfTicketBuilder pdf, BigDecimal total) {
