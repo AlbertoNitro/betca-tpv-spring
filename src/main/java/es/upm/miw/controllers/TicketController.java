@@ -91,7 +91,7 @@ public class TicketController {
 
     public Optional<byte[]> getTicket(String id) {
         Ticket ticket = this.ticketRepository.findOne(id);
-        return pdfService.generateTicket(ticket);
+        return this.pdfService.generateTicket(ticket);
     }
 
 }
