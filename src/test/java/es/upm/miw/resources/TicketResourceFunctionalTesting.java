@@ -101,7 +101,7 @@ public class TicketResourceFunctionalTesting {
         listCommitteds.add(true);
         listCommitteds.add(true);
         TicketUpdationInputDto ticketUpdationInputDto = new TicketUpdationInputDto(listAmounts, listCommitteds);
-        this.restService.loginAdmin().restBuilder(new RestBuilder<>()).path(TicketResource.TICKETS).path(TicketResource.ID).expand("20180112-1")
+        this.restService.loginAdmin().restBuilder(new RestBuilder<>()).path(TicketResource.TICKETS).path(TicketResource.ID).expand("20180112-7")
                 .body(ticketUpdationInputDto).patch().build();
     }
 
