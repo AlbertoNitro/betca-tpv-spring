@@ -8,11 +8,12 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
-
 import es.upm.miw.documents.core.Article;
 import es.upm.miw.documents.core.Budget;
+import es.upm.miw.documents.core.Invoice;
 import es.upm.miw.documents.core.Shopping;
 import es.upm.miw.documents.core.ShoppingState;
+import es.upm.miw.documents.core.Tax;
 import es.upm.miw.documents.core.Ticket;
 
 @Service
@@ -84,7 +85,7 @@ public class PdfService {
         }
         this.totalPrice(pdf, budget.getBudgetTotal());
         pdf.line().paragraph("Este presupuesto es válido durante 15 días. A partir de esa fecha los precios pueden variar.");
-        
+
         return pdf.build();
     }
 
@@ -95,9 +96,98 @@ public class PdfService {
         pdf.paragraphEmphasized("Tfno: +(34) 913366000").paragraph("NIF: Q2818015F").paragraph("Calle Alan Turing s/n, 28031 Madrid");
         return pdf;
     }
-    
+
+    public Optional<byte[]> generateInvioce(Invoice invoice) {
+
+        BigDecimal baseImpobibleTotal = BigDecimal.ZERO;
+        BigDecimal ivaTotal = BigDecimal.ZERO;
+
+        final String path = "/invoices/invoice-" + invoice.getId();
+        PdfTicketBuilder pdf = new PdfTicketBuilder(path);
+        pdf.addImage("logo-upm.png");
+        pdf.paragraphEmphasized("Master en Ingeniería Web. BETCA");
+        pdf.paragraphEmphasized("Tfno: +(34) 913366000").paragraph("NIF: Q2818015F").paragraph("Calle Alan Turing s/n, 28031 Madrid");
+        pdf.line();
+        pdf.paragraphEmphasized("Datos Cliente:").paragraph("DNI: " + invoice.getTicket().getUser().getDni())
+                .paragraph("Nombre: " + invoice.getTicket().getUser().getUsername())
+                .paragraph("Dirección: " + invoice.getTicket().getUser().getAddress());
+        pdf.line();
+        pdf.line().paragraphEmphasized("FACTURA N° " + invoice.getId());
+        pdf.line();
+        SimpleDateFormat formatter = new SimpleDateFormat(DATE_FORMAT);
+        pdf.paragraphEmphasized(formatter.format(invoice.getCreated()));
+        pdf.tableColumnsSizes(TABLE_COLUMNS_SIZES).tableColumnsHeader(TABLE_COLUMNS_HEADERS);
+
+        for (int i = 0; i < invoice.getTicket().getShoppingList().length; i++) {
+            Shopping shopping = invoice.getTicket().getShoppingList()[i];
+            Article article = invoice.getTicket().getShoppingList()[i].getArticle();
+            String state = "";
+            if (shopping.getShoppingState() != ShoppingState.COMMITTED) {
+                state = "N";
+            }
+            BigDecimal baseImpobible = getTaxBase(shopping.getShoppingTotal(), article.getTax());
+            BigDecimal iva = getIva(baseImpobible, article.getTax());
+            pdf.tableCell(String.valueOf(i + 1), shopping.getDescription(), "" + shopping.getAmount(),
+                    shopping.getDiscount().setScale(2, RoundingMode.HALF_UP) + "%", baseImpobible.setScale(2, RoundingMode.HALF_UP) + "€",
+                    state);
+            baseImpobibleTotal = baseImpobibleTotal.add(baseImpobible);
+            ivaTotal = ivaTotal.add(iva);
+        }
+
+        pdf.tableColspanRight("BASE IMPONIBLE: " + baseImpobibleTotal.setScale(2, RoundingMode.HALF_UP) + "€");
+        pdf.tableColspanRight("IVA: " + ivaTotal.setScale(2, RoundingMode.HALF_UP) + "€");
+        pdf.tableColspanRight("TOTAL: " + baseImpobibleTotal.add(ivaTotal).setScale(2, RoundingMode.HALF_UP) + "€");
+        pdf.line();
+        pdf.line().paragraph("Gracias por su compra");
+
+        return pdf.build();
+    }
+
+    private BigDecimal getTaxBase(BigDecimal value, Tax tax) {
+        BigDecimal result = BigDecimal.ZERO;
+        switch (tax) {
+        case GENERAL:
+            result = value.divide(new BigDecimal(1.21), 2, RoundingMode.HALF_UP);
+            break;
+        case REDUCED:
+            result = value.divide(new BigDecimal(1.10), 2, RoundingMode.HALF_UP);
+            break;
+        case SUPER_REDUCED:
+            result = value.divide(new BigDecimal(1.04), 2, RoundingMode.HALF_UP);
+            break;
+        case FREE:
+            result = value;
+            break;
+        default:
+            break;
+        }
+        return result;
+    }
+
+    private BigDecimal getIva(BigDecimal value, Tax tax) {
+        BigDecimal result = BigDecimal.ZERO;
+        switch (tax) {
+        case GENERAL:
+            result = value.multiply(new BigDecimal(0.21));
+            break;
+        case REDUCED:
+            result = value.multiply(new BigDecimal(0.10));
+            break;
+        case SUPER_REDUCED:
+            result = value.multiply(new BigDecimal(0.04));
+            break;
+        case FREE:
+            result = value;
+            break;
+        default:
+            break;
+        }
+        return result;
+    }
+
     private PdfTicketBuilder totalPrice(PdfTicketBuilder pdf, BigDecimal total) {
         pdf.tableColspanRight("TOTAL: " + total.setScale(2, RoundingMode.HALF_UP) + "€");
         return pdf;
     }
+
 }
