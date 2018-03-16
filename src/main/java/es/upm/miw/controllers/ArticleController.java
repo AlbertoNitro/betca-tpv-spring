@@ -22,7 +22,12 @@ public class ArticleController {
 	public Optional<ArticleOutputDto> readArticle(String code) {
 		ArticleOutputDto articleOutputDto = this.articleRepository.findMinimumByCode(code);
 		if (articleOutputDto == null && code.length() < 5) {
-			articleOutputDto = this.articleRepository.findMinimumByCode(VARIOUS_CODE);
+		    try{
+		        Double.parseDouble(code);
+		        articleOutputDto = this.articleRepository.findMinimumByCode(VARIOUS_CODE);
+		    }catch(NumberFormatException nfe) {
+		        // Nothing to do
+		    }
 		}
 		if (articleOutputDto == null) {
 			return Optional.empty();
