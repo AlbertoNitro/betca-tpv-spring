@@ -90,8 +90,8 @@ public class TicketController {
     }
 
     public Optional<byte[]> getTicket(String id) {
-        // TODO Auto-generated method stub
-        return null;
+        Ticket ticket = this.ticketRepository.findOne(id);
+        return pdfService.generateTicket(ticket);
     }
 
 }
