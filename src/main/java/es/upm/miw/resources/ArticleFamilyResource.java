@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import es.upm.miw.dtos.ArticleOutputDto;
@@ -19,6 +20,11 @@ public class ArticleFamilyResource {
     public static final String CODE_ID = "/{code}";
 
     List<ArticleOutputDto> listart = new ArrayList<ArticleOutputDto>();
+
+    @RequestMapping(method = RequestMethod.GET)
+    public List<ArticleOutputDto> readAllArticles() {
+        return creaAticles();
+    }
 
     public List<ArticleOutputDto> creaAticles() {
         BigDecimal unCentavo = new java.math.BigDecimal("0.01");
