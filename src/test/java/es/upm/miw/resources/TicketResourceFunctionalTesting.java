@@ -1,5 +1,7 @@
 package es.upm.miw.resources;
 
+import static org.junit.Assert.assertNotNull;
+
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -99,21 +101,20 @@ public class TicketResourceFunctionalTesting {
         listCommitteds.add(true);
         listCommitteds.add(true);
         TicketUpdationInputDto ticketUpdationInputDto = new TicketUpdationInputDto(listAmounts, listCommitteds);
-        this.restService.loginAdmin().restBuilder(new RestBuilder<>()).path(TicketResource.TICKETS).path("20180112-1")
+        this.restService.loginAdmin().restBuilder(new RestBuilder<>()).path(TicketResource.TICKETS).path(TicketResource.ID).expand("20180112-1")
                 .body(ticketUpdationInputDto).patch().build();
     }
 
     @Test
     public void testGetTicket() {
-        restService.loginAdmin().restBuilder(new RestBuilder<byte[]>()).path(TicketResource.TICKETS).path("20180112-3").clazz(byte[].class)
-                .get().build();
+        byte[] bodyResponse = restService.loginAdmin().restBuilder(new RestBuilder<byte[]>()).path(TicketResource.TICKETS).path(TicketResource.ID).expand("20180112-3").clazz(byte[].class).get().build();
+        assertNotNull(bodyResponse);
     }
 
     @Test
     public void testGetTicketIdNotFoundException() {
         thrown.expect(new HttpMatcher(HttpStatus.NOT_FOUND));
-        restService.loginAdmin().restBuilder(new RestBuilder<byte[]>()).path(TicketResource.TICKETS).path("20180112-6").clazz(byte[].class)
-                .get().build();
+        restService.loginAdmin().restBuilder(new RestBuilder<byte[]>()).path(TicketResource.TICKETS).path(TicketResource.ID).expand("20180112-6").clazz(byte[].class).get().log().build();
     }
 
 }
