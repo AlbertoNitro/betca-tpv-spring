@@ -67,11 +67,11 @@ public class PdfService {
             if (shopping.getShoppingState() != ShoppingState.COMMITTED) {
                 state = "N";
             }
-            
+
             pdf.tableCell(String.valueOf(i + 1), shopping.getDescription(), "" + shopping.getAmount(),
                     shopping.getDiscount().setScale(2, RoundingMode.HALF_UP) + "%",
                     shopping.getShoppingTotal().setScale(2, RoundingMode.HALF_UP) + "€", state);
-        
+
         }
         this.totalPrice(pdf, ticket.getTicketTotal());
         pdf.line().paragraph("Periodo de devolución o cambio: 15 dias a partir de la fecha del ticket");
@@ -159,36 +159,36 @@ public class PdfService {
         switch (tax) {
         case GENERAL:
             return value.divide(new BigDecimal(String.valueOf(ivaGeneral)).add(new BigDecimal(1)), 2, RoundingMode.HALF_UP);
-           
+
         case REDUCED:
             return value.divide(new BigDecimal(String.valueOf(ivaReduced)).add(new BigDecimal(1)), 2, RoundingMode.HALF_UP);
-            
+
         case SUPER_REDUCED:
             return value.divide(new BigDecimal(String.valueOf(ivaSuperReduced)).add(new BigDecimal(1)), 2, RoundingMode.HALF_UP);
-     
+
         case FREE:
             return value.divide(new BigDecimal(String.valueOf(ivaFree)).add(new BigDecimal(1)), 2, RoundingMode.HALF_UP);
         default:
-           return value;
+            return value;
         }
 
     }
 
     private BigDecimal getIva(BigDecimal value, Tax tax) {
-       
+
         switch (tax) {
         case GENERAL:
             return value.multiply(new BigDecimal(String.valueOf(ivaGeneral)));
 
         case REDUCED:
-           return value.multiply(new BigDecimal(String.valueOf(ivaReduced)));
+            return value.multiply(new BigDecimal(String.valueOf(ivaReduced)));
 
         case SUPER_REDUCED:
-       return value.multiply(new BigDecimal(String.valueOf(ivaSuperReduced)));
-         
+            return value.multiply(new BigDecimal(String.valueOf(ivaSuperReduced)));
+
         case FREE:
-        return value.multiply(new BigDecimal(String.valueOf(ivaFree)));
-        
+            return value.multiply(new BigDecimal(String.valueOf(ivaFree)));
+
         default:
             return new BigDecimal(0.0);
         }
