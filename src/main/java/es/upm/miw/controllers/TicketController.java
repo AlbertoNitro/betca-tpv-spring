@@ -89,4 +89,9 @@ public class TicketController {
         return nextId;
     }
 
+    public Optional<byte[]> getTicket(String id) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
 }
