@@ -18,6 +18,7 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import es.upm.miw.controllers.ArticleController;
+import es.upm.miw.documents.core.Article;
 import es.upm.miw.dtos.ArticleOutputDto;
 import es.upm.miw.repositories.core.ArticleRepository;
 
@@ -92,6 +93,23 @@ public class ArticleResourceFunctionalTesting {
         List<ArticleOutputDto> articleOutputDto_ = articleController.readAllIncompletes();
         assertEquals(articleOutputDto_.size(), articleOutputDto.size());
     
+    }
+    
+    @Test
+    public void testputArticle() {
+		ArticleOutputDto articulo = new ArticleOutputDto();
+		articulo.setCode("45346");
+		articulo.setDescription("bleble");
+		Number retailPrice = 2;
+		articulo.setRetailPrice(new BigDecimal(retailPrice.toString()));
+		
+		Article articulo_ = new Article(articulo.getCode(),articulo.getDescription(),articulo.getRetailPrice());
+		this.articleRepository.save(articulo_);
+		articulo.setDescription("blibli");
+		restService.loginAdmin().restBuilder().path(ArticleResource.ARTICLES).path(ArticleResource.CODE_ID).body(articulo).put().build();
+        assertEquals("blibli", this.articleRepository.findArticleByCode("45346").getDescription());
+
+		
     }
     
     @Test
