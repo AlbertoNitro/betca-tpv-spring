@@ -86,5 +86,16 @@ public class TicketResourceFunctionalTesting {
         restService.loginAdmin().restBuilder(new RestBuilder<byte[]>()).path(TicketResource.TICKETS).body(ticketCreationInputDto)
                 .clazz(byte[].class).post().build();
     }
+    
+    @Test
+    public void testUpdateAmountAndStateTicketTicketIdNotFoundException() {
+        
+    }
+    
+    @Test
+    public void testUpdateAmountAndStateTicket() {
+        
+    }
+    
 
 }
