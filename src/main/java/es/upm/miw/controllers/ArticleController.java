@@ -32,11 +32,6 @@ public class ArticleController {
 	}
 
 	public ArticleOutputDto postFastArticle(ArticleOutputDto articleOuputDto) {
-		System.out.println("--------------<<<<<********");
-		System.out.println(articleOuputDto.getCode());
-		System.out.println(articleOuputDto.getDescription());
-		System.out.println(articleOuputDto.getRetailPrice());
-		System.out.print(articleOuputDto.getReference());
 
 		Article articulo = new Article(articleOuputDto.getCode(), articleOuputDto.getDescription(),
 				articleOuputDto.getRetailPrice()).reference(articleOuputDto.getReference())
@@ -74,4 +69,14 @@ public class ArticleController {
 		List<ArticleOutputDto> articleOutputDto = this.articleRepository.findByCoderOrDescriptionLike(dto.getReference(),dto.getDescription());
 		return articleOutputDto;
 	}
-	}
+    
+    public void putArticle(String code, ArticleOutputDto articleDto) {
+    		Article article = new Article();
+    		article.setCode(articleDto.getCode());
+    		article.setDescription(articleDto.getDescription());
+    		article.setReference(articleDto.getReference());
+    		article.setRetailPrice(articleDto.getRetailPrice());
+    		article.setStock(articleDto.getStock());
+    		this.articleRepository.save(article);
+    }
+}
