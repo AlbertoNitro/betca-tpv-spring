@@ -2,6 +2,7 @@ package es.upm.miw.resources;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.List;
 
 import org.junit.Rule;
 import org.junit.Test;
@@ -16,6 +17,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import es.upm.miw.dtos.ShoppingDto;
 import es.upm.miw.dtos.TicketCreationInputDto;
+import es.upm.miw.dtos.TicketUpdationInputDto;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
@@ -86,5 +88,24 @@ public class TicketResourceFunctionalTesting {
         restService.loginAdmin().restBuilder(new RestBuilder<byte[]>()).path(TicketResource.TICKETS).body(ticketCreationInputDto)
                 .clazz(byte[].class).post().build();
     }
+    
+    @Test
+    public void testUpdateAmountAndStateTicketTicketIdNotFoundException() {
+        thrown.expect(new HttpMatcher(HttpStatus.NOT_FOUND));
+    List<Integer> listAmounts = new ArrayList<Integer>();
+    List<Boolean> listCommitteds = new ArrayList<Boolean>();
+    listAmounts.add(1);
+    listAmounts.add(2);
+    listCommitteds.add(true);
+    listCommitteds.add(true);
+    TicketUpdationInputDto ticketUpdationInputDto = new TicketUpdationInputDto(listAmounts, listCommitteds);
+    this.restService.loginAdmin().restBuilder(new RestBuilder<>()).path(TicketResource.TICKETS).path("20180112-1").body(ticketUpdationInputDto).patch().build();
+    }
+    
+    @Test
+    public void testUpdateAmountAndStateTicket() {
+        
+    }
+    
 
 }
