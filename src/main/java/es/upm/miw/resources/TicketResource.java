@@ -6,6 +6,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -52,7 +53,7 @@ public class TicketResource {
     }
 
     @RequestMapping(value = ID)
-    @PostMapping(produces = {"application/pdf", "application/json"})
+    @GetMapping(produces = {"application/pdf", "application/json"})
     public @ResponseBody byte[] getTicket(@PathVariable(value = "id") String id) throws TicketIdNotFoundException, FieldInvalidException {
         if (this.ticketController.existTicket(id)) {
             Optional<byte[]> pdf = this.ticketController.getTicket(id);

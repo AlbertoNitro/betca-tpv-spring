@@ -8,6 +8,7 @@ import static org.junit.Assert.assertTrue;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -76,10 +77,11 @@ public class TicketControllerIT {
         this.ticketRepository.delete(ticketModified);
         this.ticketRepository.save(ticketOriginal);
     }
-    
+
     @Test
     public void testGetTicket() {
-       this.ticketController.getTicket("20180112-3");
+        Optional<byte[]> pdf = this.ticketController.getTicket("20180112-3");
+        assertTrue(pdf.isPresent());
     }
 
 }
