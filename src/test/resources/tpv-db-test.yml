@@ -168,6 +168,20 @@ shoppingList:
     retailPrice: 2.2
     discount: 0
     article: *ar1
+  - &sh4
+    amount: 1
+    retailPrice: 2.2
+    discount: 0
+    article: *ar4
+    shoppingState: COMMITTED
+    description: "various"
+  - &sh5
+    amount: 3
+    retailPrice: 1.2
+    discount: 0
+    article: *ar2
+    shoppingState: COMMITTED
+    description: "various"
 
 # Ticket
 ticketList:
@@ -183,6 +197,13 @@ ticketList:
     reference: 6P0ISee_twnGEzf8qd1Bd5sGQqE
     shoppingList: 
       - *sh3
+    user: *us4
+  - &ti3
+    id: 20180112-3
+    reference: 6P0ISee_twnGEzf8qA1BdAsGQqE
+    shoppingList: 
+      - *sh4
+      - *sh5
     user: *us4
     
 # Invoice
