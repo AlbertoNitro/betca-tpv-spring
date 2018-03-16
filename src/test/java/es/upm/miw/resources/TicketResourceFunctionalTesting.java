@@ -101,11 +101,5 @@ public class TicketResourceFunctionalTesting {
     TicketUpdationInputDto ticketUpdationInputDto = new TicketUpdationInputDto(listAmounts, listCommitteds);
     this.restService.loginAdmin().restBuilder(new RestBuilder<>()).path(TicketResource.TICKETS).path("20180112-1").body(ticketUpdationInputDto).patch().build();
     }
-    
-    @Test
-    public void testUpdateAmountAndStateTicket() {
-        
-    }
-    
 
 }

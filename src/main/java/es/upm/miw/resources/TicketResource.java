@@ -25,7 +25,7 @@ import es.upm.miw.resources.exceptions.TicketIdNotFoundException;
 @RequestMapping(TicketResource.TICKETS)
 public class TicketResource {
     public static final String TICKETS = "/tickets";
-    
+
     public static final String ID = "/{id}";
 
     @Autowired
@@ -40,11 +40,27 @@ public class TicketResource {
             return pdf.get();
         }
     }
-    
+
     @RequestMapping(value = ID, method = RequestMethod.PATCH)
-    public void updateAmountAndStateTicket(@PathVariable(value="id") String id, @Valid @RequestBody TicketUpdationInputDto ticketUpdationInputDto) throws TicketIdNotFoundException {
+    public void updateAmountAndStateTicket(@PathVariable(value = "id") String id,
+            @Valid @RequestBody TicketUpdationInputDto ticketUpdationInputDto) throws TicketIdNotFoundException {
         if (this.ticketController.existTicket(id)) {
             this.ticketController.updateAmountAndStateTicket(id, ticketUpdationInputDto);
+        } else {
+            throw new TicketIdNotFoundException(id);
+        }
+    }
+
+    @RequestMapping(value = ID)
+    @PostMapping(produces = {"application/pdf", "application/json"})
+    public @ResponseBody byte[] getTicket(@PathVariable(value = "id") String id) throws TicketIdNotFoundException, FieldInvalidException {
+        if (this.ticketController.existTicket(id)) {
+            Optional<byte[]> pdf = this.ticketController.getTicket(id);
+            if (!pdf.isPresent()) {
+                throw new FieldInvalidException("Ticket exception");
+            } else {
+                return pdf.get();
+            }
         } else {
             throw new TicketIdNotFoundException(id);
         }
