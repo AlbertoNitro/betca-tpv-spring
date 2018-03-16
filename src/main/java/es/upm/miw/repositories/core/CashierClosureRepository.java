@@ -16,6 +16,6 @@ public interface CashierClosureRepository extends MongoRepository<CashierClosure
     CashierClosure findFirstByOrderByClosureDateDesc();
     
     @Query(value = "{closureDate: { $gte : ?0, $lte : ?0}}", fields = "{'salesCash' :1,'salesCard' :1, 'closureDate' :1}")
-	List<CashierClosureOutputDto> findAllStatics(String dateStart, String dateFinish);
+	List<CashierClosureOutputDto> findAllStatics(Date dateStart, Date dateFinish);
 
 }

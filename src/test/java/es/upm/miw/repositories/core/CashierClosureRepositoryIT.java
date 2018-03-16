@@ -54,13 +54,7 @@ public class CashierClosureRepositoryIT {
     
     @Test
     public void testFindDateStatics() throws ParseException  {
-    	 cashierClosure3 = new CashierClosure();
-         cashierClosure3.close(new BigDecimal("500"), new BigDecimal("200"),  new BigDecimal("100"),  new BigDecimal("0"), "");
-         cashierClosureRepository.save(cashierClosure3);
-        Date date = new SimpleDateFormat("yyyy-mm-dd HH:mm:ss").parse("2018-03-13 00:00:00.000");
-        Date dateEnd = new SimpleDateFormat("yyyy-mm-dd HH:mm:ss").parse("2018-03-13 99:99:99.999");
-        System.out.println(cashierClosure3.getClosureDate()+ "----------"  + cashierClosure3.getOpeningDate());
-    	List<CashierClosureOutputDto> lista = cashierClosureRepository.findAllStatics(date.toGMTString(), date.toGMTString());
+    	List<CashierClosureOutputDto> lista = cashierClosureRepository.findAllStatics(cashierClosure1.getOpeningDate(), new Date());
     	System.out.println(lista);
     }
     

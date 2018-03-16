@@ -1,6 +1,9 @@
 package es.upm.miw.resources;
 
 import java.math.BigDecimal;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -8,12 +11,14 @@ import java.util.Optional;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -60,9 +65,9 @@ public class CashierClosureResource {
         }
     }
     
-    @GetMapping(value=SEARCH)
-    public List<CashierClosureOutputDto> findAll(@RequestParam(value = "openingDate") String dateStart, @RequestParam(value = "closureDate") String dateFinish) {
-    	System.out.println(dateStart);
+    @RequestMapping(value=SEARCH, method = RequestMethod.GET)
+    public List<CashierClosureOutputDto> findAll( @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) @RequestParam("dateStart") Date dateStart, 
+    		 @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)@RequestParam(value = "dateFinish") Date dateFinish) {
     	return this.cashierClosureController.readDatesAll(dateStart, dateFinish);
     }
 

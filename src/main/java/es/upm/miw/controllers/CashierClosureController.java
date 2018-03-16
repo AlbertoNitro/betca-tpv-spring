@@ -88,7 +88,7 @@ public class CashierClosureController {
         return total;
     }
 
-	    public List<CashierClosureOutputDto> readDatesAll(String dateStart, String dateFinish){
+	    public List<CashierClosureOutputDto> readDatesAll(Date dateStart, Date dateFinish){
     	return this.cashierClosureRepository.findAllStatics(dateStart, dateFinish);
     }
 
