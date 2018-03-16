@@ -13,8 +13,8 @@ public interface CashierClosureRepository extends MongoRepository<CashierClosure
     CashierClosure findFirstByOrderByOpeningDateDesc();
 
     CashierClosure findFirstByOrderByClosureDateDesc();
-    
-    @Query(value = "{'$or' : [{'closureDate': { $gt : ?0}}, {'closureDate' : ?1}]}", fields = "{'salesCash' :1,'salesCard' :1, 'closureDate' :1}")
+
+    @Query(value = "{'closureDate': { $gte : ?0, $lt : ?1}}", fields = "{'salesCash' :1,'salesCard' :1, 'closureDate' :1}")
     List<CashierClosure> findByDateBetween(Date startDate, Date endDate);
 
 }

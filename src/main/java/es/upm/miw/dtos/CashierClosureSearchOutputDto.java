@@ -3,20 +3,20 @@ package es.upm.miw.dtos;
 import java.math.BigDecimal;
 import java.util.Date;
 
-public class CashierClosureOutputDto {
-	
-	private BigDecimal salesCard;
+public class CashierClosureSearchOutputDto {
+
+private BigDecimal salesCard;
 	
 	private BigDecimal salesCash;
 	
 	private Date closureDate;
 	
 	
-	public CashierClosureOutputDto() {
+	public CashierClosureSearchOutputDto() {
 		// Empty for framework
 	}
 	
-	public CashierClosureOutputDto(BigDecimal salesCard, BigDecimal salesCash, Date closureDate) {
+	public CashierClosureSearchOutputDto(BigDecimal salesCard, BigDecimal salesCash, Date closureDate) {
 		this.salesCard = salesCard;
 		this.salesCash = salesCash;
 		this.closureDate = closureDate;
