@@ -76,10 +76,10 @@ public class TicketControllerIT {
         this.ticketRepository.delete(ticketModified);
         this.ticketRepository.save(ticketOriginal);
     }
-    
+
     @Test
     public void testGetTicket() {
-       this.ticketController.getTicket("20180112-3");
+        this.ticketController.getTicket("20180112-3");
     }
 
 }

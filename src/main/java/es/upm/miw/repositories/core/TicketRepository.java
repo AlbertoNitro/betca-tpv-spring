@@ -11,13 +11,13 @@ import es.upm.miw.documents.core.User;
 public interface TicketRepository extends MongoRepository<Ticket, String> {
 
     Ticket findByReference(String reference);
-    
+
     List<Ticket> findByUserOrderByCreationDateDesc(User user);
 
     List<Ticket> findByCreationDateGreaterThan(Date date);
 
     Ticket findFirstByOrderByCreationDateDescIdDesc();
-    
+
     List<Ticket> findByCreationDateBetween(Date initialDate, Date finalDate);
 
 }

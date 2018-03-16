@@ -88,30 +88,32 @@ public class TicketResourceFunctionalTesting {
         restService.loginAdmin().restBuilder(new RestBuilder<byte[]>()).path(TicketResource.TICKETS).body(ticketCreationInputDto)
                 .clazz(byte[].class).post().build();
     }
-    
+
     @Test
     public void testUpdateAmountAndStateTicketIdNotFoundException() {
         thrown.expect(new HttpMatcher(HttpStatus.NOT_FOUND));
-    List<Integer> listAmounts = new ArrayList<Integer>();
-    List<Boolean> listCommitteds = new ArrayList<Boolean>();
-    listAmounts.add(1);
-    listAmounts.add(2);
-    listCommitteds.add(true);
-    listCommitteds.add(true);
-    TicketUpdationInputDto ticketUpdationInputDto = new TicketUpdationInputDto(listAmounts, listCommitteds);
-    this.restService.loginAdmin().restBuilder(new RestBuilder<>()).path(TicketResource.TICKETS).path("20180112-1").body(ticketUpdationInputDto).patch().build();
+        List<Integer> listAmounts = new ArrayList<Integer>();
+        List<Boolean> listCommitteds = new ArrayList<Boolean>();
+        listAmounts.add(1);
+        listAmounts.add(2);
+        listCommitteds.add(true);
+        listCommitteds.add(true);
+        TicketUpdationInputDto ticketUpdationInputDto = new TicketUpdationInputDto(listAmounts, listCommitteds);
+        this.restService.loginAdmin().restBuilder(new RestBuilder<>()).path(TicketResource.TICKETS).path("20180112-1")
+                .body(ticketUpdationInputDto).patch().build();
     }
-    
+
     @Test
     public void testGetTicket() {
-        restService.loginAdmin().restBuilder(new RestBuilder<byte[]>()).path(TicketResource.TICKETS).path("20180112-3").clazz(byte[].class).get().build();
+        restService.loginAdmin().restBuilder(new RestBuilder<byte[]>()).path(TicketResource.TICKETS).path("20180112-3").clazz(byte[].class)
+                .get().build();
     }
-    
+
     @Test
     public void testGetTicketIdNotFoundException() {
         thrown.expect(new HttpMatcher(HttpStatus.NOT_FOUND));
-        restService.loginAdmin().restBuilder(new RestBuilder<byte[]>()).path(TicketResource.TICKETS).path("20180112-6").clazz(byte[].class).get().build();
+        restService.loginAdmin().restBuilder(new RestBuilder<byte[]>()).path(TicketResource.TICKETS).path("20180112-6").clazz(byte[].class)
+                .get().build();
     }
-
 
 }
