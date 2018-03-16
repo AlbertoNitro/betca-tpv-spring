@@ -13,7 +13,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import es.upm.miw.documents.core.Budget;
 import es.upm.miw.dtos.BudgetCreationInputDto;
 import es.upm.miw.dtos.ShoppingDto;
 import es.upm.miw.repositories.core.BudgetRepository;
@@ -34,17 +33,10 @@ public class BudgetControllerIT {
         List<ShoppingDto> shoppingList = new ArrayList<ShoppingDto>();
         shoppingList.add(new ShoppingDto("1", "various", new BigDecimal("100"), 1, new BigDecimal("50.00"), new BigDecimal("50"), false));
         BudgetCreationInputDto budgetCreationDto = new BudgetCreationInputDto(shoppingList);
-        shoppingList.add(new ShoppingDto("1", "various", new BigDecimal("50"), 1, new BigDecimal("50"), new BigDecimal("50"), false));
-        BudgetCreationInputDto budgetCreationDto2 = new BudgetCreationInputDto(shoppingList);
+        int totalBudgets = this.budgetRepository.findAll().size();
+        
         this.budgetController.createBudget(budgetCreationDto);
-        Budget budget1 = this.budgetRepository.findFirstByOrderByCreationDateDescIdDesc();
-        this.budgetController.createBudget(budgetCreationDto2);
-        Budget budget2 = this.budgetRepository.findFirstByOrderByCreationDateDescIdDesc();
-
-        assertEquals(budget1.simpleId() + 1, budget2.simpleId());
-
-        this.budgetRepository.delete(budget1);
-        this.budgetRepository.delete(budget2);
+        assertEquals(totalBudgets + 1, this.budgetRepository.findAll().size());       
     }
 
 }
