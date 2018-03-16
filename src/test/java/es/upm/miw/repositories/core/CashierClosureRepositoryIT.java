@@ -54,8 +54,13 @@ public class CashierClosureRepositoryIT {
     
     @Test
     public void testFindDateStatics() throws ParseException  {
-    	List<CashierClosureOutputDto> lista = cashierClosureRepository.findAllStatics(cashierClosure1.getOpeningDate(), new Date());
-    	System.out.println(lista);
+    	Date startDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse("2018-03-16 00:00:00");
+    	Date endDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse("2018-03-17 99:99:99");
+    	List<CashierClosure> lista = cashierClosureRepository.findByDateBetween(startDate, endDate);
+    	for(CashierClosure sales: lista) {
+    		System.out.println(sales);
+    	}
+    	
     }
     
     @After

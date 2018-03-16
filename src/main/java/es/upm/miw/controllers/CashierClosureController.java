@@ -1,6 +1,7 @@
 package es.upm.miw.controllers;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -88,8 +89,13 @@ public class CashierClosureController {
         return total;
     }
 
-	    public List<CashierClosureOutputDto> readDatesAll(Date dateStart, Date dateFinish){
-    	return this.cashierClosureRepository.findAllStatics(dateStart, dateFinish);
+	    public List<CashierClosureOutputDto> readDatesAll(Date startDate, Date endDate){
+	    	List <CashierClosure> salesList = this.cashierClosureRepository.findByDateBetween(startDate, endDate);
+	    	List <CashierClosureOutputDto> salesListDto = new ArrayList<CashierClosureOutputDto>();
+	    		for(CashierClosure sales: salesList) {
+	    			salesListDto.add(new CashierClosureOutputDto(sales.getSalesCash(), sales.getSalesCard(), sales.getClosureDate()));
+	    		}
+    	return salesListDto;
     }
 
 }
