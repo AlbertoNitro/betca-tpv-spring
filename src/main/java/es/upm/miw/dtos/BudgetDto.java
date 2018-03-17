@@ -7,30 +7,25 @@ import es.upm.miw.dtos.validations.ListNotEmpty;
 public class BudgetDto {
 
     private String id;
-    
+
     @ListNotEmpty
     private List<ShoppingDto> shoppingCart;
 
     public BudgetDto() {
         // Empty for framework
     }
-    
-    
-
-    public BudgetDto(String id) {
-        this.id = id;
-    }
-
-
-
-    public String getId() {
-        return id;
-    }
-
-
 
     public BudgetDto(List<ShoppingDto> shoppingCart) {
         this.shoppingCart = shoppingCart;
+    }
+    
+    public BudgetDto(String id, List<ShoppingDto> shoppingCart) {
+        this.id = id;
+        this.shoppingCart = shoppingCart;
+    }
+
+    public String getId() {
+        return id;
     }
 
     public List<ShoppingDto> getShoppingCart() {
@@ -43,7 +38,7 @@ public class BudgetDto {
 
     @Override
     public String toString() {
-        return "BudgetCreationInputDto [shoppingCart=" + shoppingCart + "]";
+        return "BudgetDto [id=" + id + ", shoppingCart=" + shoppingCart + "]";
     }
 
 }

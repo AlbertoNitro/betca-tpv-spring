@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import es.upm.miw.controllers.BudgetController;
 import es.upm.miw.dtos.BudgetDto;
-import es.upm.miw.dtos.UserMinimumDto;
 import es.upm.miw.resources.exceptions.FieldInvalidException;
 
 @PreAuthorize("hasRole('ADMIN') or hasRole('MANAGER') or hasRole('OPERATOR')")

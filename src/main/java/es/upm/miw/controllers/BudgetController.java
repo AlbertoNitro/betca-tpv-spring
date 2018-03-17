@@ -44,23 +44,23 @@ public class BudgetController {
     }
 
     public List<BudgetDto> readBudgetAll() {
-        List<Budget> budgets = this.budgetRepository.findAll();
-        List<BudgetDto> budgetsDto = new ArrayList<>();
-        for (Budget b: budgets) {
-            BudgetDto newDto = new BudgetDto(b.getId());
-            ArrayList<ShoppingDto> array = new ArrayList();
-            for (Shopping s : b.getShoppingList()) {
-                ShoppingDto d = new ShoppingDto();
-                d.setAmount(s.getAmount());
-                d.setDescription(s.getDescription());
-                d.setRetailPrice(s.getRetailPrice());
-                d.setTotal(s.getShoppingTotal());
-                d.setDiscount(s.getDiscount());
-                array.add(d);
+        List<Budget> budgetList = this.budgetRepository.findAll();
+        List<BudgetDto> budgetDtoList = new ArrayList<>();
+        for (Budget budget: budgetList) {
+            BudgetDto budgetDto = new BudgetDto(budget.getId(), null);
+            ArrayList<ShoppingDto> shoppingDtoList = new ArrayList<>();
+            for (Shopping shopping : budget.getShoppingList()) {
+                ShoppingDto shoppingDto = new ShoppingDto();
+                shoppingDto.setAmount(shopping.getAmount());
+                shoppingDto.setDescription(shopping.getDescription());
+                shoppingDto.setRetailPrice(shopping.getRetailPrice());
+                shoppingDto.setTotal(shopping.getShoppingTotal());
+                shoppingDto.setDiscount(shopping.getDiscount());
+                shoppingDtoList.add(shoppingDto);
             }
-            newDto.setShoppingCart(array);
-            budgetsDto.add(newDto);
+            budgetDto.setShoppingCart(shoppingDtoList);
+            budgetDtoList.add(budgetDto);
         }
-        return budgetsDto;
+        return budgetDtoList;
     }
 }
