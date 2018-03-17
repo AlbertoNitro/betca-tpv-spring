@@ -16,12 +16,12 @@ public class CashMovement {
     private Date creationDate;
 
     public CashMovement() {
-        this(new BigDecimal(0));
+        this(new BigDecimal(0), "");
     }
 
-    public CashMovement(BigDecimal value) {
+    public CashMovement(BigDecimal value, String comment) {
         this.creationDate = new Date();
-        this.comment = "";
+        this.setComment(comment);
         this.setValue(value);
     }
 
