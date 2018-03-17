@@ -13,7 +13,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import es.upm.miw.dtos.BudgetCreationInputDto;
+import es.upm.miw.dtos.BudgetDto;
 import es.upm.miw.dtos.ShoppingDto;
 import es.upm.miw.repositories.core.BudgetRepository;
 
@@ -32,7 +32,7 @@ public class BudgetControllerIT {
     public void testCreateBudget() {
         List<ShoppingDto> shoppingList = new ArrayList<ShoppingDto>();
         shoppingList.add(new ShoppingDto("1", "various", new BigDecimal("100"), 1, new BigDecimal("50.00"), new BigDecimal("50"), false));
-        BudgetCreationInputDto budgetCreationDto = new BudgetCreationInputDto(shoppingList);
+        BudgetDto budgetCreationDto = new BudgetDto(shoppingList);
         int totalBudgets = this.budgetRepository.findAll().size();
         
         this.budgetController.createBudget(budgetCreationDto);
