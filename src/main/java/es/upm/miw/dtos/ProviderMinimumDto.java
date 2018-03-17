@@ -28,8 +28,8 @@ public class ProviderMinimumDto {
     public String getCompany() {
         return company;
     }
-
-    public void setUsername(String company) {
+    
+    public void setCompany(String company) {
         this.company = company;
     }
 
