@@ -12,6 +12,8 @@ public interface ProviderRepository extends MongoRepository<Provider, String> {
     
     public Provider findById(String id);
     
+    public Provider findByCompany(String company);
+    
     @Query(value = "{'active' : true}", fields = "{ '_id' : 1, 'company' : 1}")
     public List<ProviderMinimumDto> findProviderAll();
 
