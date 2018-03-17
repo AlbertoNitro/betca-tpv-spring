@@ -19,13 +19,13 @@ import es.upm.miw.dtos.TicketCreationInputDto;
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 @TestPropertySource(locations = "classpath:test.properties")
 public class InvoiceResourceFuntionalTesting {
-    
+
     @Rule
     public ExpectedException thrown = ExpectedException.none();
-    
+
     @Autowired
     private RestService restService;
-    
+
     @Test
     public void testCreateInvoice() {
         TicketCreationInputDto ticketCreationInputDto = new TicketCreationInputDto(new BigDecimal("1"), new BigDecimal("1"),
@@ -40,7 +40,7 @@ public class InvoiceResourceFuntionalTesting {
         restService.loginAdmin().restBuilder(new RestBuilder<byte[]>()).path(InvoiceResource.INVOICES).body(ticketCreationInputDto)
                 .clazz(byte[].class).post().build();
     }
-    
+
     @Test
     public void testCreateInvoiceTicketCashNegativeException() {
         thrown.expect(new HttpMatcher(HttpStatus.BAD_REQUEST));
@@ -85,13 +85,19 @@ public class InvoiceResourceFuntionalTesting {
         restService.loginAdmin().restBuilder(new RestBuilder<byte[]>()).path(TicketResource.TICKETS).body(ticketCreationInputDto)
                 .clazz(byte[].class).post().build();
     }
-    
+
     @Test
     public void testCreateInvoiceTicketUserEmptyException() {
         thrown.expect(new HttpMatcher(HttpStatus.BAD_REQUEST));
         TicketCreationInputDto ticketCreationInputDto = new TicketCreationInputDto(new BigDecimal("1"), new BigDecimal("1"),
                 new BigDecimal("1"), new ArrayList<ShoppingDto>());
-        restService.loginAdmin().restBuilder(new RestBuilder<byte[]>()).path(TicketResource.TICKETS).body(ticketCreationInputDto)
+        ticketCreationInputDto.getShoppingCart()
+                .add(new ShoppingDto("1", "various", new BigDecimal("100"), 1, new BigDecimal("50.00"), new BigDecimal("50"), false));
+        ticketCreationInputDto.getShoppingCart()
+                .add(new ShoppingDto("1", "various", new BigDecimal("100"), 2, new BigDecimal("50.00"), new BigDecimal("100"), true));
+        ticketCreationInputDto.getShoppingCart().add(
+                new ShoppingDto("article2", "descrip-a2", new BigDecimal("10"), 100, new BigDecimal("0"), new BigDecimal("1000"), true));
+        restService.loginAdmin().restBuilder(new RestBuilder<byte[]>()).path(InvoiceResource.INVOICES).body(ticketCreationInputDto)
                 .clazz(byte[].class).post().build();
     }
 
