@@ -30,6 +30,6 @@ public class CashMovementResource {
 			cashMovementDto.setValue(new BigDecimal(99));
 		}
 
-		this.cashMovementController.createCashMovement(cashMovementDto.getValue());
+		this.cashMovementController.createCashMovement(cashMovementDto);
 	}
 }
