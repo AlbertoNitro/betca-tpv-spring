@@ -1,7 +1,10 @@
 package es.upm.miw.resources;
 
+import static org.junit.Assert.assertNotNull;
+
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.List;
 
 import org.junit.Rule;
 import org.junit.Test;
@@ -16,6 +19,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import es.upm.miw.dtos.ShoppingDto;
 import es.upm.miw.dtos.TicketCreationInputDto;
+import es.upm.miw.dtos.TicketUpdationInputDto;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
@@ -85,6 +89,32 @@ public class TicketResourceFunctionalTesting {
                 new BigDecimal("1"), new ArrayList<ShoppingDto>());
         restService.loginAdmin().restBuilder(new RestBuilder<byte[]>()).path(TicketResource.TICKETS).body(ticketCreationInputDto)
                 .clazz(byte[].class).post().build();
+    }
+
+    @Test
+    public void testUpdateAmountAndStateTicketIdNotFoundException() {
+        thrown.expect(new HttpMatcher(HttpStatus.NOT_FOUND));
+        List<Integer> listAmounts = new ArrayList<Integer>();
+        List<Boolean> listCommitteds = new ArrayList<Boolean>();
+        listAmounts.add(1);
+        listAmounts.add(2);
+        listCommitteds.add(true);
+        listCommitteds.add(true);
+        TicketUpdationInputDto ticketUpdationInputDto = new TicketUpdationInputDto(listAmounts, listCommitteds);
+        this.restService.loginAdmin().restBuilder(new RestBuilder<>()).path(TicketResource.TICKETS).path(TicketResource.ID).expand("20180112-7")
+                .body(ticketUpdationInputDto).patch().build();
+    }
+
+    @Test
+    public void testGetTicket() {
+        byte[] bodyResponse = restService.loginAdmin().restBuilder(new RestBuilder<byte[]>()).path(TicketResource.TICKETS).path(TicketResource.ID).expand("20180112-3").clazz(byte[].class).get().build();
+        assertNotNull(bodyResponse);
+    }
+
+    @Test
+    public void testGetTicketIdNotFoundException() {
+        thrown.expect(new HttpMatcher(HttpStatus.NOT_FOUND));
+        restService.loginAdmin().restBuilder(new RestBuilder<byte[]>()).path(TicketResource.TICKETS).path(TicketResource.ID).expand("20180112-6").clazz(byte[].class).get().log().build();
     }
 
 }

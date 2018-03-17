@@ -15,6 +15,8 @@ import es.upm.miw.resources.exceptions.CashierCreateException;
 import es.upm.miw.resources.exceptions.ErrorMessage;
 import es.upm.miw.resources.exceptions.FileException;
 import es.upm.miw.resources.exceptions.ForbiddenException;
+import es.upm.miw.resources.exceptions.ProviderFieldAlreadyExistException;
+import es.upm.miw.resources.exceptions.ProviderIdNotFoundException;
 import es.upm.miw.resources.exceptions.TicketIdNotFoundException;
 import es.upm.miw.resources.exceptions.UserIdNotFoundException;
 import es.upm.miw.resources.exceptions.UserFieldAlreadyExistException;
@@ -24,7 +26,8 @@ import es.upm.miw.resources.exceptions.FieldInvalidException;
 public class ApiExceptionHandler {
 
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    @ExceptionHandler({TicketIdNotFoundException.class, UserIdNotFoundException.class, FileException.class, ArticleCodeNotFoundException.class})
+    @ExceptionHandler({TicketIdNotFoundException.class, UserIdNotFoundException.class, 
+        FileException.class, ArticleCodeNotFoundException.class, ProviderIdNotFoundException.class})
     @ResponseBody
     public ErrorMessage notFoundRequest(HttpServletRequest request, Exception exception) {
         return new ErrorMessage(exception, request.getRequestURI());
@@ -33,7 +36,7 @@ public class ApiExceptionHandler {
     // Exception
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler({Exception.class, UserFieldAlreadyExistException.class, FieldInvalidException.class, CashierClosedException.class,
-            CashierCreateException.class})
+            CashierCreateException.class, ProviderFieldAlreadyExistException.class})
     @ResponseBody
     public ErrorMessage badRequest(Exception exception) {
         return new ErrorMessage(exception, "");
@@ -45,4 +48,5 @@ public class ApiExceptionHandler {
     public ErrorMessage forbiddenRequest(Exception exception) {
         return new ErrorMessage(exception, "");
     }
+    
 }
