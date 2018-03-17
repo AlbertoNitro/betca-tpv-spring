@@ -10,6 +10,8 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class CashMovement {
 
     private BigDecimal value;
+    
+    private String comment;
 
     private Date creationDate;
 
@@ -19,6 +21,7 @@ public class CashMovement {
 
     public CashMovement(BigDecimal value) {
         this.creationDate = new Date();
+        this.comment = "";
         this.setValue(value);
     }
 
@@ -29,6 +32,14 @@ public class CashMovement {
     public void setValue(BigDecimal value) {
         this.value = value;
     }
+    
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
+    }
 
     public Date getCreationDate() {
         return creationDate;
@@ -37,7 +48,8 @@ public class CashMovement {
     @Override
     public String toString() {
         String creationTime = new SimpleDateFormat("HH:00 dd-MMM-yyyy ").format(creationDate.getTime());
-        return "CashMovement [value=" + value.doubleValue() + ", creationDate=" + creationTime + "]";
+        return "CashMovement [value=" + value.doubleValue() + ", comment=" 
+        							+ comment + ", creationDate=" + creationTime + "]";
     }
 
 }
