@@ -12,28 +12,17 @@ import es.upm.miw.utils.Encrypting;
 @Document
 public class CashMovement {
 
-	@Id
-    private String reference;
-
     private BigDecimal value;
 
     private Date creationDate;
-
-    private Date dateOfUse;
 
     public CashMovement() {
         this(new BigDecimal(0));
     }
 
     public CashMovement(BigDecimal value) {
-        this.reference = new Encrypting().encryptInBase64UrlSafe();
         this.creationDate = new Date();
-        this.dateOfUse = null;
         this.setValue(value);
-    }
-
-    public String getReference() {
-        return reference;
     }
 
     public BigDecimal getValue() {
