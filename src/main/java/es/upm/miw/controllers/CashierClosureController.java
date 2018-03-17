@@ -87,11 +87,12 @@ public class CashierClosureController {
 			Date cashierOpenedDate = cashierClosureRepository.findFirstByOrderByOpeningDateDesc().getOpeningDate();
 			
 			BigDecimal totalCash = new BigDecimal("0"), totalCard = new BigDecimal("0");
-			totalCard = totalCard.add(cashDeposited(cashierOpenedDate));
-			totalCard = totalCard.add(cashMovements(cashierOpenedDate));
+			totalCash = totalCash.add(cashDeposited(cashierOpenedDate));
+			totalCash = totalCash.add(cashMovements(cashierOpenedDate));
 			
-			totalCash = totalCash.add(salesCash(cashierOpenedDate));
-			totalCash = totalCash.subtract(cashMovements(cashierOpenedDate));
+			totalCard = totalCard.add(salesCash(cashierOpenedDate));
+			totalCard = totalCard.subtract(totalVouchers(cashierOpenedDate));
+			totalCard = totalCard.subtract(cashDeposited(cashierOpenedDate));
 			
 			cashierClosureDto.setTotalCard(totalCard);
 			cashierClosureDto.setTotalCash(totalCash);
