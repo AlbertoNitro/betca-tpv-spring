@@ -20,7 +20,8 @@ import es.upm.miw.controllers.ProviderController;
 import es.upm.miw.dtos.ProviderDto;
 import es.upm.miw.dtos.ProviderMinimumDto;
 import es.upm.miw.resources.exceptions.ForbiddenException;
-import es.upm.miw.resources.exceptions.UserFieldAlreadyExistException;
+import es.upm.miw.resources.exceptions.ProviderFieldAlreadyExistException;
+import es.upm.miw.resources.exceptions.ProviderIdNotFoundException;
 import es.upm.miw.resources.exceptions.UserIdNotFoundException;
 
 @PreAuthorize("hasRole('ADMIN') or hasRole('MANAGER') or hasRole('OPERATOR')")
@@ -34,15 +35,24 @@ public class ProviderResource {
     
     @Autowired
     private ProviderController providerController;
-    
+
     @PostMapping
-    public void createProvider(@Valid @RequestBody ProviderDto providerDto) throws UserFieldAlreadyExistException {
+    public void createProvider(@Valid @RequestBody ProviderDto providerDto) throws ProviderFieldAlreadyExistException {
+        if (this.providerController.companyRepeated(providerDto)) {
+            throw new ProviderFieldAlreadyExistException("Existing Company");
+        }
         this.providerController.createProvider(providerDto);
     }
 
     @PutMapping(value = ID)
     public void putProvider(@PathVariable String id, @Valid @RequestBody ProviderDto providerDto)
-            throws ForbiddenException, UserIdNotFoundException {
+            throws ForbiddenException, ProviderFieldAlreadyExistException, ProviderIdNotFoundException {
+        if (!this.providerController.existsId(id)) {
+            throw new ProviderIdNotFoundException("Not existing Provider");
+        }
+        if (this.providerController.companyRepeated(providerDto)) {
+            throw new ProviderFieldAlreadyExistException("Existing Company");
+        }
         if (!this.providerController.putProvider(id, providerDto)) {
             throw new ForbiddenException();
         }

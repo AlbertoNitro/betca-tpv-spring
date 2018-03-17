@@ -56,7 +56,7 @@ public class CashierClosureRepositoryIT {
 	@Test
 	public void testFindByDateBetween() throws ParseException {
 		Date startDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse("2019-01-01 00:00:00");
-		Date endDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse("2019-12-01 99:99:99");
+		Date endDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse("2019-12-01 11:59:59");
 		List<CashierClosure> CashierClosureListByRangeDates = cashierClosureRepository.findByDateBetween(startDate,
 				endDate);
 		assertNotNull(CashierClosureListByRangeDates);

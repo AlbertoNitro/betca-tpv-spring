@@ -29,6 +29,11 @@ public class Invoice {
         this.id = new SimpleDateFormat(DATE_FORMAT).format(new Date()) + idOfYear;
         this.ticket = ticket;
     }
+    
+    public Invoice(Ticket ticket) {
+        this(); 
+        this.ticket = ticket;
+    }
 
     public String getId() {
         return id;
