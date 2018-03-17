@@ -17,6 +17,7 @@ import es.upm.miw.resources.exceptions.FileException;
 import es.upm.miw.resources.exceptions.ForbiddenException;
 import es.upm.miw.resources.exceptions.ProviderFieldAlreadyExistException;
 import es.upm.miw.resources.exceptions.ProviderIdNotFoundException;
+import es.upm.miw.resources.exceptions.TicketIdNotFoundException;
 import es.upm.miw.resources.exceptions.UserIdNotFoundException;
 import es.upm.miw.resources.exceptions.UserFieldAlreadyExistException;
 import es.upm.miw.resources.exceptions.FieldInvalidException;
@@ -25,8 +26,8 @@ import es.upm.miw.resources.exceptions.FieldInvalidException;
 public class ApiExceptionHandler {
 
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    @ExceptionHandler({UserIdNotFoundException.class, FileException.class, ArticleCodeNotFoundException.class,
-        ProviderIdNotFoundException.class})
+    @ExceptionHandler({TicketIdNotFoundException.class, UserIdNotFoundException.class, 
+        FileException.class, ArticleCodeNotFoundException.class, ProviderIdNotFoundException.class})
     @ResponseBody
     public ErrorMessage notFoundRequest(HttpServletRequest request, Exception exception) {
         return new ErrorMessage(exception, request.getRequestURI());
@@ -47,4 +48,5 @@ public class ApiExceptionHandler {
     public ErrorMessage forbiddenRequest(Exception exception) {
         return new ErrorMessage(exception, "");
     }
+    
 }

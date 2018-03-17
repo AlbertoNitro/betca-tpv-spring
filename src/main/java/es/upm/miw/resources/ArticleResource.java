@@ -2,10 +2,14 @@ package es.upm.miw.resources;
 
 import java.util.List;
 
+
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -53,5 +57,10 @@ public class ArticleResource {
     @RequestMapping(value = FILTER , method = RequestMethod.POST)
     public List<ArticleOutputDto> readFilterArticle(@RequestBody ArticleOutputDto dto){
         return this.articleController.readFilterArticle(dto);
+    }
+    
+    @PutMapping(value = CODE_ID)
+    public void putArticle(@PathVariable String code, @Valid @RequestBody ArticleOutputDto articleDto) {
+    		this.articleController.putArticle(code,articleDto);
     }
 }
