@@ -73,5 +73,5 @@ public class VoucherController {
 		Voucher voucher = this.voucherRepository.findByReference(reference);
 		return voucher.isUsed();
 	}
-
+	
 }
