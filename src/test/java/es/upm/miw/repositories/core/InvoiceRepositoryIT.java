@@ -22,4 +22,9 @@ public class InvoiceRepositoryIT {
         assertEquals("20180112-1", invoiceRepository.findOne("2018-1").getTicket().getId());
     }
 
+    @Test
+    public void testFindFirstByOrderByCreationDateDescIdDesc() {
+
+    }
+
 }

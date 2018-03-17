@@ -39,6 +39,16 @@ public class ProviderDto extends ProviderMinimumDto {
         this.note = provider.getNote();
         this.active = provider.isActive();
     }
+    
+    @Override
+    public String getCompany() {
+        return super.getCompany();
+    }
+
+    @Override
+    public void setCompany(String company) {
+        super.setCompany(company);
+    }
 
     public String getAddress() {
         return address;
