@@ -90,6 +90,15 @@ public class CashierClosureController {
 		}
 		return total;
 	}
+	
+	private BigDecimal cashDeposited(Date cashierOpenedDate) {
+		List<Ticket> ticketList = ticketRepository.findByCreationDateGreaterThan(cashierOpenedDate);
+		BigDecimal total = new BigDecimal("0");
+		for (Ticket ticket : ticketList) {
+			total = total.add(ticket.getCashDeposited());
+		}
+		return total;
+	}
 
 	public List<CashierClosureSearchOutputDto> readDatesAll(Date startDate, Date endDate) {
 		List<CashierClosure> salesList = this.cashierClosureRepository.findByDateBetween(startDate, endDate);
