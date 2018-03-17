@@ -10,6 +10,7 @@ import org.junit.runners.Suite.SuiteClasses;
     BudgetControllerIT.class,
     CashierClosureControllerIT.class,
     InvoiceControllerIT.class,
+    ProviderControllerIT.class,
     TicketControllerIT.class,
     UserControllerIT.class,
     VoucherControllerIT.class
