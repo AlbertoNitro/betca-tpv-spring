@@ -9,6 +9,7 @@ import org.junit.runners.Suite.SuiteClasses;
     ArticleControllerIT.class,
     BudgetControllerIT.class,
     CashierClosureControllerIT.class,
+    ProviderControllerIT.class,
     TicketControllerIT.class,
     UserControllerIT.class
 })
