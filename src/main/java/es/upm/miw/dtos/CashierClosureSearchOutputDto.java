@@ -14,7 +14,12 @@ public class CashierClosureSearchOutputDto {
 	
     @JsonInclude(Include.NON_NULL)
 	private Date closureDate;
-
+	
+	private BigDecimal totalCard;
+	
+	private BigDecimal totalCash;
+	
+	
 	public CashierClosureSearchOutputDto() {
 		// Empty for framework
 	}
@@ -23,6 +28,11 @@ public class CashierClosureSearchOutputDto {
 		this.salesCard = salesCard;
 		this.salesCash = salesCash;
 		this.closureDate = closureDate;
+	}
+	
+	public CashierClosureSearchOutputDto(BigDecimal totalCard, BigDecimal totalCash) {
+		this.totalCard = totalCard;
+		this.totalCash = totalCash;
 	}
 
 	public BigDecimal getSalesCard() {
@@ -40,6 +50,22 @@ public class CashierClosureSearchOutputDto {
 	public void setSalesCash(BigDecimal salesCash) {
 		this.salesCash = salesCash;
 	}
+	
+	public BigDecimal getTotalCard() {
+		return totalCard;
+	}
+
+	public void setTotalCard(BigDecimal totalCard) {
+		this.totalCard = totalCard;
+	}
+	
+	public BigDecimal getTotalCash() {
+		return totalCash;
+	}
+
+	public void setTotalCash(BigDecimal totalCash) {
+		this.totalCash = totalCash;
+	}
 
 	public Date getClosureDate() {
 		return closureDate;
@@ -52,7 +78,7 @@ public class CashierClosureSearchOutputDto {
 	@Override
 	public String toString() {
 		return "CashierClosureStatisOutputDto [salesCard=" + salesCard + ", salesCash=" + salesCash + ", closureDate="
-				+ closureDate + "]";
+				+ closureDate + ", totalCard=" + totalCard + ", totalCash=" + totalCash + "]";
 	}
 
 }

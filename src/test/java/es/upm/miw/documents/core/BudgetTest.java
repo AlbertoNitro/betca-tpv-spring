@@ -17,7 +17,7 @@ public class BudgetTest {
         Budget budget = new Budget(shoppingList);
         assertEquals(1, budget.getShoppingList().length);
     }
-    
+
     @Test
     public void testGetBudgetTotal() {
         Article article = new Article();
