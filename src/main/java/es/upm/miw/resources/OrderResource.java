@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import es.upm.miw.controllers.OrderController;
 import es.upm.miw.dtos.OrderDto;
-import es.upm.miw.dtos.UserMinimumDto;
 import es.upm.miw.resources.exceptions.OrderIdNotFoundException;
 
 @RestController
@@ -33,5 +32,10 @@ public class OrderResource {
     public OrderDto readOrder(@PathVariable String id) throws OrderIdNotFoundException {
         return this.orderController.readProvider(id);
     }
-    
+
+    @GetMapping
+    public List<OrderDto> readAll() {
+        return this.orderController.readAll();
+    }
+
 }
