@@ -29,10 +29,6 @@ public class Budget {
     public String getId() {
         return id;
     }
-    
-    public void setId(String id) {
-        this.id = id;
-    }
 
     public Date getCreationDate() {
         return creationDate;
