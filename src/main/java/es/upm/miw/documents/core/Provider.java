@@ -18,9 +18,32 @@ public class Provider {
     private String phone;
 
     private String note;
+    
+    private Boolean active;
 
     public Provider() {
         // Empty for framework
+    }
+    
+    public Provider(String id, String company, String address, String mobile, String phone, String note, Boolean active) {
+        super();
+        this.id = id;
+        this.company = company;
+        this.address = address;
+        this.mobile = mobile;
+        this.phone = phone;
+        this.note = note;
+        this.active = active;
+    }
+    
+    public Provider(String company, String address, String mobile, String phone, String note, Boolean active) {
+        super();
+        this.company = company;
+        this.address = address;
+        this.mobile = mobile;
+        this.phone = phone;
+        this.note = note;
+        this.active = active;
     }
 
     public String getCompany() {
@@ -70,6 +93,14 @@ public class Provider {
     public void setId(String id) {
         this.id = id;
     }
+    
+    public Boolean isActive() {
+        return active;
+    }
+
+    public void setActive(Boolean active) {
+        this.active = active;
+    }
 
     @Override
     public int hashCode() {
@@ -93,7 +124,7 @@ public class Provider {
     @Override
     public String toString() {
         return "Provider[" + id + ": company=" + company + ", address=" + address + ", mobile=" + mobile + ", phone=" + phone + ", note="
-                + note + "]";
+                + note + ", active=" + active + "]";
     }
 
 }

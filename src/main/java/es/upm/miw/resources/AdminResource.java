@@ -4,9 +4,11 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import es.upm.miw.controllers.AdminController;
@@ -27,17 +29,17 @@ public class AdminResource {
     private AdminController adminController;
 
     @PreAuthorize("permitAll")
-    @RequestMapping(value = STATE, method = RequestMethod.GET)
+    @GetMapping(value = STATE)
     public String getState() {
         return "{\"state\":\"ok\"}";
     }
 
-    @RequestMapping(value = DB, method = RequestMethod.DELETE)
+    @DeleteMapping(value = DB)
     public void deleteDb() {
         this.adminController.deleteDb();
     }
 
-    @RequestMapping(value = DB, method = RequestMethod.POST)
+    @PostMapping(value = DB)
     public void seedDb(@RequestBody String ymlFileName) throws FileException {
         Optional<String> error = this.adminController.seedDatabase(ymlFileName);
         if (error.isPresent()) {
