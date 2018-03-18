@@ -1,6 +1,7 @@
 package es.upm.miw.repositories.core;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.text.ParseException;
@@ -49,6 +50,14 @@ public class TicketRepositoryIT {
         List<Ticket> ticketListByRangeDates = ticketRepository.findByCreationDateBetween(initialDate, new Date());
         List<Ticket> ticketAllList = ticketRepository.findAll();
         assertTrue(ticketListByRangeDates.size() >= ticketAllList.size());
+    }
+    
+    @Test
+    public void testFindByIdAndDateBetween() throws ParseException {
+    	Date startDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse("2018-01-01 00:00:00");
+    	List<Ticket> ticketListByIdAndRangeDates = ticketRepository.findByIdAndDatesBetween("article1", startDate, new Date());
+    	assertNotNull(ticketListByIdAndRangeDates);
+    	assertTrue(ticketListByIdAndRangeDates.size() >= 0);
     }
 
 }

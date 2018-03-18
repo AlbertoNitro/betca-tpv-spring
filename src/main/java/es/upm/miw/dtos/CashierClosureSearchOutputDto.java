@@ -3,12 +3,16 @@ package es.upm.miw.dtos;
 import java.math.BigDecimal;
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+
 public class CashierClosureSearchOutputDto {
 
-private BigDecimal salesCard;
-	
+	private BigDecimal salesCard;
+
 	private BigDecimal salesCash;
 	
+    @JsonInclude(Include.NON_NULL)
 	private Date closureDate;
 	
 	private BigDecimal totalCard;
@@ -19,7 +23,7 @@ private BigDecimal salesCard;
 	public CashierClosureSearchOutputDto() {
 		// Empty for framework
 	}
-	
+
 	public CashierClosureSearchOutputDto(BigDecimal salesCard, BigDecimal salesCash, Date closureDate) {
 		this.salesCard = salesCard;
 		this.salesCash = salesCash;

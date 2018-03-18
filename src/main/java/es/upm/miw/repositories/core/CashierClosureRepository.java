@@ -10,11 +10,11 @@ import es.upm.miw.documents.core.CashierClosure;
 
 public interface CashierClosureRepository extends MongoRepository<CashierClosure, String> {
 
-    CashierClosure findFirstByOrderByOpeningDateDesc();
+	CashierClosure findFirstByOrderByOpeningDateDesc();
 
-    CashierClosure findFirstByOrderByClosureDateDesc();
+	CashierClosure findFirstByOrderByClosureDateDesc();
 
-    @Query(value = "{'closureDate': { $gte : ?0, $lt : ?1}}", fields = "{'salesCash' :1,'salesCard' :1, 'closureDate' :1}")
-    List<CashierClosure> findByDateBetween(Date startDate, Date endDate);
+	@Query(value = "{'closureDate': { $gte : ?0, $lt : ?1}}", fields = "{'salesCash' :1,'salesCard' :1, 'closureDate' :1}")
+	List<CashierClosure> findSalesCashierClosureByDateBetween(Date dateStart, Date dateFinish);
 
 }
