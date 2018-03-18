@@ -18,7 +18,7 @@ public class BudgetDto {
     public BudgetDto(List<ShoppingDto> shoppingCart) {
         this.shoppingCart = shoppingCart;
     }
-    
+
     public BudgetDto(String id, List<ShoppingDto> shoppingCart) {
         this.id = id;
         this.shoppingCart = shoppingCart;

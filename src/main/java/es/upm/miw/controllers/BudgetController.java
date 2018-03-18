@@ -46,8 +46,8 @@ public class BudgetController {
     public List<BudgetDto> readBudgetAll() {
         List<Budget> budgetList = this.budgetRepository.findAll();
         List<BudgetDto> budgetDtoList = new ArrayList<>();
-        for (Budget budget: budgetList) {
-            BudgetDto budgetDto = new BudgetDto(budget.getId(), null);
+        for (Budget budget : budgetList) {
+            BudgetDto budgetDto = new BudgetDto(budget.getId(), new ArrayList<>());
             ArrayList<ShoppingDto> shoppingDtoList = new ArrayList<>();
             for (Shopping shopping : budget.getShoppingList()) {
                 ShoppingDto shoppingDto = new ShoppingDto();

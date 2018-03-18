@@ -35,18 +35,18 @@ public class BudgetControllerIT {
         shoppingList.add(new ShoppingDto("1", "various", new BigDecimal("100"), 1, new BigDecimal("50.00"), new BigDecimal("50"), false));
         BudgetDto budgetCreationDto = new BudgetDto(shoppingList);
         int totalBudgets = this.budgetRepository.findAll().size();
-        
+
         this.budgetController.createBudget(budgetCreationDto);
-        assertEquals(totalBudgets + 1, this.budgetRepository.findAll().size());       
+        assertEquals(totalBudgets + 1, this.budgetRepository.findAll().size());
     }
-    
+
     @Test
     public void testReadAll() {
         List<Budget> budgetList = this.budgetRepository.findAll();
         List<BudgetDto> budgetDtoList = this.budgetController.readBudgetAll();
-        if(budgetList.size()>0) {
+        if (budgetList.size() > 0) {
             assertEquals(budgetList.get(0).getId(), budgetDtoList.get(0).getId());
-        }        
+        }
     }
 
 }

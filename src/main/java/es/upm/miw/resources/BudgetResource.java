@@ -37,7 +37,7 @@ public class BudgetResource {
             return pdf.get();
         }
     }
-    
+
     @GetMapping
     public List<BudgetDto> readBudgetAll() {
         return this.budgetController.readBudgetAll();
