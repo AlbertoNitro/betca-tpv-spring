@@ -91,12 +91,11 @@ public class CashierClosureController {
 		return total;
 	}
 
-	public List<CashierClosureSearchOutputDto> readDatesAll(Date startDate, Date endDate) {
-		List<CashierClosure> salesList = this.cashierClosureRepository.findByDateBetween(startDate, endDate);
+	public List<CashierClosureSearchOutputDto> getAllSalesCashierClosure(Date startDate, Date dateFinish) {
+		List<CashierClosure> salesList = this.cashierClosureRepository.findSalesCashierClosureByDateBetween(startDate,dateFinish);
 		List<CashierClosureSearchOutputDto> salesListDto = new ArrayList<CashierClosureSearchOutputDto>();
 		for (CashierClosure sales : salesList) {
-			salesListDto.add(new CashierClosureSearchOutputDto(sales.getSalesCash(), sales.getSalesCard(),
-					sales.getClosureDate()));
+			salesListDto.add(new CashierClosureSearchOutputDto(sales.getSalesCash(), sales.getSalesCard(),sales.getClosureDate()));
 		}
 		return salesListDto;
 	}

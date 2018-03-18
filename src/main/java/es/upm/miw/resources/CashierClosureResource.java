@@ -61,10 +61,10 @@ public class CashierClosureResource {
 	}
 
 	@RequestMapping(value = SEARCH, method = RequestMethod.GET)
-	public List<CashierClosureSearchOutputDto> findAll(
-			@DateTimeFormat(iso = DateTimeFormat.ISO.DATE) @RequestParam("dateStart") Date startDate,
-			@DateTimeFormat(iso = DateTimeFormat.ISO.DATE) @RequestParam(value = "dateFinish") Date endDate) {
-		return this.cashierClosureController.readDatesAll(startDate, endDate);
+	public List<CashierClosureSearchOutputDto> findAllSalesCashierClosure(
+			@DateTimeFormat(iso = DateTimeFormat.ISO.DATE) @RequestParam("dateStart") Date dateStart,
+			@DateTimeFormat(iso = DateTimeFormat.ISO.DATE) @RequestParam(value = "dateFinish") Date dateFinish) {
+		return this.cashierClosureController.getAllSalesCashierClosure(dateStart, dateFinish);
 	}
 
 }

@@ -1,8 +1,11 @@
 package es.upm.miw.controllers;
 
 
+import static org.junit.Assert.assertNotNull;
+
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.util.Date;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -34,6 +37,11 @@ public class CashierClosureControllerIT {
         this.databaseSeederService.deleteAllAndCreateAdmin();
         this.databaseSeederService.seedDatabase("tpv-db-test.yml");
 
+    }
+    
+    @Test
+    public void testGetSalesCashierClosure() {
+    	assertNotNull(this.cashierClosureController.getAllSalesCashierClosure(new Date(), new Date()));
     }
 
 }
