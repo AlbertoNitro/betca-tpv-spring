@@ -69,7 +69,7 @@ public class CashierClosureResource {
 		return this.cashierClosureController.readDatesAll(startDate, endDate);
 	}
 
-	@RequestMapping(value = GET_TOTALS, method = RequestMethod.GET)
+	@RequestMapping(value = TOTALS, method = RequestMethod.GET)
 	public CashierClosureSearchOutputDto getTotalCardAndCash() {
 		return this.cashierClosureController.getTotalCardAndCash();
 	}
