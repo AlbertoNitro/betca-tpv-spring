@@ -27,7 +27,7 @@ public class CashMovementResource {
 	public void createCashMovement(@Valid @RequestBody CashMovementDto cashMovementDto) {
 
 		if (cashMovementDto.getValue() == null) {
-			cashMovementDto.setValue(new BigDecimal(99));
+			cashMovementDto.setValue(new BigDecimal(0));
 		}
 
 		this.cashMovementController.createCashMovement(cashMovementDto);
