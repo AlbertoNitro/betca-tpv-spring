@@ -1,8 +1,10 @@
 package es.upm.miw.resources;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.Random;
 
 import javax.validation.Valid;
 
@@ -20,6 +22,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import es.upm.miw.controllers.TicketController;
+import es.upm.miw.dtos.HistoricalProductOutPutDto;
 import es.upm.miw.dtos.TicketCreationInputDto;
 import es.upm.miw.dtos.TicketSearchOutputDto;
 import es.upm.miw.dtos.TicketUpdationInputDto;
@@ -81,6 +84,29 @@ public class TicketResource {
 			@DateTimeFormat(iso = DateTimeFormat.ISO.DATE) @RequestParam("dateStart") Date dateStart,
 			@DateTimeFormat(iso = DateTimeFormat.ISO.DATE) @RequestParam(value = "dateFinish") Date dateFinish) {
 		return this.ticketController.getTicketAll(id, dateStart, dateFinish);
+	}
+	
+	@RequestMapping(value = "historicalProducts", method = RequestMethod.GET)
+
+	public List<HistoricalProductOutPutDto> getHistoricalProductsData(
+			@DateTimeFormat(iso = DateTimeFormat.ISO.DATE) @RequestParam("initDate") Date startDate,
+			@DateTimeFormat(iso = DateTimeFormat.ISO.DATE) @RequestParam("endDate") Date endDate) {
+
+		List<HistoricalProductOutPutDto> result = new ArrayList<HistoricalProductOutPutDto>();
+
+		Random generator = new Random();
+		int numProducts = generator.nextInt(10);
+		int numMonths = generator.nextInt(10);
+		for (int i = 0; i < numProducts; i++) {
+			List<Integer> valuesPerMonth = new ArrayList<Integer>();
+			String productName = "product" + i;
+			for (int j = 0; j < numMonths; j++) {
+				valuesPerMonth.add(generator.nextInt(100));
+			}
+			result.add(new HistoricalProductOutPutDto(valuesPerMonth, productName));
+		}
+
+		return result;
 	}
 
 }
