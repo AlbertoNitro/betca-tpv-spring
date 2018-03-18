@@ -2,6 +2,10 @@ package es.upm.miw.resources;
 
 import static org.junit.Assert.assertEquals;
 
+import java.math.BigDecimal;
+import java.util.Arrays;
+import java.util.List;
+
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -13,7 +17,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import es.upm.miw.controllers.ArticleController;
+import es.upm.miw.documents.core.Article;
 import es.upm.miw.dtos.ArticleOutputDto;
+import es.upm.miw.repositories.core.ArticleRepository;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
@@ -25,8 +32,14 @@ public class ArticleResourceFunctionalTesting {
 
     @Autowired
     private RestService restService;
+    
+	@Autowired
+	private ArticleRepository articleRepository;
+	
+	@Autowired
+	private ArticleController articleController;
 
-    @Test
+	@Test
     public void testReadArticle() {
         ArticleOutputDto articleOutputDto = restService.loginAdmin().restBuilder(new RestBuilder<ArticleOutputDto>())
                 .clazz(ArticleOutputDto.class).path(ArticleResource.ARTICLES).path(ArticleResource.CODE_ID).expand("article1").get()
@@ -41,6 +54,17 @@ public class ArticleResourceFunctionalTesting {
                 .build();
         assertEquals("article1", articleOutputDto.getCode());
     }
+    
+	@Test
+	public void testpostFastArticle() {
+		ArticleOutputDto articulo = new ArticleOutputDto();
+		articulo.setCode("1");
+		articulo.setDescription("blabla");
+		Number retailPrice = 2;
+		articulo.setRetailPrice(new BigDecimal(retailPrice.toString()));
+		restService.loginAdmin().restBuilder().path(ArticleResource.ARTICLES).body(articulo).post().build();
+		assertEquals("blabla", this.articleRepository.findArticleByDescription("blabla").getDescription());
+	}
 
     @Test
     public void testReadArticleOperator() {
@@ -49,7 +73,45 @@ public class ArticleResourceFunctionalTesting {
                 .build();
         assertEquals("article1", articleOutputDto.getCode());
     }
+    
+    @Test
+    public void testReadAll() {
+        List<ArticleOutputDto> articleOutputDto = Arrays.asList(restService.loginAdmin().restBuilder(new RestBuilder<ArticleOutputDto[]>())
+                .clazz(ArticleOutputDto[].class).path(ArticleResource.ARTICLES).get()
+                .build());
+        List<ArticleOutputDto> articleOutputDto_ = articleController.readAll();
+        
+        assertEquals(articleOutputDto_.size(), articleOutputDto.size());
+    
+    }
 
+    @Test
+    public void testReadAllIncompletes() {
+        List<ArticleOutputDto> articleOutputDto = Arrays.asList(restService.loginAdmin().restBuilder(new RestBuilder<ArticleOutputDto[]>())
+                .clazz(ArticleOutputDto[].class).path(ArticleResource.ARTICLES).path(ArticleResource.INCOMPLETES).get()
+                .build());
+        List<ArticleOutputDto> articleOutputDto_ = articleController.readAllIncompletes();
+        assertEquals(articleOutputDto_.size(), articleOutputDto.size());
+    
+    }
+    
+    @Test
+    public void testputArticle() {
+		ArticleOutputDto articulo = new ArticleOutputDto();
+		articulo.setCode("45346");
+		articulo.setDescription("bleble");
+		Number retailPrice = 2;
+		articulo.setRetailPrice(new BigDecimal(retailPrice.toString()));
+		
+		Article articulo_ = new Article(articulo.getCode(),articulo.getDescription(),articulo.getRetailPrice());
+		this.articleRepository.save(articulo_);
+		articulo.setDescription("blibli");
+		restService.loginAdmin().restBuilder().path(ArticleResource.ARTICLES).path(ArticleResource.CODE_ID).body(articulo).put().build();
+        assertEquals("blibli", this.articleRepository.findArticleByCode("45346").getDescription());
+
+		
+    }
+    
     @Test
     public void testReadArticleCustomer() {
         thrown.expect(new HttpMatcher(HttpStatus.FORBIDDEN));
@@ -61,5 +123,28 @@ public class ArticleResourceFunctionalTesting {
         thrown.expect(new HttpMatcher(HttpStatus.FORBIDDEN));
         restService.logout().restBuilder().path(ArticleResource.ARTICLES).path(ArticleResource.CODE_ID).expand("article1").get().build();
     }
+    
+	@Test
+	public void testFilterArticle() {
+		
+		//agregar articulo
+		ArticleOutputDto articulo = new ArticleOutputDto();
+		articulo.setCode("zea");
+		articulo.setDescription("zea");
+		Number retailPrice = 2;
+		articulo.setRetailPrice(new BigDecimal(retailPrice.toString()));
+		restService.loginAdmin().restBuilder().path(ArticleResource.ARTICLES).body(articulo).post().build();
+		
+		//buscar articulo
+		ArticleOutputDto articuloFilter = new ArticleOutputDto();
+		articuloFilter.setReference("zea");
+		articuloFilter.setDescription("zea");
 
+        List<ArticleOutputDto> articleOutputDto = Arrays.asList(restService.loginAdmin().restBuilder(new RestBuilder<ArticleOutputDto[]>())
+                .clazz(ArticleOutputDto[].class).path(ArticleResource.ARTICLES).path(ArticleResource.FILTER).body(articuloFilter).post()
+                .build());
+      
+       assertEquals(1, articleOutputDto.size());
+       //eliminar articulo       
+	}
 }
