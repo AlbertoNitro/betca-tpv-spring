@@ -35,7 +35,7 @@ public class CashierClosureResource {
 
 	public static final String SEARCH = "/search";
 
-	public static final String GET_TOTALS = "/get-totals";
+	public static final String TOTALS = "/totals";
 
 	@Autowired
 	private CashierClosureController cashierClosureController;
