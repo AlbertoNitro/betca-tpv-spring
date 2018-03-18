@@ -29,6 +29,10 @@ public class CashMovementResource {
 		if (cashMovementDto.getValue() == null) {
 			cashMovementDto.setValue(new BigDecimal(0));
 		}
+		
+		if (cashMovementDto.getComment() == null) {
+			cashMovementDto.setComment("");
+		}
 
 		this.cashMovementController.createCashMovement(cashMovementDto);
 	}
