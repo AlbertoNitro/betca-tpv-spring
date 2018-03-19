@@ -64,7 +64,7 @@ public class TicketResource {
 	}
 
 	@RequestMapping(value = ID)
-	@GetMapping(produces = { "application/pdf", "application/json" })
+	@GetMapping(produces = { "application/pdf" }) 
 	public @ResponseBody byte[] getTicket(@PathVariable(value = "id") String id)
 			throws TicketIdNotFoundException, FieldInvalidException {
 		if (this.ticketController.existTicket(id)) {
