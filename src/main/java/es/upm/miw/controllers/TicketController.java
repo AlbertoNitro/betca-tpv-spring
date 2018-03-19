@@ -17,6 +17,7 @@ import es.upm.miw.documents.core.Ticket;
 import es.upm.miw.documents.core.User;
 import es.upm.miw.dtos.ShoppingDto;
 import es.upm.miw.dtos.TicketCreationInputDto;
+import es.upm.miw.dtos.TicketSearchOutputDto;
 import es.upm.miw.dtos.TicketUpdationInputDto;
 import es.upm.miw.repositories.core.ArticleRepository;
 import es.upm.miw.repositories.core.TicketRepository;
@@ -58,20 +59,20 @@ public class TicketController {
         this.ticketRepository.save(ticket);
         return pdfService.generateTicket(ticket);
     }
-    
+
     public boolean existTicket(String id) {
         Ticket ticket = this.ticketRepository.findOne(id);
-        return ticket!=null;
+        return ticket != null;
     }
-    
-    public void updateAmountAndStateTicket(String id, TicketUpdationInputDto ticketUpdationInputDto) {    
+
+    public void updateAmountAndStateTicket(String id, TicketUpdationInputDto ticketUpdationInputDto) {
         List<Integer> listAmounts = ticketUpdationInputDto.getListAmounts();
         List<Boolean> listCommitteds = ticketUpdationInputDto.getListCommitteds();
         Ticket ticket = this.ticketRepository.findOne(id);
         Shopping[] shopping = ticket.getShoppingList();
-        for (int i=0; i<shopping.length; i++) {
+        for (int i = 0; i < shopping.length; i++) {
             shopping[i].setAmount(listAmounts.get(i));
-            ShoppingState shoppingState = listCommitteds.get(i)? ShoppingState.COMMITTED : ShoppingState.NOT_COMMITTED;
+            ShoppingState shoppingState = listCommitteds.get(i) ? ShoppingState.COMMITTED : ShoppingState.NOT_COMMITTED;
             shopping[i].setShoppingState(shoppingState);
         }
         this.ticketRepository.save(ticket);
@@ -91,7 +92,26 @@ public class TicketController {
 
     public Optional<byte[]> getTicket(String id) {
         Ticket ticket = this.ticketRepository.findOne(id);
+        if (ticket == null) {
+            return Optional.empty();
+        }
         return this.pdfService.generateTicket(ticket);
     }
 
+    public List<TicketSearchOutputDto> getTicketAll(String id, Date dateStart, Date dateFinish) {
+        List<Ticket> ticketList = this.ticketRepository.findByIdAndDatesBetween(id, dateStart, dateFinish);
+        List<TicketSearchOutputDto> ticketListDto = new ArrayList<TicketSearchOutputDto>();
+        for (Ticket ticket : ticketList) {
+            for (Shopping shopping : ticket.getShoppingList()) {
+                ticketListDto.add(new TicketSearchOutputDto(ticket.getCreationDate(), shopping.getAmount()));
+            }
+        }
+        return ticketListDto;
+    }
+    
+    public List<Ticket> getTicketsBetweenCreationDates(Date initialDate, Date finalDate) {
+        return this.ticketRepository.findByCreationDateBetween(initialDate, finalDate);
+    }
+    
+    
 }

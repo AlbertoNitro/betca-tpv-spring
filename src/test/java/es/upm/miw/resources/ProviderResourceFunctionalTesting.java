@@ -11,6 +11,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
+import org.springframework.http.HttpStatus;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
@@ -37,18 +38,29 @@ public class ProviderResourceFunctionalTesting {
     
     @Test
     public void testCreateProvider() {
+        restService.restBuilder().path(ProviderResource.PROVIDERS).body(providerDto).post().build();
+    }
+    
+    @Test
+    public void testCreateProviderCompanyNullException() {
+        thrown.expect(new HttpMatcher(HttpStatus.BAD_REQUEST));
+        providerDto.setCompany(null);
         restService.restBuilder().path(ProviderResource.PROVIDERS).body(this.providerDto).post().build();
     }
     
     @Test
     public void testPutProvider() {
-        restService.restBuilder().path(ProviderResource.PROVIDERS).body(this.providerDto).post().build();
+        restService.restBuilder().path(ProviderResource.PROVIDERS).body(providerDto).post().build();
         providerDto.setAddress("TAddress");
-        restService.restBuilder().path(ProviderResource.PROVIDERS).path(ProviderResource.ID).expand("TP").body(this.providerDto).put()
-                .build();
-        ProviderDto providerDto2 = restService.restBuilder(new RestBuilder<ProviderDto>()).clazz(ProviderDto.class).path(ProviderResource.PROVIDERS)
-                .path(ProviderResource.ID).expand("TP").get().build();
-        assertEquals("TAddress", providerDto2.getAddress());
+        restService.restBuilder().path(ProviderResource.PROVIDERS).path(ProviderResource.ID).expand("TP").body(providerDto).put().build();
+        assertEquals("TAddress", providerDto.getAddress());
+    }
+    
+    @Test
+    public void testCreateProviderCompanyFieldAlreadyExistException() {
+        thrown.expect(new HttpMatcher(HttpStatus.BAD_REQUEST));
+        providerDto.setCompany("company-p1");
+        restService.restBuilder().path(ProviderResource.PROVIDERS).body(providerDto).post().build();
     }
 
     @Test
