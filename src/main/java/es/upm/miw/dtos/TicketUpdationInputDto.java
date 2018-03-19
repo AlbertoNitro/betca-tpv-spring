@@ -7,14 +7,20 @@ import es.upm.miw.dtos.validations.ListNotEmpty;
 public class TicketUpdationInputDto {
     @ListNotEmpty
     private List<Integer> listAmounts;
-    
+
     @ListNotEmpty
-    private List<Integer> listCommitteds;
-    
+    private List<Boolean> listCommitteds;
+
     public TicketUpdationInputDto() {
-     // Empty for framework
+        // Empty for framework
     }
-    
+
+    public TicketUpdationInputDto(List<Integer> listAmounts, List<Boolean> listCommitteds) {
+        super();
+        this.listAmounts = listAmounts;
+        this.listCommitteds = listCommitteds;
+    }
+
     public List<Integer> getListAmounts() {
         return listAmounts;
     }
@@ -23,11 +29,11 @@ public class TicketUpdationInputDto {
         this.listAmounts = listAmounts;
     }
 
-    public List<Integer> getListCommitteds() {
+    public List<Boolean> getListCommitteds() {
         return listCommitteds;
     }
 
-    public void setListCommitteds(List<Integer> listCommitteds) {
+    public void setListCommitteds(List<Boolean> listCommitteds) {
         this.listCommitteds = listCommitteds;
     }
 
@@ -35,30 +41,37 @@ public class TicketUpdationInputDto {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((listAmounts == null) ? 0 : listAmounts.hashCode());
-        result = prime * result + ((listCommitteds == null) ? 0 : listCommitteds.hashCode());
+        result = (prime * result) + ((listAmounts == null) ? 0 : listAmounts.hashCode());
+        result = (prime * result) + ((listCommitteds == null) ? 0 : listCommitteds.hashCode());
         return result;
     }
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj)
+        if (this == obj) {
             return true;
-        if (obj == null)
+        }
+        if (obj == null) {
             return false;
-        if (getClass() != obj.getClass())
+        }
+        if (getClass() != obj.getClass()) {
             return false;
+        }
         TicketUpdationInputDto other = (TicketUpdationInputDto) obj;
         if (listAmounts == null) {
-            if (other.listAmounts != null)
+            if (other.listAmounts != null) {
                 return false;
-        } else if (!listAmounts.equals(other.listAmounts))
+            }
+        } else if (!listAmounts.equals(other.listAmounts)) {
             return false;
+        }
         if (listCommitteds == null) {
-            if (other.listCommitteds != null)
+            if (other.listCommitteds != null) {
                 return false;
-        } else if (!listCommitteds.equals(other.listCommitteds))
+            }
+        } else if (!listCommitteds.equals(other.listCommitteds)) {
             return false;
+        }
         return true;
     }
 
@@ -66,5 +79,5 @@ public class TicketUpdationInputDto {
     public String toString() {
         return "TicketUpdationInputDto [listAmounts=" + listAmounts + ", listCommitteds=" + listCommitteds + "]";
     }
-         
+
 }

@@ -1,9 +1,6 @@
 package es.upm.miw.controllers;
 
-import java.time.LocalDate;
-import java.time.ZoneId;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -13,8 +10,7 @@ import org.springframework.stereotype.Controller;
 import es.upm.miw.documents.core.Article;
 import es.upm.miw.documents.core.Budget;
 import es.upm.miw.documents.core.Shopping;
-import es.upm.miw.documents.core.ShoppingState;
-import es.upm.miw.dtos.BudgetCreationInputDto;
+import es.upm.miw.dtos.BudgetDto;
 import es.upm.miw.dtos.ShoppingDto;
 import es.upm.miw.repositories.core.ArticleRepository;
 import es.upm.miw.repositories.core.BudgetRepository;
@@ -32,7 +28,7 @@ public class BudgetController {
     @Autowired
     private PdfService pdfService;
 
-    public Optional<byte[]> createBudget(BudgetCreationInputDto budgetCreationDto) {
+    public Optional<byte[]> createBudget(BudgetDto budgetCreationDto) {
         List<Shopping> shoppingList = new ArrayList<>();
         for (ShoppingDto shoppingDto : budgetCreationDto.getShoppingCart()) {
             Article article = this.articleRepository.findOne(shoppingDto.getCode());
@@ -40,27 +36,31 @@ public class BudgetController {
                 return Optional.empty();
             }
             Shopping shopping = new Shopping(shoppingDto.getAmount(), shoppingDto.getDiscount(), article);
-            if (shoppingDto.isCommitted()) {
-                shopping.setShoppingState(ShoppingState.COMMITTED);
-            } else {
-                shopping.setShoppingState(ShoppingState.NOT_COMMITTED);
-            }
             shoppingList.add(shopping);
         }
-        Budget budget = new Budget(this.nextId(), shoppingList.toArray(new Shopping[0]));
+        Budget budget = new Budget(shoppingList.toArray(new Shopping[0]));
         this.budgetRepository.save(budget);
         return pdfService.generateBudget(budget);
     }
 
-    private int nextId() {
-        int nextId = 1;
-        Budget budget = budgetRepository.findFirstByOrderByCreationDateDescIdDesc();
-        if (budget != null) {
-            Date startOfDay = Date.from(LocalDate.now().atStartOfDay(ZoneId.systemDefault()).toInstant());
-            if (budget.getCreationDate().compareTo(startOfDay) >= 0) {
-                nextId = budget.simpleId() + 1;
+    public List<BudgetDto> readBudgetAll() {
+        List<Budget> budgetList = this.budgetRepository.findAll();
+        List<BudgetDto> budgetDtoList = new ArrayList<>();
+        for (Budget budget : budgetList) {
+            BudgetDto budgetDto = new BudgetDto(budget.getId(), new ArrayList<>());
+            ArrayList<ShoppingDto> shoppingDtoList = new ArrayList<>();
+            for (Shopping shopping : budget.getShoppingList()) {
+                ShoppingDto shoppingDto = new ShoppingDto();
+                shoppingDto.setAmount(shopping.getAmount());
+                shoppingDto.setDescription(shopping.getDescription());
+                shoppingDto.setRetailPrice(shopping.getRetailPrice());
+                shoppingDto.setTotal(shopping.getShoppingTotal());
+                shoppingDto.setDiscount(shopping.getDiscount());
+                shoppingDtoList.add(shoppingDto);
             }
+            budgetDto.setShoppingCart(shoppingDtoList);
+            budgetDtoList.add(budgetDto);
         }
-        return nextId;
+        return budgetDtoList;
     }
 }

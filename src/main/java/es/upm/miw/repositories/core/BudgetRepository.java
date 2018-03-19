@@ -6,6 +6,4 @@ import es.upm.miw.documents.core.Budget;
 
 public interface BudgetRepository extends MongoRepository<Budget, String> {
 
-    Budget findFirstByOrderByCreationDateDescIdDesc();
-
 }
