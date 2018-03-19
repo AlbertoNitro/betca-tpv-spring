@@ -86,7 +86,9 @@ public class PdfService {
         PdfTicketBuilder pdf = this.headerData(path);
 
         pdf.line().paragraphEmphasized("PRESUPUESTO");
-        if(budget.getId()!=null) {
+        if (budget.getId() != null) {
+            // TODO Raquel!!, no le hagas caso a estos comentarios... Para reducir el código enviado, se utiliza encode64
+            //pdf.barCode(new Encrypting().encodeInBase64UrlSafe(budget.getId())).line();
             pdf.barCode(budget.getId()).line();
         }
 
