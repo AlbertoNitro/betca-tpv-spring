@@ -3,12 +3,15 @@ package es.upm.miw.controllers;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -82,6 +85,11 @@ public class TicketControllerIT {
     public void testGetTicket() {
         Optional<byte[]> pdf = this.ticketController.getTicket("20180112-3");
         assertTrue(pdf.isPresent());
+    }
+    
+    @Test
+    public void testGetTicketsByIdAndDatesBetween() {
+    	assertNotNull(this.ticketController.getTicketAll("article1", new Date(), new Date()));
     }
 
 }

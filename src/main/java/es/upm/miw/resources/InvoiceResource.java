@@ -1,45 +1,37 @@
 package es.upm.miw.resources;
 
-import java.util.List;
 import java.util.Optional;
 
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import es.upm.miw.controllers.BudgetController;
-import es.upm.miw.dtos.BudgetDto;
+import es.upm.miw.controllers.InvoiceController;
+import es.upm.miw.dtos.TicketCreationInputDto;
 import es.upm.miw.resources.exceptions.FieldInvalidException;
 
 @PreAuthorize("hasRole('ADMIN') or hasRole('MANAGER') or hasRole('OPERATOR')")
 @RestController
-@RequestMapping(BudgetResource.BUDGETS)
-public class BudgetResource {
-
-    public static final String BUDGETS = "/budgets";
+@RequestMapping(InvoiceResource.INVOICES)
+public class InvoiceResource {
+    public static final String INVOICES = "/invoices";
 
     @Autowired
-    private BudgetController budgetController;
+    private InvoiceController invoiceController;
 
     @PostMapping(produces = {"application/pdf", "application/json"})
-    public @ResponseBody byte[] createBudget(@Valid @RequestBody BudgetDto budgetCreationDto) throws FieldInvalidException {
-        Optional<byte[]> pdf = this.budgetController.createBudget(budgetCreationDto);
+    public @ResponseBody byte[] createInvoice(@Valid @RequestBody TicketCreationInputDto ticketCreationDto) throws FieldInvalidException {
+        Optional<byte[]> pdf = this.invoiceController.createInvoice(ticketCreationDto);
         if (!pdf.isPresent()) {
             throw new FieldInvalidException("Article exception");
         } else {
             return pdf.get();
         }
-    }
-
-    @GetMapping
-    public List<BudgetDto> readBudgetAll() {
-        return this.budgetController.readBudgetAll();
     }
 }
