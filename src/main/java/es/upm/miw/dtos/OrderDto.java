@@ -21,13 +21,18 @@ public class OrderDto {
 
     public OrderDto() {
     }
-    
+
+    public OrderDto(String id, String id_provider, String provider_name) {
+        this.id = id;
+        this.Provider_id = id_provider;
+        this.Provider_name = provider_name;
+    }
+
     public OrderDto(Order order, Provider provider) {
         this.id = order.getId();
-        this.Order_date = (Date) order.getOrder_date();
         this.Provider_id = provider.getId();
         this.Provider_name = provider.getCompany();
-        
+
     }
 
     public String getId() {

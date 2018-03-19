@@ -23,13 +23,18 @@ public class OrderController {
     public OrderController() {
         // TODO Auto-generated constructor stub
     }
+    
+    public void createOrder( OrderDto orderDto) {
+        Order order = new Order(orderDto.getId(),orderDto.getProvider_id(),orderDto.getOrder_date());
+        this.orderRepository.save(order);
+    }
 
     public Order readOrder(String id) {
         return this.orderRepository.findById(id);
     }
 
     public List<OrderDto> readAll() {
-        return this.orderRepository.findFirst10();
+        return this.orderRepository.findFirst10OrderById();
 
     }
 
