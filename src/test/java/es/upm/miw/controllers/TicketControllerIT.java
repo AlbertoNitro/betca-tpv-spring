@@ -7,6 +7,8 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.math.BigDecimal;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -90,6 +92,14 @@ public class TicketControllerIT {
     @Test
     public void testGetTicketsByIdAndDatesBetween() {
     	assertNotNull(this.ticketController.getTicketAll("article1", new Date(), new Date()));
+    }
+    
+    @Test
+    public void testGetTicketsBetweenCreationDates() throws ParseException {
+        Date initialDate = new SimpleDateFormat("yyyy-mm-dd").parse("2017-01-11");
+        List<Ticket> ticketListByCreationDates = this.ticketController.getTicketsBetweenCreationDates(initialDate, new Date());
+        List<Ticket> ticketAllList = this.ticketRepository.findAll();
+        assertTrue(ticketListByCreationDates.size() >= ticketAllList.size());
     }
 
 }

@@ -108,5 +108,9 @@ public class TicketController {
         }
         return ticketListDto;
     }
-
+    
+    public List<Ticket> getTicketsBetweenCreationDates(Date initialDate, Date finalDate) {
+        return this.ticketRepository.findByCreationDateBetween(initialDate, finalDate);
+    }
+    
 }
