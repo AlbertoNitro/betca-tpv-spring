@@ -39,7 +39,7 @@ public class TicketResource {
     public static final String ID = "/{id}";
 
     public static final String SEARCH_BY_ID_AND_DATES = "/searchByIdAndDates";
-    
+
     public static final String SEARCH_BY_CREATION_DATES = "/searchByCreationDates";
 
     @Autowired
@@ -82,8 +82,8 @@ public class TicketResource {
 
     @RequestMapping(value = SEARCH_BY_CREATION_DATES, method = RequestMethod.GET)
     public List<Ticket> findTicketsBetweenCreationDates(
-            @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss") @RequestParam("initialDate") Date initialDate,
-            @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss") @RequestParam("finalDate") Date finalDate) {
+            @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") @RequestParam("initialDate") Date initialDate,
+            @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") @RequestParam("finalDate") Date finalDate) {
         return this.ticketController.getTicketsBetweenCreationDates(initialDate, finalDate);
     }
 
