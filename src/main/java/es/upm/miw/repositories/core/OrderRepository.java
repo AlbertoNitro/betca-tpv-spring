@@ -12,7 +12,7 @@ public interface OrderRepository extends MongoRepository<Order, String> {
 
     public Order findById(String id);
 
-    @Query(value = "{'roles' : 'CUSTOMER'}", fields = "{ '_id' : 0, 'mobile' : 1, 'username' : 1}")
-    public List<OrderDto> findOrderAll();
+    @Query(fields = "{ '_id' : 0, 'id_provider' : 1}")
+    public List<OrderDto> findFirst10();
 
 }

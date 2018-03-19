@@ -13,8 +13,7 @@ public class Order {
     @Id
     private String id;
 
-    @DBRef
-    private Provider provider;
+    private String id_provider;
 
     private Date order_date;
 
@@ -24,18 +23,17 @@ public class Order {
     public Order() {
         // TODO Auto-generated constructor stub
     }
-    
-    public Order( String id , Date orderDate ) {
+
+    public Order(String id, Date orderDate) {
         super();
         this.id = id;
         this.order_date = orderDate;
     }
 
-    public Order(String id, Provider provider, Date order_date) {
+    public Order(String id, String id_provider, Date order_date) {
         super();
         this.id = id;
-        this.provider = new Provider(provider.getCompany(), provider.getAddress(), provider.getMobile(), provider.getPhone(),
-                provider.getNote(), provider.isActive());
+        this.id_provider = id_provider;
         this.order_date = order_date;
     }
 
@@ -47,12 +45,12 @@ public class Order {
         this.id = id;
     }
 
-    public Provider getProvider() {
-        return provider;
+    public String getId_provider() {
+        return id_provider;
     }
 
-    public void setProvider(Provider provider) {
-        this.provider = provider;
+    public void setId_provider(String id_provider) {
+        this.id_provider = id_provider;
     }
 
     public Date getOrder_date() {
@@ -72,13 +70,18 @@ public class Order {
     }
 
     @Override
+    public String toString() {
+        return "Order [id=" + id + ", id_provider=" + id_provider + ", order_date=" + order_date + ", orderBody=" + orderBody + "]";
+    }
+
+    @Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;
         result = prime * result + ((id == null) ? 0 : id.hashCode());
+        result = prime * result + ((id_provider == null) ? 0 : id_provider.hashCode());
         result = prime * result + ((orderBody == null) ? 0 : orderBody.hashCode());
         result = prime * result + ((order_date == null) ? 0 : order_date.hashCode());
-        result = prime * result + ((provider == null) ? 0 : provider.hashCode());
         return result;
     }
 
@@ -96,6 +99,11 @@ public class Order {
                 return false;
         } else if (!id.equals(other.id))
             return false;
+        if (id_provider == null) {
+            if (other.id_provider != null)
+                return false;
+        } else if (!id_provider.equals(other.id_provider))
+            return false;
         if (orderBody == null) {
             if (other.orderBody != null)
                 return false;
@@ -106,17 +114,7 @@ public class Order {
                 return false;
         } else if (!order_date.equals(other.order_date))
             return false;
-        if (provider == null) {
-            if (other.provider != null)
-                return false;
-        } else if (!provider.equals(other.provider))
-            return false;
         return true;
-    }
-
-    @Override
-    public String toString() {
-        return "Order [id=" + id + ", provider=" + provider + ", order_date=" + order_date + ", orderBody=" + orderBody + "]";
     }
 
 }

@@ -5,6 +5,9 @@ import java.sql.Date;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
+import es.upm.miw.documents.core.Order;
+import es.upm.miw.documents.core.Provider;
+
 @JsonInclude(Include.NON_NULL)
 public class OrderDto {
 
@@ -17,9 +20,14 @@ public class OrderDto {
     private Date Order_date;
 
     public OrderDto() {
-        this.id = "1";
-        this.Provider_id = "2";
-        this.Provider_name = "ADRIAN";
+    }
+    
+    public OrderDto(Order order, Provider provider) {
+        this.id = order.getId();
+        this.Order_date = (Date) order.getOrder_date();
+        this.Provider_id = provider.getId();
+        this.Provider_name = provider.getCompany();
+        
     }
 
     public String getId() {

@@ -30,7 +30,7 @@ public class OrderResource {
 
     @RequestMapping(value = ORDER_ID, method = RequestMethod.GET)
     public OrderDto readOrder(@PathVariable String id) throws OrderIdNotFoundException {
-        return this.orderController.readProvider(id);
+        return this.orderController.readOrderDto(id);
     }
 
     @GetMapping

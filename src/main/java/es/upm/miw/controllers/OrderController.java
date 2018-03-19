@@ -4,8 +4,12 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+
+import es.upm.miw.documents.core.Order;
+import es.upm.miw.documents.core.Provider;
 import es.upm.miw.dtos.OrderDto;
 import es.upm.miw.repositories.core.OrderRepository;
+import es.upm.miw.repositories.core.ProviderRepository;
 
 @Controller
 public class OrderController {
@@ -13,17 +17,26 @@ public class OrderController {
     @Autowired
     private OrderRepository orderRepository;
 
+    @Autowired
+    private ProviderRepository providerRepository;
+
     public OrderController() {
         // TODO Auto-generated constructor stub
     }
 
-    public OrderDto readProvider(String id) {
-        return new OrderDto();
+    public Order readOrder(String id) {
+        return this.orderRepository.findById(id);
     }
 
     public List<OrderDto> readAll() {
-        return this.orderRepository.findOrderAll();
+        return this.orderRepository.findFirst10();
 
+    }
+
+    public OrderDto readOrderDto(String id) {
+        Order order = this.readOrder(id);
+        Provider provider = this.providerRepository.findById(order.getId_provider());
+        return new OrderDto(order, provider);
     }
 
 }
