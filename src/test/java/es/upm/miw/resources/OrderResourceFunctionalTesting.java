@@ -16,7 +16,7 @@ import es.upm.miw.dtos.OrderDto;
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 @TestPropertySource(locations = "classpath:test.properties")
-public class OrderResourceFunctionaTesting {
+public class OrderResourceFunctionalTesting {
     @Rule
     public ExpectedException thrown = ExpectedException.none();
 
