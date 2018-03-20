@@ -1,5 +1,6 @@
 package es.upm.miw.controllers;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,9 +24,9 @@ public class OrderController {
     public OrderController() {
         // TODO Auto-generated constructor stub
     }
-    
-    public void createOrder( OrderDto orderDto) {
-        Order order = new Order(orderDto.getId(),orderDto.getProvider_id(),orderDto.getOrder_date());
+
+    public void createOrder(OrderDto orderDto) {
+        Order order = new Order(orderDto.getId(), orderDto.getProvider_id(), orderDto.getOrder_date());
         this.orderRepository.save(order);
     }
 
@@ -34,8 +35,15 @@ public class OrderController {
     }
 
     public List<OrderDto> readAll() {
-        return this.orderRepository.findFirst10OrderById();
-
+        List<Order> orderList = this.orderRepository.findAll();
+        List<OrderDto> orderDtoList = new ArrayList<OrderDto>();
+        for (Order order : orderList) {
+            if (order.getId_provider() != null) {
+                String company = providerRepository.findOne(order.getId_provider()).getCompany();
+                orderDtoList.add( new OrderDto(order.getId(), order.getId_provider(), company));
+            }
+        }
+        return orderDtoList;
     }
 
     public OrderDto readOrderDto(String id) {
