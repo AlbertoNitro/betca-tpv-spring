@@ -32,7 +32,7 @@ public class OrderControllerIT {
 
     @Before
     public void Before() {
-        this.order = new Order("2018-1", "1", new Date());
+        this.order = new Order("2018-1", "provider1", new Date());
         this.orderRepository.save(this.order);
     }
 
@@ -43,11 +43,16 @@ public class OrderControllerIT {
     
     @Test
     public void createOrderTest() {
-        Provider provider = new Provider("99","Adrian company","Addres","66","91","note",true);
+        Provider provider = new Provider("provider1","Adrian company","Addres","66","91","note",true);
         Order order = new Order( "2018-2",provider.getId(),new Date());
         OrderDto orderDto = new OrderDto(order,provider);
         this.orderController.createOrder(orderDto);
         assertEquals("2018-2",this.orderController.readOrder("2018-2").getId());
+    }
+    
+    @Test
+    public void readAllTest() {
+        assertEquals(true,this.orderController.readAll().size()>0);
     }
 
 }

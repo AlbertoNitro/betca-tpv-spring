@@ -3,6 +3,7 @@ package es.upm.miw.repositories.core;
 import static org.junit.Assert.assertEquals;
 
 import java.util.Date;
+import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -26,13 +27,19 @@ public class OrderRepositoryIT {
 
     @Before
     public void before() {
-        this.order = new Order("2018-1","1",new Date());
+        this.order = new Order("2018-1","provider1",new Date());
         this.orderRepository.save(order);
     }
     @Test
     public void findOrderByIdTest() {
         assertEquals("2018-1",this.orderRepository.findById("2018-1").getId());
-        assertEquals("1",this.orderRepository.findById("2018-1").getId_provider());
+        assertEquals("provider1",this.orderRepository.findById("2018-1").getId_provider());
+    }
+    
+    @Test
+    public void findAllOrderTest() {
+        List<Order> orderList = this.orderRepository.findAll();
+        assertEquals(true,orderList.size()>0);
     }
     
 
