@@ -32,60 +32,61 @@ import es.upm.miw.dtos.CashierClosureSearchOutputDto;
 @TestPropertySource(locations = "classpath:test.properties")
 public class CashierClosureResourceFunctionalTesting {
 
-    @Rule
-    public ExpectedException thrown = ExpectedException.none();
+	@Rule
+	public ExpectedException thrown = ExpectedException.none();
 
-    @Autowired
-    private RestService restService;
-    
+	@Autowired
+	private RestService restService;
+
 	@Autowired
 	private CashierClosureController cashierClosureController;
-    
 
-    private void createCashier() {
-        restService.loginAdmin().restBuilder().path(CashierClosureResource.CASHIER_CLOSURES).post().build();
-    }
+	private void createCashier() {
+		restService.loginAdmin().restBuilder().path(CashierClosureResource.CASHIER_CLOSURES).post().build();
+	}
 
-    private void closeCashier() {
-        CashierClosureInputDto cashierClosureDto = new CashierClosureInputDto(new BigDecimal(23), new BigDecimal(10), "test");
-        restService.loginAdmin().restBuilder().path(CashierClosureResource.CASHIER_CLOSURES).path(CashierClosureResource.LAST)
-                .body(cashierClosureDto).patch().build();
-    }
+	private void closeCashier() {
+		CashierClosureInputDto cashierClosureDto = new CashierClosureInputDto(new BigDecimal(23), new BigDecimal(10),
+				"test");
+		restService.loginAdmin().restBuilder().path(CashierClosureResource.CASHIER_CLOSURES)
+				.path(CashierClosureResource.LAST).body(cashierClosureDto).patch().build();
+	}
 
-    @Test
-    public void testCreateAndCreateCashierClosureException() {
-        thrown.expect(new HttpMatcher(HttpStatus.BAD_REQUEST));
-        this.closeCashier();
-    }
+	@Test
+	public void testCreateAndCreateCashierClosureException() {
+		thrown.expect(new HttpMatcher(HttpStatus.BAD_REQUEST));
+		this.closeCashier();
+	}
 
-    @Test
-    public void testCloseCashierClosureException() {
-        this.createCashier();
-        try {
-            this.createCashier();
-        } catch (HttpClientErrorException httpError) {
-            assertEquals(HttpStatus.BAD_REQUEST, httpError.getStatusCode());
-        }
-        restService.reLoadTestDB();
-    }
+	@Test
+	public void testCloseCashierClosureException() {
+		this.createCashier();
+		try {
+			this.createCashier();
+		} catch (HttpClientErrorException httpError) {
+			assertEquals(HttpStatus.BAD_REQUEST, httpError.getStatusCode());
+		}
+		restService.reLoadTestDB();
+	}
 
-    @Test
-    public void testGetCashierClosureLast() {
-        CashierClosureLastOutputDto cashierClosureLastDto = restService.loginAdmin().restBuilder(new RestBuilder<CashierClosureLastOutputDto>())
-                .clazz(CashierClosureLastOutputDto.class).path(CashierClosureResource.CASHIER_CLOSURES).path(CashierClosureResource.LAST).get()
-                .build();
-        assertTrue(cashierClosureLastDto.isClosed());
-    }
+	@Test
+	public void testGetCashierClosureLast() {
+		CashierClosureLastOutputDto cashierClosureLastDto = restService.loginAdmin()
+				.restBuilder(new RestBuilder<CashierClosureLastOutputDto>()).clazz(CashierClosureLastOutputDto.class)
+				.path(CashierClosureResource.CASHIER_CLOSURES).path(CashierClosureResource.LAST).get().build();
+		assertTrue(cashierClosureLastDto.isClosed());
+	}
 
-    @Test
-    public void tesCashierClosuretDates() throws ParseException {
+	@Test
+	public void tesCashierClosuretDates() throws ParseException {
 		Date startDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse("2018-01-01 00:00:00");
-		Date endDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse("2018-12-01 11:59:59");
-    	List<CashierClosureSearchOutputDto> searchOutputDtos = Arrays.asList(restService.loginAdmin().restBuilder(new RestBuilder<CashierClosureSearchOutputDto[]>()).clazz(CashierClosureSearchOutputDto[].class)
-    			.path(CashierClosureResource.CASHIER_CLOSURES).path(CashierClosureResource.SEARCH).param("dateStart", "2018-01-01 00:00:00")
-    			.param("dateFinish", "2018-12-01 99:99:99").get().build());
-    	List<CashierClosureSearchOutputDto> searchOutputDtos_ = cashierClosureController.readDatesAll(startDate, endDate);
-    	 assertEquals(searchOutputDtos_.size(), searchOutputDtos.size());
-    }
-   
+		Date dateFinish = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse("2018-12-01 11:59:59");
+		List<CashierClosureSearchOutputDto> searchOutputDtos = Arrays.asList(restService.loginAdmin().restBuilder(new RestBuilder<CashierClosureSearchOutputDto[]>())
+						.clazz(CashierClosureSearchOutputDto[].class).path(CashierClosureResource.CASHIER_CLOSURES)
+						.path(CashierClosureResource.SEARCH).param("dateStart", "2018-01-01 00:00:00")
+						.param("dateFinish", "2018-12-01 99:99:99").get().build());
+		List<CashierClosureSearchOutputDto> searchOutputDtos_ = cashierClosureController.getAllSalesCashierClosure(startDate, dateFinish);
+		assertEquals(searchOutputDtos_.size(), searchOutputDtos.size());
+	}
+
 }

@@ -86,7 +86,11 @@ public class PdfService {
         PdfTicketBuilder pdf = this.headerData(path);
 
         pdf.line().paragraphEmphasized("PRESUPUESTO");
-        pdf.barCode(budget.getId()).line();
+        if (budget.getId() != null) {
+            // TODO Raquel!!, no le hagas caso a estos comentarios... Para reducir el código enviado, se utiliza encode64
+            //pdf.barCode(new Encrypting().encodeInBase64UrlSafe(budget.getId())).line();
+            pdf.barCode(budget.getId()).line();
+        }
 
         SimpleDateFormat formatter = new SimpleDateFormat(DATE_FORMAT);
         pdf.paragraphEmphasized(formatter.format(budget.getCreationDate()));
