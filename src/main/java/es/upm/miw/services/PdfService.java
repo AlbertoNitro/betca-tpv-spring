@@ -75,7 +75,9 @@ public class PdfService {
 
     public Optional<byte[]> generateTicket(Ticket ticket) {
         final String path = "/tickets/ticket-" + ticket.getId();
-        PdfTicketBuilder pdf = this.company(path);
+        final int INCREMENTAL_HEIGHT = 11;
+        boolean notCommitted = false;
+        PdfTicketBuilder pdf = this.addCompanyDetails(path, INCREMENTAL_HEIGHT + ticket.getShoppingList().length);
 
         pdf.line().paragraphEmphasized("TICKET");
         pdf.barCode(ticket.getId()).line();
@@ -87,6 +89,7 @@ public class PdfService {
             String state = "";
             if (shopping.getShoppingState() != ShoppingState.COMMITTED) {
                 state = "N";
+                notCommitted = true;
             }
 
             pdf.tableCell(String.valueOf(i + 1), shopping.getDescription(), "" + shopping.getAmount(),
@@ -97,14 +100,16 @@ public class PdfService {
         this.totalPrice(pdf, ticket.getTicketTotal());
         pdf.line().paragraph("Periodo de devolución o cambio: 15 dias a partir de la fecha del ticket");
         pdf.paragraphEmphasized("Gracias por su compra");
-        pdf.qrCode(ticket.getReference());
+        if (notCommitted) {
+            pdf.qrCode(ticket.getReference());
+        }
 
         return pdf.build();
     }
 
     public Optional<byte[]> generateBudget(Budget budget) {
         final String path = "/budgets/budget-" + budget.getId();
-        PdfTicketBuilder pdf = this.company(path);
+        PdfTicketBuilder pdf = this.addCompanyDetails(path, budget.getShoppingList().length);
 
         pdf.line().paragraphEmphasized("PRESUPUESTO");
         if (budget.getId() != null) {
@@ -129,8 +134,8 @@ public class PdfService {
         return pdf.build();
     }
 
-    private PdfTicketBuilder company(String path) {
-        PdfTicketBuilder pdf = new PdfTicketBuilder(path);
+    private PdfTicketBuilder addCompanyDetails(String path, int lines) {
+        PdfTicketBuilder pdf = new PdfTicketBuilder(path, lines);
         pdf.addImage(this.logo).paragraphEmphasized(this.name).paragraphEmphasized("Tfn: " + this.phone);
         pdf.paragraph("NIF: " + this.nif + "   -   " + this.address).paragraph("Web: " + this.web + "   -   Email: " + this.email);
         return pdf;
@@ -142,7 +147,7 @@ public class PdfService {
         BigDecimal ivaTotal = BigDecimal.ZERO;
 
         final String path = "/invoices/invoice-" + invoice.getId();
-        PdfTicketBuilder pdf = this.company(path);
+        PdfTicketBuilder pdf = this.addCompanyDetails(path, invoice.getTicket().getShoppingList().length);
         pdf.line();
         pdf.paragraphEmphasized("Datos Cliente:").paragraph("DNI: " + invoice.getTicket().getUser().getDni())
                 .paragraph("Nombre: " + invoice.getTicket().getUser().getUsername())

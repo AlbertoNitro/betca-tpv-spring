@@ -37,7 +37,7 @@ public class PdfTicketBuilder extends PdfBuilder {
 
     private static final float TERMIC_PAGE_WIDHT = 227;
 
-    private static final float TERMIC_PAGE_HEIGHT = 600;
+    private static final float TERMIC_PAGE_HEIGHT = 300;
 
     private static final float LINE_WIDTH = 0.5f;
 
@@ -45,9 +45,9 @@ public class PdfTicketBuilder extends PdfBuilder {
 
     private static final int IMAGE_WIDTH = 80;
 
-    public PdfTicketBuilder(String path) {
+    public PdfTicketBuilder(String path, int lines) {
         super(path);
-        this.prepareDocument(new PageSize(TERMIC_PAGE_WIDHT, TERMIC_PAGE_HEIGHT));
+        this.prepareDocument(new PageSize(TERMIC_PAGE_WIDHT, TERMIC_PAGE_HEIGHT + lines * 15));
         this.getDocument().setMargins(TERMIC_MARGIN, TERMIC_MARGIN, TERMIC_MARGIN, TERMIC_MARGIN);
         this.getDocument().setFontSize(TERMIC_FONT_SIZE);
         this.getDocument().setTextAlignment(TextAlignment.LEFT);
