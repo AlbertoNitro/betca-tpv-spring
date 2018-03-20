@@ -1,9 +1,6 @@
 package es.upm.miw.documents.core;
 
-import java.util.Date;
-
 import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document
@@ -78,5 +75,12 @@ public class ArticleFamily {
     public ArticleFamily build() {
         return this;
     }
+
+    @Override
+    public String toString() {
+        return String.format("ArticleFamily [idhijo=%s, idpadre=%s, reference=%s]", idhijo, idpadre, reference);
+    }
+    
+   
 
 }

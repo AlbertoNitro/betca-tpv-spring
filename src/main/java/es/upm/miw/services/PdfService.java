@@ -20,17 +20,38 @@ import es.upm.miw.documents.core.Ticket;
 @Service
 public class PdfService {
 
-    @Value("${iva.general}")
+    @Value("${miw.tax.general}")
     private String ivaGeneral;
 
-    @Value("${iva.reduced}")
+    @Value("${miw.tax.reduced}")
     private String ivaReduced;
 
-    @Value("${iva.super.reduced}")
+    @Value("${miw.tax.super.reduced}")
     private String ivaSuperReduced;
 
-    @Value("${iva.free}")
+    @Value("${miw.tax.free}")
     private String ivaFree;
+
+    @Value("${miw.company.logo}")
+    private String logo;
+
+    @Value("${miw.company.name}")
+    private String name;
+
+    @Value("${miw.company.nif}")
+    private String nif;
+
+    @Value("${miw.company.phone}")
+    private String phone;
+
+    @Value("${miw.company.address}")
+    private String address;
+
+    @Value("${miw.company.email}")
+    private String email;
+
+    @Value("${miw.company.web}")
+    private String web;
 
     private static final float[] TABLE_COLUMNS_SIZES = {20, 85, 20, 30, 40, 15};
 
@@ -54,7 +75,9 @@ public class PdfService {
 
     public Optional<byte[]> generateTicket(Ticket ticket) {
         final String path = "/tickets/ticket-" + ticket.getId();
-        PdfTicketBuilder pdf = this.headerData(path);
+        final int INCREMENTAL_HEIGHT = 11;
+        boolean notCommitted = false;
+        PdfTicketBuilder pdf = this.addCompanyDetails(path, INCREMENTAL_HEIGHT + ticket.getShoppingList().length);
 
         pdf.line().paragraphEmphasized("TICKET");
         pdf.barCode(ticket.getId()).line();
@@ -66,6 +89,7 @@ public class PdfService {
             String state = "";
             if (shopping.getShoppingState() != ShoppingState.COMMITTED) {
                 state = "N";
+                notCommitted = true;
             }
 
             pdf.tableCell(String.valueOf(i + 1), shopping.getDescription(), "" + shopping.getAmount(),
@@ -76,19 +100,21 @@ public class PdfService {
         this.totalPrice(pdf, ticket.getTicketTotal());
         pdf.line().paragraph("Periodo de devolución o cambio: 15 dias a partir de la fecha del ticket");
         pdf.paragraphEmphasized("Gracias por su compra");
-        pdf.qrCode(ticket.getReference());
+        if (notCommitted) {
+            pdf.qrCode(ticket.getReference());
+        }
 
         return pdf.build();
     }
 
     public Optional<byte[]> generateBudget(Budget budget) {
         final String path = "/budgets/budget-" + budget.getId();
-        PdfTicketBuilder pdf = this.headerData(path);
+        PdfTicketBuilder pdf = this.addCompanyDetails(path, budget.getShoppingList().length);
 
         pdf.line().paragraphEmphasized("PRESUPUESTO");
         if (budget.getId() != null) {
             // TODO Raquel!!, no le hagas caso a estos comentarios... Para reducir el código enviado, se utiliza encode64
-            //pdf.barCode(new Encrypting().encodeInBase64UrlSafe(budget.getId())).line();
+            // pdf.barCode(new Encrypting().encodeInBase64UrlSafe(budget.getId())).line();
             pdf.barCode(budget.getId()).line();
         }
 
@@ -108,11 +134,10 @@ public class PdfService {
         return pdf.build();
     }
 
-    private PdfTicketBuilder headerData(String path) {
-        PdfTicketBuilder pdf = new PdfTicketBuilder(path);
-        pdf.addImage("logo-upm.png");
-        pdf.paragraphEmphasized("Master en Ingeniería Web. BETCA");
-        pdf.paragraphEmphasized("Tfno: +(34) 913366000").paragraph("NIF: Q2818015F").paragraph("Calle Alan Turing s/n, 28031 Madrid");
+    private PdfTicketBuilder addCompanyDetails(String path, int lines) {
+        PdfTicketBuilder pdf = new PdfTicketBuilder(path, lines);
+        pdf.addImage(this.logo).paragraphEmphasized(this.name).paragraphEmphasized("Tfn: " + this.phone);
+        pdf.paragraph("NIF: " + this.nif + "   -   " + this.address).paragraph("Web: " + this.web + "   -   Email: " + this.email);
         return pdf;
     }
 
@@ -122,7 +147,7 @@ public class PdfService {
         BigDecimal ivaTotal = BigDecimal.ZERO;
 
         final String path = "/invoices/invoice-" + invoice.getId();
-        PdfTicketBuilder pdf = this.headerData(path);
+        PdfTicketBuilder pdf = this.addCompanyDetails(path, invoice.getTicket().getShoppingList().length);
         pdf.line();
         pdf.paragraphEmphasized("Datos Cliente:").paragraph("DNI: " + invoice.getTicket().getUser().getDni())
                 .paragraph("Nombre: " + invoice.getTicket().getUser().getUsername())
