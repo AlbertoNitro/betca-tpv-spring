@@ -1,8 +1,6 @@
 package es.upm.miw.repositories.core;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -15,7 +13,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import es.upm.miw.documents.core.Ticket;
 import es.upm.miw.documents.core.Voucher;
 
 @RunWith(SpringRunner.class)
@@ -37,8 +34,7 @@ public class VoucherRepositoryIT {
     public void testFindByCreationDateGreaterThan() throws ParseException {
         Date date = new SimpleDateFormat("yyyy-mm-dd").parse("2018-01-06");
         List<Voucher> voucherList = voucherRepository.findByCreationDateGreaterThan(date);
-        assertTrue(voucherList.contains(voucherRepository.findByReference("t2j_u9M9CisFmYGRFs1Uulgn7hI")));
-        assertTrue(voucherList.contains(voucherRepository.findByReference("6P0ISee_twnGEzf8qd1Bd5sGQqE")));
+        assertEquals(666.666, voucherList.get(0).getValue().doubleValue(), 10 - 10);
     }
 
 }
