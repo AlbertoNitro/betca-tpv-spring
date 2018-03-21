@@ -142,12 +142,13 @@ public class PdfService {
     }
 
     public Optional<byte[]> generateInvioce(Invoice invoice) {
-
+        final int INCREMENTAL_INVOICE_HEIGHT = 11;
         BigDecimal baseImpobibleTotal = BigDecimal.ZERO;
         BigDecimal ivaTotal = BigDecimal.ZERO;
 
         final String path = "/invoices/invoice-" + invoice.getId();
-        PdfTicketBuilder pdf = this.addCompanyDetails(path, invoice.getTicket().getShoppingList().length);
+
+        PdfTicketBuilder pdf = this.addCompanyDetails(path, INCREMENTAL_INVOICE_HEIGHT + invoice.getTicket().getShoppingList().length);
         pdf.line();
         pdf.paragraphEmphasized("Datos Cliente:").paragraph("DNI: " + invoice.getTicket().getUser().getDni())
                 .paragraph("Nombre: " + invoice.getTicket().getUser().getUsername())
