@@ -16,6 +16,7 @@ import org.yaml.snakeyaml.constructor.Constructor;
 
 import es.upm.miw.documents.core.Role;
 import es.upm.miw.documents.core.User;
+import es.upm.miw.repositories.core.ArticleFamilyRepository;
 import es.upm.miw.repositories.core.ArticleRepository;
 import es.upm.miw.repositories.core.CashierClosureRepository;
 import es.upm.miw.repositories.core.InvoiceRepository;
@@ -60,6 +61,9 @@ public class DatabaseSeederService {
     @Autowired
     public CashierClosureRepository cashierClosureRepository;
 
+    @Autowired
+    public ArticleFamilyRepository articleFamilyRepository;
+
     @PostConstruct
     public void seedDatabase() {
         if (ymlFileName.isPresent()) {
@@ -99,6 +103,9 @@ public class DatabaseSeederService {
         if (tpvGraph.getInvoiceList() != null) {
             this.invoiceRepository.save(tpvGraph.getInvoiceList());
         }
+        if (tpvGraph.getArticlefamilyList() != null) {
+            this.articleFamilyRepository.save(tpvGraph.getArticlefamilyList());
+        }
         // -----------------------------------------------------------------------
 
         Logger.getLogger(this.getClass()).warn("------------------------- Seed: " + ymlFileName + "-----------");
@@ -107,6 +114,7 @@ public class DatabaseSeederService {
     public void deleteAllAndCreateAdmin() {
         Logger.getLogger(this.getClass()).warn("------------------------- delete All And Create Admin-----------");
         // Delete Repositories -----------------------------------------------------
+        this.articleFamilyRepository.deleteAll();
         this.userRepository.deleteAll();
         this.ticketRepository.deleteAll();
         this.articleRepository.deleteAll();
