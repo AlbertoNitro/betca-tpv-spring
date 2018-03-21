@@ -6,6 +6,8 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Base64;
 import java.util.UUID;
 
+import javax.xml.bind.DatatypeConverter;
+
 import org.apache.log4j.Logger;
 
 public class Encrypting {
@@ -48,7 +50,19 @@ public class Encrypting {
 
     public String encryptInBase64UrlSafe() {
         String code64Url = Base64.getUrlEncoder().encodeToString(this.encrypt(UUID.randomUUID().toString()));
-        return code64Url.substring(0, code64Url.indexOf('='));
+        return this.removeEqualsCar(code64Url);
+    }
+
+    public String encodeInBase64UrlSafe(String hex) {
+        return this.removeEqualsCar(Base64.getUrlEncoder().encodeToString(DatatypeConverter.parseHexBinary(hex)));
+    }
+
+    private String removeEqualsCar(String msg) {
+        if (msg.indexOf('=') == -1) {
+            return msg;
+        } else {
+            return msg.substring(0, msg.indexOf('='));
+        }
     }
 
 }

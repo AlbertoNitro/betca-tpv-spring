@@ -3,12 +3,17 @@ package es.upm.miw.controllers;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.math.BigDecimal;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -80,8 +85,26 @@ public class TicketControllerIT {
 
     @Test
     public void testGetTicket() {
-        Optional<byte[]> pdf = this.ticketController.getTicket("20180112-3");
-        assertTrue(pdf.isPresent());
+        Optional<byte[]> pdf1 = this.ticketController.getTicket("20180112-1");
+        assertTrue(pdf1.isPresent());
+        Optional<byte[]> pdf2 = this.ticketController.getTicket("20180112-2");
+        assertTrue(pdf2.isPresent());
+        Optional<byte[]> pdf3 = this.ticketController.getTicket("20180112-3");
+        assertTrue(pdf3.isPresent());
+    }
+    
+    
+    @Test
+    public void testGetTicketsByIdAndDatesBetween() {
+    	assertNotNull(this.ticketController.getTicketAll("article1", new Date(), new Date()));
+    }
+    
+    @Test
+    public void testGetTicketsBetweenCreationDates() throws ParseException {
+        Date initialDate = new SimpleDateFormat("yyyy-mm-dd").parse("2017-01-11");
+        List<Ticket> ticketListByCreationDates = this.ticketController.getTicketsBetweenCreationDates(initialDate, new Date());
+        List<Ticket> ticketAllList = this.ticketRepository.findAll();
+        assertTrue(ticketListByCreationDates.size() >= ticketAllList.size());
     }
 
 }

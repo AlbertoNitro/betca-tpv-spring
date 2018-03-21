@@ -4,17 +4,28 @@ import java.util.List;
 
 import es.upm.miw.dtos.validations.ListNotEmpty;
 
-public class BudgetCreationInputDto {
+public class BudgetDto {
+
+    private String id;
 
     @ListNotEmpty
     private List<ShoppingDto> shoppingCart;
 
-    public BudgetCreationInputDto() {
+    public BudgetDto() {
         // Empty for framework
     }
 
-    public BudgetCreationInputDto(List<ShoppingDto> shoppingCart) {
+    public BudgetDto(List<ShoppingDto> shoppingCart) {
         this.shoppingCart = shoppingCart;
+    }
+
+    public BudgetDto(String id, List<ShoppingDto> shoppingCart) {
+        this.id = id;
+        this.shoppingCart = shoppingCart;
+    }
+
+    public String getId() {
+        return id;
     }
 
     public List<ShoppingDto> getShoppingCart() {
@@ -27,7 +38,7 @@ public class BudgetCreationInputDto {
 
     @Override
     public String toString() {
-        return "BudgetCreationInputDto [shoppingCart=" + shoppingCart + "]";
+        return "BudgetDto [id=" + id + ", shoppingCart=" + shoppingCart + "]";
     }
 
 }

@@ -150,6 +150,48 @@ articleList:
     wholesalePrice: 50
     tax: GENERAL
     provider: *pr0
+  - &ar5
+    code: 13248
+    description: Artic
+    retailPrice: 100
+    wholesalePrice: 50
+    tax: GENERAL
+    provider: *pr0
+  - &ar6
+    code: 13249
+    description: Artic
+    retailPrice: 100
+    wholesalePrice: 50
+    tax: GENERAL
+    provider: *pr0
+  - &ar7
+    code: 13249
+    description: Artic
+    retailPrice: 100
+    wholesalePrice: 50
+    tax: GENERAL
+    provider: *pr0
+  - &ar8
+    code: 13250
+    description: Artic
+    retailPrice: 100
+    wholesalePrice: 50
+    tax: GENERAL
+    provider: *pr0
+  - &ar9
+    code: 13251
+    description: Artic
+    retailPrice: 100
+    wholesalePrice: 50
+    tax: GENERAL
+    provider: *pr0
+  - &ar10
+    code: 13252
+    description: Artic
+    retailPrice: 100
+    wholesalePrice: 50
+    tax: GENERAL
+    provider: *pr0  
 
 # Shopping
 shoppingList:
@@ -158,16 +200,22 @@ shoppingList:
     retailPrice: 0.1
     discount: 0
     article: *ar1
+    shoppingState: COMMITTED
+    description: "various"
   - &sh2
     amount: 10
     retailPrice: 30
     discount: 50.00
     article: *ar2
+    shoppingState: COMMITTED
+    description: "various"
   - &sh3
     amount: 1
     retailPrice: 2.2
     discount: 0
     article: *ar1
+    shoppingState: COMMITTED
+    description: "various"
   - &sh4
     amount: 1
     retailPrice: 2.2

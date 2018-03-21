@@ -35,7 +35,7 @@ public class CashierClosureResource {
 
 	public static final String SEARCH = "/search";
 
-	public static final String GET_TOTALS = "/get-totals";
+	public static final String TOTALS = "/totals";
 
 	@Autowired
 	private CashierClosureController cashierClosureController;
@@ -63,13 +63,13 @@ public class CashierClosureResource {
 	}
 
 	@RequestMapping(value = SEARCH, method = RequestMethod.GET)
-	public List<CashierClosureSearchOutputDto> findAll(
-			@DateTimeFormat(iso = DateTimeFormat.ISO.DATE) @RequestParam("dateStart") Date startDate,
-			@DateTimeFormat(iso = DateTimeFormat.ISO.DATE) @RequestParam(value = "dateFinish") Date endDate) {
-		return this.cashierClosureController.readDatesAll(startDate, endDate);
+	public List<CashierClosureSearchOutputDto> findAllSalesCashierClosure(
+			@DateTimeFormat(iso = DateTimeFormat.ISO.DATE) @RequestParam("dateStart") Date dateStart,
+			@DateTimeFormat(iso = DateTimeFormat.ISO.DATE) @RequestParam(value = "dateFinish") Date dateFinish) {
+		return this.cashierClosureController.getAllSalesCashierClosure(dateStart, dateFinish);
 	}
 
-	@RequestMapping(value = GET_TOTALS, method = RequestMethod.GET)
+	@RequestMapping(value = TOTALS, method = RequestMethod.GET)
 	public CashierClosureSearchOutputDto getTotalCardAndCash() {
 		return this.cashierClosureController.getTotalCardAndCash();
 	}
