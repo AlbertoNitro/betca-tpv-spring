@@ -1,22 +1,8 @@
 package es.upm.miw.repositories.core.memory;
 
-import es.upm.miw.repositories.core.IComponentArticle;
+import java.util.List;
 
 public abstract class ComponentArticle implements IComponentArticle {
-
-    private String name;
-
-    public ComponentArticle(String name) {
-        this.name = name;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
 
     @Override
     public void add(ComponentArticle componentArticle) {
@@ -29,12 +15,19 @@ public abstract class ComponentArticle implements IComponentArticle {
     }
 
     @Override
+    public List<ComponentArticle> getAllComponents() {
+        throw new UnsupportedOperationException("Operación no soportada");
+    }
+
+    @Override
     public int count() {
         throw new UnsupportedOperationException("Operación no soportada");
     }
 
+    public abstract boolean isComposite();
+
     public abstract void view(ComponentArticle componentArticle);
 
-    public abstract void print(int nivel);
+    public abstract void print(int nivel);;
 
 }
