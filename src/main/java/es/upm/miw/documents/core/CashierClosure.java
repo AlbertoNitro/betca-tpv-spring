@@ -116,6 +116,10 @@ public class CashierClosure {
     public void setComment(String comment) {
         this.comment = comment;
     }
+    
+    public void setOpeningDate(Date openingDate) {
+        this.openingDate = openingDate;
+    }
 
     @Override
     public int hashCode() {

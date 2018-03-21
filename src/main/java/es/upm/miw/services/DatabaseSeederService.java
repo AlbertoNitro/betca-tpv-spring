@@ -94,6 +94,9 @@ public class DatabaseSeederService {
         if (tpvGraph.getCashMovementList() != null) {
             this.cashMovementRepository.save(tpvGraph.getCashMovementList());
         }
+        if (tpvGraph.getCashierClosureList() != null) {
+            this.cashierClosureRepository.save(tpvGraph.getCashierClosureList());
+        }
         if (tpvGraph.getProviderList() != null) {
             this.providerRepository.save(tpvGraph.getProviderList());
         }

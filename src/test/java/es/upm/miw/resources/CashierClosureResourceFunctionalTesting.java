@@ -89,4 +89,12 @@ public class CashierClosureResourceFunctionalTesting {
 		assertEquals(searchOutputDtos_.size(), searchOutputDtos.size());
 	}
 
+	@Test
+	public void tesCashierClosureTotals() throws ParseException {
+		CashierClosureSearchOutputDto totalOutputDtos = restService.loginAdmin()
+				.restBuilder(new RestBuilder<CashierClosureSearchOutputDto>()).clazz(CashierClosureSearchOutputDto.class)
+				.path(CashierClosureResource.CASHIER_CLOSURES).path(CashierClosureResource.TOTALS).get().build();
+		assertEquals(-649.232, totalOutputDtos.getTotalCard().doubleValue(), 10 - 10);
+		assertEquals(808.232, totalOutputDtos.getTotalCash().doubleValue(), 10 - 10);
+	}
 }
