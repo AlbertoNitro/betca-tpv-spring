@@ -73,8 +73,10 @@ userList:
 # Vouchers
 voucherList:
   - value: 666.666
+    reference: t2j_u9M9CisFmYGRFs1Uulgn7hI
   - value: 0.666
     dateOfUse: 2018-01-01
+    reference: 6P0ISee_twnGEzf8qd1Bd5sGQqE
   - value: 30.3
     dateOfUse: 2018-01-06 12:00:23  
   - value: 50.6
