@@ -14,7 +14,8 @@ import org.junit.runners.Suite.SuiteClasses;
     TicketRepositoryIT.class,
     UserRepositoryIT.class,
     VoucherRepositoryIT.class,
-    OrderRepositoryIT.class
+    OrderRepositoryIT.class,
+    OrderBodyRepositoryIT.class
     })
 public class AllMiwRepositoriesCoreIntegrationTests {
 

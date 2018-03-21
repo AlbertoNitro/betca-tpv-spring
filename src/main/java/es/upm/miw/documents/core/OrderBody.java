@@ -17,6 +17,13 @@ public class OrderBody {
         // TODO Auto-generated constructor stub
     }
 
+    public OrderBody(String id, String id_order, String id_article) {
+        super();
+        this.id = id;
+        this.id_order = id_order;
+        this.id_article = id_article;
+    }
+
     public String getId() {
         return id;
     }
