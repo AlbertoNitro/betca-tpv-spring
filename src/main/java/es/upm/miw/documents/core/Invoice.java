@@ -29,9 +29,9 @@ public class Invoice {
         this.id = new SimpleDateFormat(DATE_FORMAT).format(new Date()) + idOfYear;
         this.ticket = ticket;
     }
-    
+
     public Invoice(Ticket ticket) {
-        this(); 
+        this();
         this.ticket = ticket;
     }
 
@@ -57,6 +57,10 @@ public class Invoice {
 
     public void setCreated(Date creationDate) {
         this.creationDate = creationDate;
+    }
+
+    public int simpleId() {
+        return Integer.parseInt(String.valueOf(id).substring(DATE_FORMAT.length()));
     }
 
     @Override
