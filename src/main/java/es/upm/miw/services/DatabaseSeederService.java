@@ -17,6 +17,7 @@ import org.yaml.snakeyaml.constructor.Constructor;
 import es.upm.miw.documents.core.Role;
 import es.upm.miw.documents.core.User;
 import es.upm.miw.repositories.core.ArticleRepository;
+import es.upm.miw.repositories.core.CashMovementRepository;
 import es.upm.miw.repositories.core.CashierClosureRepository;
 import es.upm.miw.repositories.core.InvoiceRepository;
 import es.upm.miw.repositories.core.ProviderRepository;
@@ -44,6 +45,9 @@ public class DatabaseSeederService {
 
     @Autowired
     private VoucherRepository voucherRepository;
+    
+    @Autowired
+    private CashMovementRepository cashMovementRepository;
 
     @Autowired
     private ProviderRepository providerRepository;
@@ -87,6 +91,9 @@ public class DatabaseSeederService {
         if (tpvGraph.getVoucherList() != null) {
             this.voucherRepository.save(tpvGraph.getVoucherList());
         }
+        if (tpvGraph.getCashMovementList() != null) {
+            this.cashMovementRepository.save(tpvGraph.getCashMovementList());
+        }
         if (tpvGraph.getProviderList() != null) {
             this.providerRepository.save(tpvGraph.getProviderList());
         }
@@ -111,6 +118,7 @@ public class DatabaseSeederService {
         this.ticketRepository.deleteAll();
         this.articleRepository.deleteAll();
         this.voucherRepository.deleteAll();
+        this.cashMovementRepository.deleteAll();
         this.providerRepository.deleteAll();
         this.invoiceRepository.deleteAll();
         this.cashierClosureRepository.deleteAll();

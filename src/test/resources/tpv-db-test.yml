@@ -260,3 +260,14 @@ invoiceList:
     ticket: *ti1
   - id: 2018-2
     ticket: *ti2
+    
+ # CashMovement
+cashMovementList:
+  - value: 666.666
+    comment: "test A"
+  - value: 0.666
+    comment: "test B"
+  - value: 30.3
+    comment: "test C"
+  - value: 50.6
+    comment: "test D" 
