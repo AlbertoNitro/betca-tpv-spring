@@ -193,6 +193,8 @@ articleList:
     tax: GENERAL
     provider: *pr0  
 
+
+
 # Shopping
 shoppingList:
   - &sh1
@@ -260,3 +262,6 @@ invoiceList:
     ticket: *ti1
   - id: 2018-2
     ticket: *ti2
+    
+
+      
