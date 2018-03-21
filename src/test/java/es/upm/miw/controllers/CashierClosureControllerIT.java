@@ -1,6 +1,5 @@
 package es.upm.miw.controllers;
 
-
 import static org.junit.Assert.assertNotNull;
 
 import java.io.IOException;
@@ -22,26 +21,31 @@ import es.upm.miw.services.DatabaseSeederService;
 @TestPropertySource(locations = "classpath:test.properties")
 public class CashierClosureControllerIT {
 
-    @Autowired
-    private CashierClosureController cashierClosureController;
+	@Autowired
+	private CashierClosureController cashierClosureController;
 
-    @Autowired
-    private DatabaseSeederService databaseSeederService;
-    
+	@Autowired
+	private DatabaseSeederService databaseSeederService;
 
-    @Test
-    public void testClose() throws IOException {
-        cashierClosureController.createCashierClosure();
-        CashierClosureInputDto cashierClosureDto = new CashierClosureInputDto(new BigDecimal("100"), new BigDecimal("50"), "testClose");
-        cashierClosureController.close(cashierClosureDto);
-        this.databaseSeederService.deleteAllAndCreateAdmin();
-        this.databaseSeederService.seedDatabase("tpv-db-test.yml");
+	@Test
+	public void testClose() throws IOException {
+		cashierClosureController.createCashierClosure();
+		CashierClosureInputDto cashierClosureDto = new CashierClosureInputDto(new BigDecimal("100"),
+				new BigDecimal("50"), "testClose");
+		cashierClosureController.close(cashierClosureDto);
+		this.databaseSeederService.deleteAllAndCreateAdmin();
+		this.databaseSeederService.seedDatabase("tpv-db-test.yml");
 
-    }
-    
-    @Test
-    public void testGetSalesCashierClosure() {
-    	assertNotNull(this.cashierClosureController.getAllSalesCashierClosure(new Date(), new Date()));
-    }
+	}
+
+	@Test
+	public void testGetSalesCashierClosure() {
+		assertNotNull(this.cashierClosureController.getAllSalesCashierClosure(new Date(), new Date()));
+	}
+
+	@Test
+	public void testGetTotalCardAndCashCashierClosure() {
+		assertNotNull(this.cashierClosureController.getTotalCardAndCash());
+	}
 
 }

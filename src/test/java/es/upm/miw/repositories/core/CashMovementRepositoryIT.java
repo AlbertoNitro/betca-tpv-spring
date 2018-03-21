@@ -27,6 +27,6 @@ public class CashMovementRepositoryIT {
     public void testFindByCreationDateGreaterThan() throws ParseException {
         Date date = new SimpleDateFormat("yyyy-mm-dd").parse("2018-01-06");
         List<CashMovement> cashMovementList = cashMovementRepository.findByCreationDateGreaterThan(date);
-        assertEquals(666.666, cashMovementList.get(0).getValue().doubleValue(), 10 - 10);
+		assertEquals(666.666, cashMovementList.get(0).getValue().doubleValue(), 10 - 10);
     }
 }

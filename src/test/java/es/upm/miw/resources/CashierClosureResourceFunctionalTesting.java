@@ -81,19 +81,22 @@ public class CashierClosureResourceFunctionalTesting {
 	public void tesCashierClosuretDates() throws ParseException {
 		Date startDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse("2018-01-01 00:00:00");
 		Date dateFinish = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse("2018-12-01 11:59:59");
-		List<CashierClosureSearchOutputDto> searchOutputDtos = Arrays.asList(restService.loginAdmin().restBuilder(new RestBuilder<CashierClosureSearchOutputDto[]>())
+		List<CashierClosureSearchOutputDto> searchOutputDtos = Arrays
+				.asList(restService.loginAdmin().restBuilder(new RestBuilder<CashierClosureSearchOutputDto[]>())
 						.clazz(CashierClosureSearchOutputDto[].class).path(CashierClosureResource.CASHIER_CLOSURES)
 						.path(CashierClosureResource.SEARCH).param("dateStart", "2018-01-01 00:00:00")
 						.param("dateFinish", "2018-12-01 99:99:99").get().build());
-		List<CashierClosureSearchOutputDto> searchOutputDtos_ = cashierClosureController.getAllSalesCashierClosure(startDate, dateFinish);
+		List<CashierClosureSearchOutputDto> searchOutputDtos_ = cashierClosureController
+				.getAllSalesCashierClosure(startDate, dateFinish);
 		assertEquals(searchOutputDtos_.size(), searchOutputDtos.size());
 	}
 
 	@Test
 	public void tesCashierClosureTotals() throws ParseException {
 		CashierClosureSearchOutputDto totalOutputDtos = restService.loginAdmin()
-				.restBuilder(new RestBuilder<CashierClosureSearchOutputDto>()).clazz(CashierClosureSearchOutputDto.class)
-				.path(CashierClosureResource.CASHIER_CLOSURES).path(CashierClosureResource.TOTALS).get().build();
+				.restBuilder(new RestBuilder<CashierClosureSearchOutputDto>())
+				.clazz(CashierClosureSearchOutputDto.class).path(CashierClosureResource.CASHIER_CLOSURES)
+				.path(CashierClosureResource.TOTALS).get().build();
 		assertEquals(-649.232, totalOutputDtos.getTotalCard().doubleValue(), 10 - 10);
 		assertEquals(808.232, totalOutputDtos.getTotalCash().doubleValue(), 10 - 10);
 	}
