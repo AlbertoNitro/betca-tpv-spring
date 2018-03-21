@@ -60,7 +60,7 @@ public class InvoiceController {
         }
         Ticket ticket = new Ticket(this.nextId(), ticketCreationDto.getCash(), shoppingList.toArray(new Shopping[0]), user);
         this.ticketRepository.save(ticket);
-        Invoice invoice = new Invoice(ticketRepository.findOne(ticket.getId()));
+        Invoice invoice = new Invoice(this.nextInvoiceId(), ticketRepository.findOne(ticket.getId()));
         this.invoiceRepository.save(invoice);
         return pdfService.generateInvioce(invoice);
     }
@@ -72,6 +72,18 @@ public class InvoiceController {
             Date startOfDay = Date.from(LocalDate.now().atStartOfDay(ZoneId.systemDefault()).toInstant());
             if (ticket.getCreationDate().compareTo(startOfDay) >= 0) {
                 nextId = ticket.simpleId() + 1;
+            }
+        }
+        return nextId;
+    }
+
+    private int nextInvoiceId() {
+        int nextId = 1;
+        Invoice invoice = invoiceRepository.findFirstByOrderByCreationDateDescIdDesc();
+        if (invoice != null) {
+            Date startOfDay = Date.from(LocalDate.now().atStartOfDay(ZoneId.systemDefault()).toInstant());
+            if (invoice.getCreated().compareTo(startOfDay) >= 0) {
+                nextId = invoice.simpleId() + 1;
             }
         }
         return nextId;
