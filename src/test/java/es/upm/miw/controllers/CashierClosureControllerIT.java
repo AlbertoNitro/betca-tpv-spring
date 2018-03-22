@@ -44,8 +44,11 @@ public class CashierClosureControllerIT {
 	}
 
 	@Test
-	public void testGetTotalCardAndCashCashierClosure() {
+	public void testGetTotalCardAndCashCashierClosure() throws IOException {
+		cashierClosureController.createCashierClosure();
 		assertNotNull(this.cashierClosureController.getTotalCardAndCash());
+		this.databaseSeederService.deleteAllAndCreateAdmin();
+		this.databaseSeederService.seedDatabase("tpv-db-test.yml");
 	}
 
 }

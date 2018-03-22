@@ -45,6 +45,11 @@ public class CashierClosure {
         this();
         this.initialCash = initialCash;
     }
+    
+    public CashierClosure(Date openingDate) {
+        this();
+        this.openingDate = openingDate;
+    }
 
     public void deposit(BigDecimal cash, String comment) {
         this.deposit = this.deposit.add(cash);

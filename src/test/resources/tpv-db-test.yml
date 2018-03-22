@@ -274,7 +274,3 @@ cashMovementList:
     comment: "test C"
   - value: 50.6
     comment: "test D" 
-    
-# CashierClosure
-cashierClosureList:
-  - openingDate: 2017-12-06 18:00:23 
