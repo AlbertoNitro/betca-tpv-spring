@@ -21,6 +21,7 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import es.upm.miw.dtos.VoucherDto;
+import es.upm.miw.services.DatabaseSeederService;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
@@ -35,6 +36,9 @@ public class VoucherResourceFunctionalTesting {
 	
 	private VoucherDto voucherDto;
 	
+	@Autowired
+    private DatabaseSeederService databaseSeederService;
+	
 	@Before
 	public void before() {
 		this.voucherDto = new VoucherDto( new BigDecimal( 65 ) );
@@ -45,9 +49,8 @@ public class VoucherResourceFunctionalTesting {
 	
 	@After
 	public void delete() {
-		this.restService.loginAdmin().restBuilder().path(VoucherResource.VOUCHERS).path(VoucherResource.REFERENCE).expand( this.voucherDto.getReference() ).delete().build();
-    }
-	
+		databaseSeederService.seedDatabase();
+	}
 	
 	@Test
     public void testReadVoucher() {

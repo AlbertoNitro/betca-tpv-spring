@@ -50,7 +50,9 @@ public class VoucherController {
 	public BigDecimal consumeVoucher( String reference ) {
 		Voucher voucher = this.voucherRepository.findByReference( reference );
 		assert voucher != null;
-		voucher.setDateOfUse( new Date() );
+		if ( !voucher.isUsed() ) {
+			voucher.setDateOfUse( new Date() );
+		}
 		this.voucherRepository.save( voucher );
 		return voucher.getValue();
 	}
