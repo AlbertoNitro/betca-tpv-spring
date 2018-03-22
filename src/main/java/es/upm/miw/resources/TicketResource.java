@@ -22,9 +22,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import es.upm.miw.controllers.TicketController;
-import es.upm.miw.documents.core.Ticket;
 import es.upm.miw.dtos.HistoricalProductOutPutDto;
 import es.upm.miw.dtos.TicketCreationInputDto;
+import es.upm.miw.dtos.TicketDto;
 import es.upm.miw.dtos.TicketSearchOutputDto;
 import es.upm.miw.dtos.TicketUpdationInputDto;
 import es.upm.miw.resources.exceptions.FieldInvalidException;
@@ -81,17 +81,17 @@ public class TicketResource {
     }
 
     @RequestMapping(value = SEARCH_BY_CREATION_DATES, method = RequestMethod.GET)
-    public List<Ticket> findTicketsBetweenCreationDates(
+    public List<TicketDto> findTicketsBetweenCreationDates(
             @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") @RequestParam("initialDate") Date initialDate,
             @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") @RequestParam("finalDate") Date finalDate) {
         return this.ticketController.getTicketsBetweenCreationDates(initialDate, finalDate);
     }
 
     @RequestMapping(value = SEARCH_BY_ID_AND_DATES, method = RequestMethod.GET)
-    public List<TicketSearchOutputDto> findTicketByIdAndBetweenDates(@RequestParam("id") String id,
+    public List<TicketSearchOutputDto> findIdArticleDatesBetween(@RequestParam("id") String id,
             @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) @RequestParam("dateStart") Date dateStart,
             @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) @RequestParam(value = "dateFinish") Date dateFinish) {
-        return this.ticketController.getTicketAll(id, dateStart, dateFinish);
+        return this.ticketController.findByIdArticleDatesBetween(id, dateStart, dateFinish);
     }
 
     @RequestMapping(value = "historicalProducts", method = RequestMethod.GET)

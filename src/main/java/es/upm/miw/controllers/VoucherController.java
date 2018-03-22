@@ -12,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import es.upm.miw.documents.core.Voucher;
 import es.upm.miw.dtos.VoucherDto;
 import es.upm.miw.repositories.core.VoucherRepository;
+import es.upm.miw.services.PdfService;
 
 @Controller
 public class VoucherController {
@@ -19,9 +20,13 @@ public class VoucherController {
 	@Autowired
     private VoucherRepository voucherRepository;
 	
-	public void createVoucher( BigDecimal value ) {
+	@Autowired
+    private PdfService pdfService;
+	
+	public Optional<byte[]> createVoucher( BigDecimal value ) {
 		Voucher voucher = new Voucher( value );
 		this.voucherRepository.save( voucher );
+		return pdfService.generateVoucher( voucher );
 	}
 	
 	public Optional<VoucherDto> readVoucher(String reference) {
@@ -50,20 +55,12 @@ public class VoucherController {
 	public BigDecimal consumeVoucher( String reference ) {
 		Voucher voucher = this.voucherRepository.findByReference( reference );
 		assert voucher != null;
-		voucher.setDateOfUse( new Date() );
+		if ( !voucher.isUsed() ) {
+			voucher.setDateOfUse( new Date() );
+		}
 		this.voucherRepository.save( voucher );
 		return voucher.getValue();
 	}
-	
-	public boolean deleteVoucher(String reference) {
-        Voucher voucherBd = this.voucherRepository.findByReference(reference);
-        if (voucherBd != null) {
-            this.voucherRepository.delete( voucherBd );
-            return true;
-        } else {
-            return false;
-        }
-    }
 	
 	public boolean existsVoucher( String reference ) {
 		return this.voucherRepository.findByReference(reference) != null;
