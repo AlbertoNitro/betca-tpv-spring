@@ -53,9 +53,9 @@ public class TicketRepositoryIT {
     }
     
     @Test
-    public void testFindByIdAndDateBetween() throws ParseException {
+    public void testFindByIdArticleDateBetween() throws ParseException {
     	Date startDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse("2018-01-01 00:00:00");
-    	List<Ticket> ticketListByIdAndRangeDates = ticketRepository.findByIdAndDatesBetween("article1", startDate, new Date());
+    	List<Ticket> ticketListByIdAndRangeDates = ticketRepository.findByIdArticleDatesBetween("article1", startDate, new Date());
     	assertNotNull(ticketListByIdAndRangeDates);
     	assertTrue(ticketListByIdAndRangeDates.size() >= 0);
     }
