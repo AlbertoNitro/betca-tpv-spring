@@ -18,6 +18,7 @@ import es.upm.miw.documents.core.Shopping;
 import es.upm.miw.documents.core.Tax;
 import es.upm.miw.documents.core.Ticket;
 import es.upm.miw.documents.core.User;
+import es.upm.miw.documents.core.Voucher;
 import es.upm.miw.utils.Barcode;
 
 @RunWith(SpringRunner.class)
@@ -65,6 +66,12 @@ public class PdfServiceIT {
         shoppingList[5] = new Shopping(3, new BigDecimal("50"), article);
         Budget budget = new Budget(shoppingList);
         pdfService.generateBudget(budget);
+    }
+    
+    @Test
+    public void testGenerateVoucher() {
+        Voucher voucher = new Voucher( new BigDecimal( 55 ) );
+        pdfService.generateVoucher(voucher);
     }
     
     @Test
