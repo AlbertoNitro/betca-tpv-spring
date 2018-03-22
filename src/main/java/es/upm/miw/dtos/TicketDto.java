@@ -1,20 +1,14 @@
-package es.upm.miw.documents.core;
+package es.upm.miw.dtos;
 
 import java.math.BigDecimal;
-import java.text.SimpleDateFormat;
-import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import es.upm.miw.utils.Encrypting;
-
 @Document
-public class Ticket {
-
-    private static final String DATE_FORMAT = "yyyyMMdd-";
+public class TicketDto {
 
     @Id
     private String id;
@@ -23,24 +17,21 @@ public class Ticket {
 
     private String reference;
 
-    private Shopping[] shoppingList;
-
     private BigDecimal cashDeposited;
 
-    @DBRef
-    private User user;
+    private List<ShoppingOutputDto> shoppingList;
 
-    public Ticket() {
-        this.creationDate = new Date();
-        this.reference = new Encrypting().encryptInBase64UrlSafe();
+    public TicketDto() {
+        // Empty for framework
     }
 
-    public Ticket(int idOfday, BigDecimal cashDeposited, Shopping[] shoppingList, User user) {
-        this();
-        this.id = new SimpleDateFormat(DATE_FORMAT).format(new Date()) + idOfday;
+    public TicketDto(String id, Date creationDate, String reference, BigDecimal cashDeposited, List<ShoppingOutputDto> shoppingList) {
+        super();
+        this.id = id;
+        this.creationDate = creationDate;
+        this.reference = reference;
         this.cashDeposited = cashDeposited;
         this.shoppingList = shoppingList;
-        this.user = user;
     }
 
     public String getId() {
@@ -51,28 +42,12 @@ public class Ticket {
         this.id = id;
     }
 
-    public int simpleId() {
-        return Integer.parseInt(String.valueOf(id).substring(DATE_FORMAT.length()));
-    }
-
     public Date getCreationDate() {
         return creationDate;
     }
 
-    public Shopping[] getShoppingList() {
-        return shoppingList;
-    }
-
-    public void setShoppingList(Shopping[] shoppingList) {
-        this.shoppingList = shoppingList;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
+    public void setCreationDate(Date creationDate) {
+        this.creationDate = creationDate;
     }
 
     public String getReference() {
@@ -86,17 +61,17 @@ public class Ticket {
     public BigDecimal getCashDeposited() {
         return cashDeposited;
     }
-    
+
     public void setCashDeposited(BigDecimal cashDeposited) {
         this.cashDeposited = cashDeposited;
     }
 
-    public BigDecimal getTicketTotal() {
-        BigDecimal total = new BigDecimal(0);
-        for (Shopping shopping : shoppingList) {
-            total = total.add(shopping.getShoppingTotal());
-        }
-        return total;
+    public List<ShoppingOutputDto> getShoppingList() {
+        return shoppingList;
+    }
+
+    public void setShoppingList(List<ShoppingOutputDto> shoppingList) {
+        this.shoppingList = shoppingList;
     }
 
     @Override
@@ -107,8 +82,7 @@ public class Ticket {
         result = (prime * result) + ((creationDate == null) ? 0 : creationDate.hashCode());
         result = (prime * result) + ((id == null) ? 0 : id.hashCode());
         result = (prime * result) + ((reference == null) ? 0 : reference.hashCode());
-        result = (prime * result) + Arrays.hashCode(shoppingList);
-        result = (prime * result) + ((user == null) ? 0 : user.hashCode());
+        result = (prime * result) + ((shoppingList == null) ? 0 : shoppingList.hashCode());
         return result;
     }
 
@@ -123,7 +97,7 @@ public class Ticket {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        Ticket other = (Ticket) obj;
+        TicketDto other = (TicketDto) obj;
         if (cashDeposited == null) {
             if (other.cashDeposited != null) {
                 return false;
@@ -152,14 +126,11 @@ public class Ticket {
         } else if (!reference.equals(other.reference)) {
             return false;
         }
-        if (!Arrays.equals(shoppingList, other.shoppingList)) {
-            return false;
-        }
-        if (user == null) {
-            if (other.user != null) {
+        if (shoppingList == null) {
+            if (other.shoppingList != null) {
                 return false;
             }
-        } else if (!user.equals(other.user)) {
+        } else if (!shoppingList.equals(other.shoppingList)) {
             return false;
         }
         return true;
@@ -167,15 +138,8 @@ public class Ticket {
 
     @Override
     public String toString() {
-        String createTime = new SimpleDateFormat("dd-MMM-yyyy HH:mm").format(this.creationDate.getTime());
-        StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append("Ticket[" + id + ": created=" + createTime + ", reference=" + reference + ", shoppingList="
-                + Arrays.toString(shoppingList) + ", cashDeposited=" + cashDeposited);
-        if (user != null) {
-            stringBuilder.append(", userId=" + user.getMobile());
-        }
-        stringBuilder.append("]");
-        return stringBuilder.toString();
+        return "TicketDto [id=" + id + ", creationDate=" + creationDate + ", reference=" + reference + ", cashDeposited=" + cashDeposited
+                + ", shoppingList=" + shoppingList + "]";
     }
 
 }
