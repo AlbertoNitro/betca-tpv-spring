@@ -50,7 +50,6 @@ public class VoucherResource {
 
 	@RequestMapping(value = REFERENCE, method = RequestMethod.GET)
 	public VoucherDto readVoucher(@PathVariable String reference) throws VoucherReferenceNotFoundException {
-
 		return this.voucherController.readVoucher(reference).orElseThrow(() -> new VoucherReferenceNotFoundException());
 	}
 
