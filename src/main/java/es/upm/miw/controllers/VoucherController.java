@@ -50,20 +50,12 @@ public class VoucherController {
 	public BigDecimal consumeVoucher( String reference ) {
 		Voucher voucher = this.voucherRepository.findByReference( reference );
 		assert voucher != null;
-		voucher.setDateOfUse( new Date() );
+		if ( !voucher.isUsed() ) {
+			voucher.setDateOfUse( new Date() );
+		}
 		this.voucherRepository.save( voucher );
 		return voucher.getValue();
 	}
-	
-	public boolean deleteVoucher(String reference) {
-        Voucher voucherBd = this.voucherRepository.findByReference(reference);
-        if (voucherBd != null) {
-            this.voucherRepository.delete( voucherBd );
-            return true;
-        } else {
-            return false;
-        }
-    }
 	
 	public boolean existsVoucher( String reference ) {
 		return this.voucherRepository.findByReference(reference) != null;
