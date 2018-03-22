@@ -94,7 +94,6 @@ public class VoucherResourceFunctionalTesting {
                 .build();
     	
     	assertEquals( true, voucherDto.isUsed() );
-    	
     }
     
     
