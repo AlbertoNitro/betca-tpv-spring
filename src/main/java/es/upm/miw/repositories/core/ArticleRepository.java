@@ -16,7 +16,16 @@ public interface ArticleRepository extends MongoRepository<Article, String> {
 
 	Article findArticleByDescription(String string);
 
-    @Query(value =  "{$or:[{'reference': {'$regex': ?0}},{'description': {'$regex': ?1}}]}", fields = "{'reference' : 1, 'description' : 1, 'retailPrice' : 1, 'stock' : 1}")
-    List<ArticleOutputDto> findByCoderOrDescriptionLike(String reference,String description);
+    @Query(value =  "{$and:[{'reference': {'$regex': ?0}},{'description': {'$regex': ?1}}]}", fields = "{'reference' : 1, 'description' : 1, 'retailPrice' : 1, 'stock' : 1}")
+    List<ArticleOutputDto> findByReferenceAndDescriptionLike(String reference,String description);
+	
+    @Query(value =  "{$and:[{'reference': {'$regex': ?0}},{'description': {'$regex': ?1}},{'provider': ?2}]}", fields = "{'reference' : 1, 'description' : 1, 'retailPrice' : 1, 'stock' : 1}")
+    List<ArticleOutputDto> findByReferenceDescriptionProvider(String reference,String description,String provider);
+
+    @Query(value =  "{$and:[{'description': {'$regex': ?0}}]}", fields = "{'reference' : 1, 'description' : 1, 'retailPrice' : 1, 'stock' : 1}")
+    List<ArticleOutputDto> findByDescriptionLike(String description);
+	
+    @Query(value =  "{$and:[{'description': {'$regex': ?0}},{'provider': ?1}]}", fields = "{'reference' : 1, 'description' : 1, 'retailPrice' : 1, 'stock' : 1}")
+    List<ArticleOutputDto> findByDescriptionProvider(String description,String provider);
 	 
 }
