@@ -16,7 +16,9 @@ import es.upm.miw.documents.core.ShoppingState;
 import es.upm.miw.documents.core.Ticket;
 import es.upm.miw.documents.core.User;
 import es.upm.miw.dtos.ShoppingDto;
+import es.upm.miw.dtos.ShoppingOutputDto;
 import es.upm.miw.dtos.TicketCreationInputDto;
+import es.upm.miw.dtos.TicketDto;
 import es.upm.miw.dtos.TicketSearchOutputDto;
 import es.upm.miw.dtos.TicketUpdationInputDto;
 import es.upm.miw.repositories.core.ArticleRepository;
@@ -108,10 +110,20 @@ public class TicketController {
         }
         return ticketListDto;
     }
-    
-    public List<Ticket> getTicketsBetweenCreationDates(Date initialDate, Date finalDate) {
-        return this.ticketRepository.findByCreationDateBetween(initialDate, finalDate);
+
+    public List<TicketDto> getTicketsBetweenCreationDates(Date initialDate, Date finalDate) {
+        List<Ticket> ticketList = this.ticketRepository.findByCreationDateBetween(initialDate, finalDate);
+        List<TicketDto> ticketListDto = new ArrayList<TicketDto>();
+        for (Ticket ticket : ticketList) {
+            List<ShoppingOutputDto> shoppingListOutputDto = new ArrayList<ShoppingOutputDto>();
+            ticketListDto.add(new TicketDto(ticket.getId(), ticket.getCreationDate(), ticket.getReference(), ticket.getCashDeposited(),
+                    shoppingListOutputDto));
+            for (Shopping shopping : ticket.getShoppingList()) {
+                shoppingListOutputDto.add(new ShoppingOutputDto(shopping.getDescription(), shopping.getRetailPrice(), shopping.getAmount(),
+                        shopping.getDiscount(), shopping.getShoppingState()));
+            }
+        }
+        return ticketListDto;
     }
-    
-    
+
 }
