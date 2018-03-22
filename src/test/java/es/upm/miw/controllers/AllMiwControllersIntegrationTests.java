@@ -13,7 +13,8 @@ import org.junit.runners.Suite.SuiteClasses;
     ProviderControllerIT.class,
     TicketControllerIT.class,
     UserControllerIT.class,
-    VoucherControllerIT.class
+    VoucherControllerIT.class,
+    OrderControllerIT.class
 })
 public class AllMiwControllersIntegrationTests {
 

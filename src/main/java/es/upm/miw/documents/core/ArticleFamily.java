@@ -1,48 +1,29 @@
 package es.upm.miw.documents.core;
 
+import java.util.List;
+
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document
 public class ArticleFamily {
     @Id
-    private String code;
-
-    private String idhijo;
-
-    private String idpadre;
+    private String id;
 
     private String reference;
 
-    public ArticleFamily() {
-        super();
-    }
+    @DBRef
+    private List<Article> articles;
 
-    public ArticleFamily(String idhijo, String idpadre, String reference) {
+    public ArticleFamily(String reference, List<Article> articles) {
         super();
-        this.idhijo = idhijo;
-        this.idpadre = idpadre;
         this.reference = reference;
+        this.articles = articles;
     }
 
-    public String getCode() {
-        return code;
-    }
-
-    public String getIdhijo() {
-        return idhijo;
-    }
-
-    public void setIdhijo(String idhijo) {
-        this.idhijo = idhijo;
-    }
-
-    public String getIdpadre() {
-        return idpadre;
-    }
-
-    public void setIdpadre(String idpadre) {
-        this.idpadre = idpadre;
+    public String getId() {
+        return id;
     }
 
     public String getReference() {
@@ -53,23 +34,29 @@ public class ArticleFamily {
         this.reference = reference;
     }
 
-    @Override
-    public int hashCode() {
-        return this.code.hashCode();
+    public List<Article> getArticles() {
+        return articles;
     }
+
+    public void setArticles(List<Article> articles) {
+        this.articles = articles;
+    }
+
+    /***
+     * La clase debería implementar los métodos: hashCode y equals
+     */
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
+
         if (obj == null) {
             return false;
-        }
-        if (getClass() != obj.getClass()) {
+        } else if (getClass() != obj.getClass()) {
             return false;
+        } else {
+            ArticleFamily other = (ArticleFamily) obj;
+            return reference.equals(other.reference);
         }
-        return (code.equals(((ArticleFamily) obj).code));
     }
 
     public ArticleFamily build() {
@@ -78,9 +65,7 @@ public class ArticleFamily {
 
     @Override
     public String toString() {
-        return String.format("ArticleFamily [idhijo=%s, idpadre=%s, reference=%s]", idhijo, idpadre, reference);
+        return "ArticleFamily [id=" + id + ", reference=" + reference + "]";
     }
-    
-   
 
 }

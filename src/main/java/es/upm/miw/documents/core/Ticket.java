@@ -86,6 +86,10 @@ public class Ticket {
     public BigDecimal getCashDeposited() {
         return cashDeposited;
     }
+    
+    public void setCashDeposited(BigDecimal cashDeposited) {
+        this.cashDeposited = cashDeposited;
+    }
 
     public BigDecimal getTicketTotal() {
         BigDecimal total = new BigDecimal(0);
