@@ -16,6 +16,7 @@ import es.upm.miw.documents.core.Shopping;
 import es.upm.miw.documents.core.ShoppingState;
 import es.upm.miw.documents.core.Tax;
 import es.upm.miw.documents.core.Ticket;
+import es.upm.miw.documents.core.Voucher;
 
 @Service
 public class PdfService {
@@ -132,6 +133,13 @@ public class PdfService {
         pdf.line().paragraph("Este presupuesto es válido durante 15 días. A partir de esa fecha los precios pueden variar.");
 
         return pdf.build();
+    }
+    
+    public Optional<byte[]> generateVoucher( Voucher voucher ){
+    	final String path = "/vouchers/voucher-" + voucher.getReference();
+    	PdfTicketBuilder pdf = this.addCompanyDetails(path, 1);
+    	
+    	return pdf.build();
     }
 
     private PdfTicketBuilder addCompanyDetails(String path, int lines) {
