@@ -137,7 +137,18 @@ public class PdfService {
     
     public Optional<byte[]> generateVoucher( Voucher voucher ){
     	final String path = "/vouchers/voucher-" + voucher.getReference();
-    	PdfTicketBuilder pdf = this.addCompanyDetails(path, 1);
+    	PdfTicketBuilder pdf = this.addCompanyDetails(path, 2);
+    	
+    	pdf.line().paragraphEmphasized("VOUCHER");
+    	pdf.barCode(voucher.getReference()).line();
+    	
+    	pdf.paragraphEmphasized("Valor: " + voucher.getValue()).line();
+    	
+    	SimpleDateFormat formatter = new SimpleDateFormat(DATE_FORMAT);
+        pdf.paragraphEmphasized(formatter.format(voucher.getCreationDate()));
+        
+        pdf.line().paragraph("Periodo de validez: ilimitado.");
+        pdf.paragraphEmphasized("Gracias por usar nuestros servicios.");
     	
     	return pdf.build();
     }

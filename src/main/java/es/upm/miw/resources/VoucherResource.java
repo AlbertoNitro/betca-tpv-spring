@@ -46,13 +46,6 @@ public class VoucherResource {
         } else {
             return pdf.get();
         }
-		
-		
-		/*if (voucherDto.getValue() == null) {
-			voucherDto.setValue(new BigDecimal(11));
-		}*/
-		
-		
 	}
 
 	@RequestMapping(value = REFERENCE, method = RequestMethod.GET)
