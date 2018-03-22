@@ -83,5 +83,6 @@ public class ArticleController {
     		article.setRetailPrice(articleDto.getRetailPrice());
     		article.setStock(articleDto.getStock());
     		this.articleRepository.save(article);
-    }
+	}
+	
 }
