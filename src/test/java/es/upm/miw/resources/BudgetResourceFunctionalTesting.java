@@ -15,7 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import es.upm.miw.dtos.BudgetCreationInputDto;
+import es.upm.miw.dtos.BudgetDto;
 import es.upm.miw.dtos.ShoppingDto;
 
 @RunWith(SpringRunner.class)
@@ -34,7 +34,7 @@ public class BudgetResourceFunctionalTesting {
         List<ShoppingDto> shoppingList = new ArrayList<ShoppingDto>();
         shoppingList.add(new ShoppingDto("1", "various", new BigDecimal("100"), 1, new BigDecimal("50.00"), new BigDecimal("50"), false));
         shoppingList.add(new ShoppingDto("1", "various", new BigDecimal("50"), 1, new BigDecimal("50"), new BigDecimal("50"), false));
-        BudgetCreationInputDto budgetCreationDto = new BudgetCreationInputDto(shoppingList);
+        BudgetDto budgetCreationDto = new BudgetDto(shoppingList);
         restService.loginAdmin().restBuilder(new RestBuilder<byte[]>()).path(BudgetResource.BUDGETS).body(budgetCreationDto)
                 .clazz(byte[].class).post().build();
     }
@@ -42,7 +42,8 @@ public class BudgetResourceFunctionalTesting {
     @Test
     public void testCreateBudgetShoppingNullException() {
         thrown.expect(new HttpMatcher(HttpStatus.BAD_REQUEST));
-        BudgetCreationInputDto budgetCreationDto = new BudgetCreationInputDto(null);
+        BudgetDto budgetCreationDto = new BudgetDto();
+        budgetCreationDto.setShoppingCart(null);
         restService.loginAdmin().restBuilder(new RestBuilder<byte[]>()).path(BudgetResource.BUDGETS).body(budgetCreationDto)
                 .clazz(byte[].class).post().build();
     }
@@ -50,7 +51,7 @@ public class BudgetResourceFunctionalTesting {
     @Test
     public void testCreateBudgetShoppingEmptyException() {
         thrown.expect(new HttpMatcher(HttpStatus.BAD_REQUEST));
-        BudgetCreationInputDto budgetCreationDto = new BudgetCreationInputDto(new ArrayList<ShoppingDto>());
+        BudgetDto budgetCreationDto = new BudgetDto(new ArrayList<ShoppingDto>());
         restService.loginAdmin().restBuilder(new RestBuilder<byte[]>()).path(BudgetResource.BUDGETS).body(budgetCreationDto)
                 .clazz(byte[].class).post().build();
     }

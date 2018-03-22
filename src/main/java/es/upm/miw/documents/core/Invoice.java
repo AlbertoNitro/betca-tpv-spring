@@ -30,6 +30,11 @@ public class Invoice {
         this.ticket = ticket;
     }
 
+    public Invoice(Ticket ticket) {
+        this();
+        this.ticket = ticket;
+    }
+
     public String getId() {
         return id;
     }
@@ -52,6 +57,10 @@ public class Invoice {
 
     public void setCreated(Date creationDate) {
         this.creationDate = creationDate;
+    }
+
+    public int simpleId() {
+        return Integer.parseInt(String.valueOf(id).substring(DATE_FORMAT.length()));
     }
 
     @Override

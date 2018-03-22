@@ -22,6 +22,17 @@ public class ProviderController {
         this.providerRepository.save(provider);
     }
     
+    public boolean companyRepeated(ProviderDto providerDto) {
+        Provider provider = this.providerRepository.findByCompany(providerDto.getCompany());
+        return provider != null 
+                && provider.getCompany().equals(providerDto.getCompany()) 
+                && !provider.getId().equals(providerDto.getId());
+    }
+    
+    public boolean existsId(String id) {
+        return this.providerRepository.findById(id) != null;
+    }
+    
     public boolean putProvider(String id, ProviderDto providerDto) {
         Provider provider = this.providerRepository.findById(id);
         assert provider != null;

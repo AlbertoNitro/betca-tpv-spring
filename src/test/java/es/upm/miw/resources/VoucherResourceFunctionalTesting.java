@@ -1,5 +1,9 @@
 package es.upm.miw.resources;
 
+
+import org.junit.After;
+import org.junit.Before;
+
 import static org.junit.Assert.assertEquals;
 
 import java.math.BigDecimal;
@@ -17,6 +21,7 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import es.upm.miw.dtos.VoucherDto;
+import es.upm.miw.services.DatabaseSeederService;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
@@ -29,43 +34,68 @@ public class VoucherResourceFunctionalTesting {
 	@Autowired
     private RestService restService;
 	
+	private VoucherDto voucherDto;
+	
+	@Autowired
+    private DatabaseSeederService databaseSeederService;
+	
+	@Before
+	public void before() {
+		this.voucherDto = new VoucherDto( new BigDecimal( 65 ) );
+		this.restService.loginAdmin().restBuilder().path(VoucherResource.VOUCHERS).body(this.voucherDto).post().build();
+		List<VoucherDto> voucherDtoList = readVoucherAll();
+		this.voucherDto = voucherDtoList.get( voucherDtoList.size() - 1 );
+	}
+	
+	@After
+	public void delete() {
+		databaseSeederService.seedDatabase();
+	}
+	
 	@Test
     public void testReadVoucher() {
-		VoucherDto voucherDto = restService.loginAdmin().restBuilder(new RestBuilder<VoucherDto>())
-                .clazz(VoucherDto.class).path(VoucherResource.VOUCHERS).path(VoucherResource.REFERENCE).expand("1").get()
+		VoucherDto voucher1 = restService.loginAdmin().restBuilder(new RestBuilder<VoucherDto>())
+                .clazz(VoucherDto.class).path(VoucherResource.VOUCHERS).path(VoucherResource.REFERENCE).expand( this.voucherDto.getReference() ).get()
                 .build();
     	
-    	assertEquals( new BigDecimal( 11 ), voucherDto.getValue() );
+    	assertEquals( this.voucherDto.getReference(), voucher1.getReference() );
+    	assertEquals( this.voucherDto.getValue(), voucher1.getValue() );
     }
     
     @Test
     public void testReadVoucherAll() {
     	
+    	List<VoucherDto> voucherDtoList = readVoucherAll();
+    	assertEquals( 5, voucherDtoList.size() );
+    	
+    }
+    
+    private List<VoucherDto> readVoucherAll(){
     	List<VoucherDto> voucherDtoList = Arrays.asList(restService.loginAdmin().restBuilder(new RestBuilder<VoucherDto[]>())
                 .clazz(VoucherDto[].class).path(VoucherResource.VOUCHERS).get().build());
     	
-    	assertEquals( 3, voucherDtoList.size() );
-    	
+    	return voucherDtoList;
     }
     
     @Test
     public void testConsumeVoucher() {
     	    	
     	VoucherDto voucherDto = restService.loginAdmin().restBuilder(new RestBuilder<VoucherDto>())
-                .clazz(VoucherDto.class).path(VoucherResource.VOUCHERS).path(VoucherResource.REFERENCE).expand("1").get()
+                .clazz(VoucherDto.class).path(VoucherResource.VOUCHERS).path(VoucherResource.REFERENCE).expand( this.voucherDto.getReference() ).get()
                 .build();
     	
     	assertEquals( false, voucherDto.isUsed() );
     	
-    	restService.loginAdmin().restBuilder().path(VoucherResource.VOUCHERS).path(VoucherResource.REFERENCE).expand("1").patch()
+    	restService.loginAdmin().restBuilder().path(VoucherResource.VOUCHERS).path(VoucherResource.REFERENCE).expand( this.voucherDto.getReference() ).patch()
         .build();
     	
     	voucherDto = restService.loginAdmin().restBuilder(new RestBuilder<VoucherDto>())
-                .clazz(VoucherDto.class).path(VoucherResource.VOUCHERS).path(VoucherResource.REFERENCE).expand("1").get()
+                .clazz(VoucherDto.class).path(VoucherResource.VOUCHERS).path(VoucherResource.REFERENCE).expand( this.voucherDto.getReference() ).get()
                 .build();
     	
     	assertEquals( true, voucherDto.isUsed() );
-    	
     }
+    
+    
 
 }
