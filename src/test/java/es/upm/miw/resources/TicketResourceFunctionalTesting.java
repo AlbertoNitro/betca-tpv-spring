@@ -133,14 +133,14 @@ public class TicketResourceFunctionalTesting {
     }
 
     @Test
-    public void testGetTicketsBetweenDates() throws ParseException {
+    public void testFindIdArticleDatesBetween() throws ParseException {
         Date dateStart = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse("2018-01-01 00:00:00");
         Date dateFinish = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse("2018-12-31 11:59:59");
         List<TicketSearchOutputDto> searchOutputDtos = Arrays.asList(
                 restService.loginAdmin().restBuilder(new RestBuilder<TicketSearchOutputDto[]>()).clazz(TicketSearchOutputDto[].class)
                         .path(TicketResource.TICKETS).path(TicketResource.SEARCH_BY_ID_AND_DATES).param("id", "article1")
                         .param("dateStart", "2018-01-01 00:00:00").param("dateFinish", "2018-12-31 11:59:59").get().build());
-        List<TicketSearchOutputDto> searchOutputDtos_ = ticketController.getTicketAll("article1", dateStart, dateFinish);
+        List<TicketSearchOutputDto> searchOutputDtos_ = ticketController.findByIdArticleDatesBetween("article1", dateStart, dateFinish);
         assertEquals(searchOutputDtos_.size(), searchOutputDtos.size());
     }
 
