@@ -2,6 +2,7 @@ package es.upm.miw.resources;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Optional;
 
 import javax.validation.Valid;
 
@@ -35,15 +36,24 @@ public class VoucherResource {
 	@Autowired
 	private VoucherController voucherController;
 	
-	/*@PostMapping(produces = {"application/pdf", "application/json"})
+	@PostMapping(produces = {"application/pdf", "application/json"})
 	public @ResponseBody byte[] createVoucher(@Valid @RequestBody VoucherDto voucherDto) throws FieldInvalidException {
 		
-		if (voucherDto.getValue() == null) {
-			voucherDto.setValue(new BigDecimal(11));
-		}
+		Optional<byte[]> pdf = this.voucherController.createVoucher(voucherDto.getValue());
 		
-		this.voucherController.createVoucher(voucherDto.getValue());
-	}*/
+		if (!pdf.isPresent()) {
+            throw new FieldInvalidException("Voucher exception");
+        } else {
+            return pdf.get();
+        }
+		
+		
+		/*if (voucherDto.getValue() == null) {
+			voucherDto.setValue(new BigDecimal(11));
+		}*/
+		
+		
+	}
 
 	@RequestMapping(value = REFERENCE, method = RequestMethod.GET)
 	public VoucherDto readVoucher(@PathVariable String reference) throws VoucherReferenceNotFoundException {
