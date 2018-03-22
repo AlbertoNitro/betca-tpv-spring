@@ -77,5 +77,6 @@ public class VoucherResource {
             throw new VoucherReferenceNotFoundException();
         }
     }
+    
 
 }
