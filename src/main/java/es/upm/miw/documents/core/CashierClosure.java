@@ -45,6 +45,11 @@ public class CashierClosure {
         this();
         this.initialCash = initialCash;
     }
+    
+    public CashierClosure(Date openingDate) {
+        this();
+        this.openingDate = openingDate;
+    }
 
     public void deposit(BigDecimal cash, String comment) {
         this.deposit = this.deposit.add(cash);
@@ -115,6 +120,10 @@ public class CashierClosure {
 
     public void setComment(String comment) {
         this.comment = comment;
+    }
+    
+    public void setOpeningDate(Date openingDate) {
+        this.openingDate = openingDate;
     }
 
     @Override
