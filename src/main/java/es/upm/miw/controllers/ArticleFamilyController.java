@@ -1,13 +1,14 @@
 package es.upm.miw.controllers;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
-
 import es.upm.miw.documents.core.Article;
 import es.upm.miw.documents.core.ArticleFamily;
+import es.upm.miw.dtos.ArticleFamiliaOutputDto;
 import es.upm.miw.repositories.core.ArticleFamilyRepository;
 import es.upm.miw.repositories.core.ArticleRepository;
 import es.upm.miw.repositories.core.memory.ArticleComposite;
@@ -41,6 +42,33 @@ public class ArticleFamilyController {
         return troncoArbol;
     }
 
-    
+    public List<ComponentArticle> getListaComponent() {
+        return ((ArticleComposite) getAllComponent()).getListComponentArticle();
+    }
+
+    public ArticleFamiliaOutputDto GetListaCompositeFamily() {
+        ComponentArticle troncoArbol = getAllComponent();
+        ArticleFamiliaOutputDto articleFamiliaOutputDto = new ArticleFamiliaOutputDto();
+
+        for (ComponentArticle component : troncoArbol.getAllComponents()) {
+
+            // ArticleComposite articleComposite= (ArticleComposite)Component;
+            if (component.isComposite()) {
+                ArticleComposite artCom = (ArticleComposite) component;
+                List<Article> lstArticles = new ArrayList<>();
+                for (ComponentArticle artComposite : artCom.getAllComponents()) {
+                    ArticleLeaf articleLeaf = (ArticleLeaf) artComposite;
+                    lstArticles.add(articleLeaf.getArticle());
+                }
+                articleFamiliaOutputDto.getListArticleFamily().add(new ArticleFamily(artCom.getReference(), lstArticles));
+            } else {
+                ArticleLeaf articleLeaf = (ArticleLeaf) component;
+                articleFamiliaOutputDto.getListArticles().add(articleLeaf.getArticle());
+
+            }
+
+        }
+        return articleFamiliaOutputDto;
+    }
 
 }
