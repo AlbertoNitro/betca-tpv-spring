@@ -13,28 +13,20 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import es.upm.miw.documents.core.Voucher;
+import es.upm.miw.documents.core.CashMovement;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @TestPropertySource(locations = "classpath:test.properties")
-public class VoucherRepositoryIT {
+public class CashMovementRepositoryIT {
 
     @Autowired
-    private VoucherRepository voucherRepository;
+    private CashMovementRepository cashMovementRepository;
 
-    @Test
-    public void testFindByDateOfUseGreaterThan() throws ParseException {
-        Date date = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss").parse("2018-01-06 00:00:22");
-        List<Voucher> voucherList = this.voucherRepository.findByDateOfUseGreaterThan(date);
-        assertEquals(30.3, voucherList.get(0).getValue().doubleValue(), 10 - 10);
-    }
-    
     @Test
     public void testFindByCreationDateGreaterThan() throws ParseException {
         Date date = new SimpleDateFormat("yyyy-mm-dd").parse("2018-01-06");
-        List<Voucher> voucherList = voucherRepository.findByCreationDateGreaterThan(date);
-        assertEquals(666.666, voucherList.get(0).getValue().doubleValue(), 10 - 10);
+        List<CashMovement> cashMovementList = cashMovementRepository.findByCreationDateGreaterThan(date);
+		assertEquals(666.666, cashMovementList.get(0).getValue().doubleValue(), 10 - 10);
     }
-
 }
