@@ -25,9 +25,9 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import es.upm.miw.controllers.TicketController;
-import es.upm.miw.documents.core.Ticket;
 import es.upm.miw.dtos.ShoppingDto;
 import es.upm.miw.dtos.TicketCreationInputDto;
+import es.upm.miw.dtos.TicketDto;
 import es.upm.miw.dtos.TicketSearchOutputDto;
 import es.upm.miw.dtos.TicketUpdationInputDto;
 
@@ -149,8 +149,8 @@ public class TicketResourceFunctionalTesting {
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date finalDate = new Date();
         String strFinalDate = dateFormat.format(finalDate);
-        List<Ticket> listTicketsByCreationDates = Arrays.asList(restService.loginAdmin().restBuilder(new RestBuilder<Ticket[]>())
-                .clazz(Ticket[].class).path(TicketResource.TICKETS).path(TicketResource.SEARCH_BY_CREATION_DATES)
+        List<TicketDto> listTicketsByCreationDates = Arrays.asList(restService.loginAdmin().restBuilder(new RestBuilder<TicketDto[]>())
+                .clazz(TicketDto[].class).path(TicketResource.TICKETS).path(TicketResource.SEARCH_BY_CREATION_DATES)
                 .param("initialDate", "2017-01-01 00:00:00").param("finalDate", strFinalDate).get().build());
         assertTrue(listTicketsByCreationDates.size() >= 3);
     }
