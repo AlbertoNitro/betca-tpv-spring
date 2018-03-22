@@ -16,7 +16,6 @@ public class TicketUpdationInputDto {
     }
 
     public TicketUpdationInputDto(List<Integer> listAmounts, List<Boolean> listCommitteds) {
-        super();
         this.listAmounts = listAmounts;
         this.listCommitteds = listCommitteds;
     }
