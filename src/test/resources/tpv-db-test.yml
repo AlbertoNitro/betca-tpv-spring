@@ -78,7 +78,8 @@ voucherList:
   - value: 30.3
     dateOfUse: 2018-01-06 12:00:23  
   - value: 50.6
-    dateOfUse: 2018-01-06 18:00:23  
+    dateOfUse: 2018-01-06 18:00:23 
+     
 # Providers
 providerList:
   - &pr0
@@ -236,6 +237,7 @@ ticketList:
   - &ti1
     id: 20180112-1
     reference: t2j_u9M9CisFmYGRFs1Uulgn7hI
+    cashDeposited: 10.0
     shoppingList:
       - *sh1
       - *sh2
@@ -243,12 +245,14 @@ ticketList:
   - &ti2
     id: 20180112-2
     reference: 6P0ISee_twnGEzf8qd1Bd5sGQqE
+    cashDeposited: 20.0
     shoppingList: 
       - *sh3
     user: *us4
   - &ti3
     id: 20180112-3
     reference: 6P0ISee_twnGEzf8qA1BdAsGQqE
+    cashDeposited: 30.0
     shoppingList: 
       - *sh4
       - *sh5
@@ -260,3 +264,14 @@ invoiceList:
     ticket: *ti1
   - id: 2018-2
     ticket: *ti2
+    
+# CashMovement
+cashMovementList:
+  - value: 666.666
+    comment: "test A"
+  - value: 0.666
+    comment: "test B"
+  - value: 30.3
+    comment: "test C"
+  - value: 50.6
+    comment: "test D" 

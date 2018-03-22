@@ -61,6 +61,12 @@ public class CashierClosureController {
 			return Optional.of("Already opened: " + lastCashierClosure.getId());
 		}
 	}
+	
+	public void createCashierClosure(Date openingDate) {
+		if (openingDate != null) {
+			this.cashierClosureRepository.save(new CashierClosure(openingDate));
+		} 
+	}
 
 	public Optional<String> close(CashierClosureInputDto cashierClosureDto) {
 		CashierClosure lastCashierClosure = this.cashierClosureRepository.findFirstByOrderByOpeningDateDesc();
