@@ -25,10 +25,10 @@ public class ArticleFamilyResourceFunctionalTesting {
 
     @Test
     public void testReadAllArticlesFamily() {
-        List<ArticleOutputDto> articleOutputDtoList = Arrays
-                .asList(restService.loginAdmin().restBuilder(new RestBuilder<ArticleOutputDto[]>()).clazz(ArticleOutputDto[].class)
-                        .path(ArticleFamilyResource.ARTICLESFAMILY).get().build());
-
-        assertEquals(articleOutputDtoList.size(), articleOutputDtoList.size());
+//        List<ArticleOutputDto> articleOutputDtoList = Arrays
+//                .asList(restService.loginAdmin().restBuilder(new RestBuilder<ArticleOutputDto[]>()).clazz(ArticleOutputDto[].class)
+//                        .path(ArticleFamilyResource.ARTICLESFAMILY).get().build());
+//
+//        assertEquals(articleOutputDtoList.size(), articleOutputDtoList.size());
     }
 }
