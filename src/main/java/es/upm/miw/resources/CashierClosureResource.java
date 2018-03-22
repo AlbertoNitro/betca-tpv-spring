@@ -63,10 +63,10 @@ public class CashierClosureResource {
 	}
 
 	@RequestMapping(value = SEARCH, method = RequestMethod.GET)
-	public List<CashierClosureSearchOutputDto> findAllSalesCashierClosure(
+	public List<CashierClosureSearchOutputDto> findSalesByDateBetween(
 			@DateTimeFormat(iso = DateTimeFormat.ISO.DATE) @RequestParam("dateStart") Date dateStart,
 			@DateTimeFormat(iso = DateTimeFormat.ISO.DATE) @RequestParam(value = "dateFinish") Date dateFinish) {
-		return this.cashierClosureController.getAllSalesCashierClosure(dateStart, dateFinish);
+		return this.cashierClosureController.findSalesByDateBetween(dateStart, dateFinish);
 	}
 
 	@RequestMapping(value = TOTALS, method = RequestMethod.GET)

@@ -151,7 +151,7 @@ public class CashierClosureController {
 		return total;
 	}
 
-	public List<CashierClosureSearchOutputDto> getAllSalesCashierClosure(Date startDate, Date dateFinish) {
+	public List<CashierClosureSearchOutputDto> findSalesByDateBetween(Date startDate, Date dateFinish) {
 		List<CashierClosure> salesList = this.cashierClosureRepository.findSalesCashierClosureByDateBetween(startDate,dateFinish);
 		List<CashierClosureSearchOutputDto> salesListDto = new ArrayList<CashierClosureSearchOutputDto>();
 		for (CashierClosure sales : salesList) {

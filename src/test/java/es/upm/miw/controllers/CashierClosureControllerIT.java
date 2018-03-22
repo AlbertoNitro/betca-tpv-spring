@@ -39,8 +39,8 @@ public class CashierClosureControllerIT {
 	}
 
 	@Test
-	public void testGetSalesCashierClosure() {
-		assertNotNull(this.cashierClosureController.getAllSalesCashierClosure(new Date(), new Date()));
+	public void testFindSalesByDateBetween() {
+		assertNotNull(this.cashierClosureController.findSalesByDateBetween(new Date(), new Date()));
 	}
 
 	@Test
