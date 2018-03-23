@@ -1,7 +1,7 @@
 # Providers
 providerList:
   - &pr0
-    id: varios
+    company: varios
     
 # Articles
 articleList:
