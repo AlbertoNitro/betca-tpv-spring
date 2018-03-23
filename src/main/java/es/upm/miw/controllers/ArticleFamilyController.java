@@ -2,6 +2,7 @@ package es.upm.miw.controllers;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -93,4 +94,29 @@ public class ArticleFamilyController {
         familyOutputDto.setListComponent(listComponent);
         return familyOutputDto;
     }
+
+    public Optional<ArticleFamiliaOutputDto> getListArticlesOfFamily(String reference) {
+        ComponentArticle troncoArbol = getAllComponent();
+        ArticleFamiliaOutputDto articleFamiliaOutputDto = new ArticleFamiliaOutputDto();
+        List<ArticleFamily> lstArticleFamily = new ArrayList<ArticleFamily>();
+        List<Article> lstArticlesleaf = new ArrayList<Article>();
+        for (ComponentArticle component : troncoArbol.getAllComponents()) {
+            if (component.isComposite()) {
+                ArticleComposite artCom = (ArticleComposite) component;
+                if (artCom.getReference().equals(reference)) {
+                    List<Article> lstArticles = new ArrayList<Article>();
+                    for (ComponentArticle artComposite : artCom.getAllComponents()) {
+                        ArticleLeaf articleLeaf = (ArticleLeaf) artComposite;
+                        lstArticles.add(articleLeaf.getArticle());
+                    }
+                    lstArticleFamily.add(new ArticleFamily(artCom.getReference(), lstArticles));
+                }
+            }
+        }
+        articleFamiliaOutputDto.setListArticleFamily(lstArticleFamily);
+        articleFamiliaOutputDto.setListArticles(lstArticlesleaf);
+
+        return Optional.of(articleFamiliaOutputDto);
+    }
+
 }
