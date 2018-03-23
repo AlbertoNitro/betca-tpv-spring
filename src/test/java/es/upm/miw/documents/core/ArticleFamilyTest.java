@@ -11,7 +11,7 @@ import org.junit.Test;
 public class ArticleFamilyTest {
 
     @Test
-    public void CratArtileFamily() {
+    public void testCreateArtileFamily() {
 
         List<Article> listArticles = new ArrayList<Article>();
         listArticles.add(new Article("Reference1", "Descripcion1", 123));
