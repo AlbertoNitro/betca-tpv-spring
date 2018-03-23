@@ -1,5 +1,6 @@
 package es.upm.miw.controllers;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -8,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
 import es.upm.miw.documents.core.Article;
+import es.upm.miw.dtos.ArticleInputDto;
 import es.upm.miw.dtos.ArticleOutputDto;
 import es.upm.miw.repositories.core.ArticleRepository;
 
@@ -70,9 +72,39 @@ public class ArticleController {
 		return articleListDto;
 
 	}
-    public List<ArticleOutputDto> readFilterArticle(ArticleOutputDto dto) {
-		List<ArticleOutputDto> articleOutputDto = this.articleRepository.findByCoderOrDescriptionLike(dto.getReference(),dto.getDescription());
-		return articleOutputDto;
+    public List<ArticleOutputDto> readFilterArticle(ArticleInputDto dto) {
+    	List<ArticleOutputDto> articleListDto = new ArrayList<ArticleOutputDto>();
+    	BigDecimal  bg1 = new BigDecimal("0");
+
+    	if(dto.getReference()==null) {
+	    	if(dto.getProvider()=="") {
+	    		articleListDto = this.articleRepository.findByDescriptionLike(dto.getDescription());
+	    		if(dto.getRetailPriceMax().compareTo(bg1)!=0) {
+	        		articleListDto =this.filterRangeRetailPrice(dto,articleListDto);
+	    		}
+	    		if(dto.getDescription()=="") {
+	    			articleListDto.clear();
+	    		}	
+	    	}else {
+	    		articleListDto=this.articleRepository.findByDescriptionProvider(dto.getDescription(),dto.getProvider());
+	    		if(dto.getRetailPriceMax().compareTo(bg1)!=0) {
+	        		articleListDto=this.filterRangeRetailPrice(dto,articleListDto);
+	    		}
+	    	}
+    	}else {
+	    	if(dto.getProvider()=="") {
+	    		articleListDto = this.articleRepository.findByReferenceAndDescriptionLike(dto.getReference(),dto.getDescription());
+	    		if(dto.getRetailPriceMax().compareTo(bg1)!=0) {
+	        		articleListDto =this.filterRangeRetailPrice(dto,articleListDto);
+	    		}
+	    	}else {
+	    		articleListDto=this.articleRepository.findByReferenceDescriptionProvider(dto.getReference(),dto.getDescription(),dto.getProvider());
+	    		if(dto.getRetailPriceMax().compareTo(bg1)!=0) {
+	        		articleListDto=this.filterRangeRetailPrice(dto,articleListDto);
+	    		}
+	    	}
+    	}
+    	return articleListDto;
 	}
     
     public void putArticle(String code, ArticleOutputDto articleDto) {
@@ -83,5 +115,17 @@ public class ArticleController {
     		article.setRetailPrice(articleDto.getRetailPrice());
     		article.setStock(articleDto.getStock());
     		this.articleRepository.save(article);
+	}
+    
+    private List<ArticleOutputDto> filterRangeRetailPrice(ArticleInputDto articleInputDto,List<ArticleOutputDto> articleList) {
+    	List<ArticleOutputDto> articleListDto = new ArrayList<ArticleOutputDto>();
+		for (ArticleOutputDto article : articleList) {
+			if(article.getRetailPrice().compareTo(articleInputDto.getRetailPriceMin())==1 && article.getRetailPrice().compareTo(articleInputDto.getRetailPriceMax())==-1 ) {
+				articleListDto.add(new ArticleOutputDto(article.getCode(), article.getReference(),
+						article.getDescription(), article.getRetailPrice(), article.getStock()));
+			}
+		}
+		return articleListDto;
     }
+	
 }

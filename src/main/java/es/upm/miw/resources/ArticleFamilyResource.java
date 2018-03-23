@@ -1,7 +1,5 @@
 package es.upm.miw.resources;
 
-import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,9 +8,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import es.upm.miw.controllers.ArticleController;
 import es.upm.miw.controllers.ArticleFamilyController;
 import es.upm.miw.dtos.ArticleFamiliaOutputDto;
 import es.upm.miw.dtos.ArticleOutputDto;
+import es.upm.miw.dtos.FamilyOutputDto;
 
 @PreAuthorize("hasRole('ADMIN') or hasRole('MANAGER') or hasRole('OPERATOR')")
 @RestController
@@ -20,28 +20,28 @@ import es.upm.miw.dtos.ArticleOutputDto;
 public class ArticleFamilyResource {
     public static final String ARTICLESFAMILY = "/articlesfamily";
 
-    public static final String CODE_ID = "/{code}";
+    public static final String FAMILY = "/family";
 
-    List<ArticleOutputDto> listart = new ArrayList<ArticleOutputDto>();
+    public static final String ARTICLES = "/articles";
 
     @Autowired
     ArticleFamilyController articleFamilyController;
 
-    // @RequestMapping(method = RequestMethod.GET)
-    // public List<ArticleOutputDto> readAllArticles() {
-    // return creaAticles();
-    // }
+    @Autowired
+    ArticleController articleController;
 
     @RequestMapping(method = RequestMethod.GET)
-    public ArticleFamiliaOutputDto readAllArticles() {
-        return this.articleFamilyController.GetListaCompositeFamily();
+    public ArticleFamiliaOutputDto readAllArticleFamily() {
+        return this.articleFamilyController.getListaCompositeFamily();
     }
 
-    public List<ArticleOutputDto> creaAticles() {
-        BigDecimal unCentavo = new java.math.BigDecimal("0.01");
-        for (int i = 0; i < 10; i++) {
-            listart.add(new ArticleOutputDto("1", "1", "1", unCentavo, 1));
-        }
-        return listart;
+    @RequestMapping(value = FAMILY, method = RequestMethod.GET)
+    public FamilyOutputDto readAllComponentFamily() {
+        return this.articleFamilyController.getAllComponentFamily();
+    }
+
+    @RequestMapping(value = ARTICLES, method = RequestMethod.GET)
+    public List<ArticleOutputDto> readAllArticles() {
+        return this.articleController.readAll();
     }
 }

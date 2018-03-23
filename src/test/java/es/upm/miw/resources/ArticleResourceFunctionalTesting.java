@@ -19,6 +19,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import es.upm.miw.controllers.ArticleController;
 import es.upm.miw.documents.core.Article;
+import es.upm.miw.dtos.ArticleInputDto;
 import es.upm.miw.dtos.ArticleOutputDto;
 import es.upm.miw.repositories.core.ArticleRepository;
 
@@ -129,17 +130,23 @@ public class ArticleResourceFunctionalTesting {
 		
 		//agregar articulo
 		ArticleOutputDto articulo = new ArticleOutputDto();
-		articulo.setCode("zea");
+		articulo.setCode("Test");
+		articulo.setReference("zea");
 		articulo.setDescription("zea");
-		Number retailPrice = 2;
+		Number retailPrice = 20;
 		articulo.setRetailPrice(new BigDecimal(retailPrice.toString()));
 		restService.loginAdmin().restBuilder().path(ArticleResource.ARTICLES).body(articulo).post().build();
 		
 		//buscar articulo
-		ArticleOutputDto articuloFilter = new ArticleOutputDto();
+		ArticleInputDto articuloFilter = new ArticleInputDto();
 		articuloFilter.setReference("zea");
 		articuloFilter.setDescription("zea");
-
+		articuloFilter.setProvider("");
+		Number retailPriceMin = 10;
+		articuloFilter.setRetailPriceMin(new BigDecimal(retailPriceMin.toString()));
+		Number retailPriceMax =30;
+		articuloFilter.setRetailPriceMax(new BigDecimal(retailPriceMax.toString()));
+		
         List<ArticleOutputDto> articleOutputDto = Arrays.asList(restService.loginAdmin().restBuilder(new RestBuilder<ArticleOutputDto[]>())
                 .clazz(ArticleOutputDto[].class).path(ArticleResource.ARTICLES).path(ArticleResource.FILTER).body(articuloFilter).post()
                 .build());

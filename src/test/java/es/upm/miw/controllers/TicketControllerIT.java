@@ -96,8 +96,8 @@ public class TicketControllerIT {
     
     
     @Test
-    public void testGetTicketsByIdAndDatesBetween() {
-    	assertNotNull(this.ticketController.getTicketAll("article1", new Date(), new Date()));
+    public void testFindByIdArticleDateBetween() {
+    	assertNotNull(this.ticketController.findByIdArticleDatesBetween("article1", new Date(), new Date()));
     }
     
     @Test

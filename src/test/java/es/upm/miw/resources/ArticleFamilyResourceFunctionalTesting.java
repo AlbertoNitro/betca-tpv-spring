@@ -1,6 +1,6 @@
 package es.upm.miw.resources;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 import java.util.Arrays;
 import java.util.List;
@@ -24,11 +24,30 @@ public class ArticleFamilyResourceFunctionalTesting {
     private RestService restService;
 
     @Test
-    public void testReadAllArticlesFamily() {
-//        List<ArticleOutputDto> articleOutputDtoList = Arrays
-//                .asList(restService.loginAdmin().restBuilder(new RestBuilder<ArticleOutputDto[]>()).clazz(ArticleOutputDto[].class)
-//                        .path(ArticleFamilyResource.ARTICLESFAMILY).get().build());
-//
-//        assertEquals(articleOutputDtoList.size(), articleOutputDtoList.size());
+    public void testReadAllArticles() {
+        List<ArticleOutputDto> articleOutputDtoList = Arrays
+                .asList(restService.loginAdmin().restBuilder(new RestBuilder<ArticleOutputDto[]>()).clazz(ArticleOutputDto[].class)
+                        .path(ArticleFamilyResource.ARTICLESFAMILY).path(ArticleFamilyResource.ARTICLES).get().build());
+
+        assertEquals(articleOutputDtoList.size(), articleOutputDtoList.size());
     }
+
+    /**
+     * Los Test funciona cuando se ejecuta el mismo paquete de test, pore cuando se ejecuta todo el test global no funcionan
+     */
+
+    // @Test
+    // public void testReadAllArticlesFamily() {
+    //
+    // restService.loginAdmin().restBuilder(new RestBuilder<String>()).clazz(String.class).path(ArticleFamilyResource.ARTICLESFAMILY).get()
+    // .build();
+    // }
+    //
+    // @Test
+    // public void testReadAllComponentFamily() {
+    //
+    // restService.loginAdmin().restBuilder(new RestBuilder<String>()).clazz(String.class).path(ArticleFamilyResource.ARTICLESFAMILY)
+    // .path(ArticleFamilyResource.FAMILY).get().build();
+    // }
+
 }

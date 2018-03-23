@@ -20,13 +20,13 @@ public class Provider {
     private String phone;
 
     private String note;
-    
+
     private Boolean active;
 
     public Provider() {
-        // Empty for framework
+        this.active = true;
     }
-    
+
     public Provider(String id, String company, String address, String mobile, String phone, String note, Boolean active) {
         super();
         this.id = id;
@@ -37,7 +37,7 @@ public class Provider {
         this.note = note;
         this.active = active;
     }
-    
+
     public Provider(String company, String address, String mobile, String phone, String note, Boolean active) {
         super();
         this.company = company;
@@ -95,7 +95,7 @@ public class Provider {
     public void setId(String id) {
         this.id = id;
     }
-    
+
     public Boolean isActive() {
         return active;
     }
