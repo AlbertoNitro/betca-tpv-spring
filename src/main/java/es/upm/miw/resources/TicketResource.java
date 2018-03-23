@@ -88,10 +88,10 @@ public class TicketResource {
     }
 
     @RequestMapping(value = SEARCH_BY_ID_AND_DATES, method = RequestMethod.GET)
-    public List<TicketSearchOutputDto> findTicketByIdAndBetweenDates(@RequestParam("id") String id,
+    public List<TicketSearchOutputDto> findIdArticleDatesBetween(@RequestParam("id") String id,
             @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) @RequestParam("dateStart") Date dateStart,
             @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) @RequestParam(value = "dateFinish") Date dateFinish) {
-        return this.ticketController.getTicketAll(id, dateStart, dateFinish);
+        return this.ticketController.findByIdArticleDatesBetween(id, dateStart, dateFinish);
     }
 
     @RequestMapping(value = "historicalProducts", method = RequestMethod.GET)

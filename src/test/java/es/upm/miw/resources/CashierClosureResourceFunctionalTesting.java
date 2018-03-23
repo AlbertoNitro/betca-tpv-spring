@@ -83,16 +83,16 @@ public class CashierClosureResourceFunctionalTesting {
 	}
 
 	@Test
-	public void tesCashierClosuretDates() throws ParseException {
+	public void testFindSalesByDateBetween() throws ParseException {
 		Date startDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse("2018-01-01 00:00:00");
 		Date dateFinish = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse("2018-12-01 11:59:59");
 		List<CashierClosureSearchOutputDto> searchOutputDtos = Arrays
 				.asList(restService.loginAdmin().restBuilder(new RestBuilder<CashierClosureSearchOutputDto[]>())
 						.clazz(CashierClosureSearchOutputDto[].class).path(CashierClosureResource.CASHIER_CLOSURES)
 						.path(CashierClosureResource.SEARCH).param("dateStart", "2018-01-01 00:00:00")
-						.param("dateFinish", "2018-12-01 99:99:99").get().build());
+						.param("dateFinish", "2018-12-01 23:00:00").get().build());
 		List<CashierClosureSearchOutputDto> searchOutputDtos_ = cashierClosureController
-				.getAllSalesCashierClosure(startDate, dateFinish);
+				.findSalesByDateBetween(startDate, dateFinish);
 		assertEquals(searchOutputDtos_.size(), searchOutputDtos.size());
 	}
 

@@ -100,8 +100,8 @@ public class TicketController {
         return this.pdfService.generateTicket(ticket);
     }
 
-    public List<TicketSearchOutputDto> getTicketAll(String id, Date dateStart, Date dateFinish) {
-        List<Ticket> ticketList = this.ticketRepository.findByIdAndDatesBetween(id, dateStart, dateFinish);
+    public List<TicketSearchOutputDto> findByIdArticleDatesBetween(String id, Date dateStart, Date dateFinish) {
+        List<Ticket> ticketList = this.ticketRepository.findByIdArticleDatesBetween(id, dateStart, dateFinish);
         List<TicketSearchOutputDto> ticketListDto = new ArrayList<TicketSearchOutputDto>();
         for (Ticket ticket : ticketList) {
             for (Shopping shopping : ticket.getShoppingList()) {
