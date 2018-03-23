@@ -23,12 +23,6 @@ public class VoucherDto {
         this.used = false;
     }
 
-    public VoucherDto(String reference, BigDecimal value) {
-        this.reference = reference;
-        this.value = value;
-        this.used = false;
-    }
-
     public VoucherDto(Voucher voucher) {
         this.reference = voucher.getReference();
         this.value = voucher.getValue();
