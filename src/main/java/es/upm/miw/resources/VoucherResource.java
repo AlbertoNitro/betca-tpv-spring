@@ -38,9 +38,7 @@ public class VoucherResource {
 
     @PostMapping(produces = {"application/pdf", "application/json"})
     public @ResponseBody byte[] createVoucher(@Valid @RequestBody VoucherDto voucherDto) throws FieldInvalidException {
-
         Optional<byte[]> pdf = this.voucherController.createVoucher(voucherDto.getValue());
-
         if (!pdf.isPresent()) {
             throw new FieldInvalidException("Voucher exception");
         } else {
@@ -55,23 +53,18 @@ public class VoucherResource {
 
     @PatchMapping(value = REFERENCE)
     public BigDecimal consumeVoucher(@PathVariable String reference) throws VoucherReferenceNotFoundException, VoucherConsumedException {
-
         if (!this.voucherController.existsVoucher(reference)) {
             throw new VoucherReferenceNotFoundException();
         }
-
         if (this.voucherController.consumedVoucher(reference)) {
             throw new VoucherConsumedException();
         }
-
         return this.voucherController.consumeVoucher(reference);
     }
 
     @GetMapping
     public List<VoucherDto> readVoucherAll() {
-
         return this.voucherController.readVoucherAll();
-
     }
 
 }
