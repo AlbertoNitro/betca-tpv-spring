@@ -64,15 +64,14 @@ public class VoucherResourceFunctionalTesting {
 
     @Test
     public void testConsumeVoucher() {
-        VoucherDto voucherDto = restService.loginAdmin().restBuilder(new RestBuilder<VoucherDto>()).clazz(VoucherDto.class)
-                .path(VoucherResource.VOUCHERS).path(VoucherResource.REFERENCE).expand(this.voucherDto.getReference()).get().build();
-        assertEquals(false, voucherDto.isUsed());
+        assertEquals(false, this.voucherDto.isUsed());
 
         restService.loginAdmin().restBuilder().path(VoucherResource.VOUCHERS).path(VoucherResource.REFERENCE)
                 .expand(this.voucherDto.getReference()).patch().build();
-        voucherDto = restService.loginAdmin().restBuilder(new RestBuilder<VoucherDto>()).clazz(VoucherDto.class)
-                .path(VoucherResource.VOUCHERS).path(VoucherResource.REFERENCE).expand(this.voucherDto.getReference()).get().build();
+        List<VoucherDto> voucherDtoList = readVoucherAll();
+        VoucherDto voucherDto = voucherDtoList.get(voucherDtoList.size() - 1);
         assertEquals(true, voucherDto.isUsed());
+        assertEquals(this.voucherDto.getReference(), voucherDto.getReference());
     }
 
 }
