@@ -81,6 +81,10 @@ public class ArticleController {
 	    		articleListDto = this.articleRepository.findByDescriptionLike(dto.getDescription());
 	    		if(dto.getRetailPriceMax().compareTo(bg1)!=0) {
 	        		articleListDto =this.filterRangeRetailPrice(dto,articleListDto);
+	    		}else {
+		    		if(dto.getDescription()=="") {
+		    			articleListDto.clear();
+		    		}
 	    		}
 	    	}else {
 	    		articleListDto=this.articleRepository.findByDescriptionProvider(dto.getDescription(),dto.getProvider());
