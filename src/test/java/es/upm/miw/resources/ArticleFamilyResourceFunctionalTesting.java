@@ -10,6 +10,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
@@ -31,4 +32,19 @@ public class ArticleFamilyResourceFunctionalTesting {
 
         assertEquals(articleOutputDtoList.size(), articleOutputDtoList.size());
     }
+
+    @Test
+    public void testReadAllArticlesFamily() {
+
+        restService.loginAdmin().restBuilder(new RestBuilder<String>()).clazz(String.class).path(ArticleFamilyResource.ARTICLESFAMILY).get()
+                .build();
+    }
+
+    @Test
+    public void testReadAllComponentFamily() {
+
+        restService.loginAdmin().restBuilder(new RestBuilder<String>()).clazz(String.class).path(ArticleFamilyResource.ARTICLESFAMILY)
+                .path(ArticleFamilyResource.FAMILY).get().build();
+    }
+
 }
