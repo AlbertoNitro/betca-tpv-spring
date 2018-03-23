@@ -1,6 +1,6 @@
 package es.upm.miw.controllers;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -11,6 +11,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import es.upm.miw.dtos.ArticleFamiliaOutputDto;
 import es.upm.miw.dtos.FamilyOutputDto;
+import es.upm.miw.repositories.core.ArticleFamilyRepository;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -19,6 +20,9 @@ public class ArticleFamilyControllerIT {
 
     @Autowired
     ArticleFamilyController articleFamilyControlle;
+
+    @Autowired
+    ArticleFamilyRepository articleFamilyRepository;
 
     @Test
     public void testGetAllComponent() {
@@ -40,13 +44,20 @@ public class ArticleFamilyControllerIT {
         assertEquals(ArticleFamiliaOutputDto.class, sizeGetListaCompositeFamily.getClass());
         assertEquals(sizeGetListaCompositeFamily.getListArticles().size(), count);
     }
-    
+
     @Test
     public void testGetAllComponentFamily() {
         FamilyOutputDto sizeGetListaCompositeFamily = this.articleFamilyControlle.getAllComponentFamily();
         int count = sizeGetListaCompositeFamily.getListComponent().size();
         assertEquals(FamilyOutputDto.class, sizeGetListaCompositeFamily.getClass());
         assertEquals(count, sizeGetListaCompositeFamily.getListComponent().size());
+    }
+
+    @Test
+    public void testGetListaArticlesOfFamily() {
+        String reference = articleFamilyRepository.findAll().get(0).getReference();
+        assertNotNull(this.articleFamilyControlle.getListArticlesOfFamily(reference));
+
     }
 
 }

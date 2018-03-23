@@ -16,6 +16,17 @@ public class ArticleFamily {
     @DBRef
     private List<Article> articles;
 
+    public ArticleFamily() {
+        super();
+    }
+
+    public ArticleFamily(String id, String reference, List<Article> articles) {
+        super();
+        this.id = id;
+        this.reference = reference;
+        this.articles = articles;
+    }
+
     public ArticleFamily(String reference, List<Article> articles) {
         super();
         this.reference = reference;
