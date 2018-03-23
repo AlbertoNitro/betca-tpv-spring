@@ -29,50 +29,49 @@ import es.upm.miw.resources.exceptions.VoucherReferenceNotFoundException;
 @RequestMapping(VoucherResource.VOUCHERS)
 public class VoucherResource {
 
-	public static final String VOUCHERS = "/vouchers";
+    public static final String VOUCHERS = "/vouchers";
 
-	public static final String REFERENCE = "/{reference}";
+    public static final String REFERENCE = "/{reference}";
 
-	@Autowired
-	private VoucherController voucherController;
-	
-	@PostMapping(produces = {"application/pdf", "application/json"})
-	public @ResponseBody byte[] createVoucher(@Valid @RequestBody VoucherDto voucherDto) throws FieldInvalidException {
-		
-		Optional<byte[]> pdf = this.voucherController.createVoucher(voucherDto.getValue());
-		
-		if (!pdf.isPresent()) {
+    @Autowired
+    private VoucherController voucherController;
+
+    @PostMapping(produces = {"application/pdf", "application/json"})
+    public @ResponseBody byte[] createVoucher(@Valid @RequestBody VoucherDto voucherDto) throws FieldInvalidException {
+
+        Optional<byte[]> pdf = this.voucherController.createVoucher(voucherDto.getValue());
+
+        if (!pdf.isPresent()) {
             throw new FieldInvalidException("Voucher exception");
         } else {
             return pdf.get();
         }
-	}
+    }
 
-	@RequestMapping(value = REFERENCE, method = RequestMethod.GET)
-	public VoucherDto readVoucher(@PathVariable String reference) throws VoucherReferenceNotFoundException {
-		return this.voucherController.readVoucher(reference).orElseThrow(() -> new VoucherReferenceNotFoundException());
-	}
+    @RequestMapping(value = REFERENCE, method = RequestMethod.GET)
+    public VoucherDto readVoucher(@PathVariable String reference) throws VoucherReferenceNotFoundException {
+        return this.voucherController.readVoucher(reference).orElseThrow(() -> new VoucherReferenceNotFoundException());
+    }
 
-	@PatchMapping(value = REFERENCE)
-	public BigDecimal consumeVoucher(@PathVariable String reference)
-			throws VoucherReferenceNotFoundException, VoucherConsumedException {
+    @PatchMapping(value = REFERENCE)
+    public BigDecimal consumeVoucher(@PathVariable String reference) throws VoucherReferenceNotFoundException, VoucherConsumedException {
 
-		if (!this.voucherController.existsVoucher(reference)) {
-			throw new VoucherReferenceNotFoundException();
-		}
+        if (!this.voucherController.existsVoucher(reference)) {
+            throw new VoucherReferenceNotFoundException();
+        }
 
-		if (this.voucherController.consumedVoucher(reference)) {
-			throw new VoucherConsumedException();
-		}
+        if (this.voucherController.consumedVoucher(reference)) {
+            throw new VoucherConsumedException();
+        }
 
-		return this.voucherController.consumeVoucher(reference);
-	}
+        return this.voucherController.consumeVoucher(reference);
+    }
 
-	@GetMapping
-	public List<VoucherDto> readVoucherAll() {
+    @GetMapping
+    public List<VoucherDto> readVoucherAll() {
 
-		return this.voucherController.readVoucherAll();
+        return this.voucherController.readVoucherAll();
 
-	}
+    }
 
 }
