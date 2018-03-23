@@ -74,4 +74,5 @@ public class VoucherResourceFunctionalTesting {
                 .path(VoucherResource.VOUCHERS).path(VoucherResource.REFERENCE).expand(this.voucherDto.getReference()).get().build();
         assertEquals(true, voucherDto.isUsed());
     }
+
 }
