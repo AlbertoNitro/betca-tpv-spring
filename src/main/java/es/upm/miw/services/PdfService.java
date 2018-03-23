@@ -9,6 +9,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+
 import es.upm.miw.documents.core.Article;
 import es.upm.miw.documents.core.Budget;
 import es.upm.miw.documents.core.Invoice;
@@ -134,23 +135,23 @@ public class PdfService {
 
         return pdf.build();
     }
-    
-    public Optional<byte[]> generateVoucher( Voucher voucher ){
-    	final String path = "/vouchers/voucher-" + voucher.getReference();
-    	PdfTicketBuilder pdf = this.addCompanyDetails(path, 2);
-    	
-    	pdf.line().paragraphEmphasized("VOUCHER");
-    	pdf.barCode(voucher.getReference()).line();
-    	
-    	pdf.paragraphEmphasized("Valor: " + voucher.getValue()).line();
-    	
-    	SimpleDateFormat formatter = new SimpleDateFormat(DATE_FORMAT);
+
+    public Optional<byte[]> generateVoucher(Voucher voucher) {
+        final String path = "/vouchers/voucher-" + voucher.getReference();
+        PdfTicketBuilder pdf = this.addCompanyDetails(path, 2);
+
+        pdf.line().paragraphEmphasized("VOUCHER");
+        pdf.barCode(voucher.getReference()).line();
+
+        pdf.paragraphEmphasized("Valor: " + voucher.getValue()).line();
+
+        SimpleDateFormat formatter = new SimpleDateFormat(DATE_FORMAT);
         pdf.paragraphEmphasized(formatter.format(voucher.getCreationDate()));
-        
+
         pdf.line().paragraph("Periodo de validez: ilimitado.");
         pdf.paragraphEmphasized("Gracias por usar nuestros servicios.");
-    	
-    	return pdf.build();
+
+        return pdf.build();
     }
 
     private PdfTicketBuilder addCompanyDetails(String path, int lines) {

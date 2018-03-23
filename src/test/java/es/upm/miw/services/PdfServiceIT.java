@@ -67,13 +67,13 @@ public class PdfServiceIT {
         Budget budget = new Budget(shoppingList);
         pdfService.generateBudget(budget);
     }
-    
+
     @Test
     public void testGenerateVoucher() {
-        Voucher voucher = new Voucher( new BigDecimal( 55 ) );
+        Voucher voucher = new Voucher(new BigDecimal(55));
         pdfService.generateVoucher(voucher);
     }
-    
+
     @Test
     public void testGenerateInvoice() {
         User user = new User("121212121", "Juan", "juan", "1104456987", "Direccion", "");
@@ -94,7 +94,7 @@ public class PdfServiceIT {
         shoppingList[5] = new Shopping(3, new BigDecimal("50"), articleTaxGeneral);
 
         Ticket ticket = new Ticket(1, new BigDecimal("20"), shoppingList, user);
-        Invoice invoice =  new Invoice(1, ticket);
-        pdfService.generateInvioce(invoice); 
+        Invoice invoice = new Invoice(1, ticket);
+        pdfService.generateInvioce(invoice);
     }
 }

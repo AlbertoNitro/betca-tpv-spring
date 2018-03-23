@@ -23,54 +23,45 @@ import es.upm.miw.repositories.core.VoucherRepository;
 @TestPropertySource(locations = "classpath:test.properties")
 public class VoucherControllerIT {
 
-	@Autowired
-	private VoucherController voucherController;
+    @Autowired
+    private VoucherController voucherController;
 
-	private Voucher voucher;
+    private Voucher voucher;
 
-	@Autowired
-	private VoucherRepository voucherRepository;
+    @Autowired
+    private VoucherRepository voucherRepository;
 
-	@Before
-	public void before() {
-		this.voucher = new Voucher(new BigDecimal(32));
-		this.voucherRepository.save(this.voucher);
-	}
+    @Before
+    public void before() {
+        this.voucher = new Voucher(new BigDecimal(32));
+        this.voucherRepository.save(this.voucher);
+    }
 
-	@After
-	public void delete() {
-		this.voucherRepository.delete(this.voucher);
-	}
+    @After
+    public void delete() {
+        this.voucherRepository.delete(this.voucher);
+    }
 
-	@Test
-	public void testExistsVoucherFalse() {
+    @Test
+    public void testExistsVoucherFalse() {
+        assertFalse(this.voucherController.existsVoucher("0"));
+    }
 
-		assertFalse(this.voucherController.existsVoucher("0"));
+    @Test
+    public void testExistsVoucherTrue() {
+        assertTrue(this.voucherController.existsVoucher(this.voucher.getReference()));
+    }
 
-	}
+    @Test
+    public void consumedVoucherFalse() {
+        assertFalse(this.voucherController.consumedVoucher(this.voucher.getReference()));
+    }
 
-	@Test
-	public void testExistsVoucherTrue() {
-
-		assertTrue(this.voucherController.existsVoucher(this.voucher.getReference()));
-
-	}
-
-	@Test
-	public void consumedVoucherFalse() {
-
-		assertFalse(this.voucherController.consumedVoucher(this.voucher.getReference()));
-
-	}
-
-	@Test
-	public void consumedVoucherTrue() {
-
-		assertFalse(this.voucherController.consumedVoucher(this.voucher.getReference()));
-		this.voucher.setDateOfUse( new Date() );
-		this.voucherRepository.save(this.voucher);
-		assertTrue(this.voucherController.consumedVoucher(this.voucher.getReference()));
-
-	}
-
+    @Test
+    public void consumedVoucherTrue() {
+        assertFalse(this.voucherController.consumedVoucher(this.voucher.getReference()));
+        this.voucher.setDateOfUse(new Date());
+        this.voucherRepository.save(this.voucher);
+        assertTrue(this.voucherController.consumedVoucher(this.voucher.getReference()));
+    }
 }
