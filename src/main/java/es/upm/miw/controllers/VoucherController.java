@@ -29,15 +29,6 @@ public class VoucherController {
         return pdfService.generateVoucher(voucher);
     }
 
-    public Optional<VoucherDto> readVoucher(String reference) {
-        Voucher voucherBd = this.voucherRepository.findByReference(reference);
-        if (voucherBd == null) {
-            return Optional.empty();
-        } else {
-            return Optional.of(new VoucherDto(voucherBd));
-        }
-    }
-
     public List<VoucherDto> readVoucherAll() {
         List<Voucher> voucherList = this.voucherRepository.findAll();
         List<VoucherDto> voucherDtoList = new ArrayList<VoucherDto>();
@@ -63,6 +54,7 @@ public class VoucherController {
 
     public boolean consumedVoucher(String reference) {
         Voucher voucher = this.voucherRepository.findByReference(reference);
+        assert voucher != null;
         return voucher.isUsed();
     }
 
