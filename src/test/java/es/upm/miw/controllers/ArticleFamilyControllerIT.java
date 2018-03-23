@@ -10,6 +10,7 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import es.upm.miw.dtos.ArticleFamiliaOutputDto;
+import es.upm.miw.dtos.FamilyOutputDto;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -38,6 +39,14 @@ public class ArticleFamilyControllerIT {
         int count = sizeGetListaCompositeFamily.getListArticles().size();
         assertEquals(ArticleFamiliaOutputDto.class, sizeGetListaCompositeFamily.getClass());
         assertEquals(sizeGetListaCompositeFamily.getListArticles().size(), count);
+    }
+    
+    @Test
+    public void testGetAllComponentFamily() {
+        FamilyOutputDto sizeGetListaCompositeFamily = this.articleFamilyControlle.getAllComponentFamily();
+        int count = sizeGetListaCompositeFamily.getListComponent().size();
+        assertEquals(FamilyOutputDto.class, sizeGetListaCompositeFamily.getClass());
+        assertEquals(count, sizeGetListaCompositeFamily.getListComponent().size());
     }
 
 }

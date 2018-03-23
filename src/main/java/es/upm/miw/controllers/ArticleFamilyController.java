@@ -75,9 +75,7 @@ public class ArticleFamilyController {
     public FamilyOutputDto getAllComponentFamily() {
         ComponentArticle troncoArbol = getAllComponent();
         FamilyOutputDto familyOutputDto = new FamilyOutputDto();
-
-       
-
+        List<Object> listComponent = new ArrayList<Object>();
         for (ComponentArticle component : troncoArbol.getAllComponents()) {
             if (component.isComposite()) {
                 ArticleComposite artCom = (ArticleComposite) component;
@@ -86,13 +84,13 @@ public class ArticleFamilyController {
                     ArticleLeaf articleLeaf = (ArticleLeaf) artComposite;
                     lstArticles.add(articleLeaf.getArticle());
                 }
-                familyOutputDto.getListComponent().add(new ArticleFamily(artCom.getReference(), lstArticles));
+                listComponent.add(new ArticleFamily(artCom.getReference(), lstArticles));
             } else {
                 ArticleLeaf articleLeaf = (ArticleLeaf) component;
-                familyOutputDto.getListComponent().add(articleLeaf.getArticle());
+                listComponent.add(articleLeaf.getArticle());
             }
         }
-
+        familyOutputDto.setListComponent(listComponent);
         return familyOutputDto;
     }
 }
