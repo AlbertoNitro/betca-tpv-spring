@@ -51,14 +51,6 @@ public class VoucherResourceFunctionalTesting {
     }
 
     @Test
-    public void testReadVoucher() {
-        VoucherDto voucher1 = restService.loginAdmin().restBuilder(new RestBuilder<VoucherDto>()).clazz(VoucherDto.class)
-                .path(VoucherResource.VOUCHERS).path(VoucherResource.REFERENCE).expand(this.voucherDto.getReference()).get().build();
-        assertEquals(this.voucherDto.getReference(), voucher1.getReference());
-        assertEquals(this.voucherDto.getValue(), voucher1.getValue());
-    }
-
-    @Test
     public void testReadVoucherAll() {
         List<VoucherDto> voucherDtoList = readVoucherAll();
         assertEquals(5, voucherDtoList.size());
