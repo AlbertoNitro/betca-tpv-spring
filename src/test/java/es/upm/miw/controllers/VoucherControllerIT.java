@@ -53,12 +53,12 @@ public class VoucherControllerIT {
     }
 
     @Test
-    public void consumedVoucherFalse() {
+    public void testConsumedVoucherFalse() {
         assertFalse(this.voucherController.consumedVoucher(this.voucher.getReference()));
     }
 
     @Test
-    public void consumedVoucherTrue() {
+    public void testConsumedVoucherTrue() {
         assertFalse(this.voucherController.consumedVoucher(this.voucher.getReference()));
         this.voucher.setDateOfUse(new Date());
         this.voucherRepository.save(this.voucher);
