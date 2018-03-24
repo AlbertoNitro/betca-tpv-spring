@@ -104,12 +104,10 @@ public class ArticleFamilyController {
             if (component.isComposite()) {
                 ArticleComposite artCom = (ArticleComposite) component;
                 if (artCom.getReference().equals(reference)) {
-                    List<Article> lstArticles = new ArrayList<Article>();
                     for (ComponentArticle artComposite : artCom.getAllComponents()) {
                         ArticleLeaf articleLeaf = (ArticleLeaf) artComposite;
-                        lstArticles.add(articleLeaf.getArticle());
+                        lstArticlesleaf.add(articleLeaf.getArticle());
                     }
-                    lstArticleFamily.add(new ArticleFamily(artCom.getReference(), lstArticles));
                 }
             }
         }
