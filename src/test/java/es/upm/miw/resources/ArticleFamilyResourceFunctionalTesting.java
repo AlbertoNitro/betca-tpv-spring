@@ -37,31 +37,13 @@ public class ArticleFamilyResourceFunctionalTesting {
         assertEquals(articleOutputDtoList.size(), articleOutputDtoList.size());
     }
 
-    /**
-     * Los Test funciona cuando se ejecuta el mismo paquete de test, pore cuando se ejecuta todo el test global no funcionan
-     */
-
-//     @Test
-//     public void testReadAllArticlesFamily() {
-//    
-//     restService.loginAdmin().restBuilder(new RestBuilder<String>()).clazz(String.class).path(ArticleFamilyResource.ARTICLESFAMILY).get()
-//     .build();
-//     }
-//    
-//     @Test
-//     public void testReadAllComponentFamily() {
-//    
-//     restService.loginAdmin().restBuilder(new RestBuilder<String>()).clazz(String.class).path(ArticleFamilyResource.ARTICLESFAMILY)
-//     .path(ArticleFamilyResource.FAMILY).get().build();
-//     }
-
     @Test
     public void testGetFamilyByReference() {
-        String reference = articleFamilyRepository.findAll().get(0).getReference();
+        String reference = articleFamilyRepository.findAll().get(1).getReference();
         ArticleFamiliaOutputDto articleFamiliaOutputDto = restService.loginManager().restBuilder(new RestBuilder<ArticleFamiliaOutputDto>())
                 .clazz(ArticleFamiliaOutputDto.class).path(ArticleFamilyResource.ARTICLESFAMILY).path(ArticleFamilyResource.REFERENCE)
                 .expand(reference).get().build();
-        assertNotNull(articleFamiliaOutputDto.getListArticleFamily().size());
+        assertNotNull(articleFamiliaOutputDto.getListArticles().size());
     }
 
 }
