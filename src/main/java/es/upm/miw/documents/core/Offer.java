@@ -1,0 +1,97 @@
+package es.upm.miw.documents.core;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
+import org.springframework.data.mongodb.core.mapping.Document;
+
+@Document
+public class Offer {
+	@Id
+	private String id;
+    @Indexed(unique = true)
+	private String code;
+	private String description;
+	private float percentage;
+	private Date creationDate;
+	private Date expiration;
+	
+	public Offer() {
+		this.creationDate = new Date();
+	}
+	
+	public Offer(String code, float percentage, Date expiration, String description) {
+		this();
+		this.code = code;
+		this.description = description;
+		this.percentage = percentage;
+		this.expiration = expiration;
+	}
+	
+	public Offer(String code, float percentage, Date expiration) {
+		this(code, percentage, expiration, null);
+		
+	}
+
+	public String getCode() {
+		return code;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public float getPercentage() {
+		return percentage;
+	}
+
+	public void setPercentage(float percentage) {
+		this.percentage = percentage;
+	}
+
+	public Date getCreationDate() {
+		return creationDate;
+	}
+
+	public void setCreationDate(Date creationDate) {
+		this.creationDate = creationDate;
+	}
+
+	public Date getExpiration() {
+		return expiration;
+	}
+
+	public void setExpiration(Date expiration) {
+		this.expiration = expiration;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null) {
+			return false;
+		}
+		if (getClass() != obj.getClass()) {
+			return false;
+		}
+		return code.equals(((Offer) obj).code);
+	}
+
+	@Override
+	public String toString() {
+		String date = "null";
+		if (creationDate != null) {
+			date = new SimpleDateFormat("dd-MMM-yyyy").format(creationDate.getTime());
+		}
+		return "Offer [code=" + code + ", creationDate=" + date + ", expiration=" + expiration + ", percentage="
+				+ percentage + ", description=" + description + " ]";
+	}
+}
