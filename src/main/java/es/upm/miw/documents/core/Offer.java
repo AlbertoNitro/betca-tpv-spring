@@ -14,7 +14,7 @@ public class Offer {
     @Indexed(unique = true)
 	private String code;
 	private String description;
-	private float percentage;
+	private Float percentage;
 	private Date creationDate;
 	private Date expiration;
 	
@@ -22,17 +22,24 @@ public class Offer {
 		this.creationDate = new Date();
 	}
 	
-	public Offer(String code, float percentage, Date expiration, String description) {
+	public Offer(String code, Float percentage, Date expiration, String description) {
 		this();
 		this.code = code;
-		this.description = description;
 		this.percentage = percentage;
-		this.expiration = expiration;
+		this.expiration = expiration;		
+		this.description = description;
 	}
 	
-	public Offer(String code, float percentage, Date expiration) {
+	public Offer(String code, Float percentage, Date expiration) {
 		this(code, percentage, expiration, null);
-		
+	}
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
 	}
 
 	public String getCode() {
@@ -47,11 +54,11 @@ public class Offer {
 		this.description = description;
 	}
 
-	public float getPercentage() {
+	public Float getPercentage() {
 		return percentage;
 	}
 
-	public void setPercentage(float percentage) {
+	public void setPercentage(Float percentage) {
 		this.percentage = percentage;
 	}
 
