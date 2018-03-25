@@ -46,7 +46,11 @@ public class Offer {
 		return code;
 	}
 
-	public String getDescription() {
+	public void setCode(String code) {
+        this.code = code;
+    }
+
+    public String getDescription() {
 		return description;
 	}
 

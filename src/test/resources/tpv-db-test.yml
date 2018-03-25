@@ -280,8 +280,8 @@ cashMovementList:
 offerList: 
   - code: AAA
     percentage: 0.25
-    expiration: Sun Mar 25 2018 00:00:00 GMT+0100 (CET)
+    expiration: 2018-04-06 12:00:00  
   - code: BBB
     percentage: 0.50
-    expiration: Sun Mar 24 2018 00:00:00 GMT+0100 (CET)
+    expiration: 2018-04-06 12:00:00
     description: "En 2º compra"
