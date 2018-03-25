@@ -275,3 +275,13 @@ cashMovementList:
     comment: "test C"
   - value: 50.6
     comment: "test D" 
+    
+# Offers
+offerList: 
+  - code: AAA
+    percentage: 0.25
+    expiration: Sun Mar 25 2018 00:00:00 GMT+0100 (CET)
+  - code: BBB
+    percentage: 0.50
+    expiration: Sun Mar 24 2018 00:00:00 GMT+0100 (CET)
+    description: "En 2º compra"

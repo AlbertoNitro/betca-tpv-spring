@@ -6,6 +6,7 @@ import es.upm.miw.documents.core.Article;
 import es.upm.miw.documents.core.CashMovement;
 import es.upm.miw.documents.core.CashierClosure;
 import es.upm.miw.documents.core.Invoice;
+import es.upm.miw.documents.core.Offer;
 import es.upm.miw.documents.core.Provider;
 import es.upm.miw.documents.core.Shopping;
 import es.upm.miw.documents.core.Ticket;
@@ -35,8 +36,19 @@ public class DatabaseGraph {
 
 	private List<CashierClosure> cashierClosureList;
 
+	private List<Offer> offerList;
+
 	public DatabaseGraph() {
 		// Empty for framework
+	}
+	
+
+	public List<Offer> getOfferList() {
+		return offerList;
+	}
+
+	public void setOfferList(List<Offer> offerList) {
+		this.offerList = offerList;
 	}
 
 	public List<User> getUserList() {
