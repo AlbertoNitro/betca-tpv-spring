@@ -113,7 +113,6 @@ public class DatabaseSeederService {
 		if (tpvGraph.getInvoiceList() != null) {
 			this.invoiceRepository.save(tpvGraph.getInvoiceList());
 		}
-		
 		if (tpvGraph.getOfferList() != null) {
 			this.offerRepository.save(tpvGraph.getOfferList());
 		}
