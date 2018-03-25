@@ -116,7 +116,6 @@ articleList:
     reference: various
     description: Various
     retailPrice: 100
-    wholesalePrice: 50
     tax: GENERAL
     provider: *pr0
   - &ar1
@@ -124,7 +123,6 @@ articleList:
     reference: ref-a1
     description: descrip-a1
     retailPrice: 20
-    wholesalePrice: 10
     tax: GENERAL
     stock: 0
     provider: *pr1
@@ -133,7 +131,6 @@ articleList:
     reference: ref-a2
     description: descrip-a2
     retailPrice: 27.8
-    wholesalePrice: 12.5
     tax: FREE
     stock: 0
     provider: *pr1
@@ -141,56 +138,48 @@ articleList:
     code: 13245
     description: Various
     retailPrice: 100
-    wholesalePrice: 50
     tax: GENERAL
     provider: *pr0
   - &ar4
     code: 13247
     description: Various
     retailPrice: 100
-    wholesalePrice: 50
     tax: GENERAL
     provider: *pr0
   - &ar5
     code: 13248
     description: Artic
     retailPrice: 100
-    wholesalePrice: 50
     tax: GENERAL
     provider: *pr0
   - &ar6
     code: 13249
     description: Artic
     retailPrice: 100
-    wholesalePrice: 50
     tax: GENERAL
     provider: *pr0
   - &ar7
     code: 13249
     description: Artic
     retailPrice: 100
-    wholesalePrice: 50
     tax: GENERAL
     provider: *pr0
   - &ar8
     code: 13250
     description: Artic
     retailPrice: 100
-    wholesalePrice: 50
     tax: GENERAL
     provider: *pr0
   - &ar9
     code: 13251
     description: Artic
     retailPrice: 100
-    wholesalePrice: 50
     tax: GENERAL
     provider: *pr0
   - &ar10
     code: 13252
     description: Artic
     retailPrice: 100
-    wholesalePrice: 50
     tax: GENERAL
     provider: *pr0  
 

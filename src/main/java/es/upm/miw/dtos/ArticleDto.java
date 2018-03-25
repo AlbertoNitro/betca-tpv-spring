@@ -1,6 +1,8 @@
 package es.upm.miw.dtos;
 
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
@@ -14,7 +16,7 @@ public class ArticleDto {
 
     private String reference;
 
-    private String description; 
+    private String description;
 
     private BigDecimal retailPrice;
 
@@ -22,27 +24,30 @@ public class ArticleDto {
 
     private String provider;
 
+    private Boolean discontinued;
+
+    private Date registrationDate;
+
     public ArticleDto() {
         // Empty for framework
     }
 
     public ArticleDto(String code, String description) {
-        super();
         this.code = code;
         this.description = description;
     }
 
-    public ArticleDto(String code, String reference, String description, BigDecimal retailPrice, Integer stock) {
-        super();
-        this.code = code;
+    public ArticleDto(String code, String description, String reference, BigDecimal retailPrice, Integer stock) {
+        this(code, description);
         this.reference = reference;
-        this.description = description;
         this.retailPrice = retailPrice;
         this.stock = stock;
     }
 
     public ArticleDto(Article article, String provider) {
-        this(article.getCode(), article.getReference(), article.getDescription(), article.getRetailPrice(), article.getStock());
+        this(article.getCode(), article.getDescription(), article.getReference(), article.getRetailPrice(), article.getStock());
+        this.setDiscontinued(article.getDiscontinued());
+        this.setRegistrationDate(article.getRegistrationDate());
         this.setProvider(provider);
     }
 
@@ -94,10 +99,30 @@ public class ArticleDto {
         this.provider = provider;
     }
 
+    public Boolean getDiscontinued() {
+        return discontinued;
+    }
+
+    public void setDiscontinued(Boolean discontinued) {
+        this.discontinued = discontinued;
+    }
+
+    public Date getRegistrationDate() {
+        return registrationDate;
+    }
+
+    public void setRegistrationDate(Date registrationDate) {
+        this.registrationDate = registrationDate;
+    }
+
     @Override
     public String toString() {
+        String date = "null";
+        if (registrationDate != null) {
+            date = new SimpleDateFormat("dd-MMM-yyyy").format(registrationDate.getTime());
+        }
         return "ArticleDto [code=" + code + ", reference=" + reference + ", description=" + description + ", retailPrice=" + retailPrice
-                + ", stock=" + stock + ", provider=" + provider + "]";
+                + ", stock=" + stock + ", provider=" + provider + ", discontinued=" + discontinued + ", registrationDate=" + date + "]";
     }
 
 }

@@ -51,10 +51,13 @@ public class ArticleController {
         }
     }
 
-    public ArticleDto postFastArticle(ArticleDto articleOuputDto) {
-
-        Article articulo = new Article(articleOuputDto.getCode(), articleOuputDto.getDescription(), articleOuputDto.getRetailPrice())
-                .reference(articleOuputDto.getReference()).stock(articleOuputDto.getStock()).build();
+    public ArticleDto createArticle(ArticleDto articleOuputDto) {
+        Provider provider = null;
+        if (articleOuputDto.getProvider() != null) {
+            provider = this.providerRepository.findOne(articleOuputDto.getProvider());
+        }
+        Article articulo = new Article(articleOuputDto.getCode(), articleOuputDto.getDescription(), articleOuputDto.getRetailPrice(),
+                articleOuputDto.getReference(), articleOuputDto.getStock(), provider, articleOuputDto.getDiscontinued());
         this.articleRepository.save(articulo);
         return articleOuputDto;
     }
@@ -77,6 +80,21 @@ public class ArticleController {
             }
         }
         return articleListDto;
+    }
+
+    public void putArticle(String code, ArticleDto articleDto) {
+        Article article = this.articleRepository.findOne(code);
+        assert article != null;
+        article.setDescription(articleDto.getDescription());
+        article.setReference(articleDto.getReference());
+        article.setRetailPrice(articleDto.getRetailPrice());
+        article.setStock(articleDto.getStock());
+        Provider provider = null;
+        if (articleDto.getProvider() != null) {
+            provider = this.providerRepository.findOne(articleDto.getProvider());
+        }
+        article.setProvider(provider);
+        this.articleRepository.save(article);
     }
 
     public List<ArticleDto> readFilterArticle(ArticleInputDto dto) {
@@ -116,27 +134,12 @@ public class ArticleController {
         return articleListDto;
     }
 
-    public void putArticle(String code, ArticleDto articleDto) {
-        Article article = this.articleRepository.findOne(code);
-        assert article != null;
-        article.setDescription(articleDto.getDescription());
-        article.setReference(articleDto.getReference());
-        article.setRetailPrice(articleDto.getRetailPrice());
-        article.setStock(articleDto.getStock());
-        Provider provider = null;
-        if (articleDto.getProvider() != null) {
-            provider = this.providerRepository.findOne(articleDto.getProvider());
-        }
-        article.setProvider(provider);
-        this.articleRepository.save(article);
-    }
-
     private List<ArticleDto> filterRangeRetailPrice(ArticleInputDto articleInputDto, List<ArticleDto> articleList) {
         List<ArticleDto> articleListDto = new ArrayList<ArticleDto>();
         for (ArticleDto article : articleList) {
             if (article.getRetailPrice().compareTo(articleInputDto.getRetailPriceMin()) == 1
                     && article.getRetailPrice().compareTo(articleInputDto.getRetailPriceMax()) == -1) {
-                articleListDto.add(new ArticleDto(article.getCode(), article.getReference(), article.getDescription(),
+                articleListDto.add(new ArticleDto(article.getCode(), article.getDescription(), article.getReference(),
                         article.getRetailPrice(), article.getStock()));
             }
         }

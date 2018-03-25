@@ -10,6 +10,5 @@ articleList:
     reference: varios
     description: Varios
     retailPrice: 100
-    wholesalePrice: 50
     tax: GENERAL
     provider: *pr0
