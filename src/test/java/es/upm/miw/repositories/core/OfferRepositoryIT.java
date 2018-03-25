@@ -1,6 +1,7 @@
 package es.upm.miw.repositories.core;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 
 import java.util.List;
 
@@ -21,12 +22,15 @@ public class OfferRepositoryIT {
     private OfferRepository offerRepository;
     
     @Test
-    public void findOrderByCodeTest() {
-    	Offer offer = this.offerRepository.findByCode("AAA");
-        assertEquals("AAA", offer.getCode());
-        System.out.println(offer.toString());
-        assertEquals(new Float(0.25), this.offerRepository.findByCode("AAA").getPercentage());
-        
+    public void findByCodeTest() {
+        assertEquals("AAA", this.offerRepository.findByCode("AAA").getCode());
+        assertEquals(new Float(0.25), this.offerRepository.findByCode("AAA").getPercentage()); 
+    }
+    
+    @Test
+    public void findByWrongCodeTest() {
+        assertNotEquals("BBB", this.offerRepository.findByCode("AAA").getCode());
+        assertEquals(new Float(0.50), this.offerRepository.findByCode("AAA").getPercentage()); 
     }
     
     @Test
