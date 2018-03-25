@@ -2,6 +2,7 @@ package es.upm.miw.repositories.core;
 
 import static org.junit.Assert.assertEquals;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,7 +34,7 @@ public class ArticleFamilyRepositoriesIT {
     public void testInserArticlesRepository() {
         // TODO Auto-generated method stub
         for (int i = 0; i < 10; i++) {
-            articleRepository.insert(new Article("Article " + i, "Descriotion", (int) (Math.random() * 300)));
+            articleRepository.insert(new Article("Article " + i, "Descriotion", new BigDecimal(i+"")));
         }
     }
 
@@ -93,7 +94,7 @@ public class ArticleFamilyRepositoriesIT {
 
     @Test
     public void testArticleFamily() {
-        Article articletest = new Article("Art1", "Des1", 15);
+        Article articletest = new Article("Art1", "Des1", new BigDecimal("15"));
 
         ComponentArticle troncoArbol = new ArticleComposite("Familia-Ariculos");
 

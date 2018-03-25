@@ -20,7 +20,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import es.upm.miw.controllers.ArticleController;
 import es.upm.miw.documents.core.Article;
 import es.upm.miw.dtos.ArticleInputDto;
-import es.upm.miw.dtos.ArticleOutputDto;
+import es.upm.miw.dtos.ArticleDto;
 import es.upm.miw.repositories.core.ArticleRepository;
 
 @RunWith(SpringRunner.class)
@@ -42,23 +42,23 @@ public class ArticleResourceFunctionalTesting {
 
 	@Test
     public void testReadArticle() {
-        ArticleOutputDto articleOutputDto = restService.loginAdmin().restBuilder(new RestBuilder<ArticleOutputDto>())
-                .clazz(ArticleOutputDto.class).path(ArticleResource.ARTICLES).path(ArticleResource.CODE_ID).expand("article1").get()
+        ArticleDto articleOutputDto = restService.loginAdmin().restBuilder(new RestBuilder<ArticleDto>())
+                .clazz(ArticleDto.class).path(ArticleResource.ARTICLES).path(ArticleResource.CODE_ID).expand("article1").get()
                 .build();
         assertEquals("article1", articleOutputDto.getCode());
     }
 
     @Test
     public void testReadArticleManager() {
-        ArticleOutputDto articleOutputDto = restService.loginManager().restBuilder(new RestBuilder<ArticleOutputDto>())
-                .clazz(ArticleOutputDto.class).path(ArticleResource.ARTICLES).path(ArticleResource.CODE_ID).expand("article1").get()
+        ArticleDto articleOutputDto = restService.loginManager().restBuilder(new RestBuilder<ArticleDto>())
+                .clazz(ArticleDto.class).path(ArticleResource.ARTICLES).path(ArticleResource.CODE_ID).expand("article1").get()
                 .build();
         assertEquals("article1", articleOutputDto.getCode());
     }
     
 	@Test
 	public void testpostFastArticle() {
-		ArticleOutputDto articulo = new ArticleOutputDto();
+		ArticleDto articulo = new ArticleDto();
 		articulo.setCode("1");
 		articulo.setDescription("blabla");
 		Number retailPrice = 2;
@@ -69,18 +69,18 @@ public class ArticleResourceFunctionalTesting {
 
     @Test
     public void testReadArticleOperator() {
-        ArticleOutputDto articleOutputDto = restService.loginOperator().restBuilder(new RestBuilder<ArticleOutputDto>())
-                .clazz(ArticleOutputDto.class).path(ArticleResource.ARTICLES).path(ArticleResource.CODE_ID).expand("article1").get()
+        ArticleDto articleOutputDto = restService.loginOperator().restBuilder(new RestBuilder<ArticleDto>())
+                .clazz(ArticleDto.class).path(ArticleResource.ARTICLES).path(ArticleResource.CODE_ID).expand("article1").get()
                 .build();
         assertEquals("article1", articleOutputDto.getCode());
     }
     
     @Test
     public void testReadAll() {
-        List<ArticleOutputDto> articleOutputDto = Arrays.asList(restService.loginAdmin().restBuilder(new RestBuilder<ArticleOutputDto[]>())
-                .clazz(ArticleOutputDto[].class).path(ArticleResource.ARTICLES).get()
+        List<ArticleDto> articleOutputDto = Arrays.asList(restService.loginAdmin().restBuilder(new RestBuilder<ArticleDto[]>())
+                .clazz(ArticleDto[].class).path(ArticleResource.ARTICLES).get()
                 .build());
-        List<ArticleOutputDto> articleOutputDto_ = articleController.readAll();
+        List<ArticleDto> articleOutputDto_ = articleController.readMinimumAll();
         
         assertEquals(articleOutputDto_.size(), articleOutputDto.size());
     
@@ -88,17 +88,17 @@ public class ArticleResourceFunctionalTesting {
 
     @Test
     public void testReadAllIncompletes() {
-        List<ArticleOutputDto> articleOutputDto = Arrays.asList(restService.loginAdmin().restBuilder(new RestBuilder<ArticleOutputDto[]>())
-                .clazz(ArticleOutputDto[].class).path(ArticleResource.ARTICLES).path(ArticleResource.INCOMPLETES).get()
+        List<ArticleDto> articleOutputDto = Arrays.asList(restService.loginAdmin().restBuilder(new RestBuilder<ArticleDto[]>())
+                .clazz(ArticleDto[].class).path(ArticleResource.ARTICLES).path(ArticleResource.INCOMPLETES).get()
                 .build());
-        List<ArticleOutputDto> articleOutputDto_ = articleController.readAllIncompletes();
+        List<ArticleDto> articleOutputDto_ = articleController.readMinimumAllIncompletes();
         assertEquals(articleOutputDto_.size(), articleOutputDto.size());
     
     }
     
     @Test
     public void testputArticle() {
-		ArticleOutputDto articulo = new ArticleOutputDto();
+		ArticleDto articulo = new ArticleDto();
 		articulo.setCode("45346");
 		articulo.setDescription("bleble");
 		Number retailPrice = 2;
@@ -107,7 +107,7 @@ public class ArticleResourceFunctionalTesting {
 		Article articulo_ = new Article(articulo.getCode(),articulo.getDescription(),articulo.getRetailPrice());
 		this.articleRepository.save(articulo_);
 		articulo.setDescription("blibli");
-		restService.loginAdmin().restBuilder().path(ArticleResource.ARTICLES).path(ArticleResource.CODE_ID).body(articulo).put().build();
+		restService.loginAdmin().restBuilder().path(ArticleResource.ARTICLES).path(ArticleResource.CODE_ID).expand("45346").body(articulo).put().build();
         assertEquals("blibli", this.articleRepository.findArticleByCode("45346").getDescription());
 
 		
@@ -129,7 +129,7 @@ public class ArticleResourceFunctionalTesting {
 	public void testFilterArticle() {
 		
 		//agregar articulo
-		ArticleOutputDto articulo = new ArticleOutputDto();
+		ArticleDto articulo = new ArticleDto();
 		articulo.setCode("Test");
 		articulo.setReference("zea");
 		articulo.setDescription("zea");
@@ -147,8 +147,8 @@ public class ArticleResourceFunctionalTesting {
 		Number retailPriceMax =30;
 		articuloFilter.setRetailPriceMax(new BigDecimal(retailPriceMax.toString()));
 		
-        List<ArticleOutputDto> articleOutputDto = Arrays.asList(restService.loginAdmin().restBuilder(new RestBuilder<ArticleOutputDto[]>())
-                .clazz(ArticleOutputDto[].class).path(ArticleResource.ARTICLES).path(ArticleResource.FILTER).body(articuloFilter).post()
+        List<ArticleDto> articleOutputDto = Arrays.asList(restService.loginAdmin().restBuilder(new RestBuilder<ArticleDto[]>())
+                .clazz(ArticleDto[].class).path(ArticleResource.ARTICLES).path(ArticleResource.FILTER).body(articuloFilter).post()
                 .build());
       
        assertEquals(1, articleOutputDto.size());
