@@ -25,9 +25,9 @@ public class Offer {
 	public Offer(String code, float percentage, Date expiration, String description) {
 		this();
 		this.code = code;
-		this.description = description;
 		this.percentage = percentage;
-		this.expiration = expiration;
+		this.expiration = expiration;		
+		this.description = description;
 	}
 	
 	public Offer(String code, float percentage, Date expiration) {
