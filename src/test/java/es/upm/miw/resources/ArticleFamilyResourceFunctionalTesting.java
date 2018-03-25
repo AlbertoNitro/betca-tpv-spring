@@ -14,7 +14,7 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import es.upm.miw.dtos.ArticleFamiliaOutputDto;
-import es.upm.miw.dtos.ArticleOutputDto;
+import es.upm.miw.dtos.ArticleDto;
 import es.upm.miw.repositories.core.ArticleFamilyRepository;
 
 @RunWith(SpringRunner.class)
@@ -30,8 +30,8 @@ public class ArticleFamilyResourceFunctionalTesting {
 
     @Test
     public void testReadAllArticles() {
-        List<ArticleOutputDto> articleOutputDtoList = Arrays
-                .asList(restService.loginAdmin().restBuilder(new RestBuilder<ArticleOutputDto[]>()).clazz(ArticleOutputDto[].class)
+        List<ArticleDto> articleOutputDtoList = Arrays
+                .asList(restService.loginAdmin().restBuilder(new RestBuilder<ArticleDto[]>()).clazz(ArticleDto[].class)
                         .path(ArticleFamilyResource.ARTICLESFAMILY).path(ArticleFamilyResource.ARTICLES).get().build());
 
         assertEquals(articleOutputDtoList.size(), articleOutputDtoList.size());

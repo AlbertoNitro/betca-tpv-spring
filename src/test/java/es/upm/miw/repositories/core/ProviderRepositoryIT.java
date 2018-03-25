@@ -19,7 +19,13 @@ public class ProviderRepositoryIT {
 
     @Test
     public void testFindOne() {
-        assertEquals("company-p1", providerRepository.findOne("provider1").getCompany());
+        assertEquals("company-p1", this.providerRepository.findOne("provider1").getCompany());
+    }
+
+    @Test
+    public void testFindMinimumProviderById() {
+        assertEquals("provider1", this.providerRepository.findMinimumProviderById("provider1").getId());
+        assertEquals("company-p1", this.providerRepository.findMinimumProviderById("provider1").getCompany());
     }
 
 }

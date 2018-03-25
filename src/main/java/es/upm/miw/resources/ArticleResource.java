@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import es.upm.miw.controllers.ArticleController;
 import es.upm.miw.dtos.ArticleInputDto;
-import es.upm.miw.dtos.ArticleOutputDto;
+import es.upm.miw.dtos.ArticleDto;
 import es.upm.miw.resources.exceptions.ArticleCodeNotFoundException;
 
 @PreAuthorize("hasRole('ADMIN') or hasRole('MANAGER') or hasRole('OPERATOR')")
@@ -26,7 +26,7 @@ import es.upm.miw.resources.exceptions.ArticleCodeNotFoundException;
 public class ArticleResource {
     public static final String ARTICLES = "/articles";
     
-    public static final String INCOMPLETES = "/incompletos";
+    public static final String INCOMPLETES = "/incompletes";
 
     public static final String CODE_ID = "/{code}";
 
@@ -36,32 +36,31 @@ public class ArticleResource {
     private ArticleController articleController;
 
     @GetMapping(value = CODE_ID)
-    public ArticleOutputDto readArticle(@PathVariable String code) throws ArticleCodeNotFoundException {
+    public ArticleDto readArticle(@PathVariable String code) throws ArticleCodeNotFoundException {
         return this.articleController.readArticle(code).orElseThrow(() -> new ArticleCodeNotFoundException(code));
     }
     
 	@RequestMapping(method = RequestMethod.POST)
-	public ArticleOutputDto postArticle(@RequestBody ArticleOutputDto articleOuputDto) {
+	public ArticleDto postArticle(@RequestBody ArticleDto articleOuputDto) {
 		return this.articleController.postFastArticle(articleOuputDto);
-
 	}
 	
 	@RequestMapping(method = RequestMethod.GET)
-    public List<ArticleOutputDto> readAllArticles() {
-        return this.articleController.readAll();
+    public List<ArticleDto> readAllArticles() {
+        return this.articleController.readMinimumAll();
     }
 	
     @GetMapping(value = INCOMPLETES)
-    public List<ArticleOutputDto> readAllArticlesIncompletes(){
-        return this.articleController.readAllIncompletes();
+    public List<ArticleDto> readAllArticlesIncompletes(){
+        return this.articleController.readMinimumAllIncompletes();
     }
     @RequestMapping(value = FILTER , method = RequestMethod.POST)
-	public List<ArticleOutputDto> readFilterArticle(@RequestBody ArticleInputDto dto){
+	public List<ArticleDto> readFilterArticle(@RequestBody ArticleInputDto dto){
 	    return this.articleController.readFilterArticle(dto);
 	}
     
     @PutMapping(value = CODE_ID)
-    public void putArticle(@PathVariable String code, @Valid @RequestBody ArticleOutputDto articleDto) {
+    public void putArticle(@PathVariable String code, @Valid @RequestBody ArticleDto articleDto) {
     		this.articleController.putArticle(code,articleDto);
     }
 }

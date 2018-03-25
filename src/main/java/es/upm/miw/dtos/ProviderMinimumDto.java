@@ -35,6 +35,7 @@ public class ProviderMinimumDto {
 
     @Override
     public String toString() {
-        return "id=" + id + ", company=" + company;
+        return "ProviderMinimumDto [id=" + id + ", company=" + company + "]";
     }
+
 }
