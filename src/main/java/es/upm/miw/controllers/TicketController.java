@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -23,6 +24,8 @@ import es.upm.miw.repositories.core.ArticleRepository;
 import es.upm.miw.repositories.core.TicketRepository;
 import es.upm.miw.repositories.core.UserRepository;
 import es.upm.miw.services.PdfService;
+import es.upm.miw.services.StatisticsDataService;
+import es.upm.miw.dtos.HistoricalProductOutPutDto;
 
 @Controller
 public class TicketController {
@@ -38,6 +41,9 @@ public class TicketController {
 
 	@Autowired
 	private PdfService pdfService;
+
+	@Autowired
+	private StatisticsDataService statisticsDataService;
 
 	public Optional<byte[]> createTicket(TicketCreationInputDto ticketCreationDto) {
 		User user = this.userRepository.findByMobile(ticketCreationDto.getUserMobile());
@@ -106,4 +112,8 @@ public class TicketController {
 		return ticketListDto;
 	}
 
+	public List<HistoricalProductOutPutDto> getHistoricalProductsDataBetweenDates(Date initDate, Date endDate) {
+
+		return this.statisticsDataService.GetHistoricalData(initDate, endDate);
+	}
 }

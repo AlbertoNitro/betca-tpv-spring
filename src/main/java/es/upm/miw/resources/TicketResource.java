@@ -91,22 +91,8 @@ public class TicketResource {
 	public List<HistoricalProductOutPutDto> getHistoricalProductsData(
 			@DateTimeFormat(iso = DateTimeFormat.ISO.DATE) @RequestParam("initDate") Date startDate,
 			@DateTimeFormat(iso = DateTimeFormat.ISO.DATE) @RequestParam("endDate") Date endDate) {
-
-		List<HistoricalProductOutPutDto> result = new ArrayList<HistoricalProductOutPutDto>();
-
-		Random generator = new Random();
-		int numProducts = generator.nextInt(10);
-		int numMonths = generator.nextInt(10);
-		for (int i = 0; i < numProducts; i++) {
-			List<Integer> valuesPerMonth = new ArrayList<Integer>();
-			String productName = "product" + i;
-			for (int j = 0; j < numMonths; j++) {
-				valuesPerMonth.add(generator.nextInt(100));
-			}
-			result.add(new HistoricalProductOutPutDto(valuesPerMonth, productName));
-		}
-
-		return result;
+		
+		return this.ticketController.getHistoricalProductsDataBetweenDates(startDate, endDate);
 	}
 
 }
