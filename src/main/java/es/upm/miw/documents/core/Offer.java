@@ -14,7 +14,7 @@ public class Offer {
     @Indexed(unique = true)
 	private String code;
 	private String description;
-	private float percentage;
+	private Float percentage;
 	private Date creationDate;
 	private Date expiration;
 	
@@ -32,7 +32,6 @@ public class Offer {
 	
 	public Offer(String code, float percentage, Date expiration) {
 		this(code, percentage, expiration, null);
-		
 	}
 
 	public String getCode() {
