@@ -1,6 +1,5 @@
 package es.upm.miw.dtos;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class OfferInputDto {
