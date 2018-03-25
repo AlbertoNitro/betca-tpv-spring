@@ -53,10 +53,14 @@ public class Encrypting {
         return this.removeEqualsCar(code64Url);
     }
 
-    public String encodeInBase64UrlSafe(String hex) {
+    public String encodeHexInBase64UrlSafe(String hex) {
         return this.removeEqualsCar(Base64.getUrlEncoder().encodeToString(DatatypeConverter.parseHexBinary(hex)));
     }
-
+    
+    public String decodeBase64InHex(String encode) {
+        return DatatypeConverter.printHexBinary(Base64.getUrlDecoder().decode(encode)).toLowerCase();
+    }
+    
     private String removeEqualsCar(String msg) {
         if (msg.indexOf('=') == -1) {
             return msg;

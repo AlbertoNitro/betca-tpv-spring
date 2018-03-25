@@ -15,6 +15,7 @@ import es.upm.miw.dtos.ShoppingDto;
 import es.upm.miw.repositories.core.ArticleRepository;
 import es.upm.miw.repositories.core.BudgetRepository;
 import es.upm.miw.services.PdfService;
+import es.upm.miw.utils.Encrypting;
 
 @Controller
 public class BudgetController {
@@ -47,20 +48,18 @@ public class BudgetController {
         List<Budget> budgetList = this.budgetRepository.findAll();
         List<BudgetDto> budgetDtoList = new ArrayList<>();
         for (Budget budget : budgetList) {
-            BudgetDto budgetDto = new BudgetDto(budget.getId(), new ArrayList<>());
-            ArrayList<ShoppingDto> shoppingDtoList = new ArrayList<>();
-            for (Shopping shopping : budget.getShoppingList()) {
-                ShoppingDto shoppingDto = new ShoppingDto();
-                shoppingDto.setAmount(shopping.getAmount());
-                shoppingDto.setDescription(shopping.getDescription());
-                shoppingDto.setRetailPrice(shopping.getRetailPrice());
-                shoppingDto.setTotal(shopping.getShoppingTotal());
-                shoppingDto.setDiscount(shopping.getDiscount());
-                shoppingDtoList.add(shoppingDto);
-            }
-            budgetDto.setShoppingCart(shoppingDtoList);
+            BudgetDto budgetDto = new BudgetDto(new Encrypting().encodeHexInBase64UrlSafe(budget.getId()), null);
             budgetDtoList.add(budgetDto);
         }
         return budgetDtoList;
+    }
+
+    public Optional<byte[]> read(String id) {
+        Budget budget = this.budgetRepository.findOne(new Encrypting().decodeBase64InHex(id));
+        if (budget != null) {
+            return pdfService.generateBudget(budget);
+        } else {
+            return Optional.empty();
+        }
     }
 }
