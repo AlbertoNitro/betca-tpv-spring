@@ -27,7 +27,7 @@ public class OfferOutputDto {
         this.code = offer.getCode();
         this.percentage = offer.getPercentage();
         this.expiration = offer.getExpiration();
-        this.creationDate = new Date();
+        this.creationDate = offer.getCreationDate();
         this.description = offer.getDescription();
     }
 

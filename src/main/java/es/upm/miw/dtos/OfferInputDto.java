@@ -1,25 +1,25 @@
 package es.upm.miw.dtos;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class OfferInputDto {
     private String code;
     private Float percentage;
     private Date expiration;
-    private Date creationDate;
     private String description;
 
     public OfferInputDto() {
         // Empty for framework
     }
 
+	public OfferInputDto(String code, Float percentage, Date expiration) {
+		this(code, percentage, expiration, null);
+    }
+	
 	public OfferInputDto(String code, Float percentage, Date expiration, String description) {
-        super();
         this.code = code;
         this.percentage = percentage;
         this.expiration = expiration;
-        this.creationDate = new Date();
         this.description = description;
     }
 
@@ -47,14 +47,6 @@ public class OfferInputDto {
 		this.expiration = expiration;
 	}
 
-	public Date getCreationDate() {
-		return creationDate;
-	}
-
-	public void setCreationDate(Date creationDate) {
-		this.creationDate = creationDate;
-	}
-
 	public String getDescription() {
 		return description;
 	}
@@ -66,10 +58,7 @@ public class OfferInputDto {
     @Override
 	public String toString() {
 		String date = "null";
-		if (creationDate != null) {
-			date = new SimpleDateFormat("dd-MMM-yyyy").format(creationDate.getTime());
-		}
-		return "Offer [code=" + code + ", creationDate=" + date + ", expiration=" + expiration + ", percentage="
+		return "Offer [code=" + code + ", expiration=" + expiration + ", percentage="
 				+ percentage + ", description=" + description + " ]";
 	}
 }

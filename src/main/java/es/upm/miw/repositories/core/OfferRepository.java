@@ -5,4 +5,5 @@ import es.upm.miw.documents.core.Offer;
 
 public interface OfferRepository extends MongoRepository<Offer, String> {
 
+	Offer findByCode(String string);
 }

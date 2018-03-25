@@ -9,6 +9,8 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document
 public class Offer {
+	static String DATE_FORMAT = "dd-MM-yyyy";
+	
 	@Id
 	private String id;
     @Indexed(unique = true)
@@ -18,22 +20,27 @@ public class Offer {
 	private Date creationDate;
 	private Date expiration;
 	
-	public Offer() {
+	public Offer () {
+		
+	}
+	
+	public Offer(String code, Float percentage, Date expiration) {
+		this();
 		this.creationDate = new Date();
+		this.code = code;
+		this.percentage = percentage;
+		this.expiration = expiration;
 	}
 	
 	public Offer(String code, Float percentage, Date expiration, String description) {
 		this();
+		this.creationDate = new Date();
 		this.code = code;
 		this.percentage = percentage;
-		this.expiration = expiration;		
+		this.expiration = expiration;
 		this.description = description;
 	}
 	
-	public Offer(String code, Float percentage, Date expiration) {
-		this(code, percentage, expiration, null);
-	}
-
 	public String getId() {
 		return id;
 	}
@@ -45,10 +52,10 @@ public class Offer {
 	public String getCode() {
 		return code;
 	}
-
+	
 	public void setCode(String code) {
-        this.code = code;
-    }
+	    this.code = code;	
+	}
 
     public String getDescription() {
 		return description;
@@ -100,7 +107,7 @@ public class Offer {
 	public String toString() {
 		String date = "null";
 		if (creationDate != null) {
-			date = new SimpleDateFormat("dd-MMM-yyyy").format(creationDate.getTime());
+			date = new SimpleDateFormat(Offer.DATE_FORMAT).format(creationDate.getTime());
 		}
 		return "Offer [code=" + code + ", creationDate=" + date + ", expiration=" + expiration + ", percentage="
 				+ percentage + ", description=" + description + " ]";

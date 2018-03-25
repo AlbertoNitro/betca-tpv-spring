@@ -266,11 +266,12 @@ cashMovementList:
     comment: "test D" 
     
 # Offers
-offerList: 
+offerList:
   - code: AAA
     percentage: 0.25
-    expiration: 2018-04-06 12:00:00  
+    expiration: 2018-01-12
   - code: BBB
     percentage: 0.50
-    expiration: 2018-04-06 12:00:00
-    description: "En 2º compra"
+    expiration: 2018-12-12   
+    description: "Descuento en segunda compra"  
+
