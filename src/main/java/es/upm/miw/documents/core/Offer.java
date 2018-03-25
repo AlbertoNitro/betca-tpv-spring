@@ -22,7 +22,7 @@ public class Offer {
 		this.creationDate = new Date();
 	}
 	
-	public Offer(String code, float percentage, Date expiration, String description) {
+	public Offer(String code, Float percentage, Date expiration, String description) {
 		this();
 		this.code = code;
 		this.percentage = percentage;
@@ -30,7 +30,7 @@ public class Offer {
 		this.description = description;
 	}
 	
-	public Offer(String code, float percentage, Date expiration) {
+	public Offer(String code, Float percentage, Date expiration) {
 		this(code, percentage, expiration, null);
 	}
 
@@ -46,11 +46,11 @@ public class Offer {
 		this.description = description;
 	}
 
-	public float getPercentage() {
+	public Float getPercentage() {
 		return percentage;
 	}
 
-	public void setPercentage(float percentage) {
+	public void setPercentage(Float percentage) {
 		this.percentage = percentage;
 	}
 
