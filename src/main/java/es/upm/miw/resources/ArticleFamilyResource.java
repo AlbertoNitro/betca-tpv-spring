@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import es.upm.miw.controllers.ArticleController;
 import es.upm.miw.controllers.ArticleFamilyController;
 import es.upm.miw.dtos.ArticleFamiliaOutputDto;
-import es.upm.miw.dtos.ArticleOutputDto;
+import es.upm.miw.dtos.ArticleDto;
 import es.upm.miw.dtos.FamilyOutputDto;
 import es.upm.miw.resources.exceptions.ArticleFamilyNotFoudException;;
 
@@ -52,7 +52,7 @@ public class ArticleFamilyResource {
     }
 
     @RequestMapping(value = ARTICLES, method = RequestMethod.GET)
-    public List<ArticleOutputDto> readAllArticles() {
-        return this.articleController.readAll();
+    public List<ArticleDto> readAllArticles() {
+        return this.articleController.readMinimumAll();
     }
 }

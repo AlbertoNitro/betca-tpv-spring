@@ -57,7 +57,7 @@ public class Offer {
 	    this.code = code;	
 	}
 
-	public String getDescription() {
+    public String getDescription() {
 		return description;
 	}
 
