@@ -32,30 +32,49 @@ public class VoucherController {
     public List<VoucherDto> readVoucherAll() {
         List<Voucher> voucherList = this.voucherRepository.findAll();
         List<VoucherDto> voucherDtoList = new ArrayList<VoucherDto>();
-        for (int i = 0; i < voucherList.size(); i++) {
-            voucherDtoList.add(new VoucherDto(voucherList.get(i)));
+        for (Voucher voucher : voucherList) {
+            voucherDtoList.add(new VoucherDto().minimumDto(voucher));
         }
         return voucherDtoList;
     }
 
-    public BigDecimal consumeVoucher(String reference) {
-        Voucher voucher = this.voucherRepository.findByReference(reference);
-        assert voucher != null;
-        if (!voucher.isUsed()) {
-            voucher.setDateOfUse(new Date());
+    public List<VoucherDto> readVoucherAllValid() {
+        List<Voucher> voucherList = this.voucherRepository.findAll();
+        List<VoucherDto> voucherDtoList = new ArrayList<VoucherDto>();
+        for (Voucher voucher : voucherList) {
+            if (!voucher.isUsed()) {
+                voucherDtoList.add(new VoucherDto().minimumDto(voucher));
+            }
         }
+        return voucherDtoList;
+    }
+
+    public BigDecimal consumeVoucher(String id) {
+        Voucher voucher = this.voucherRepository.findOne(id);
+        assert voucher != null;
+        assert !voucher.isUsed();
+        voucher.setDateOfUse(new Date());
         this.voucherRepository.save(voucher);
         return voucher.getValue();
     }
 
-    public boolean existsVoucher(String reference) {
-        return this.voucherRepository.findByReference(reference) != null;
+    public boolean existsVoucher(String id) {
+        return this.voucherRepository.findOne(id) != null;
     }
 
-    public boolean consumedVoucher(String reference) {
-        Voucher voucher = this.voucherRepository.findByReference(reference);
+    public boolean consumedVoucher(String id) {
+        Voucher voucher = this.voucherRepository.findOne(id);
         assert voucher != null;
         return voucher.isUsed();
+    }
+
+    public Optional<VoucherDto> readVoucher(String id) {
+        Voucher voucher = this.voucherRepository.findOne(id);
+        if (voucher != null) {
+            return Optional.of(new VoucherDto(voucher));
+        } else {
+            return Optional.empty();
+        }
     }
 
 }

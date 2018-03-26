@@ -18,6 +18,7 @@ import es.upm.miw.documents.core.ShoppingState;
 import es.upm.miw.documents.core.Tax;
 import es.upm.miw.documents.core.Ticket;
 import es.upm.miw.documents.core.Voucher;
+import es.upm.miw.utils.Encrypting;
 
 @Service
 public class PdfService {
@@ -112,14 +113,9 @@ public class PdfService {
     public Optional<byte[]> generateBudget(Budget budget) {
         final String path = "/budgets/budget-" + budget.getId();
         PdfTicketBuilder pdf = this.addCompanyDetails(path, budget.getShoppingList().length);
-
         pdf.line().paragraphEmphasized("PRESUPUESTO");
-        if (budget.getId() != null) {
-            // TODO Raquel!!, no le hagas caso a estos comentarios... Para reducir el código enviado, se utiliza encode64
-            // pdf.barCode(new Encrypting().encodeInBase64UrlSafe(budget.getId())).line();
-            pdf.barCode(budget.getId()).line();
-        }
-
+        pdf.barCode(new Encrypting().encodeHexInBase64UrlSafe(budget.getId())).line();
+        
         SimpleDateFormat formatter = new SimpleDateFormat(DATE_FORMAT);
         pdf.paragraphEmphasized(formatter.format(budget.getCreationDate()));
 
@@ -137,11 +133,11 @@ public class PdfService {
     }
 
     public Optional<byte[]> generateVoucher(Voucher voucher) {
-        final String path = "/vouchers/voucher-" + voucher.getReference();
+        final String path = "/vouchers/voucher-" + voucher.getId();
         PdfTicketBuilder pdf = this.addCompanyDetails(path, 2);
 
         pdf.line().paragraphEmphasized("VOUCHER");
-        pdf.barCode(voucher.getReference()).line();
+        pdf.barCode(new Encrypting().encodeHexInBase64UrlSafe(voucher.getId())).line();
 
         pdf.paragraphEmphasized("Valor: " + voucher.getValue()).line();
 

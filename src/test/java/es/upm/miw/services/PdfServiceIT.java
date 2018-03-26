@@ -65,12 +65,14 @@ public class PdfServiceIT {
         shoppingList[4] = new Shopping(2, new BigDecimal("85"), article);
         shoppingList[5] = new Shopping(3, new BigDecimal("50"), article);
         Budget budget = new Budget(shoppingList);
+        budget.setId("a3b2");
         pdfService.generateBudget(budget);
     }
 
     @Test
     public void testGenerateVoucher() {
         Voucher voucher = new Voucher(new BigDecimal(55));
+        voucher.setId("a3b2");
         pdfService.generateVoucher(voucher);
     }
 

@@ -7,13 +7,11 @@ import java.util.Date;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import es.upm.miw.utils.Encrypting;
-
 @Document
 public class Voucher {
 
     @Id
-    private String reference;
+    private String id;
 
     private BigDecimal value;
 
@@ -22,18 +20,20 @@ public class Voucher {
     private Date dateOfUse;
 
     public Voucher() {
-        this(new BigDecimal(0));
+        this.creationDate = new Date();
     }
 
     public Voucher(BigDecimal value) {
-        this.reference = new Encrypting().encryptInBase64UrlSafe();
-        this.creationDate = new Date();
-        this.dateOfUse = null;
-        this.setValue(value);
+        this();
+        this.value = value;
     }
 
-    public String getReference() {
-        return reference;
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public BigDecimal getValue() {
@@ -67,7 +67,7 @@ public class Voucher {
 
     @Override
     public int hashCode() {
-        return reference.hashCode();
+        return id.hashCode();
     }
 
     @Override
@@ -81,7 +81,7 @@ public class Voucher {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        return reference.equals(((Voucher) obj).reference);
+        return id.equals(((Voucher) obj).id);
     }
 
     @Override
@@ -93,8 +93,7 @@ public class Voucher {
         } else {
             useTime = "---";
         }
-        return "Voucher [reference=" + reference + ", value=" + value.doubleValue() + ", creationDate=" + creationTime + ", dateOfUse="
-                + useTime + "]";
+        return "Voucher [id=" + id + ", value=" + value.doubleValue() + ", creationDate=" + creationTime + ", dateOfUse=" + useTime + "]";
     }
 
 }
