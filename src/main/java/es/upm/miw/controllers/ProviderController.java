@@ -16,24 +16,27 @@ public class ProviderController {
 
     @Autowired
     private ProviderRepository providerRepository;
-    
+
     public void createProvider(ProviderDto provierDto) {
-        Provider provider = new Provider(provierDto.getId(),provierDto.getCompany(), provierDto.getAddress(), provierDto.getMobile(), provierDto.getPhone(), provierDto.getNote(), true);
+        Provider provider = new Provider(provierDto.getCompany(), provierDto.getAddress(), provierDto.getMobile(), provierDto.getPhone(),
+                provierDto.getNote());
         this.providerRepository.save(provider);
     }
-    
+
     public boolean companyRepeated(ProviderDto providerDto) {
+        return null != this.providerRepository.findByCompany(providerDto.getCompany());
+    }
+
+    public boolean companyRepeated(String id, ProviderDto providerDto) {
         Provider provider = this.providerRepository.findByCompany(providerDto.getCompany());
-        return provider != null 
-                && provider.getCompany().equals(providerDto.getCompany()) 
-                && !provider.getId().equals(providerDto.getId());
+        return null != provider && !provider.getId().equals(id);
     }
-    
+
     public boolean existsId(String id) {
-        return this.providerRepository.findById(id) != null;
+        return null != this.providerRepository.findById(id);
     }
-    
-    public boolean putProvider(String id, ProviderDto providerDto) {
+
+    public void putProvider(String id, ProviderDto providerDto) {
         Provider provider = this.providerRepository.findById(id);
         assert provider != null;
         provider.setCompany(providerDto.getCompany());
@@ -43,19 +46,8 @@ public class ProviderController {
         provider.setNote(providerDto.getNote());
         provider.setActive(providerDto.getActive());
         this.providerRepository.save(provider);
-        return true;
     }
 
-    public boolean deleteProvider(String id) {
-        Provider providerBd = this.providerRepository.findById(id);
-        if (providerBd == null) {
-            return true;
-        } else {
-            this.providerRepository.delete(providerBd);
-            return true;
-        }
-    }
-    
     public Optional<ProviderDto> readProvider(String id) {
         Provider providerBd = this.providerRepository.findById(id);
         if (providerBd == null) {
@@ -66,7 +58,7 @@ public class ProviderController {
     }
 
     public List<ProviderMinimumDto> readProviderAll() {
-        return this.providerRepository.findProviderAll();
+        return this.providerRepository.findMinimumAll();
     }
 
 }

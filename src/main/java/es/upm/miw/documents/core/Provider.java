@@ -27,25 +27,13 @@ public class Provider {
         this.active = true;
     }
 
-    public Provider(String id, String company, String address, String mobile, String phone, String note, Boolean active) {
-        super();
-        this.id = id;
+    public Provider(String company, String address, String mobile, String phone, String note) {
+        this();
         this.company = company;
         this.address = address;
         this.mobile = mobile;
         this.phone = phone;
         this.note = note;
-        this.active = active;
-    }
-
-    public Provider(String company, String address, String mobile, String phone, String note, Boolean active) {
-        super();
-        this.company = company;
-        this.address = address;
-        this.mobile = mobile;
-        this.phone = phone;
-        this.note = note;
-        this.active = active;
     }
 
     public String getCompany() {

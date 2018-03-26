@@ -52,7 +52,7 @@ public class ProviderResourceFunctionalTesting {
     public void testPutProvider() {
         restService.restBuilder().path(ProviderResource.PROVIDERS).body(providerDto).post().build();
         providerDto.setAddress("TAddress");
-        restService.restBuilder().path(ProviderResource.PROVIDERS).path(ProviderResource.ID).expand("TP").body(providerDto).put().build();
+        restService.restBuilder().path(ProviderResource.PROVIDERS).path(ProviderResource.ID_ID).expand("TP").body(providerDto).put().build();
         assertEquals("TAddress", providerDto.getAddress());
     }
     
@@ -65,7 +65,7 @@ public class ProviderResourceFunctionalTesting {
 
     @Test
     public void testReadProvider() {
-        String json=restService.restBuilder(new RestBuilder<String>()).clazz(String.class).path(ProviderResource.PROVIDERS).path(ProviderResource.ID).expand("provider1").get().build();
+        String json=restService.restBuilder(new RestBuilder<String>()).clazz(String.class).path(ProviderResource.PROVIDERS).path(ProviderResource.ID_ID).expand("provider1").get().build();
         System.out.println("------------>"+json);
     }
     
@@ -77,7 +77,7 @@ public class ProviderResourceFunctionalTesting {
     
     @After
     public void delete() {
-        restService.restBuilder().path(ProviderResource.PROVIDERS).path(ProviderResource.ID).expand("TP").delete().build();
+        restService.restBuilder().path(ProviderResource.PROVIDERS).path(ProviderResource.ID_ID).expand("TP").delete().build();
     }
 
 }

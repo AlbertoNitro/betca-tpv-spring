@@ -43,7 +43,7 @@ public class OrderControllerIT {
     
     @Test
     public void createOrderTest() {
-        Provider provider = new Provider("provider1","Adrian company","Addres","66","91","note",true);
+        Provider provider = new Provider("Adrian company","Addres","66","91","note");
         Order order = new Order( "2018-2",provider.getId(),new Date());
         OrderDto orderDto = new OrderDto(order,provider);
         this.orderController.createOrder(orderDto);
