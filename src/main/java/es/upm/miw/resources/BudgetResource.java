@@ -1,7 +1,6 @@
 package es.upm.miw.resources;
 
 import java.util.List;
-import java.util.Optional;
 
 import javax.validation.Valid;
 
@@ -33,12 +32,7 @@ public class BudgetResource {
 
     @PostMapping(produces = {"application/pdf", "application/json"})
     public byte[] createBudget(@Valid @RequestBody BudgetDto budgetCreationDto) throws FieldInvalidException {
-        Optional<byte[]> pdf = this.budgetController.createBudget(budgetCreationDto);
-        if (!pdf.isPresent()) {
-            throw new FieldInvalidException("Article exception");
-        } else {
-            return pdf.get();
-        }
+        return this.budgetController.createBudget(budgetCreationDto).orElseThrow(() -> new FieldInvalidException("Article exception"));
     }
 
     @GetMapping
