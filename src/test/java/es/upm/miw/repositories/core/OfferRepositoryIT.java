@@ -30,7 +30,7 @@ public class OfferRepositoryIT {
     @Test
     public void findByWrongCodeTest() {
         assertNotEquals("BBB", this.offerRepository.findByCode("AAA").getCode());
-        assertEquals(new Float(0.50), this.offerRepository.findByCode("AAA").getPercentage()); 
+        assertNotEquals(new Float(0.50), this.offerRepository.findByCode("AAA").getPercentage()); 
     }
     
     @Test
