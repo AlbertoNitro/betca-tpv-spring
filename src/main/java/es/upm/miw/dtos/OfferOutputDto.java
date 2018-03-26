@@ -22,7 +22,6 @@ public class OfferOutputDto {
     }
 
 	public OfferOutputDto(Offer offer) {
-        super();
         this.id = offer.getId();
         this.code = offer.getCode();
         this.percentage = offer.getPercentage();
