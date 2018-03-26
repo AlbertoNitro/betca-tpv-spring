@@ -31,7 +31,7 @@ public class PdfTicketBuilder extends PdfBuilder {
 
     private static final int TERMIC_FONT_SIZE = 7;
 
-    private static final int TERMIC_FONT_SIZE_EMPHASIZEDD = 9;
+    private static final int TERMIC_FONT_SIZE_EMPHASIZEDD = 10;
 
     private static final int TERMIC_MARGIN = 4;
 
