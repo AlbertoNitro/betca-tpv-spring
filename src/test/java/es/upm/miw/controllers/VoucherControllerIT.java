@@ -49,19 +49,19 @@ public class VoucherControllerIT {
 
     @Test
     public void testExistsVoucherTrue() {
-        assertTrue(this.voucherController.existsVoucher(this.voucher.getReference()));
+        assertTrue(this.voucherController.existsVoucher(this.voucher.getId()));
     }
 
     @Test
     public void testConsumedVoucherFalse() {
-        assertFalse(this.voucherController.consumedVoucher(this.voucher.getReference()));
+        assertFalse(this.voucherController.consumedVoucher(this.voucher.getId()));
     }
 
     @Test
     public void testConsumedVoucherTrue() {
-        assertFalse(this.voucherController.consumedVoucher(this.voucher.getReference()));
+        assertFalse(this.voucherController.consumedVoucher(this.voucher.getId()));
         this.voucher.setDateOfUse(new Date());
         this.voucherRepository.save(this.voucher);
-        assertTrue(this.voucherController.consumedVoucher(this.voucher.getReference()));
+        assertTrue(this.voucherController.consumedVoucher(this.voucher.getId()));
     }
 }

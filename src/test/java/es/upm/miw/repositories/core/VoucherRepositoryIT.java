@@ -36,5 +36,5 @@ public class VoucherRepositoryIT {
         List<Voucher> voucherList = voucherRepository.findByCreationDateGreaterThan(date);
         assertEquals(666.666, voucherList.get(0).getValue().doubleValue(), 10 - 10);
     }
-
-}
+    
+ }

@@ -72,6 +72,7 @@ public class PdfServiceIT {
     @Test
     public void testGenerateVoucher() {
         Voucher voucher = new Voucher(new BigDecimal(55));
+        voucher.setId("a3b2");
         pdfService.generateVoucher(voucher);
     }
 
