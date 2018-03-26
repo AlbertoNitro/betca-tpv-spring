@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 import es.upm.miw.documents.core.Voucher;
+import es.upm.miw.dtos.validations.BigDecimalPositive;
 import es.upm.miw.utils.Encrypting;
 
 @JsonInclude(Include.NON_NULL)
@@ -15,6 +16,7 @@ public class VoucherDto {
 
     private String id;
 
+    @BigDecimalPositive
     private BigDecimal value;
 
     private Date creationDate = null;
@@ -26,20 +28,18 @@ public class VoucherDto {
     }
 
     public VoucherDto(BigDecimal value) {
-        this.id = new Encrypting().encryptInBase64UrlSafe();
         this.value = value;
-        this.dateOfUse = null;
     }
 
     public VoucherDto(Voucher voucher) {
-        this.id = voucher.getId();
+        this.id = new Encrypting().encodeHexInBase64UrlSafe(voucher.getId());
         this.value = voucher.getValue();
         this.creationDate = voucher.getCreationDate();
         this.dateOfUse = voucher.getDateOfUse();
     }
-    
+
     public VoucherDto minimumDto(Voucher voucher) {
-        this.id = voucher.getId();
+        this.id = new Encrypting().encodeHexInBase64UrlSafe(voucher.getId());
         this.value = voucher.getValue();
         return this;
     }

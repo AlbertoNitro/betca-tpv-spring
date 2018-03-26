@@ -7,8 +7,6 @@ import java.util.Date;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import es.upm.miw.utils.Encrypting;
-
 @Document
 public class Voucher {
 
@@ -22,19 +20,20 @@ public class Voucher {
     private Date dateOfUse;
 
     public Voucher() {
-        this(new BigDecimal(0));
+        this.creationDate = new Date();
     }
 
     public Voucher(BigDecimal value) {
-        this.id = new Encrypting().encryptInBase64UrlSafe();
-        this.creationDate = new Date();
-        this.dateOfUse = null;
-        this.setValue(value);
+        this();
+        this.value = value;
     }
-
 
     public String getId() {
         return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public BigDecimal getValue() {
@@ -94,8 +93,7 @@ public class Voucher {
         } else {
             useTime = "---";
         }
-        return "Voucher [id=" + id + ", value=" + value.doubleValue() + ", creationDate=" + creationTime + ", dateOfUse="
-                + useTime + "]";
+        return "Voucher [id=" + id + ", value=" + value.doubleValue() + ", creationDate=" + creationTime + ", dateOfUse=" + useTime + "]";
     }
 
 }

@@ -2,7 +2,6 @@ package es.upm.miw.resources;
 
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.Optional;
 
 import javax.validation.Valid;
 
@@ -19,9 +18,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import es.upm.miw.controllers.VoucherController;
 import es.upm.miw.dtos.VoucherDto;
-import es.upm.miw.resources.exceptions.FieldInvalidException;
+import es.upm.miw.resources.exceptions.FileException;
 import es.upm.miw.resources.exceptions.VoucherConsumedException;
 import es.upm.miw.resources.exceptions.VoucherReferenceNotFoundException;
+import es.upm.miw.utils.Encrypting;
 
 @PreAuthorize("hasRole('ADMIN') or hasRole('MANAGER') or hasRole('OPERATOR')")
 @RestController
@@ -30,7 +30,7 @@ public class VoucherResource {
 
     public static final String VOUCHERS = "/vouchers";
 
-    public static final String REFERENCE = "/{reference}";
+    public static final String ID_ID = "/{id}";
 
     public static final String VALID = "/valid";
 
@@ -38,24 +38,19 @@ public class VoucherResource {
     private VoucherController voucherController;
 
     @PostMapping(produces = {"application/pdf", "application/json"})
-    public @ResponseBody byte[] createVoucher(@Valid @RequestBody VoucherDto voucherDto) throws FieldInvalidException {
-        Optional<byte[]> pdf = this.voucherController.createVoucher(voucherDto.getValue());
-        if (!pdf.isPresent()) {
-            throw new FieldInvalidException("Voucher exception");
-        } else {
-            return pdf.get();
-        }
+    public @ResponseBody byte[] createVoucher(@Valid @RequestBody VoucherDto voucherDto) throws FileException {
+        return this.voucherController.createVoucher(voucherDto.getValue()).orElseThrow(() -> new FileException("Voucher PDF exception"));
     }
 
-    @PatchMapping(value = REFERENCE)
-    public BigDecimal consumeVoucher(@PathVariable String reference) throws VoucherReferenceNotFoundException, VoucherConsumedException {
-        if (!this.voucherController.existsVoucher(reference)) {
+    @PatchMapping(value = ID_ID)
+    public BigDecimal consumeVoucher(@PathVariable String id) throws VoucherReferenceNotFoundException, VoucherConsumedException {
+        if (!this.voucherController.existsVoucher(new Encrypting().decodeBase64InHex(id))) {
             throw new VoucherReferenceNotFoundException();
         }
-        if (this.voucherController.consumedVoucher(reference)) {
+        if (this.voucherController.consumedVoucher(new Encrypting().decodeBase64InHex(id))) {
             throw new VoucherConsumedException();
         }
-        return this.voucherController.consumeVoucher(reference);
+        return this.voucherController.consumeVoucher(new Encrypting().decodeBase64InHex(id));
     }
 
     @GetMapping
@@ -68,10 +63,9 @@ public class VoucherResource {
         return this.voucherController.readVoucherAllValid();
     }
     
-    @GetMapping(value = REFERENCE)
-    public VoucherDto readVoucher(@PathVariable String reference) throws VoucherReferenceNotFoundException {
-        return this.voucherController.readVoucher(reference).orElseThrow(() -> new VoucherReferenceNotFoundException(reference));
+    @GetMapping(value = ID_ID)
+    public VoucherDto readVoucher(@PathVariable String id) throws VoucherReferenceNotFoundException {
+        return this.voucherController.readVoucher(new Encrypting().decodeBase64InHex(id)).orElseThrow(() -> new VoucherReferenceNotFoundException(id));
     }
-   
 
 }

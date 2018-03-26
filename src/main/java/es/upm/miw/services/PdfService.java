@@ -137,7 +137,7 @@ public class PdfService {
         PdfTicketBuilder pdf = this.addCompanyDetails(path, 2);
 
         pdf.line().paragraphEmphasized("VOUCHER");
-        pdf.barCode(voucher.getId()).line();
+        pdf.barCode(new Encrypting().encodeHexInBase64UrlSafe(voucher.getId())).line();
 
         pdf.paragraphEmphasized("Valor: " + voucher.getValue()).line();
 

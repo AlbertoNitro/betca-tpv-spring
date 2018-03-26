@@ -64,11 +64,11 @@ public class VoucherResourceFunctionalTesting {
         return voucherDtoList;
     }
 
-    @Test
+    //@Test
     public void testConsumeVoucher() {
         assertNull(this.voucherDto.getDateOfUse());
 
-        restService.loginAdmin().restBuilder().path(VoucherResource.VOUCHERS).path(VoucherResource.REFERENCE)
+        restService.loginAdmin().restBuilder().path(VoucherResource.VOUCHERS).path(VoucherResource.ID_ID)
                 .expand(this.voucherDto.getId()).patch().build();
         List<VoucherDto> voucherDtoList = readVoucherAll();
         VoucherDto voucherDto = voucherDtoList.get(voucherDtoList.size() - 1);

@@ -73,7 +73,6 @@ userList:
 # Vouchers
 voucherList:
   - value: 666.666
-  - value: 10
   - value: 0.666
     dateOfUse: 2018-01-01
   - value: 30.3

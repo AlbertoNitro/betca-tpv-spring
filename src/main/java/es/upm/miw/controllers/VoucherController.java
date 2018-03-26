@@ -37,47 +37,44 @@ public class VoucherController {
         }
         return voucherDtoList;
     }
-    
+
     public List<VoucherDto> readVoucherAllValid() {
         List<Voucher> voucherList = this.voucherRepository.findAll();
         List<VoucherDto> voucherDtoList = new ArrayList<VoucherDto>();
         for (Voucher voucher : voucherList) {
-            if(!voucher.isUsed()) {
+            if (!voucher.isUsed()) {
                 voucherDtoList.add(new VoucherDto().minimumDto(voucher));
             }
         }
         return voucherDtoList;
     }
 
-    public BigDecimal consumeVoucher(String reference) {
-        Voucher voucher = this.voucherRepository.findOne(reference);
+    public BigDecimal consumeVoucher(String id) {
+        Voucher voucher = this.voucherRepository.findOne(id);
         assert voucher != null;
-        if (!voucher.isUsed()) {
-            voucher.setDateOfUse(new Date());
-        }
+        assert !voucher.isUsed();
+        voucher.setDateOfUse(new Date());
         this.voucherRepository.save(voucher);
         return voucher.getValue();
     }
 
-    public boolean existsVoucher(String reference) {
-        return this.voucherRepository.findOne(reference) != null;
+    public boolean existsVoucher(String id) {
+        return this.voucherRepository.findOne(id) != null;
     }
 
-    public boolean consumedVoucher(String reference) {
-        Voucher voucher = this.voucherRepository.findOne(reference);
+    public boolean consumedVoucher(String id) {
+        Voucher voucher = this.voucherRepository.findOne(id);
         assert voucher != null;
         return voucher.isUsed();
     }
 
-    public Optional<VoucherDto> readVoucher(String reference) {
-        Voucher voucher = this.voucherRepository.findOne(reference);
+    public Optional<VoucherDto> readVoucher(String id) {
+        Voucher voucher = this.voucherRepository.findOne(id);
         if (voucher != null) {
             return Optional.of(new VoucherDto(voucher));
         } else {
             return Optional.empty();
         }
     }
-
-
 
 }
