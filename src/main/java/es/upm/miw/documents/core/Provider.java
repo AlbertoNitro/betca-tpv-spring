@@ -13,78 +13,29 @@ public class Provider {
     @Indexed(unique = true)
     private String company;
 
-    private String address;
+    private String nif;
 
-    private String mobile;
+    private String address;
 
     private String phone;
 
+    private String email;
+
     private String note;
-    
+
     private Boolean active;
 
     public Provider() {
-        // Empty for framework
+        this.active = true;
     }
-    
-    public Provider(String id, String company, String address, String mobile, String phone, String note, Boolean active) {
-        super();
-        this.id = id;
+
+    public Provider(String company, String nif, String address, String phone, String email, String note) {
+        this();
         this.company = company;
+        this.nif = nif;
         this.address = address;
-        this.mobile = mobile;
         this.phone = phone;
-        this.note = note;
-        this.active = active;
-    }
-    
-    public Provider(String company, String address, String mobile, String phone, String note, Boolean active) {
-        super();
-        this.company = company;
-        this.address = address;
-        this.mobile = mobile;
-        this.phone = phone;
-        this.note = note;
-        this.active = active;
-    }
-
-    public String getCompany() {
-        return company;
-    }
-
-    public void setCompany(String company) {
-        this.company = company;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    public String getMobile() {
-        return mobile;
-    }
-
-    public void setMobile(String mobile) {
-        this.mobile = mobile;
-    }
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-
-    public String getNote() {
-        return note;
-    }
-
-    public void setNote(String note) {
+        this.email = email;
         this.note = note;
     }
 
@@ -95,7 +46,59 @@ public class Provider {
     public void setId(String id) {
         this.id = id;
     }
-    
+
+    public String getCompany() {
+        return company;
+    }
+
+    public void setCompany(String company) {
+        this.company = company;
+    }
+
+    public String getNif() {
+        return nif;
+    }
+
+    public void setNif(String nif) {
+        this.nif = nif;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getNote() {
+        return note;
+    }
+
+    public void setNote(String note) {
+        this.note = note;
+    }
+
+    public Boolean getActive() {
+        return active;
+    }
+
     public Boolean isActive() {
         return active;
     }
@@ -106,7 +109,7 @@ public class Provider {
 
     @Override
     public int hashCode() {
-        return this.id.hashCode();
+        return this.company.hashCode();
     }
 
     @Override
@@ -120,13 +123,13 @@ public class Provider {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        return (id.equals(((Provider) obj).id));
+        return (company.equals(((Provider) obj).company));
     }
 
     @Override
     public String toString() {
-        return "Provider[" + id + ": company=" + company + ", address=" + address + ", mobile=" + mobile + ", phone=" + phone + ", note="
-                + note + ", active=" + active + "]";
+        return "Provider [id=" + id + ", company=" + company + ", nif=" + nif + ", address=" + address + ", phone=" + phone + ", email="
+                + email + ", note=" + note + ", active=" + active + "]";
     }
 
 }

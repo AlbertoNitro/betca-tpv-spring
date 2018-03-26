@@ -1,7 +1,7 @@
 # Providers
 providerList:
   - &pr0
-    id: varios
+    company: varios
     
 # Articles
 articleList:
@@ -10,6 +10,17 @@ articleList:
     reference: varios
     description: Varios
     retailPrice: 100
-    wholesalePrice: 50
     tax: GENERAL
     provider: *pr0
+
+# Offers 
+offerList:
+  - id: 1111
+    code: CCC
+    percentage: 0.25
+    expiration: 2018-01-12
+  - id: 2222
+    code: DDD
+    percentage: 0.50
+    expiration: 2018-12-12   
+    description: "Descuento en segunda compra"  

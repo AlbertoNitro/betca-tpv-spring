@@ -17,9 +17,11 @@ import org.yaml.snakeyaml.constructor.Constructor;
 import es.upm.miw.documents.core.Role;
 import es.upm.miw.documents.core.User;
 import es.upm.miw.repositories.core.ArticleRepository;
+import es.upm.miw.repositories.core.BudgetRepository;
 import es.upm.miw.repositories.core.CashMovementRepository;
 import es.upm.miw.repositories.core.CashierClosureRepository;
 import es.upm.miw.repositories.core.InvoiceRepository;
+import es.upm.miw.repositories.core.OfferRepository;
 import es.upm.miw.repositories.core.ProviderRepository;
 import es.upm.miw.repositories.core.TicketRepository;
 import es.upm.miw.repositories.core.UserRepository;
@@ -63,6 +65,12 @@ public class DatabaseSeederService {
 
 	@Autowired
 	public CashierClosureRepository cashierClosureRepository;
+	
+	@Autowired
+	public OfferRepository offerRepository;
+	
+    @Autowired
+    private BudgetRepository budgetRepository;
 
 	@PostConstruct
 	public void seedDatabase() {
@@ -109,6 +117,9 @@ public class DatabaseSeederService {
 		if (tpvGraph.getInvoiceList() != null) {
 			this.invoiceRepository.save(tpvGraph.getInvoiceList());
 		}
+		if (tpvGraph.getOfferList() != null) {
+			this.offerRepository.save(tpvGraph.getOfferList());
+		}
 		// -----------------------------------------------------------------------
 
 		Logger.getLogger(this.getClass()).warn("------------------------- Seed: " + ymlFileName + "-----------");
@@ -125,6 +136,8 @@ public class DatabaseSeederService {
 		this.providerRepository.deleteAll();
 		this.invoiceRepository.deleteAll();
 		this.cashierClosureRepository.deleteAll();
+		this.offerRepository.deleteAll();
+		this.budgetRepository.deleteAll();
 		this.createAdminIfNotExist();
 		// -----------------------------------------------------------------------
 	}

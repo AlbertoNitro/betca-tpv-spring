@@ -9,6 +9,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+
 import es.upm.miw.documents.core.Article;
 import es.upm.miw.documents.core.Budget;
 import es.upm.miw.documents.core.Invoice;
@@ -17,6 +18,7 @@ import es.upm.miw.documents.core.ShoppingState;
 import es.upm.miw.documents.core.Tax;
 import es.upm.miw.documents.core.Ticket;
 import es.upm.miw.documents.core.Voucher;
+import es.upm.miw.utils.Encrypting;
 
 @Service
 public class PdfService {
@@ -111,14 +113,9 @@ public class PdfService {
     public Optional<byte[]> generateBudget(Budget budget) {
         final String path = "/budgets/budget-" + budget.getId();
         PdfTicketBuilder pdf = this.addCompanyDetails(path, budget.getShoppingList().length);
-
         pdf.line().paragraphEmphasized("PRESUPUESTO");
-        if (budget.getId() != null) {
-            // TODO Raquel!!, no le hagas caso a estos comentarios... Para reducir el código enviado, se utiliza encode64
-            // pdf.barCode(new Encrypting().encodeInBase64UrlSafe(budget.getId())).line();
-            pdf.barCode(budget.getId()).line();
-        }
-
+        pdf.barCode(new Encrypting().encodeHexInBase64UrlSafe(budget.getId())).line();
+        
         SimpleDateFormat formatter = new SimpleDateFormat(DATE_FORMAT);
         pdf.paragraphEmphasized(formatter.format(budget.getCreationDate()));
 
@@ -134,23 +131,23 @@ public class PdfService {
 
         return pdf.build();
     }
-    
-    public Optional<byte[]> generateVoucher( Voucher voucher ){
-    	final String path = "/vouchers/voucher-" + voucher.getReference();
-    	PdfTicketBuilder pdf = this.addCompanyDetails(path, 2);
-    	
-    	pdf.line().paragraphEmphasized("VOUCHER");
-    	pdf.barCode(voucher.getReference()).line();
-    	
-    	pdf.paragraphEmphasized("Valor: " + voucher.getValue()).line();
-    	
-    	SimpleDateFormat formatter = new SimpleDateFormat(DATE_FORMAT);
+
+    public Optional<byte[]> generateVoucher(Voucher voucher) {
+        final String path = "/vouchers/voucher-" + voucher.getId();
+        PdfTicketBuilder pdf = this.addCompanyDetails(path, 2);
+
+        pdf.line().paragraphEmphasized("VOUCHER");
+        pdf.barCode(new Encrypting().encodeHexInBase64UrlSafe(voucher.getId())).line();
+
+        pdf.paragraphEmphasized("      Valor: " + voucher.getValue()+" €").line();
+
+        SimpleDateFormat formatter = new SimpleDateFormat(DATE_FORMAT);
         pdf.paragraphEmphasized(formatter.format(voucher.getCreationDate()));
-        
+
         pdf.line().paragraph("Periodo de validez: ilimitado.");
         pdf.paragraphEmphasized("Gracias por usar nuestros servicios.");
-    	
-    	return pdf.build();
+
+        return pdf.build();
     }
 
     private PdfTicketBuilder addCompanyDetails(String path, int lines) {

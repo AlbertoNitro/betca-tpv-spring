@@ -1,67 +1,92 @@
 package es.upm.miw.dtos;
 
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 import es.upm.miw.documents.core.Voucher;
+import es.upm.miw.dtos.validations.BigDecimalPositive;
 import es.upm.miw.utils.Encrypting;
 
+@JsonInclude(Include.NON_NULL)
 public class VoucherDto {
-	
-	private String reference;
-	private BigDecimal value;
-	private boolean used;
-	
-	public VoucherDto() {
-		// Empty for framework
-	}
-	
-	public VoucherDto(BigDecimal value) {
-		this.reference = new Encrypting().encryptInBase64UrlSafe();
+
+    private String id;
+
+    @BigDecimalPositive
+    private BigDecimal value;
+
+    private Date creationDate = null;
+
+    private Date dateOfUse = null;
+
+    public VoucherDto() {
+        // Empty for framework
+    }
+
+    public VoucherDto(BigDecimal value) {
         this.value = value;
-        this.used = false;
     }
-	
-	public VoucherDto(String reference, BigDecimal value) {
-		this.reference = reference;
+
+    public VoucherDto(Voucher voucher) {
+        this.id = new Encrypting().encodeHexInBase64UrlSafe(voucher.getId());
+        this.value = voucher.getValue();
+        this.creationDate = voucher.getCreationDate();
+        this.dateOfUse = voucher.getDateOfUse();
+    }
+
+    public VoucherDto minimumDto(Voucher voucher) {
+        this.id = new Encrypting().encodeHexInBase64UrlSafe(voucher.getId());
+        this.value = voucher.getValue();
+        return this;
+    }
+
+    public BigDecimal getValue() {
+        return value;
+    }
+
+    public void setValue(BigDecimal value) {
         this.value = value;
-        this.used = false;
     }
-	
-	public VoucherDto(Voucher voucher) {
-		this.reference = voucher.getReference();
-		this.value = voucher.getValue();
-		this.used = voucher.isUsed();
+
+    public Date getCreationDate() {
+        return creationDate;
     }
-	
-	public BigDecimal getValue() {
-		return value;
-	}
 
-	public void setValue(BigDecimal value) {
-		this.value = value;
-	}
+    public void setCreationDate(Date creationDate) {
+        this.creationDate = creationDate;
+    }
 
-	public boolean isUsed() {
-		return used;
-	}
+    public Date getDateOfUse() {
+        return dateOfUse;
+    }
 
-	public void setUsed(boolean used) {
-		this.used = used;
-	}
+    public void setDateOfUse(Date dateOfUse) {
+        this.dateOfUse = dateOfUse;
+    }
 
-	public String getReference() {
-		return reference;
-	}
+    public String getId() {
+        return id;
+    }
 
-	public void setReference(String reference) {
-		this.reference = reference;
-	}
+    public void setId(String reference) {
+        this.id = reference;
+    }
 
-	@Override
-	public String toString() {
-		return "VoucherDto [value=" + value + ", used=" + used + "]";
-	}
-	
-	
+    @Override
+    public String toString() {
+        String date = "null";
+        String dateUse = "null";
+        if (creationDate != null) {
+            date = new SimpleDateFormat("dd-MMM-yyyy").format(creationDate.getTime());
+        }
+        if (dateOfUse != null) {
+            date = new SimpleDateFormat("dd-MMM-yyyy").format(dateOfUse.getTime());
+        }
+        return "VoucherDto [reference=" + id + ", value=" + value + ", creationDate=" + date + ", dateOfUse=" + dateUse + "]";
+    }
 
 }
