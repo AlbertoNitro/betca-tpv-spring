@@ -37,9 +37,20 @@ public class VoucherController {
         }
         return voucherDtoList;
     }
+    
+    public List<VoucherDto> readVoucherAllValid() {
+        List<Voucher> voucherList = this.voucherRepository.findAll();
+        List<VoucherDto> voucherDtoList = new ArrayList<VoucherDto>();
+        for (Voucher voucher : voucherList) {
+            if(!voucher.isUsed()) {
+                voucherDtoList.add(new VoucherDto(voucher));
+            }
+        }
+        return voucherDtoList;
+    }
 
     public BigDecimal consumeVoucher(String reference) {
-        Voucher voucher = this.voucherRepository.findByReference(reference);
+        Voucher voucher = this.voucherRepository.findOne(reference);
         assert voucher != null;
         if (!voucher.isUsed()) {
             voucher.setDateOfUse(new Date());
@@ -49,13 +60,24 @@ public class VoucherController {
     }
 
     public boolean existsVoucher(String reference) {
-        return this.voucherRepository.findByReference(reference) != null;
+        return this.voucherRepository.findOne(reference) != null;
     }
 
     public boolean consumedVoucher(String reference) {
-        Voucher voucher = this.voucherRepository.findByReference(reference);
+        Voucher voucher = this.voucherRepository.findOne(reference);
         assert voucher != null;
         return voucher.isUsed();
     }
+
+    public Optional<VoucherDto> readVoucher(String reference) {
+        Voucher voucher = this.voucherRepository.findOne(reference);
+        if (voucher != null) {
+            return Optional.of(new VoucherDto(voucher));
+        } else {
+            return Optional.empty();
+        }
+    }
+
+
 
 }

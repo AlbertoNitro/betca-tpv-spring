@@ -9,8 +9,6 @@ import es.upm.miw.documents.core.Voucher;
 
 public interface VoucherRepository extends MongoRepository<Voucher, String> {
 
-    public Voucher findByReference(String reference);
-
     List<Voucher> findByDateOfUseGreaterThan(Date date);
 
     List<Voucher> findByCreationDateGreaterThan(Date date);

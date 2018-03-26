@@ -32,6 +32,8 @@ public class VoucherResource {
 
     public static final String REFERENCE = "/{reference}";
 
+    public static final String VALID = "/valid";
+
     @Autowired
     private VoucherController voucherController;
 
@@ -60,5 +62,16 @@ public class VoucherResource {
     public List<VoucherDto> readVoucherAll() {
         return this.voucherController.readVoucherAll();
     }
+    
+    @GetMapping(value = VALID)
+    public List<VoucherDto> readVoucherAllValid() {
+        return this.voucherController.readVoucherAllValid();
+    }
+    
+    @GetMapping(value = REFERENCE)
+    public VoucherDto readVoucher(@PathVariable String reference) throws VoucherReferenceNotFoundException {
+        return this.voucherController.readVoucher(reference).orElseThrow(() -> new VoucherReferenceNotFoundException(reference));
+    }
+   
 
 }

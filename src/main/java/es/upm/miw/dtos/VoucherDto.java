@@ -1,6 +1,7 @@
 package es.upm.miw.dtos;
 
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import es.upm.miw.documents.core.Voucher;
@@ -11,6 +12,8 @@ public class VoucherDto {
     private String reference;
 
     private BigDecimal value;
+    
+    private Date creationDate;
 
     private Date dateOfUse;
 
@@ -27,15 +30,24 @@ public class VoucherDto {
     public VoucherDto(Voucher voucher) {
         this.reference = voucher.getReference();
         this.value = voucher.getValue();
+        this.creationDate=voucher.getCreationDate();
         this.dateOfUse = voucher.getDateOfUse();
     }
-
+    
     public BigDecimal getValue() {
         return value;
     }
 
     public void setValue(BigDecimal value) {
         this.value = value;
+    }
+
+    public Date getCreationDate() {
+        return creationDate;
+    }
+
+    public void setCreationDate(Date creationDate) {
+        this.creationDate = creationDate;
     }
 
     public Date getDateOfUse() {
@@ -56,7 +68,16 @@ public class VoucherDto {
 
     @Override
     public String toString() {
-        return "VoucherDto [reference=" + reference + ", value=" + value + ", dateOfUse=" + dateOfUse + "]";
+        String date = "null";
+        String dateUse = "null";
+        if (creationDate != null) {
+            date = new SimpleDateFormat("dd-MMM-yyyy").format(creationDate.getTime());
+        }   
+        if (dateOfUse != null) {
+            date = new SimpleDateFormat("dd-MMM-yyyy").format(dateOfUse.getTime());
+        }   
+        return "VoucherDto [reference=" + reference + ", value=" + value + ", creationDate=" + date + ", dateOfUse=" + dateUse
+                + "]";
     }
 
 }

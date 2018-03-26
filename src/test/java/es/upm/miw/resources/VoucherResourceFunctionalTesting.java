@@ -1,6 +1,8 @@
 package es.upm.miw.resources;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
 import java.math.BigDecimal;
 import java.util.Arrays;
@@ -64,13 +66,13 @@ public class VoucherResourceFunctionalTesting {
 
     @Test
     public void testConsumeVoucher() {
-        assertEquals(false, this.voucherDto.isUsed());
+        assertNull(this.voucherDto.getDateOfUse());
 
         restService.loginAdmin().restBuilder().path(VoucherResource.VOUCHERS).path(VoucherResource.REFERENCE)
                 .expand(this.voucherDto.getReference()).patch().build();
         List<VoucherDto> voucherDtoList = readVoucherAll();
         VoucherDto voucherDto = voucherDtoList.get(voucherDtoList.size() - 1);
-        assertEquals(true, voucherDto.isUsed());
+        assertNotNull(voucherDto.getDateOfUse());
         assertEquals(this.voucherDto.getReference(), voucherDto.getReference());
     }
 
