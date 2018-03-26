@@ -87,16 +87,16 @@ providerList:
   - &pr1
     id: provider1
     company: company-p1
+    nif: 12345678b
     address: C/ TPV-provider, 2, 1A, 28000 Madrid
-    mobile: 666666101
     phone: 9166666601
+    email: p1@gmail.com
     note: provider 1
     active: true
   - &pr2
     id: provider2
     company: company-p2
     address: C/ TPV-provider, 2, 1A, 28000 Madrid
-    mobile: 666666101
     phone: 9166666601
     note: provider 2
     active: false  
@@ -104,7 +104,6 @@ providerList:
     id: provider3
     company: company-p3
     address: C/ TPV-provider, 2, 1A, 28000 Madrid
-    mobile: 666666101
     phone: 9166666601
     note: provider 3
     active: true

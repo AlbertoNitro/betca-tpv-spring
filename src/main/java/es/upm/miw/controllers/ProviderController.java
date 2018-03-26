@@ -18,7 +18,7 @@ public class ProviderController {
     private ProviderRepository providerRepository;
 
     public void createProvider(ProviderDto provierDto) {
-        Provider provider = new Provider(provierDto.getCompany(), provierDto.getAddress(), provierDto.getMobile(), provierDto.getPhone(),
+        Provider provider = new Provider(provierDto.getCompany(),provierDto.getNif(),provierDto.getAddress(), provierDto.getPhone(), provierDto.getEmail(),
                 provierDto.getNote());
         this.providerRepository.save(provider);
     }
@@ -40,9 +40,10 @@ public class ProviderController {
         Provider provider = this.providerRepository.findById(id);
         assert provider != null;
         provider.setCompany(providerDto.getCompany());
+        provider.setNif(providerDto.getNif());
         provider.setAddress(providerDto.getAddress());
-        provider.setMobile(providerDto.getMobile());
         provider.setPhone(providerDto.getPhone());
+        provider.setEmail(providerDto.getEmail());
         provider.setNote(providerDto.getNote());
         provider.setActive(providerDto.getActive());
         this.providerRepository.save(provider);

@@ -38,22 +38,22 @@ public class OrderControllerIT {
 
     @Test
     public void readOrderTest() {
-       assertEquals("2018-1", this.orderController.readOrder("2018-1").getId());
+        assertEquals("2018-1", this.orderController.readOrder("2018-1").getId());
     }
-    
+
     @Test
     public void createOrderTest() {
-        Provider provider = new Provider("Adrian company","Addres","66","91","note");
-        Order order = new Order( "2018-2",provider.getId(),new Date());
-        OrderDto orderDto = new OrderDto(order,provider);
+        Provider provider = new Provider();
+        provider.setCompany("Adrian company");
+        Order order = new Order("2018-2", provider.getId(), new Date());
+        OrderDto orderDto = new OrderDto(order, provider);
         this.orderController.createOrder(orderDto);
-        assertEquals("2018-2",this.orderController.readOrder("2018-2").getId());
+        assertEquals("2018-2", this.orderController.readOrder("2018-2").getId());
     }
-    
+
     @Test
     public void readAllTest() {
-        assertEquals(true,this.orderController.readAll().size()>0);
+        assertEquals(true, this.orderController.readAll().size() > 0);
     }
 
 }
-

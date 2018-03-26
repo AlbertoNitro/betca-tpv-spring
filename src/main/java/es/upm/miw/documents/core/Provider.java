@@ -13,11 +13,13 @@ public class Provider {
     @Indexed(unique = true)
     private String company;
 
+    private String nif;
+
     private String address;
 
-    private String mobile;
-
     private String phone;
+
+    private String email;
 
     private String note;
 
@@ -27,13 +29,22 @@ public class Provider {
         this.active = true;
     }
 
-    public Provider(String company, String address, String mobile, String phone, String note) {
+    public Provider(String company, String nif, String address, String phone, String email, String note) {
         this();
         this.company = company;
+        this.nif = nif;
         this.address = address;
-        this.mobile = mobile;
         this.phone = phone;
+        this.email = email;
         this.note = note;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getCompany() {
@@ -44,20 +55,20 @@ public class Provider {
         this.company = company;
     }
 
+    public String getNif() {
+        return nif;
+    }
+
+    public void setNif(String nif) {
+        this.nif = nif;
+    }
+
     public String getAddress() {
         return address;
     }
 
     public void setAddress(String address) {
         this.address = address;
-    }
-
-    public String getMobile() {
-        return mobile;
-    }
-
-    public void setMobile(String mobile) {
-        this.mobile = mobile;
     }
 
     public String getPhone() {
@@ -68,6 +79,14 @@ public class Provider {
         this.phone = phone;
     }
 
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
     public String getNote() {
         return note;
     }
@@ -76,12 +95,8 @@ public class Provider {
         this.note = note;
     }
 
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
+    public Boolean getActive() {
+        return active;
     }
 
     public Boolean isActive() {
@@ -94,7 +109,7 @@ public class Provider {
 
     @Override
     public int hashCode() {
-        return this.id.hashCode();
+        return this.company.hashCode();
     }
 
     @Override
@@ -108,13 +123,13 @@ public class Provider {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        return (id.equals(((Provider) obj).id));
+        return (company.equals(((Provider) obj).company));
     }
 
     @Override
     public String toString() {
-        return "Provider[" + id + ": company=" + company + ", address=" + address + ", mobile=" + mobile + ", phone=" + phone + ", note="
-                + note + ", active=" + active + "]";
+        return "Provider [id=" + id + ", company=" + company + ", nif=" + nif + ", address=" + address + ", phone=" + phone + ", email="
+                + email + ", note=" + note + ", active=" + active + "]";
     }
 
 }
