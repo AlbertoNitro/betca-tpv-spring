@@ -69,11 +69,11 @@ public class VoucherResourceFunctionalTesting {
         assertNull(this.voucherDto.getDateOfUse());
 
         restService.loginAdmin().restBuilder().path(VoucherResource.VOUCHERS).path(VoucherResource.REFERENCE)
-                .expand(this.voucherDto.getReference()).patch().build();
+                .expand(this.voucherDto.getId()).patch().build();
         List<VoucherDto> voucherDtoList = readVoucherAll();
         VoucherDto voucherDto = voucherDtoList.get(voucherDtoList.size() - 1);
         assertNotNull(voucherDto.getDateOfUse());
-        assertEquals(this.voucherDto.getReference(), voucherDto.getReference());
+        assertEquals(this.voucherDto.getId(), voucherDto.getId());
     }
 
 }

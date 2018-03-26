@@ -4,36 +4,46 @@ import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+
 import es.upm.miw.documents.core.Voucher;
 import es.upm.miw.utils.Encrypting;
 
+@JsonInclude(Include.NON_NULL)
 public class VoucherDto {
 
-    private String reference;
+    private String id;
 
     private BigDecimal value;
-    
-    private Date creationDate;
 
-    private Date dateOfUse;
+    private Date creationDate = null;
+
+    private Date dateOfUse = null;
 
     public VoucherDto() {
         // Empty for framework
     }
 
     public VoucherDto(BigDecimal value) {
-        this.reference = new Encrypting().encryptInBase64UrlSafe();
+        this.id = new Encrypting().encryptInBase64UrlSafe();
         this.value = value;
         this.dateOfUse = null;
     }
 
     public VoucherDto(Voucher voucher) {
-        this.reference = voucher.getReference();
+        this.id = voucher.getId();
         this.value = voucher.getValue();
-        this.creationDate=voucher.getCreationDate();
+        this.creationDate = voucher.getCreationDate();
         this.dateOfUse = voucher.getDateOfUse();
     }
     
+    public VoucherDto minimumDto(Voucher voucher) {
+        this.id = voucher.getId();
+        this.value = voucher.getValue();
+        return this;
+    }
+
     public BigDecimal getValue() {
         return value;
     }
@@ -58,12 +68,12 @@ public class VoucherDto {
         this.dateOfUse = dateOfUse;
     }
 
-    public String getReference() {
-        return reference;
+    public String getId() {
+        return id;
     }
 
-    public void setReference(String reference) {
-        this.reference = reference;
+    public void setId(String reference) {
+        this.id = reference;
     }
 
     @Override
@@ -72,12 +82,11 @@ public class VoucherDto {
         String dateUse = "null";
         if (creationDate != null) {
             date = new SimpleDateFormat("dd-MMM-yyyy").format(creationDate.getTime());
-        }   
+        }
         if (dateOfUse != null) {
             date = new SimpleDateFormat("dd-MMM-yyyy").format(dateOfUse.getTime());
-        }   
-        return "VoucherDto [reference=" + reference + ", value=" + value + ", creationDate=" + date + ", dateOfUse=" + dateUse
-                + "]";
+        }
+        return "VoucherDto [reference=" + id + ", value=" + value + ", creationDate=" + date + ", dateOfUse=" + dateUse + "]";
     }
 
 }

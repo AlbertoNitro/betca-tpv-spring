@@ -32,8 +32,8 @@ public class VoucherController {
     public List<VoucherDto> readVoucherAll() {
         List<Voucher> voucherList = this.voucherRepository.findAll();
         List<VoucherDto> voucherDtoList = new ArrayList<VoucherDto>();
-        for (int i = 0; i < voucherList.size(); i++) {
-            voucherDtoList.add(new VoucherDto(voucherList.get(i)));
+        for (Voucher voucher : voucherList) {
+            voucherDtoList.add(new VoucherDto().minimumDto(voucher));
         }
         return voucherDtoList;
     }
@@ -43,7 +43,7 @@ public class VoucherController {
         List<VoucherDto> voucherDtoList = new ArrayList<VoucherDto>();
         for (Voucher voucher : voucherList) {
             if(!voucher.isUsed()) {
-                voucherDtoList.add(new VoucherDto(voucher));
+                voucherDtoList.add(new VoucherDto().minimumDto(voucher));
             }
         }
         return voucherDtoList;

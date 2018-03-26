@@ -133,11 +133,11 @@ public class PdfService {
     }
 
     public Optional<byte[]> generateVoucher(Voucher voucher) {
-        final String path = "/vouchers/voucher-" + voucher.getReference();
+        final String path = "/vouchers/voucher-" + voucher.getId();
         PdfTicketBuilder pdf = this.addCompanyDetails(path, 2);
 
         pdf.line().paragraphEmphasized("VOUCHER");
-        pdf.barCode(voucher.getReference()).line();
+        pdf.barCode(voucher.getId()).line();
 
         pdf.paragraphEmphasized("Valor: " + voucher.getValue()).line();
 
