@@ -34,7 +34,7 @@ public class OfferRepositoryIT {
     }
     
     @Test
-    public void findAllOrderTest() {
+    public void findAllTest() {
         List<Offer> offerList = this.offerRepository.findAll();
         assertEquals(true,offerList.size()>0);
     }
