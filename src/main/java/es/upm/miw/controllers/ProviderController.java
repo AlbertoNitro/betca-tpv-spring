@@ -57,8 +57,12 @@ public class ProviderController {
         }
     }
 
-    public List<ProviderMinimumDto> readProviderAll() {
+    public List<ProviderMinimumDto> readAll() {
         return this.providerRepository.findMinimumAll();
+    }
+    
+    public List<ProviderMinimumDto> readAllActives() {
+        return this.providerRepository.findMinimumAllActives();
     }
 
 }

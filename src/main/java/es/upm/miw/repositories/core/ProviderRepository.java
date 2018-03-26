@@ -14,8 +14,11 @@ public interface ProviderRepository extends MongoRepository<Provider, String> {
     
     public Provider findByCompany(String company);
     
-    @Query(value = "{'active' : true}", fields = "{ '_id' : 1, 'company' : 1}")
+    @Query(value = "{}", fields = "{ '_id' : 1, 'company' : 1}")
     public List<ProviderMinimumDto> findMinimumAll();
+    
+    @Query(value = "{'active' : true}", fields = "{ '_id' : 1, 'company' : 1}")
+    public List<ProviderMinimumDto> findMinimumAllActives();
 
     @Query(value = "{'active' : true, '_id': ?0}", fields = "{'company' : 1}")
     public ProviderMinimumDto findMinimumProviderById(String id);
