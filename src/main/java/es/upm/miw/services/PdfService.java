@@ -139,7 +139,7 @@ public class PdfService {
         pdf.line().paragraphEmphasized("VOUCHER");
         pdf.barCode(new Encrypting().encodeHexInBase64UrlSafe(voucher.getId())).line();
 
-        pdf.paragraphEmphasized("Valor: " + voucher.getValue()).line();
+        pdf.paragraphEmphasized("      Valor: " + voucher.getValue()+" €").line();
 
         SimpleDateFormat formatter = new SimpleDateFormat(DATE_FORMAT);
         pdf.paragraphEmphasized(formatter.format(voucher.getCreationDate()));
