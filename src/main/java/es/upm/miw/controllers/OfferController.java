@@ -19,18 +19,42 @@ public class OfferController {
     private OfferRepository offerRepository;
 
     public void createOffer(OfferInputDto offerInputDto) {
+    	Offer offer = new Offer(offerInputDto.getCode(),
+    							offerInputDto.getPercentage(), 
+    							offerInputDto.getExpiration(),
+    							offerInputDto.getDescription());
+    	offerRepository.save(offer);
     }
     
     public Optional<OfferOutputDto> readUser(String code) {
-    	return Optional.empty();
+        Offer offerInDb = this.offerRepository.findByCode(code);
+        if (offerInDb == null) {
+            return Optional.empty();
+        } else {
+            return Optional.of(new OfferOutputDto(offerInDb));
+        }
     }
     
-    public boolean putOffer(String cocde, OfferInputDto offerInputDto) {
-        return true;
+    public boolean putOffer(String code, OfferInputDto offerInputDto) {
+    	 Offer offerInDb = this.offerRepository.findByCode(code);
+         if (offerInDb == null) {
+             return false;
+         } else {
+             offerInDb.setPercentage(offerInputDto.getPercentage());
+             offerInDb.setExpiration(offerInputDto.getExpiration());
+             offerInDb.setDescription(offerInputDto.getDescription());
+             return true;
+         }
     }
     
     public boolean deleteOffer(String code) {
-    	return true;
+        Offer offerInDb = this.offerRepository.findByCode(code);
+        if (offerInDb == null) {
+            return true;
+        } else {
+            this.offerRepository.delete(offerInDb);
+            return true;
+        } 
     }
 
     public List<OfferOutputDto> readCustomerAll() {
