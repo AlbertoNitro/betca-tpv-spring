@@ -269,9 +269,9 @@ cashMovementList:
 offerList:
   - code: AAA
     percentage: 0.25
-    expiration: 2018-01-12
+    expiration: 2018-01-02
   - code: BBB
     percentage: 0.50
-    expiration: 2018-12-12   
+    expiration: 2018-12-02
     description: "Descuento en segunda compra"  
 
