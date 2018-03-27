@@ -2,10 +2,8 @@ package es.upm.miw.resources;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
 
 import java.math.BigDecimal;
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -27,9 +25,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import es.upm.miw.controllers.TicketController;
 import es.upm.miw.dtos.ShoppingDto;
 import es.upm.miw.dtos.TicketCreationInputDto;
-import es.upm.miw.dtos.TicketDto;
 import es.upm.miw.dtos.TicketSearchOutputDto;
-import es.upm.miw.dtos.TicketUpdationInputDto;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
@@ -105,20 +101,6 @@ public class TicketResourceFunctionalTesting {
     }
 
     @Test
-    public void testUpdateAmountAndStateTicketIdNotFoundException() {
-        thrown.expect(new HttpMatcher(HttpStatus.NOT_FOUND));
-        List<Integer> listAmounts = new ArrayList<Integer>();
-        List<Boolean> listCommitteds = new ArrayList<Boolean>();
-        listAmounts.add(1);
-        listAmounts.add(2);
-        listCommitteds.add(true);
-        listCommitteds.add(true);
-        TicketUpdationInputDto ticketUpdationInputDto = new TicketUpdationInputDto(listAmounts, listCommitteds);
-        this.restService.loginAdmin().restBuilder(new RestBuilder<>()).path(TicketResource.TICKETS).path(TicketResource.ID_ID)
-                .expand("20180112-7").body(ticketUpdationInputDto).patch().build();
-    }
-
-    @Test
     public void testGetTicket() {
         byte[] bodyResponse = restService.loginAdmin().restBuilder(new RestBuilder<byte[]>()).path(TicketResource.TICKETS)
                 .path(TicketResource.ID_ID).expand("20180112-1").clazz(byte[].class).get().build();
@@ -142,18 +124,6 @@ public class TicketResourceFunctionalTesting {
                         .param("dateStart", "2018-01-01 00:00:00").param("dateFinish", "2018-12-31 11:59:59").get().build());
         List<TicketSearchOutputDto> searchOutputDtos_ = ticketController.findByIdArticleDatesBetween("article1", dateStart, dateFinish);
         assertEquals(searchOutputDtos_.size(), searchOutputDtos.size());
-    }
-
-    @Test
-    public void testFindTicketsBetweenCreationDates() throws ParseException {
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        Date finalDate = new Date();
-        String strFinalDate = dateFormat.format(finalDate);
-        List<TicketDto> listTicketsByCreationDates = Arrays
-                .asList(restService.loginAdmin().restBuilder(new RestBuilder<TicketDto[]>()).clazz(TicketDto[].class)
-                        .path(TicketResource.TICKETS).path(TicketResource.SEARCH_BY_CREATION_DATES)
-                        .param("initialDate", "2017-01-01 00:00:00").param("finalDate", strFinalDate).get().build());
-        assertTrue(listTicketsByCreationDates.size() >= 3);
     }
 
 }
