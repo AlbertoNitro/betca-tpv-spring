@@ -17,7 +17,8 @@ import org.junit.runners.Suite.SuiteClasses;
     TokenResourceFunctionalTesting.class,
     UserResourceFunctionalTesting.class,
     VoucherResourceFunctionalTesting.class,
-    OrderResourceFunctionalTesting.class
+    OrderResourceFunctionalTesting.class,
+    OrderBodyResourceFunctionalTesting.class
 })
 public class AllMiwResourcesFunctionalTests {
 
