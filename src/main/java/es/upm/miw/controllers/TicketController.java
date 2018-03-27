@@ -19,7 +19,6 @@ import es.upm.miw.dtos.ShoppingDto;
 import es.upm.miw.dtos.TicketCreationInputDto;
 import es.upm.miw.dtos.TicketDto;
 import es.upm.miw.dtos.TicketSearchOutputDto;
-import es.upm.miw.dtos.TicketUpdationInputDto;
 import es.upm.miw.repositories.core.ArticleRepository;
 import es.upm.miw.repositories.core.TicketRepository;
 import es.upm.miw.repositories.core.UserRepository;
@@ -40,6 +39,18 @@ public class TicketController {
     @Autowired
     private PdfService pdfService;
 
+    private int nextId() {
+        int nextId = 1;
+        Ticket ticket = ticketRepository.findFirstByOrderByCreationDateDescIdDesc();
+        if (ticket != null) {
+            Date startOfDay = Date.from(LocalDate.now().atStartOfDay(ZoneId.systemDefault()).toInstant());
+            if (ticket.getCreationDate().compareTo(startOfDay) >= 0) {
+                nextId = ticket.simpleId() + 1;
+            }
+        }
+        return nextId;
+    }
+    
     public Optional<byte[]> createTicket(TicketCreationInputDto ticketCreationDto) {
         User user = this.userRepository.findByMobile(ticketCreationDto.getUserMobile());
         List<Shopping> shoppingList = new ArrayList<>();
@@ -90,31 +101,6 @@ public class TicketController {
         return pdfService.generateTicket(ticket);
     }
 
-    public void updateAmountAndStateTicket(String id, TicketUpdationInputDto ticketUpdationInputDto) {
-        List<Integer> listAmounts = ticketUpdationInputDto.getListAmountsShoppings();
-        List<Boolean> listCommitteds = ticketUpdationInputDto.getListCommitedsShoppings();
-        Ticket ticket = this.ticketRepository.findOne(id);
-        Shopping[] shopping = ticket.getShoppingList();
-        for (int i = 0; i < shopping.length; i++) {
-            shopping[i].setAmount(listAmounts.get(i));
-            ShoppingState shoppingState = listCommitteds.get(i) ? ShoppingState.COMMITTED : ShoppingState.NOT_COMMITTED;
-            shopping[i].setShoppingState(shoppingState);
-        }
-        this.ticketRepository.save(ticket);
-    }
-
-    private int nextId() {
-        int nextId = 1;
-        Ticket ticket = ticketRepository.findFirstByOrderByCreationDateDescIdDesc();
-        if (ticket != null) {
-            Date startOfDay = Date.from(LocalDate.now().atStartOfDay(ZoneId.systemDefault()).toInstant());
-            if (ticket.getCreationDate().compareTo(startOfDay) >= 0) {
-                nextId = ticket.simpleId() + 1;
-            }
-        }
-        return nextId;
-    }
-
     public Optional<TicketDto> read(String id) {
         Ticket ticket = this.ticketRepository.findOne(id);
         if (ticket != null) {
@@ -134,14 +120,4 @@ public class TicketController {
         }
         return ticketListDto;
     }
-
-    public List<TicketDto> getBetweenDates(Date initialDate, Date finalDate) {
-        List<Ticket> ticketList = this.ticketRepository.findByCreationDateBetween(initialDate, finalDate);
-        List<TicketDto> ticketListDto = new ArrayList<TicketDto>();
-        for (Ticket ticket : ticketList) {
-            ticketListDto.add(new TicketDto(ticket));
-        }
-        return ticketListDto;
-    }
-
 }
