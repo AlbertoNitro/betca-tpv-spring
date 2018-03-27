@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 import es.upm.miw.controllers.TicketController;
 import es.upm.miw.dtos.HistoricalProductOutPutDto;
 import es.upm.miw.dtos.TicketCreationInputDto;
-import es.upm.miw.dtos.TicketDto;
+import es.upm.miw.dtos.TicketOutputDto;
 import es.upm.miw.dtos.TicketSearchOutputDto;
 import es.upm.miw.dtos.TicketUpdationInputDto;
 import es.upm.miw.resources.exceptions.FieldInvalidException;
@@ -66,12 +66,12 @@ public class TicketResource {
     }
 
     @GetMapping(value = ID_ID)
-    public TicketDto getTicket(@PathVariable String id) throws TicketIdNotFoundException {
+    public TicketOutputDto getTicket(@PathVariable String id) throws TicketIdNotFoundException {
         return this.ticketController.getTicket(id).orElseThrow(() -> new TicketIdNotFoundException(id));
     }
 
     @RequestMapping(value = SEARCH_BY_CREATION_DATES, method = RequestMethod.GET)
-    public List<TicketDto> findTicketsBetweenCreationDates(
+    public List<TicketOutputDto> findTicketsBetweenCreationDates(
             @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") @RequestParam("initialDate") Date initialDate,
             @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") @RequestParam("finalDate") Date finalDate) {
         return this.ticketController.getTicketsBetweenCreationDates(initialDate, finalDate);

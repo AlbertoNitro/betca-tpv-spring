@@ -25,7 +25,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import es.upm.miw.documents.core.Ticket;
 import es.upm.miw.dtos.ShoppingDto;
 import es.upm.miw.dtos.TicketCreationInputDto;
-import es.upm.miw.dtos.TicketDto;
+import es.upm.miw.dtos.TicketOutputDto;
 import es.upm.miw.dtos.TicketUpdationInputDto;
 import es.upm.miw.repositories.core.TicketRepository;
 
@@ -86,11 +86,11 @@ public class TicketControllerIT {
 
     @Test
     public void testGetTicket() {
-        Optional<TicketDto> pdf1 = this.ticketController.getTicket("20180112-1");
+        Optional<TicketOutputDto> pdf1 = this.ticketController.getTicket("20180112-1");
         assertTrue(pdf1.isPresent());
-        Optional<TicketDto> pdf2 = this.ticketController.getTicket("20180112-2");
+        Optional<TicketOutputDto> pdf2 = this.ticketController.getTicket("20180112-2");
         assertTrue(pdf2.isPresent());
-        Optional<TicketDto> pdf3 = this.ticketController.getTicket("20180112-3");
+        Optional<TicketOutputDto> pdf3 = this.ticketController.getTicket("20180112-3");
         assertTrue(pdf3.isPresent());
     }
     
@@ -103,7 +103,7 @@ public class TicketControllerIT {
     @Test
     public void testGetTicketsBetweenCreationDates() throws ParseException {
         Date initialDate = new SimpleDateFormat("yyyy-mm-dd").parse("2017-01-11");
-        List<TicketDto> ticketListByCreationDates = this.ticketController.getTicketsBetweenCreationDates(initialDate, new Date());
+        List<TicketOutputDto> ticketListByCreationDates = this.ticketController.getTicketsBetweenCreationDates(initialDate, new Date());
         List<Ticket> ticketAllList = this.ticketRepository.findAll();
         assertTrue(ticketListByCreationDates.size() >= ticketAllList.size());
     }

@@ -17,7 +17,7 @@ import es.upm.miw.documents.core.Ticket;
 import es.upm.miw.documents.core.User;
 import es.upm.miw.dtos.ShoppingDto;
 import es.upm.miw.dtos.TicketCreationInputDto;
-import es.upm.miw.dtos.TicketDto;
+import es.upm.miw.dtos.TicketOutputDto;
 import es.upm.miw.dtos.TicketSearchOutputDto;
 import es.upm.miw.dtos.TicketUpdationInputDto;
 import es.upm.miw.repositories.core.ArticleRepository;
@@ -91,10 +91,10 @@ public class TicketController {
         return nextId;
     }
 
-    public Optional<TicketDto> getTicket(String id) {
+    public Optional<TicketOutputDto> getTicket(String id) {
         Ticket ticket = this.ticketRepository.findOne(id);
         if (ticket != null) {
-            return Optional.of(new TicketDto(ticket));
+            return Optional.of(new TicketOutputDto(ticket));
         } else {
             return Optional.empty();
         }
@@ -111,11 +111,11 @@ public class TicketController {
         return ticketListDto;
     }
 
-    public List<TicketDto> getTicketsBetweenCreationDates(Date initialDate, Date finalDate) {
+    public List<TicketOutputDto> getTicketsBetweenCreationDates(Date initialDate, Date finalDate) {
         List<Ticket> ticketList = this.ticketRepository.findByCreationDateBetween(initialDate, finalDate);
-        List<TicketDto> ticketListDto = new ArrayList<TicketDto>();
+        List<TicketOutputDto> ticketListDto = new ArrayList<TicketOutputDto>();
         for (Ticket ticket : ticketList) {
-            ticketListDto.add(new TicketDto(ticket));
+            ticketListDto.add(new TicketOutputDto(ticket));
         }
         return ticketListDto;
     }
