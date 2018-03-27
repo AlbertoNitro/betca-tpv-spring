@@ -36,7 +36,7 @@ import es.upm.miw.resources.exceptions.TicketIdNotFoundException;
 public class TicketResource {
     public static final String TICKETS = "/tickets";
 
-    public static final String ID = "/{id}";
+    public static final String ID_ID = "/{id}";
 
     public static final String SEARCH_BY_ID_AND_DATES = "/searchByIdAndDates";
 
@@ -55,7 +55,7 @@ public class TicketResource {
         }
     }
 
-    @RequestMapping(value = ID, method = RequestMethod.PATCH)
+    @RequestMapping(value = ID_ID, method = RequestMethod.PATCH)
     public void updateAmountAndStateTicket(@PathVariable(value = "id") String id,
             @Valid @RequestBody TicketUpdationInputDto ticketUpdationInputDto) throws TicketIdNotFoundException {
         if (this.ticketController.existTicket(id)) {
@@ -65,19 +65,9 @@ public class TicketResource {
         }
     }
 
-    @RequestMapping(value = ID)
-    @GetMapping(produces = {"application/pdf", "application/json"})
-    public @ResponseBody byte[] getTicket(@PathVariable(value = "id") String id) throws TicketIdNotFoundException, FieldInvalidException {
-        if (this.ticketController.existTicket(id)) {
-            Optional<byte[]> pdf = this.ticketController.getTicket(id);
-            if (!pdf.isPresent()) {
-                throw new FieldInvalidException("Ticket exception");
-            } else {
-                return pdf.get();
-            }
-        } else {
-            throw new TicketIdNotFoundException(id);
-        }
+    @GetMapping(value = ID_ID)
+    public TicketDto getTicket(@PathVariable String id) throws TicketIdNotFoundException {
+        return this.ticketController.getTicket(id).orElseThrow(() -> new TicketIdNotFoundException(id));
     }
 
     @RequestMapping(value = SEARCH_BY_CREATION_DATES, method = RequestMethod.GET)

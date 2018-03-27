@@ -86,11 +86,11 @@ public class TicketControllerIT {
 
     @Test
     public void testGetTicket() {
-        Optional<byte[]> pdf1 = this.ticketController.getTicket("20180112-1");
+        Optional<TicketDto> pdf1 = this.ticketController.getTicket("20180112-1");
         assertTrue(pdf1.isPresent());
-        Optional<byte[]> pdf2 = this.ticketController.getTicket("20180112-2");
+        Optional<TicketDto> pdf2 = this.ticketController.getTicket("20180112-2");
         assertTrue(pdf2.isPresent());
-        Optional<byte[]> pdf3 = this.ticketController.getTicket("20180112-3");
+        Optional<TicketDto> pdf3 = this.ticketController.getTicket("20180112-3");
         assertTrue(pdf3.isPresent());
     }
     

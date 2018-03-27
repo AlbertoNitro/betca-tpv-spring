@@ -2,6 +2,7 @@ package es.upm.miw.dtos;
 
 import java.math.BigDecimal;
 
+import es.upm.miw.documents.core.Shopping;
 import es.upm.miw.documents.core.ShoppingState;
 
 public class ShoppingOutputDto {
@@ -20,13 +21,12 @@ public class ShoppingOutputDto {
         // Empty for framework
     }
 
-    public ShoppingOutputDto(String description, BigDecimal retailPrice, int amount, BigDecimal discount, ShoppingState shoppingState) {
-        super();
-        this.description = description;
-        this.retailPrice = retailPrice;
-        this.amount = amount;
-        this.discount = discount;
-        if (shoppingState.equals(ShoppingState.COMMITTED)) {
+    public ShoppingOutputDto(Shopping shopping) {
+        this.description = shopping.getDescription();
+        this.retailPrice = shopping.getRetailPrice();
+        this.amount = shopping.getAmount();
+        this.discount = shopping.getDiscount();
+        if (shopping.getShoppingState().equals(ShoppingState.COMMITTED)) {
             this.committed = true;
         } else {
             this.committed = false;

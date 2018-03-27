@@ -114,21 +114,21 @@ public class TicketResourceFunctionalTesting {
         listCommitteds.add(true);
         listCommitteds.add(true);
         TicketUpdationInputDto ticketUpdationInputDto = new TicketUpdationInputDto(listAmounts, listCommitteds);
-        this.restService.loginAdmin().restBuilder(new RestBuilder<>()).path(TicketResource.TICKETS).path(TicketResource.ID)
+        this.restService.loginAdmin().restBuilder(new RestBuilder<>()).path(TicketResource.TICKETS).path(TicketResource.ID_ID)
                 .expand("20180112-7").body(ticketUpdationInputDto).patch().build();
     }
 
     @Test
     public void testGetTicket() {
         byte[] bodyResponse = restService.loginAdmin().restBuilder(new RestBuilder<byte[]>()).path(TicketResource.TICKETS)
-                .path(TicketResource.ID).expand("20180112-1").clazz(byte[].class).get().build();
+                .path(TicketResource.ID_ID).expand("20180112-1").clazz(byte[].class).get().build();
         assertNotNull(bodyResponse);
     }
 
     @Test
     public void testGetTicketIdNotFoundException() {
         thrown.expect(new HttpMatcher(HttpStatus.NOT_FOUND));
-        restService.loginAdmin().restBuilder(new RestBuilder<byte[]>()).path(TicketResource.TICKETS).path(TicketResource.ID)
+        restService.loginAdmin().restBuilder(new RestBuilder<byte[]>()).path(TicketResource.TICKETS).path(TicketResource.ID_ID)
                 .expand("20180112-6").clazz(byte[].class).get().log().build();
     }
 

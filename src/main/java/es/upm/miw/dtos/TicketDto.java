@@ -1,11 +1,15 @@
 package es.upm.miw.dtos;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+
+import es.upm.miw.documents.core.Shopping;
+import es.upm.miw.documents.core.Ticket;
 
 @Document
 public class TicketDto {
@@ -25,13 +29,13 @@ public class TicketDto {
         // Empty for framework
     }
 
-    public TicketDto(String id, Date creationDate, String reference, BigDecimal cashDeposited, List<ShoppingOutputDto> shoppingList) {
-        super();
-        this.id = id;
-        this.creationDate = creationDate;
-        this.reference = reference;
-        this.cashDeposited = cashDeposited;
-        this.shoppingList = shoppingList;
+    public TicketDto(Ticket ticket) {
+        this.id = ticket.getId();
+        this.creationDate = ticket.getCreationDate();
+        shoppingList = new ArrayList<ShoppingOutputDto>();
+        for (Shopping shopping : ticket.getShoppingList()) {
+            shoppingList.add(new ShoppingOutputDto(shopping));
+        }     
     }
 
     public String getId() {
