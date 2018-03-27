@@ -22,6 +22,6 @@ public interface TicketRepository extends MongoRepository<Ticket, String> {
 	List<Ticket> findByCreationDateBetween(Date initialDate, Date finalDate);
 
 	@Query(value = "{'$and':[{'shoppingList': {'$elemMatch' :{'article.$id': ?0}}}, {creationDate:{ $gte: ?1, $lt: ?2}}]}", fields = "{'creationDate' :1, 'shoppingList.$' :1}")
-	List<Ticket> findByIdAndDatesBetween(String id, Date dateStart, Date dateFinish);
+	List<Ticket> findByIdArticleDatesBetween(String id, Date dateStart, Date dateFinish);
 
 }

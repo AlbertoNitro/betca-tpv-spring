@@ -3,6 +3,7 @@ package es.upm.miw.resources;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,12 +27,20 @@ public class AdminResource {
     public static final String DB = "/db";
 
     @Autowired
+    private ConfigurableApplicationContext configurableApplicationContext;
+
+    @Autowired
     private AdminController adminController;
 
     @PreAuthorize("permitAll")
     @GetMapping(value = STATE)
     public String getState() {
         return "{\"state\":\"ok\"}";
+    }
+    
+    @DeleteMapping(value = STATE)
+    public void shutDown() {
+        configurableApplicationContext.close();
     }
 
     @DeleteMapping(value = DB)

@@ -8,11 +8,13 @@ import es.upm.miw.documents.core.Provider;
 @JsonInclude(Include.NON_NULL)
 public class ProviderDto extends ProviderMinimumDto {
 
+    private String nif;
+
     private String address;
 
-    private String mobile;
-
     private String phone;
+
+    private String email;
 
     private String note;
     
@@ -22,32 +24,22 @@ public class ProviderDto extends ProviderMinimumDto {
         // Empty for framework
     }
 
-    public ProviderDto(String id, String company, String address, String mobile, String phone, String note, Boolean active) {
-        super(id, company);
-        this.address = address;
-        this.mobile = mobile;
-        this.phone = phone;
-        this.note = note;
-        this.active = active;
-    }
-
     public ProviderDto(Provider provider) {
         super(provider.getId(), provider.getCompany());
+        this.nif= provider.getNif();
         this.address = provider.getAddress();
-        this.mobile = provider.getMobile();
         this.phone = provider.getPhone();
+        this.email= provider.getEmail();
         this.note = provider.getNote();
         this.active = provider.isActive();
     }
     
-    @Override
-    public String getCompany() {
-        return super.getCompany();
+    public String getNif() {
+        return nif;
     }
 
-    @Override
-    public void setCompany(String company) {
-        super.setCompany(company);
+    public void setNif(String nif) {
+        this.nif = nif;
     }
 
     public String getAddress() {
@@ -58,20 +50,20 @@ public class ProviderDto extends ProviderMinimumDto {
         this.address = address;
     }
 
-    public String getMobile() {
-        return mobile;
-    }
-
-    public void setMobile(String mobile) {
-        this.mobile = mobile;
-    }
-
-    public String getPhone() {
+     public String getPhone() {
         return phone;
     }
 
     public void setPhone(String phone) {
         this.phone = phone;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getNote() {
@@ -92,8 +84,8 @@ public class ProviderDto extends ProviderMinimumDto {
 
     @Override
     public String toString() {
-        return "[" + super.toString() + "ProviderDto [address=" + address + ", mobile=" + mobile + ", phone=" + phone + ", address=" + address
-                + ", note=" + note + ", active=" + active + "] ]";
+        return "ProviderDto [nif=" + nif + ", address=" + address + ", phone=" + phone + ", email=" + email + ", note=" + note + ", active="
+                + active + ", getId()=" + getId() + ", getCompany()=" + getCompany() + "]";
     }
 
 }

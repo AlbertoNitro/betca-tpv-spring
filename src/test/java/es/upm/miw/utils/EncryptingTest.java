@@ -1,5 +1,6 @@
 package es.upm.miw.utils;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertTrue;
 
@@ -9,8 +10,14 @@ public class EncryptingTest {
 
     @Test
     public void testEncryptInBase64UrlSafe() {
-        assertNotEquals(new Encrypting().encryptInBase64UrlSafe(),new Encrypting().encryptInBase64UrlSafe());
+        assertNotEquals(new Encrypting().encryptInBase64UrlSafe(), new Encrypting().encryptInBase64UrlSafe());
         assertTrue(new Encrypting().encryptInBase64UrlSafe().matches("[\\w\\-]{20,}"));
+    }
+
+    @Test
+    public void testEncodeHexInBase64UrlSafeDecode() {
+       String encode = new Encrypting().encodeHexInBase64UrlSafe("ff00b83445");
+       assertEquals("ff00b83445",new Encrypting().decodeBase64InHex(encode));
     }
 
 }

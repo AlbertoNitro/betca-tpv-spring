@@ -2,6 +2,13 @@ package es.upm.miw.dtos;
 
 import java.math.BigDecimal;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+
+import es.upm.miw.documents.core.Shopping;
+import es.upm.miw.documents.core.ShoppingState;
+
+@JsonInclude(Include.NON_NULL)
 public class ShoppingDto {
 
     private String code;
@@ -10,20 +17,20 @@ public class ShoppingDto {
 
     private BigDecimal retailPrice;
 
-    private int amount;
+    private Integer amount;
 
     private BigDecimal discount;
 
     private BigDecimal total;
 
-    private boolean committed;
+    private Boolean committed;
 
     public ShoppingDto() {
         // Empty for framework
     }
 
     public ShoppingDto(String code, String description, BigDecimal retailPrice, int amount, BigDecimal discount, BigDecimal total,
-            boolean committed) {
+            Boolean committed) {
         this.code = code;
         this.description = description;
         this.retailPrice = retailPrice;
@@ -31,6 +38,20 @@ public class ShoppingDto {
         this.discount = discount;
         this.total = total;
         this.committed = committed;
+    }
+
+    public ShoppingDto(Shopping shopping) {
+        this.code = shopping.getArticle().getCode();
+        this.description = shopping.getDescription();
+        this.retailPrice = shopping.getRetailPrice();
+        this.amount = shopping.getAmount();
+        this.discount = shopping.getDiscount();
+        this.total = shopping.getShoppingTotal();
+        if (shopping.getShoppingState().equals(ShoppingState.COMMITTED)) {
+            this.committed = true;
+        } else {
+            this.committed = false;
+        }
     }
 
     public String getCode() {

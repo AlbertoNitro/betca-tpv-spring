@@ -31,13 +31,13 @@ public class PdfTicketBuilder extends PdfBuilder {
 
     private static final int TERMIC_FONT_SIZE = 7;
 
-    private static final int TERMIC_FONT_SIZE_EMPHASIZEDD = 9;
+    private static final int TERMIC_FONT_SIZE_EMPHASIZEDD = 10;
 
     private static final int TERMIC_MARGIN = 4;
 
     private static final float TERMIC_PAGE_WIDHT = 227;
 
-    private static final float TERMIC_PAGE_HEIGHT = 600;
+    private static final float TERMIC_PAGE_HEIGHT = 300;
 
     private static final float LINE_WIDTH = 0.5f;
 
@@ -45,9 +45,9 @@ public class PdfTicketBuilder extends PdfBuilder {
 
     private static final int IMAGE_WIDTH = 80;
 
-    public PdfTicketBuilder(String path) {
+    public PdfTicketBuilder(String path, int lines) {
         super(path);
-        this.prepareDocument(new PageSize(TERMIC_PAGE_WIDHT, TERMIC_PAGE_HEIGHT));
+        this.prepareDocument(new PageSize(TERMIC_PAGE_WIDHT, TERMIC_PAGE_HEIGHT + lines * 15));
         this.getDocument().setMargins(TERMIC_MARGIN, TERMIC_MARGIN, TERMIC_MARGIN, TERMIC_MARGIN);
         this.getDocument().setFontSize(TERMIC_FONT_SIZE);
         this.getDocument().setTextAlignment(TextAlignment.LEFT);
@@ -68,7 +68,11 @@ public class PdfTicketBuilder extends PdfBuilder {
         code128.setCodeType(Barcode128.CODE128);
         code128.setCode(code.trim());
         Image code128Image = new Image(code128.createFormXObject(this.getDocument().getPdfDocument()));
-        code128Image.setWidthPercent(50);
+        int width = code.length() * 6;
+        if (width > 100) {
+            width = 100;
+        }
+        code128Image.setWidthPercent(width);
         code128Image.setHorizontalAlignment(HorizontalAlignment.CENTER);
         this.getDocument().add(code128Image);
         return this;

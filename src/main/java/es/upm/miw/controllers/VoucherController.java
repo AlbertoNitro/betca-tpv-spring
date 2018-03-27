@@ -12,66 +12,69 @@ import org.springframework.stereotype.Controller;
 import es.upm.miw.documents.core.Voucher;
 import es.upm.miw.dtos.VoucherDto;
 import es.upm.miw.repositories.core.VoucherRepository;
+import es.upm.miw.services.PdfService;
 
 @Controller
 public class VoucherController {
-	
-	@Autowired
+
+    @Autowired
     private VoucherRepository voucherRepository;
-	
-	public void createVoucher( BigDecimal value ) {
-		Voucher voucher = new Voucher( value );
-		this.voucherRepository.save( voucher );
-	}
-	
-	public Optional<VoucherDto> readVoucher(String reference) {
-		
-		Voucher voucherBd = this.voucherRepository.findByReference( reference );
-		
-		if ( voucherBd == null ) {
-			return Optional.empty();
-		}else {
-			return Optional.of( new VoucherDto( voucherBd ) );
-		}
+
+    @Autowired
+    private PdfService pdfService;
+
+    public Optional<byte[]> createVoucher(BigDecimal value) {
+        Voucher voucher = new Voucher(value);
+        this.voucherRepository.save(voucher);
+        return pdfService.generateVoucher(voucher);
     }
-	
-	public List<VoucherDto> readVoucherAll() {
-		
-		List <Voucher> voucherList = this.voucherRepository.findAll();
-		List<VoucherDto> voucherDtoList = new ArrayList<VoucherDto>();
-		
-		for ( int i = 0; i < voucherList.size(); i++ ) {
-			voucherDtoList.add( new VoucherDto( voucherList.get( i ) ) );
-		}
-		
-		return voucherDtoList;
+
+    public List<VoucherDto> readVoucherAll() {
+        List<Voucher> voucherList = this.voucherRepository.findAll();
+        List<VoucherDto> voucherDtoList = new ArrayList<VoucherDto>();
+        for (Voucher voucher : voucherList) {
+            voucherDtoList.add(new VoucherDto().minimumDto(voucher));
+        }
+        return voucherDtoList;
     }
-	
-	public BigDecimal consumeVoucher( String reference ) {
-		Voucher voucher = this.voucherRepository.findByReference( reference );
-		assert voucher != null;
-		voucher.setDateOfUse( new Date() );
-		this.voucherRepository.save( voucher );
-		return voucher.getValue();
-	}
-	
-	public boolean deleteVoucher(String reference) {
-        Voucher voucherBd = this.voucherRepository.findByReference(reference);
-        if (voucherBd != null) {
-            this.voucherRepository.delete( voucherBd );
-            return true;
+
+    public List<VoucherDto> readVoucherAllValid() {
+        List<Voucher> voucherList = this.voucherRepository.findAll();
+        List<VoucherDto> voucherDtoList = new ArrayList<VoucherDto>();
+        for (Voucher voucher : voucherList) {
+            if (!voucher.isUsed()) {
+                voucherDtoList.add(new VoucherDto().minimumDto(voucher));
+            }
+        }
+        return voucherDtoList;
+    }
+
+    public BigDecimal consumeVoucher(String id) {
+        Voucher voucher = this.voucherRepository.findOne(id);
+        assert voucher != null;
+        assert !voucher.isUsed();
+        voucher.setDateOfUse(new Date());
+        this.voucherRepository.save(voucher);
+        return voucher.getValue();
+    }
+
+    public boolean existsVoucher(String id) {
+        return this.voucherRepository.findOne(id) != null;
+    }
+
+    public boolean consumedVoucher(String id) {
+        Voucher voucher = this.voucherRepository.findOne(id);
+        assert voucher != null;
+        return voucher.isUsed();
+    }
+
+    public Optional<VoucherDto> readVoucher(String id) {
+        Voucher voucher = this.voucherRepository.findOne(id);
+        if (voucher != null) {
+            return Optional.of(new VoucherDto(voucher));
         } else {
-            return false;
+            return Optional.empty();
         }
     }
-	
-	public boolean existsVoucher( String reference ) {
-		return this.voucherRepository.findByReference(reference) != null;
-	}
-	
-	public boolean consumedVoucher( String reference ) {
-		Voucher voucher = this.voucherRepository.findByReference(reference);
-		return voucher.isUsed();
-	}
-	
+
 }

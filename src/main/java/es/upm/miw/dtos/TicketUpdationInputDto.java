@@ -6,43 +6,43 @@ import es.upm.miw.dtos.validations.ListNotEmpty;
 
 public class TicketUpdationInputDto {
     @ListNotEmpty
-    private List<Integer> listAmounts;
+    private List<Integer> listAmountsShoppings;
 
     @ListNotEmpty
-    private List<Boolean> listCommitteds;
+    private List<Boolean> listCommitedsShoppings;
 
     public TicketUpdationInputDto() {
         // Empty for framework
     }
 
-    public TicketUpdationInputDto(List<Integer> listAmounts, List<Boolean> listCommitteds) {
+    public TicketUpdationInputDto(List<Integer> listAmountsShoppings, List<Boolean> listCommitedsShoppings) {
         super();
-        this.listAmounts = listAmounts;
-        this.listCommitteds = listCommitteds;
+        this.listAmountsShoppings = listAmountsShoppings;
+        this.listCommitedsShoppings = listCommitedsShoppings;
     }
 
-    public List<Integer> getListAmounts() {
-        return listAmounts;
+    public List<Integer> getListAmountsShoppings() {
+        return listAmountsShoppings;
     }
 
-    public void setListAmounts(List<Integer> listAmounts) {
-        this.listAmounts = listAmounts;
+    public void setListAmountsShoppings(List<Integer> listAmountsShoppings) {
+        this.listAmountsShoppings = listAmountsShoppings;
     }
 
-    public List<Boolean> getListCommitteds() {
-        return listCommitteds;
+    public List<Boolean> getListCommitedsShoppings() {
+        return listCommitedsShoppings;
     }
 
-    public void setListCommitteds(List<Boolean> listCommitteds) {
-        this.listCommitteds = listCommitteds;
+    public void setListCommitedsShoppings(List<Boolean> listCommitedsShoppings) {
+        this.listCommitedsShoppings = listCommitedsShoppings;
     }
 
     @Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = (prime * result) + ((listAmounts == null) ? 0 : listAmounts.hashCode());
-        result = (prime * result) + ((listCommitteds == null) ? 0 : listCommitteds.hashCode());
+        result = (prime * result) + ((listAmountsShoppings == null) ? 0 : listAmountsShoppings.hashCode());
+        result = (prime * result) + ((listCommitedsShoppings == null) ? 0 : listCommitedsShoppings.hashCode());
         return result;
     }
 
@@ -58,18 +58,18 @@ public class TicketUpdationInputDto {
             return false;
         }
         TicketUpdationInputDto other = (TicketUpdationInputDto) obj;
-        if (listAmounts == null) {
-            if (other.listAmounts != null) {
+        if (listAmountsShoppings == null) {
+            if (other.listAmountsShoppings != null) {
                 return false;
             }
-        } else if (!listAmounts.equals(other.listAmounts)) {
+        } else if (!listAmountsShoppings.equals(other.listAmountsShoppings)) {
             return false;
         }
-        if (listCommitteds == null) {
-            if (other.listCommitteds != null) {
+        if (listCommitedsShoppings == null) {
+            if (other.listCommitedsShoppings != null) {
                 return false;
             }
-        } else if (!listCommitteds.equals(other.listCommitteds)) {
+        } else if (!listCommitedsShoppings.equals(other.listCommitedsShoppings)) {
             return false;
         }
         return true;
@@ -77,7 +77,8 @@ public class TicketUpdationInputDto {
 
     @Override
     public String toString() {
-        return "TicketUpdationInputDto [listAmounts=" + listAmounts + ", listCommitteds=" + listCommitteds + "]";
+        return "TicketUpdationInputDto [listAmountsShoppings=" + listAmountsShoppings + ", listCommitedsShoppings=" + listCommitedsShoppings
+                + "]";
     }
 
 }

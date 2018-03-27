@@ -78,7 +78,8 @@ voucherList:
   - value: 30.3
     dateOfUse: 2018-01-06 12:00:23  
   - value: 50.6
-    dateOfUse: 2018-01-06 18:00:23  
+    dateOfUse: 2018-01-06 18:00:23 
+     
 # Providers
 providerList:
   - &pr0
@@ -86,16 +87,16 @@ providerList:
   - &pr1
     id: provider1
     company: company-p1
+    nif: 12345678b
     address: C/ TPV-provider, 2, 1A, 28000 Madrid
-    mobile: 666666101
     phone: 9166666601
+    email: p1@gmail.com
     note: provider 1
     active: true
   - &pr2
     id: provider2
     company: company-p2
     address: C/ TPV-provider, 2, 1A, 28000 Madrid
-    mobile: 666666101
     phone: 9166666601
     note: provider 2
     active: false  
@@ -103,7 +104,6 @@ providerList:
     id: provider3
     company: company-p3
     address: C/ TPV-provider, 2, 1A, 28000 Madrid
-    mobile: 666666101
     phone: 9166666601
     note: provider 3
     active: true
@@ -115,7 +115,6 @@ articleList:
     reference: various
     description: Various
     retailPrice: 100
-    wholesalePrice: 50
     tax: GENERAL
     provider: *pr0
   - &ar1
@@ -123,7 +122,6 @@ articleList:
     reference: ref-a1
     description: descrip-a1
     retailPrice: 20
-    wholesalePrice: 10
     tax: GENERAL
     stock: 0
     provider: *pr1
@@ -132,7 +130,6 @@ articleList:
     reference: ref-a2
     description: descrip-a2
     retailPrice: 27.8
-    wholesalePrice: 12.5
     tax: FREE
     stock: 0
     provider: *pr1
@@ -140,16 +137,50 @@ articleList:
     code: 13245
     description: Various
     retailPrice: 100
-    wholesalePrice: 50
     tax: GENERAL
     provider: *pr0
   - &ar4
     code: 13247
     description: Various
     retailPrice: 100
-    wholesalePrice: 50
     tax: GENERAL
     provider: *pr0
+  - &ar5
+    code: 13248
+    description: Artic
+    retailPrice: 100
+    tax: GENERAL
+    provider: *pr0
+  - &ar6
+    code: 13249
+    description: Artic
+    retailPrice: 100
+    tax: GENERAL
+    provider: *pr0
+  - &ar7
+    code: 13249
+    description: Artic
+    retailPrice: 100
+    tax: GENERAL
+    provider: *pr0
+  - &ar8
+    code: 13250
+    description: Artic
+    retailPrice: 100
+    tax: GENERAL
+    provider: *pr0
+  - &ar9
+    code: 13251
+    description: Artic
+    retailPrice: 100
+    tax: GENERAL
+    provider: *pr0
+  - &ar10
+    code: 13252
+    description: Artic
+    retailPrice: 100
+    tax: GENERAL
+    provider: *pr0  
 
 # Shopping
 shoppingList:
@@ -158,16 +189,22 @@ shoppingList:
     retailPrice: 0.1
     discount: 0
     article: *ar1
+    shoppingState: COMMITTED
+    description: "various"
   - &sh2
     amount: 10
     retailPrice: 30
     discount: 50.00
     article: *ar2
+    shoppingState: COMMITTED
+    description: "various"
   - &sh3
     amount: 1
     retailPrice: 2.2
     discount: 0
     article: *ar1
+    shoppingState: COMMITTED
+    description: "various"
   - &sh4
     amount: 1
     retailPrice: 2.2
@@ -188,6 +225,7 @@ ticketList:
   - &ti1
     id: 20180112-1
     reference: t2j_u9M9CisFmYGRFs1Uulgn7hI
+    cashDeposited: 10.0
     shoppingList:
       - *sh1
       - *sh2
@@ -195,12 +233,14 @@ ticketList:
   - &ti2
     id: 20180112-2
     reference: 6P0ISee_twnGEzf8qd1Bd5sGQqE
+    cashDeposited: 20.0
     shoppingList: 
       - *sh3
     user: *us4
   - &ti3
     id: 20180112-3
     reference: 6P0ISee_twnGEzf8qA1BdAsGQqE
+    cashDeposited: 30.0
     shoppingList: 
       - *sh4
       - *sh5
@@ -212,3 +252,25 @@ invoiceList:
     ticket: *ti1
   - id: 2018-2
     ticket: *ti2
+    
+# CashMovement
+cashMovementList:
+  - value: 666.666
+    comment: "test A"
+  - value: 0.666
+    comment: "test B"
+  - value: 30.3
+    comment: "test C"
+  - value: 50.6
+    comment: "test D" 
+    
+# Offers
+offerList:
+  - code: AAA
+    percentage: 0.25
+    expiration: 2018-01-02
+  - code: BBB
+    percentage: 0.50
+    expiration: 2018-12-02
+    description: "Descuento en segunda compra"  
+

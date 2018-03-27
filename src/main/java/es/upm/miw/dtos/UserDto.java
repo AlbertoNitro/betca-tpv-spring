@@ -1,5 +1,6 @@
 package es.upm.miw.dtos;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -106,8 +107,12 @@ public class UserDto extends UserMinimumDto {
 
     @Override
     public String toString() {
+        String date = "null";
+        if (registrationDate != null) {
+            date = new SimpleDateFormat("dd-MMM-yyyy").format(registrationDate.getTime());
+        }   
         return "[" + super.toString() + "UserDto [password=" + password + ", email=" + email + ", dni=" + dni + ", address=" + address
-                + ", active=" + active + ", registrationDate=" + registrationDate + "] ]";
+                + ", active=" + active + ", registrationDate=" + date + "] ]";
     }
 
 }
