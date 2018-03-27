@@ -1,6 +1,7 @@
 package es.upm.miw.services;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Dictionary;
 import java.util.HashMap;
@@ -34,35 +35,60 @@ public class StatisticsDataService {
 
 		List<Ticket> tickectsCollection = ticketRepository.findByCreationDateBetween(initDate, endDate);
 
-		HashMap<String, HashMap> resultAux = new HashMap<String, HashMap>();
+		Calendar initCalendar = Calendar.getInstance();
+		initCalendar.setTime(initDate);
+
+		Calendar endCalendar = Calendar.getInstance();
+		endCalendar.setTime(endDate);
+
+		int initMonth = initCalendar.get(Calendar.MONTH);
+		int endMonth = endCalendar.get(Calendar.MONDAY);
+
+		if (endCalendar.get(Calendar.YEAR) > initCalendar.get(Calendar.YEAR)) {
+			endMonth = endCalendar.get(Calendar.MONDAY)
+					+ 12 * (endCalendar.get(Calendar.YEAR) - initCalendar.get(Calendar.YEAR));
+		}
+
+		HashMap<String, HashMap<Integer, Integer>> resultAux = new HashMap<String, HashMap<Integer, Integer>>();
 		for (Ticket ticket : tickectsCollection) {
+			
+			Calendar ticketCalendar = Calendar.getInstance();
+			ticketCalendar.setTime(ticket.getCreationDate());
+			Integer ticketMonth = ticketCalendar.get(Calendar.MONTH);
+			
 			for (Shopping shopping : ticket.getShoppingList()) {
 
 				Article articleAux = shopping.getArticle();
 				if (!resultAux.containsKey(articleAux.getReference())) {
 
-					HashMap mapAux = new HashMap();
-					mapAux.put(ticket.getCreationDate().getMonth(), 1);
+					HashMap<Integer, Integer> mapAux = new HashMap<Integer, Integer>();
+					mapAux.put(ticketMonth, shopping.getAmount());
 					resultAux.put(articleAux.getReference(), mapAux);
 
 				} else {
-					HashMap mapAux = resultAux.get(articleAux.getReference());
-					if (!mapAux.containsKey(ticket.getCreationDate().getMonth())) {
-						mapAux.put(ticket.getCreationDate().getMonth(), 1);
+					HashMap<Integer, Integer> mapAux = resultAux.get(articleAux.getReference());
+					if (!mapAux.containsKey(ticketMonth)) {
+						mapAux.put(ticketMonth, +shopping.getAmount());
 					} else {
-						mapAux.put(ticket.getCreationDate().getMonth(),
-								((int) mapAux.get(ticket.getCreationDate().getMonth())) + 1);
+						mapAux.put(ticketMonth,
+								((int) mapAux.get(ticketMonth)) + shopping.getAmount());
 					}
 				}
 			}
 		}
-		for (Map.Entry<String, HashMap> articleData : resultAux.entrySet()) {
+		
+		for (Map.Entry<String, HashMap<Integer, Integer>> articleData : resultAux.entrySet()) {
 
 			List<Integer> numArticlePerMonthCollection = new ArrayList<Integer>();
 			HashMap<Integer, Integer> value = articleData.getValue();
 
-			for (Map.Entry<Integer, Integer> item : value.entrySet()) {
-				numArticlePerMonthCollection.add(item.getValue());
+			for (int i = initMonth; i < endMonth; i++) {
+
+				if (value.containsKey(i))
+					numArticlePerMonthCollection.add(value.get(i));
+
+				else
+					numArticlePerMonthCollection.add(0);
 			}
 
 			HistoricalProductOutPutDto item = new HistoricalProductOutPutDto(numArticlePerMonthCollection,
