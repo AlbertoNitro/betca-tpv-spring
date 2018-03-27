@@ -29,12 +29,6 @@ public class OrderBodyController {
         this.orderBodyRepository.save(orderBody);
     }
 
-    public OrderBodyDto findOrderBodyDtoById(String id) {
-        OrderBody orderBody = this.orderBodyRepository.findById(id);
-        String article_name = this.articleRepository.findArticleByCode(orderBody.getId_article()).getDescription();
-        return new OrderBodyDto(orderBody.getId(), orderBody.getId_order(), orderBody.getId_article(), article_name);
-    }
-
     public OrderBody findById(String id) {
         return this.orderBodyRepository.findById(id);
     }
