@@ -4,27 +4,34 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.validation.constraints.NotNull;
+
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+
 import es.upm.miw.documents.core.Shopping;
 import es.upm.miw.documents.core.Ticket;
 
-public class TicketOutputDto {
+@JsonInclude(Include.NON_NULL)
+public class TicketDto {
 
     private String id;
 
     private Date creationDate;
 
-    private List<ShoppingOutputDto> shoppingList;
+    @NotNull
+    private List<ShoppingDto> shoppingList;
 
-    public TicketOutputDto() {
+    public TicketDto() {
         // Empty for framework
     }
 
-    public TicketOutputDto(Ticket ticket) {
+    public TicketDto(Ticket ticket) {
         this.id = ticket.getId();
         this.creationDate = ticket.getCreationDate();
-        shoppingList = new ArrayList<ShoppingOutputDto>();
+        shoppingList = new ArrayList<ShoppingDto>();
         for (Shopping shopping : ticket.getShoppingList()) {
-            shoppingList.add(new ShoppingOutputDto(shopping));
+            shoppingList.add(new ShoppingDto(shopping));
         }     
     }
 
@@ -44,11 +51,11 @@ public class TicketOutputDto {
         this.creationDate = creationDate;
     }
 
-    public List<ShoppingOutputDto> getShoppingList() {
+    public List<ShoppingDto> getShoppingList() {
         return shoppingList;
     }
 
-    public void setShoppingList(List<ShoppingOutputDto> shoppingList) {
+    public void setShoppingList(List<ShoppingDto> shoppingList) {
         this.shoppingList = shoppingList;
     }
 

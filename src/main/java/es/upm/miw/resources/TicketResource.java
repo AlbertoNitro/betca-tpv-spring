@@ -3,7 +3,6 @@ package es.upm.miw.resources;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 import java.util.Random;
 
 import javax.validation.Valid;
@@ -14,19 +13,18 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import es.upm.miw.controllers.TicketController;
 import es.upm.miw.dtos.HistoricalProductOutPutDto;
 import es.upm.miw.dtos.TicketCreationInputDto;
-import es.upm.miw.dtos.TicketOutputDto;
+import es.upm.miw.dtos.TicketDto;
 import es.upm.miw.dtos.TicketSearchOutputDto;
-import es.upm.miw.dtos.TicketUpdationInputDto;
 import es.upm.miw.resources.exceptions.FieldInvalidException;
 import es.upm.miw.resources.exceptions.TicketIdNotFoundException;
 
@@ -37,44 +35,36 @@ public class TicketResource {
     public static final String TICKETS = "/tickets";
 
     public static final String ID_ID = "/{id}";
-
+    public static final String SEARCH_DATE = "/search/date";
+    
     public static final String SEARCH_BY_ID_AND_DATES = "/searchByIdAndDates";
-
     public static final String SEARCH_BY_CREATION_DATES = "/searchByCreationDates";
 
     @Autowired
     private TicketController ticketController;
 
     @PostMapping(produces = {"application/pdf", "application/json"})
-    public @ResponseBody byte[] createTicket(@Valid @RequestBody TicketCreationInputDto ticketCreationDto) throws FieldInvalidException {
-        Optional<byte[]> pdf = this.ticketController.createTicket(ticketCreationDto);
-        if (!pdf.isPresent()) {
-            throw new FieldInvalidException("Article exception");
-        } else {
-            return pdf.get();
-        }
-    }
-
-    @RequestMapping(value = ID_ID, method = RequestMethod.PATCH)
-    public void updateAmountAndStateTicket(@PathVariable(value = "id") String id,
-            @Valid @RequestBody TicketUpdationInputDto ticketUpdationInputDto) throws TicketIdNotFoundException {
-        if (this.ticketController.existTicket(id)) {
-            this.ticketController.updateAmountAndStateTicket(id, ticketUpdationInputDto);
-        } else {
-            throw new TicketIdNotFoundException(id);
-        }
+    public byte[] createTicket(@Valid @RequestBody TicketCreationInputDto ticketCreationDto) throws FieldInvalidException {
+        return this.ticketController.createTicket(ticketCreationDto).orElseThrow(() -> new FieldInvalidException("Article exception"));
     }
 
     @GetMapping(value = ID_ID)
-    public TicketOutputDto getTicket(@PathVariable String id) throws TicketIdNotFoundException {
-        return this.ticketController.getTicket(id).orElseThrow(() -> new TicketIdNotFoundException(id));
+    public TicketDto readTicket(@PathVariable String id) throws TicketIdNotFoundException {
+        return this.ticketController.read(id).orElseThrow(() -> new TicketIdNotFoundException(id));
     }
 
-    @RequestMapping(value = SEARCH_BY_CREATION_DATES, method = RequestMethod.GET)
-    public List<TicketOutputDto> findTicketsBetweenCreationDates(
-            @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") @RequestParam("initialDate") Date initialDate,
-            @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") @RequestParam("finalDate") Date finalDate) {
-        return this.ticketController.getTicketsBetweenCreationDates(initialDate, finalDate);
+    @GetMapping(value = SEARCH_DATE)
+    public List<TicketDto> findBetweenDates(@RequestParam long start, @RequestParam long end) {
+        return this.ticketController.findBetweenDates(new Date(start), new Date(end));
+    }
+
+    @PutMapping(value = ID_ID, produces = {"application/pdf", "application/json"})
+    public byte[] updateTicket(@PathVariable String id, @RequestBody TicketDto ticketDto)
+            throws TicketIdNotFoundException, FieldInvalidException {
+        if (!this.ticketController.existTicket(id)) {
+            throw new TicketIdNotFoundException(id);
+        }
+        return this.ticketController.updateTicket(id, ticketDto).orElseThrow(() -> new FieldInvalidException("Ticket Update Exception"));
     }
 
     @RequestMapping(value = SEARCH_BY_ID_AND_DATES, method = RequestMethod.GET)

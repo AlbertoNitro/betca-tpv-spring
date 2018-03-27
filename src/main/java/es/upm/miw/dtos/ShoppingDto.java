@@ -2,6 +2,13 @@ package es.upm.miw.dtos;
 
 import java.math.BigDecimal;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+
+import es.upm.miw.documents.core.Shopping;
+import es.upm.miw.documents.core.ShoppingState;
+
+@JsonInclude(Include.NON_NULL)
 public class ShoppingDto {
 
     private String code;
@@ -10,20 +17,20 @@ public class ShoppingDto {
 
     private BigDecimal retailPrice;
 
-    private int amount;
+    private Integer amount;
 
     private BigDecimal discount;
 
     private BigDecimal total;
 
-    private boolean committed;
+    private Boolean committed;
 
     public ShoppingDto() {
         // Empty for framework
     }
 
     public ShoppingDto(String code, String description, BigDecimal retailPrice, int amount, BigDecimal discount, BigDecimal total,
-            boolean committed) {
+            Boolean committed) {
         this.code = code;
         this.description = description;
         this.retailPrice = retailPrice;
@@ -31,6 +38,20 @@ public class ShoppingDto {
         this.discount = discount;
         this.total = total;
         this.committed = committed;
+    }
+
+    public ShoppingDto(Shopping shopping) {
+        this.code = shopping.getArticle().getCode();
+        this.description = shopping.getDescription();
+        this.retailPrice = shopping.getRetailPrice();
+        this.amount = shopping.getAmount();
+        this.discount = shopping.getDiscount();
+        this.total = shopping.getShoppingTotal();
+        if (shopping.getShoppingState().equals(ShoppingState.COMMITTED)) {
+            this.committed = true;
+        } else {
+            this.committed = false;
+        }
     }
 
     public String getCode() {
@@ -87,61 +108,6 @@ public class ShoppingDto {
 
     public void setCommitted(boolean committed) {
         this.committed = committed;
-    }
-    
-    @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + amount;
-        result = prime * result + ((code == null) ? 0 : code.hashCode());
-        result = prime * result + (committed ? 1231 : 1237);
-        result = prime * result + ((description == null) ? 0 : description.hashCode());
-        result = prime * result + ((discount == null) ? 0 : discount.hashCode());
-        result = prime * result + ((retailPrice == null) ? 0 : retailPrice.hashCode());
-        result = prime * result + ((total == null) ? 0 : total.hashCode());
-        return result;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
-        ShoppingDto other = (ShoppingDto) obj;
-        if (amount != other.amount)
-            return false;
-        if (code == null) {
-            if (other.code != null)
-                return false;
-        } else if (!code.equals(other.code))
-            return false;
-        if (committed != other.committed)
-            return false;
-        if (description == null) {
-            if (other.description != null)
-                return false;
-        } else if (!description.equals(other.description))
-            return false;
-        if (discount == null) {
-            if (other.discount != null)
-                return false;
-        } else if (!discount.equals(other.discount))
-            return false;
-        if (retailPrice == null) {
-            if (other.retailPrice != null)
-                return false;
-        } else if (!retailPrice.equals(other.retailPrice))
-            return false;
-        if (total == null) {
-            if (other.total != null)
-                return false;
-        } else if (!total.equals(other.total))
-            return false;
-        return true;
     }
 
     @Override
