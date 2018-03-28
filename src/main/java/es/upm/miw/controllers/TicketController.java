@@ -51,7 +51,7 @@ public class TicketController {
         return nextId;
     }
 
-    public Optional<byte[]> createTicket(TicketCreationInputDto ticketCreationDto) {
+    public Optional<Ticket> createTicket(TicketCreationInputDto ticketCreationDto) {
         User user = this.userRepository.findByMobile(ticketCreationDto.getUserMobile());
         List<Shopping> shoppingList = new ArrayList<>();
         for (ShoppingDto shoppingDto : ticketCreationDto.getShoppingCart()) {
@@ -69,7 +69,16 @@ public class TicketController {
         }
         Ticket ticket = new Ticket(this.nextId(), ticketCreationDto.getCash(), shoppingList.toArray(new Shopping[0]), user);
         this.ticketRepository.save(ticket);
-        return pdfService.generateTicket(ticket);
+        return Optional.of(ticket);
+    }
+
+    public Optional<byte[]> createTicketAndPdf(TicketCreationInputDto ticketCreationDto) {
+        Optional<Ticket> ticket = this.createTicket(ticketCreationDto);
+        if (ticket.isPresent()) {
+            return pdfService.generateTicket(ticket.get());
+        } else {
+            return Optional.empty();
+        }
     }
 
     public boolean existTicket(String id) {
@@ -121,10 +130,10 @@ public class TicketController {
         return ticketListDto;
     }
 
-    public List<TicketDto> findByMobile(String mobile){
+    public List<TicketDto> findByMobile(String mobile) {
         List<TicketDto> ticketListDto = new ArrayList<TicketDto>();
-        User user= this.userRepository.findByMobile(mobile);
-        if(user!=null) {
+        User user = this.userRepository.findByMobile(mobile);
+        if (user != null) {
             List<Ticket> ticketList = this.ticketRepository.findByUserOrderByCreationDateDesc(user);
             for (Ticket ticket : ticketList) {
                 TicketDto ticketDto = new TicketDto();

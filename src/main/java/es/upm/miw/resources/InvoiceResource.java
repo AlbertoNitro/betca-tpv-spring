@@ -1,7 +1,5 @@
 package es.upm.miw.resources;
 
-import java.util.Optional;
-
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,11 +25,6 @@ public class InvoiceResource {
 
     @PostMapping(produces = {"application/pdf", "application/json"})
     public @ResponseBody byte[] createInvoice(@Valid @RequestBody TicketCreationInputDto ticketCreationDto) throws FieldInvalidException {
-        Optional<byte[]> pdf = this.invoiceController.createInvoice(ticketCreationDto);
-        if (!pdf.isPresent()) {
-            throw new FieldInvalidException("Article exception");
-        } else {
-            return pdf.get();
-        }
+        return this.invoiceController.createInvoice(ticketCreationDto).orElseThrow(() -> new FieldInvalidException("Article exception"));
     }
 }
