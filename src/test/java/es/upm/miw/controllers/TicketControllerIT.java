@@ -44,9 +44,9 @@ public class TicketControllerIT {
                 .add(new ShoppingDto("1", "various", new BigDecimal("100"), 2, new BigDecimal("50.00"), new BigDecimal("100"), true));
         ticketCreationInputDto.getShoppingCart().add(
                 new ShoppingDto("article2", "descrip-a2", new BigDecimal("10"), 100, new BigDecimal("0"), new BigDecimal("1000"), true));
-        this.ticketController.createTicket(ticketCreationInputDto);
+        this.ticketController.createTicketAndPdf(ticketCreationInputDto);
         Ticket ticket1 = this.ticketRepository.findFirstByOrderByCreationDateDescIdDesc();
-        this.ticketController.createTicket(ticketCreationInputDto);
+        this.ticketController.createTicketAndPdf(ticketCreationInputDto);
         Ticket ticket2 = this.ticketRepository.findFirstByOrderByCreationDateDescIdDesc();
 
         assertEquals(ticket1.simpleId() + 1, ticket2.simpleId());

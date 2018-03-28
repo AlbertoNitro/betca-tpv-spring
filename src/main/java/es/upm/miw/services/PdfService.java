@@ -15,25 +15,12 @@ import es.upm.miw.documents.core.Budget;
 import es.upm.miw.documents.core.Invoice;
 import es.upm.miw.documents.core.Shopping;
 import es.upm.miw.documents.core.ShoppingState;
-import es.upm.miw.documents.core.Tax;
 import es.upm.miw.documents.core.Ticket;
 import es.upm.miw.documents.core.Voucher;
 import es.upm.miw.utils.Encrypting;
 
 @Service
 public class PdfService {
-
-    @Value("${miw.tax.general}")
-    private String ivaGeneral;
-
-    @Value("${miw.tax.reduced}")
-    private String ivaReduced;
-
-    @Value("${miw.tax.super.reduced}")
-    private String ivaSuperReduced;
-
-    @Value("${miw.tax.free}")
-    private String ivaFree;
 
     @Value("${miw.company.logo}")
     private String logo;
@@ -157,11 +144,13 @@ public class PdfService {
         return pdf;
     }
 
-    public Optional<byte[]> generateInvioce(Invoice invoice) {
-        final int INCREMENTAL_INVOICE_HEIGHT = 11;
-        BigDecimal baseImpobibleTotal = BigDecimal.ZERO;
-        BigDecimal ivaTotal = BigDecimal.ZERO;
+    private PdfTicketBuilder totalPrice(PdfTicketBuilder pdf, BigDecimal total) {
+        pdf.tableColspanRight("TOTAL: " + total.setScale(2, RoundingMode.HALF_UP) + "€");
+        return pdf;
+    }
 
+    public Optional<byte[]> generateInvioce(Invoice invoice, BigDecimal taxBase) {
+        final int INCREMENTAL_INVOICE_HEIGHT = 11;
         final String path = "/invoices/invoice-" + invoice.getId();
 
         PdfTicketBuilder pdf = this.addCompanyDetails(path, INCREMENTAL_INVOICE_HEIGHT + invoice.getTicket().getShoppingList().length);
@@ -174,76 +163,22 @@ public class PdfService {
         pdf.line();
         SimpleDateFormat formatter = new SimpleDateFormat(DATE_FORMAT);
         pdf.paragraphEmphasized(formatter.format(invoice.getCreated()));
-        pdf.tableColumnsSizes(TABLE_COLUMNS_SIZES).tableColumnsHeader(TABLE_COLUMNS_HEADERS);
-
+        pdf.tableColumnsSizes(TABLE_COLUMNS_SIZES_BUDGETS).tableColumnsHeader(TABLE_COLUMNS_HEADERS_BUDGETS);
         for (int i = 0; i < invoice.getTicket().getShoppingList().length; i++) {
             Shopping shopping = invoice.getTicket().getShoppingList()[i];
-            Article article = invoice.getTicket().getShoppingList()[i].getArticle();
-            String state = "";
-            if (shopping.getShoppingState() != ShoppingState.COMMITTED) {
-                state = "N";
-            }
-            BigDecimal baseImpobible = getTaxBase(shopping.getShoppingTotal(), article.getTax());
-            BigDecimal iva = getIva(baseImpobible, article.getTax());
             pdf.tableCell(String.valueOf(i + 1), shopping.getDescription(), "" + shopping.getAmount(),
-                    shopping.getDiscount().setScale(2, RoundingMode.HALF_UP) + "%", baseImpobible.setScale(2, RoundingMode.HALF_UP) + "€",
-                    state);
-            baseImpobibleTotal = baseImpobibleTotal.add(baseImpobible);
-            ivaTotal = ivaTotal.add(iva);
+                    shopping.getDiscount().setScale(2, RoundingMode.HALF_UP) + "%",
+                    shopping.getShoppingTotal().setScale(2, RoundingMode.HALF_UP) + "€");
         }
 
-        pdf.tableColspanRight("BASE IMPONIBLE: " + baseImpobibleTotal.setScale(2, RoundingMode.HALF_UP) + "€");
-        pdf.tableColspanRight("IVA: " + ivaTotal.setScale(2, RoundingMode.HALF_UP) + "€");
-        pdf.tableColspanRight("TOTAL: " + baseImpobibleTotal.add(ivaTotal).setScale(2, RoundingMode.HALF_UP) + "€");
+        pdf.tableColspanRight("BASE IMPONIBLE: " + taxBase.setScale(2, RoundingMode.HALF_UP) + "€");
+        pdf.tableColspanRight("IVA: " + (invoice.getTicket().getTicketTotal().subtract(taxBase).setScale(2, RoundingMode.HALF_UP)) + "€");
+        pdf.tableColspanRight("TOTAL: " +invoice.getTicket().getTicketTotal().setScale(2, RoundingMode.HALF_UP) + "€");
         pdf.line();
         pdf.line().paragraph("Gracias por su compra");
 
         return pdf.build();
     }
 
-    private BigDecimal getTaxBase(BigDecimal value, Tax tax) {
-        switch (tax) {
-        case GENERAL:
-            return value.divide(new BigDecimal(String.valueOf(ivaGeneral)).add(new BigDecimal(1)), 2, RoundingMode.HALF_UP);
-
-        case REDUCED:
-            return value.divide(new BigDecimal(String.valueOf(ivaReduced)).add(new BigDecimal(1)), 2, RoundingMode.HALF_UP);
-
-        case SUPER_REDUCED:
-            return value.divide(new BigDecimal(String.valueOf(ivaSuperReduced)).add(new BigDecimal(1)), 2, RoundingMode.HALF_UP);
-
-        case FREE:
-            return value.divide(new BigDecimal(String.valueOf(ivaFree)).add(new BigDecimal(1)), 2, RoundingMode.HALF_UP);
-        default:
-            return value;
-        }
-
-    }
-
-    private BigDecimal getIva(BigDecimal value, Tax tax) {
-
-        switch (tax) {
-        case GENERAL:
-            return value.multiply(new BigDecimal(String.valueOf(ivaGeneral)));
-
-        case REDUCED:
-            return value.multiply(new BigDecimal(String.valueOf(ivaReduced)));
-
-        case SUPER_REDUCED:
-            return value.multiply(new BigDecimal(String.valueOf(ivaSuperReduced)));
-
-        case FREE:
-            return value.multiply(new BigDecimal(String.valueOf(ivaFree)));
-
-        default:
-            return new BigDecimal(0.0);
-        }
-
-    }
-
-    private PdfTicketBuilder totalPrice(PdfTicketBuilder pdf, BigDecimal total) {
-        pdf.tableColspanRight("TOTAL: " + total.setScale(2, RoundingMode.HALF_UP) + "€");
-        return pdf;
-    }
-
+ 
 }

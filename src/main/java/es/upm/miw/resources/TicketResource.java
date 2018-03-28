@@ -46,7 +46,7 @@ public class TicketResource {
 
     @PostMapping(produces = {"application/pdf", "application/json"})
     public byte[] createTicket(@Valid @RequestBody TicketCreationInputDto ticketCreationDto) throws FieldInvalidException {
-        return this.ticketController.createTicket(ticketCreationDto).orElseThrow(() -> new FieldInvalidException("Article exception"));
+        return this.ticketController.createTicketAndPdf(ticketCreationDto).orElseThrow(() -> new FieldInvalidException("Article exception"));
     }
 
     @GetMapping(value = ID_ID)
