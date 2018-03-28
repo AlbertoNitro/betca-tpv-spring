@@ -14,6 +14,7 @@ import org.springframework.stereotype.Controller;
 import es.upm.miw.documents.core.Invoice;
 import es.upm.miw.documents.core.Shopping;
 import es.upm.miw.documents.core.Ticket;
+import es.upm.miw.dtos.InvoiceDto;
 import es.upm.miw.dtos.TicketCreationInputDto;
 import es.upm.miw.repositories.core.InvoiceRepository;
 import es.upm.miw.repositories.core.TicketRepository;
@@ -82,11 +83,21 @@ public class InvoiceController {
         Invoice invoice = invoiceRepository.findFirstByOrderByCreationDateDescIdDesc();
         if (invoice != null) {
             Date startOfDay = Date.from(LocalDate.now().atStartOfDay(ZoneId.systemDefault()).toInstant());
-            if (invoice.getCreated().compareTo(startOfDay) >= 0) {
+            if (invoice.getCreationDated().compareTo(startOfDay) >= 0) {
                 nextId = invoice.simpleId() + 1;
             }
         }
         return nextId;
     }
+
+    public Optional<InvoiceDto> read(String id) {
+        Invoice invoice = this.invoiceRepository.findOne(id);
+        if (invoice != null) {
+            return Optional.of(new InvoiceDto(invoice));
+        } else {
+            return Optional.empty();
+        }
+    }
+
 
 }
