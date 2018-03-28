@@ -112,10 +112,10 @@ public class PdfService {
 
     public Optional<byte[]> generateBudget(Budget budget) {
         final String path = "/budgets/budget-" + budget.getId();
-        PdfTicketBuilder pdf = this.addCompanyDetails(path, budget.getShoppingList().length);
+        PdfTicketBuilder pdf = this.addCompanyDetails(path, budget.getShoppingList().length + 2);
         pdf.line().paragraphEmphasized("PRESUPUESTO");
         pdf.barCode(new Encrypting().encodeHexInBase64UrlSafe(budget.getId())).line();
-        
+
         SimpleDateFormat formatter = new SimpleDateFormat(DATE_FORMAT);
         pdf.paragraphEmphasized(formatter.format(budget.getCreationDate()));
 
@@ -139,7 +139,7 @@ public class PdfService {
         pdf.line().paragraphEmphasized("VOUCHER");
         pdf.barCode(new Encrypting().encodeHexInBase64UrlSafe(voucher.getId())).line();
 
-        pdf.paragraphEmphasized("      Valor: " + voucher.getValue()+" €").line();
+        pdf.paragraphEmphasized("      Valor: " + voucher.getValue() + " €").line();
 
         SimpleDateFormat formatter = new SimpleDateFormat(DATE_FORMAT);
         pdf.paragraphEmphasized(formatter.format(voucher.getCreationDate()));
