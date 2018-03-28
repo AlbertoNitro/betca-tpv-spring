@@ -58,5 +58,9 @@ public class InvoiceControllerIT {
         this.invoiceRepository.delete(invoice);
         this.userRepository.delete(user);
     }
+    
+    @Test
+    public void test() {
+    }
 
 }

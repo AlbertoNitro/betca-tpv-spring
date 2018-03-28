@@ -88,15 +88,15 @@ public class PdfServiceIT {
         Article articleTaxGeneral = new Article("23584","Descripción articulo", new BigDecimal("100.10"));
         articleTaxGeneral.setTax(Tax.GENERAL);
         Shopping[] shoppingList = new Shopping[6];
-        shoppingList[0] = new Shopping(2, new BigDecimal("20"), articleTaxFree);
-        shoppingList[1] = new Shopping(3, new BigDecimal("40"), articleTaxFree);
-        shoppingList[2] = new Shopping(2, new BigDecimal("20"), articleTaxSuperReduced);
-        shoppingList[3] = new Shopping(3, new BigDecimal("90"), articleTaxReduced);
-        shoppingList[4] = new Shopping(2, new BigDecimal("85"), articleTaxGeneral);
-        shoppingList[5] = new Shopping(3, new BigDecimal("50"), articleTaxGeneral);
+        shoppingList[0] = new Shopping(2, new BigDecimal("0"), articleTaxFree);
+        shoppingList[1] = new Shopping(3, new BigDecimal("0"), articleTaxFree);
+        shoppingList[2] = new Shopping(2, new BigDecimal("0"), articleTaxSuperReduced);
+        shoppingList[3] = new Shopping(3, new BigDecimal("0"), articleTaxReduced);
+        shoppingList[4] = new Shopping(2, new BigDecimal("0"), articleTaxGeneral);
+        shoppingList[5] = new Shopping(3, new BigDecimal("0"), articleTaxGeneral);
 
         Ticket ticket = new Ticket(1, new BigDecimal("20"), shoppingList, user);
         Invoice invoice = new Invoice(1, ticket);
-        pdfService.generateInvioce(invoice);
+        pdfService.generateInvioce(invoice,new BigDecimal("22.3"));
     }
 }
