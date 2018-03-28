@@ -50,7 +50,7 @@ public class TicketController {
         }
         return nextId;
     }
-    
+
     public Optional<byte[]> createTicket(TicketCreationInputDto ticketCreationDto) {
         User user = this.userRepository.findByMobile(ticketCreationDto.getUserMobile());
         List<Shopping> shoppingList = new ArrayList<>();
@@ -116,6 +116,20 @@ public class TicketController {
         for (Ticket ticket : ticketList) {
             for (Shopping shopping : ticket.getShoppingList()) {
                 ticketListDto.add(new TicketSearchOutputDto(ticket.getCreationDate(), shopping.getAmount()));
+            }
+        }
+        return ticketListDto;
+    }
+
+    public List<TicketDto> findByMobile(String mobile){
+        List<TicketDto> ticketListDto = new ArrayList<TicketDto>();
+        User user= this.userRepository.findByMobile(mobile);
+        if(user!=null) {
+            List<Ticket> ticketList = this.ticketRepository.findByUserOrderByCreationDateDesc(user);
+            for (Ticket ticket : ticketList) {
+                TicketDto ticketDto = new TicketDto();
+                ticketDto.setId(ticket.getId());
+                ticketListDto.add(ticketDto);
             }
         }
         return ticketListDto;

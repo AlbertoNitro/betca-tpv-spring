@@ -36,6 +36,7 @@ public class TicketResource {
 
     public static final String ID_ID = "/{id}";
     public static final String SEARCH_DATE = "/search/date";
+    public static final String SEARCH_MOBILE = "/search/mobile";
     
     public static final String SEARCH_BY_ID_AND_DATES = "/searchByIdAndDates";
     public static final String SEARCH_BY_CREATION_DATES = "/searchByCreationDates";
@@ -56,6 +57,11 @@ public class TicketResource {
     @GetMapping(value = SEARCH_DATE)
     public List<TicketDto> findBetweenDates(@RequestParam long start, @RequestParam long end) {
         return this.ticketController.findBetweenDates(new Date(start), new Date(end));
+    }
+    
+    @GetMapping(value = SEARCH_MOBILE)
+    public List<TicketDto> findByMobile(@RequestParam String mobile) {
+        return this.ticketController.findByMobile(mobile);
     }
 
     @PutMapping(value = ID_ID, produces = {"application/pdf", "application/json"})
