@@ -4,7 +4,9 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,10 +16,12 @@ import org.springframework.stereotype.Controller;
 import es.upm.miw.documents.core.Invoice;
 import es.upm.miw.documents.core.Shopping;
 import es.upm.miw.documents.core.Ticket;
+import es.upm.miw.documents.core.User;
 import es.upm.miw.dtos.InvoiceDto;
 import es.upm.miw.dtos.TicketCreationInputDto;
 import es.upm.miw.repositories.core.InvoiceRepository;
 import es.upm.miw.repositories.core.TicketRepository;
+import es.upm.miw.repositories.core.UserRepository;
 import es.upm.miw.services.PdfService;
 
 @Controller
@@ -31,6 +35,9 @@ public class InvoiceController {
 
     @Autowired
     private TicketController ticketController;
+
+    @Autowired
+    private UserRepository userRepository;
 
     @Autowired
     private PdfService pdfService;
@@ -99,5 +106,26 @@ public class InvoiceController {
         }
     }
 
+    public List<InvoiceDto> findBetweenDates(Date start, Date end) {
+        List<Invoice> invoiceList = this.invoiceRepository.findByCreationDateBetween(start, end);
+        List<InvoiceDto> invoiceListDto = new ArrayList<InvoiceDto>();
+        for (Invoice ticket : invoiceList) {
+            invoiceListDto.add(new InvoiceDto(ticket.getId()));
+        }
+        return invoiceListDto;
+    }
+
+    public List<InvoiceDto> findByMobile(String mobile) {
+        List<InvoiceDto> invoiceListDto = new ArrayList<InvoiceDto>();
+        User user = this.userRepository.findByMobile(mobile);
+        if (user != null) {
+            List<Ticket> ticketList = this.ticketRepository.findByUserOrderByCreationDateDesc(user);
+            List<Invoice> invoiceList = this.invoiceRepository.findByTicketIn(ticketList);
+            for (Invoice invoice : invoiceList) {
+                invoiceListDto.add(new InvoiceDto(invoice.getId()));
+            }
+        }
+        return invoiceListDto;
+    }
 
 }
