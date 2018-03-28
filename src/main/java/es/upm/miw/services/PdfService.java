@@ -162,7 +162,7 @@ public class PdfService {
         pdf.line().paragraphEmphasized("FACTURA N° " + invoice.getId());
         pdf.line();
         SimpleDateFormat formatter = new SimpleDateFormat(DATE_FORMAT);
-        pdf.paragraphEmphasized(formatter.format(invoice.getCreated()));
+        pdf.paragraphEmphasized(formatter.format(invoice.getCreationDated()));
         pdf.tableColumnsSizes(TABLE_COLUMNS_SIZES_BUDGETS).tableColumnsHeader(TABLE_COLUMNS_HEADERS_BUDGETS);
         for (int i = 0; i < invoice.getTicket().getShoppingList().length; i++) {
             Shopping shopping = invoice.getTicket().getShoppingList()[i];

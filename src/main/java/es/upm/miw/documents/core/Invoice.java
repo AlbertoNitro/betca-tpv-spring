@@ -51,11 +51,11 @@ public class Invoice {
         this.ticket = ticket;
     }
 
-    public Date getCreated() {
+    public Date getCreationDated() {
         return creationDate;
     }
 
-    public void setCreated(Date creationDate) {
+    public void setCreationDate(Date creationDate) {
         this.creationDate = creationDate;
     }
 
