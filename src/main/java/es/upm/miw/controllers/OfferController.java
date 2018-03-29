@@ -57,8 +57,13 @@ public class OfferController {
         } 
     }
 
-    public List<OfferOutputDto> readCustomerAll() {
-        return new ArrayList<OfferOutputDto>();
+    public List<OfferOutputDto> readOfferAll() {
+        List<Offer> offerList = this.offerRepository.findAll();
+        List<OfferOutputDto> offerOutputDtoList = new ArrayList<OfferOutputDto>();
+        for (int i = 0; i < offerList.size(); i++) {
+            offerOutputDtoList.add(new OfferOutputDto(offerList.get(i)));
+        }
+        return offerOutputDtoList;
     }
     
     public boolean codeRepeated(OfferInputDto offerInputDto) {
@@ -67,17 +72,15 @@ public class OfferController {
 
     public boolean codeRepeated(String code, OfferInputDto offerInputDto) {
     	Offer offer = offerRepository.findByCode(offerInputDto.getCode());
-    	if (offer == null) return false;
-    	if (code == null) return false;
-    	return offer.getCode().equals(code);
+    	return offer != null && code != null && !offer.getCode().equals(code);
     }
     
-    public boolean isExpiration(OfferInputDto offerInputDto) {
-    	return this.isExpiration(offerInputDto.getExpiration(), offerInputDto);
+    public boolean isExpirationDateValid(OfferInputDto offerInputDto) {
+    	return this.isExpirationDateValid(offerInputDto.getExpiration(), offerInputDto);
     }
     
-    public boolean isExpiration(Date expiration, OfferInputDto offerInputDto) {
+    public boolean isExpirationDateValid(Date expiration, OfferInputDto offerInputDto) {
     	Offer offer = offerRepository.findByCode(offerInputDto.getCode());
-    	return offer != null && expiration != null && offer.getExpiration().before(new Date());
+    	return offer != null && expiration != null && offer.getExpiration().after(new Date());
     }
 }
