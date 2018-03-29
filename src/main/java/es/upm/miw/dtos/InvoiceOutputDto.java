@@ -7,8 +7,6 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 import es.upm.miw.documents.core.Invoice;
-import es.upm.miw.documents.core.Ticket;
-import es.upm.miw.documents.core.User;
 
 @JsonInclude(Include.NON_NULL)
 public class InvoiceOutputDto {
@@ -21,9 +19,9 @@ public class InvoiceOutputDto {
 
     private BigDecimal tax;
 
-    private User user;
+    private UserDto user;
 
-    private Ticket ticket;
+    private TicketDto ticket;
 
     public InvoiceOutputDto() {
     }
@@ -37,8 +35,8 @@ public class InvoiceOutputDto {
         this.creationDate = invoice.getCreationDated();
         this.baseTax = invoice.getBaseTax();
         this.tax = invoice.getTax();
-        this.user = invoice.getUser();
-        this.ticket = invoice.getTicket();
+        this.user = new UserDto(invoice.getUser());
+        this.ticket = new TicketDto(invoice.getTicket());
     }
 
     public String getId() {
@@ -73,19 +71,19 @@ public class InvoiceOutputDto {
         this.tax = tax;
     }
 
-    public User getUser() {
+    public UserDto getUser() {
         return user;
     }
 
-    public void setUser(User user) {
+    public void setUser(UserDto user) {
         this.user = user;
     }
 
-    public Ticket getTicket() {
+    public TicketDto getTicket() {
         return ticket;
     }
 
-    public void setTicket(Ticket ticket) {
+    public void setTicket(TicketDto ticket) {
         this.ticket = ticket;
     }
 

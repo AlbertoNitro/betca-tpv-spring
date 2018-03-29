@@ -106,6 +106,11 @@ public class TicketController {
                 ticket.getShoppingList()[i].setShoppingState(ShoppingState.COMMITTED);
             }
         }
+        User user = null;
+        if (ticketDto.getUser() != null) {
+            user = this.userRepository.findByMobile(ticketDto.getUser().getMobile());
+        }
+        ticket.setUser(user);
         this.ticketRepository.save(ticket);
         return pdfService.generateTicket(ticket);
     }
