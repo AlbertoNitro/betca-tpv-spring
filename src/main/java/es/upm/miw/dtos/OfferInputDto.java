@@ -2,9 +2,18 @@ package es.upm.miw.dtos;
 
 import java.util.Date;
 
+import javax.validation.constraints.DecimalMax;
+import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.NotNull;
+
 public class OfferInputDto {
+	@NotNull (message = "Debes asignar un nombre a la oferta.")
     private String code;
+	@NotNull(message = "Un porcentaje descuento es necesario.")
+	@DecimalMax("100.0") 
+	@DecimalMin("0.00") 
     private Float percentage;
+	@NotNull (message = "La oferta debe tener una fecha de finalización.")
     private Date expiration;
     private String description;
 
@@ -57,7 +66,6 @@ public class OfferInputDto {
 
     @Override
 	public String toString() {
-		String date = "null";
 		return "Offer [code=" + code + ", expiration=" + expiration + ", percentage="
 				+ percentage + ", description=" + description + " ]";
 	}
