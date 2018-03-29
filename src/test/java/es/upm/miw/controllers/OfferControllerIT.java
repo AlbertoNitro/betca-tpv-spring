@@ -38,16 +38,16 @@ public class OfferControllerIT {
     } 
 
     @Test
-    public void testIsExpirationTrue() throws ParseException {
+    public void testIsExpirationDateValidTrue() throws ParseException {
     	Date expiration = (new SimpleDateFormat("yyyy-MM-dd")).parse("2018-01-01");
     	OfferInputDto offerInputDto = new OfferInputDto("CCC", new Float(0.33), expiration);
-        assertFalse(offerController.isExpiration(offerInputDto));
+        assertFalse(offerController.isExpirationDateValid(offerInputDto));
     }   
     
     @Test
-    public void testIsExpirationFalse() throws ParseException {
+    public void testIsExpirationDateValidFalse() throws ParseException {
     	Date expiration = (new SimpleDateFormat("yyy-MM-dd")).parse("2018-12-01");
     	OfferInputDto offerInputDto = new OfferInputDto("CCC", new Float(0.33), expiration);
-        assertFalse(offerController.isExpiration(offerInputDto));
+        assertFalse(offerController.isExpirationDateValid(offerInputDto));
     }   
 }
