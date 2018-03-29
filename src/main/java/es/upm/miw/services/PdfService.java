@@ -155,9 +155,9 @@ public class PdfService {
 
         PdfTicketBuilder pdf = this.addCompanyDetails(path, INCREMENTAL_INVOICE_HEIGHT + invoice.getTicket().getShoppingList().length);
         pdf.line();
-        pdf.paragraphEmphasized("Datos Cliente:").paragraph("DNI: " + invoice.getTicket().getUser().getDni())
-                .paragraph("Nombre: " + invoice.getTicket().getUser().getUsername())
-                .paragraph("Dirección: " + invoice.getTicket().getUser().getAddress());
+        pdf.paragraphEmphasized("Datos Cliente:").paragraph("DNI: " + invoice.getUser().getDni())
+                .paragraph("Nombre: " + invoice.getUser().getUsername())
+                .paragraph("Dirección: " + invoice.getUser().getAddress());
         pdf.line();
         pdf.line().paragraphEmphasized("FACTURA N° " + invoice.getId());
         pdf.line();

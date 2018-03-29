@@ -127,5 +127,17 @@ public class InvoiceController {
         }
         return invoiceListDto;
     }
+    
+    public InvoiceOutputDto findByTicket(String ticketId) {
+        Ticket ticket = this.ticketRepository.findOne(ticketId);
+        if (ticket != null) {
+            Invoice invoice = this.invoiceRepository.findByTicket(ticket);
+            if(invoice!=null) {
+                return new InvoiceOutputDto(invoice);
+            }
+        }
+        return new InvoiceOutputDto();
+    }
+
 
 }

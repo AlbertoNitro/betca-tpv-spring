@@ -41,7 +41,7 @@ public class TicketResource {
     public static final String SEARCH_MOBILE = "/search/mobile";
 
     public static final String SEARCH_MOBILE_LAST = "/search/mobile/last";
-
+    
     public static final String SEARCH_BY_ID_AND_DATES = "/searchByIdAndDates";
 
     public static final String SEARCH_BY_CREATION_DATES = "/searchByCreationDates";
@@ -69,7 +69,7 @@ public class TicketResource {
     public List<TicketDto> findByMobile(@RequestParam String mobile) {
         return this.ticketController.findByMobile(mobile);
     }
-
+    
     @GetMapping(value = SEARCH_MOBILE_LAST)
     public TicketDto findLastByMobile(@RequestParam String mobile) throws TicketIdNotFoundException {
         return this.ticketController.findLastByMobile(mobile).orElseThrow(() -> new TicketIdNotFoundException("mobile: "+mobile));

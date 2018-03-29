@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.RestController;
 import es.upm.miw.controllers.InvoiceController;
 import es.upm.miw.dtos.InvoiceCreationInputDto;
 import es.upm.miw.dtos.InvoiceOutputDto;
-import es.upm.miw.dtos.TicketCreationInputDto;
 import es.upm.miw.resources.exceptions.FieldInvalidException;
 import es.upm.miw.resources.exceptions.InvoiceIdNotFoundException;
 
@@ -32,6 +31,7 @@ public class InvoiceResource {
     public static final String ID_ID = "/{id}";
     public static final String SEARCH_DATE = "/search/date";
     public static final String SEARCH_MOBILE = "/search/mobile";
+    public static  final String SEARCH_TICKET = "/search/ticket";
 
     @Autowired
     private InvoiceController invoiceController;
@@ -55,5 +55,11 @@ public class InvoiceResource {
     public List<InvoiceOutputDto> findByMobile(@RequestParam String mobile) {
         return this.invoiceController.findByMobile(mobile);
     }
+    
+    @GetMapping(value = SEARCH_TICKET)
+    public InvoiceOutputDto findByTicket(@RequestParam String ticketId) {
+        return this.invoiceController.findByTicket(ticketId);
+    }
+
 
 }
