@@ -15,6 +15,7 @@ import es.upm.miw.repositories.core.OfferRepository;
 
 @Controller
 public class OfferController {
+	
     @Autowired
     private OfferRepository offerRepository;
 
@@ -26,7 +27,7 @@ public class OfferController {
     	offerRepository.save(offer);
     }
     
-    public Optional<OfferOutputDto> readUser(String code) {
+    public Optional<OfferOutputDto> readOffer(String code) {
         Offer offerInDb = this.offerRepository.findByCode(code);
         if (offerInDb == null) {
             return Optional.empty();
@@ -35,6 +36,10 @@ public class OfferController {
         }
     }
     
+    public boolean putOffer(OfferInputDto offerInputDto) {
+    	return this.putOffer(offerInputDto.getCode(), offerInputDto);
+    }
+
     public boolean putOffer(String code, OfferInputDto offerInputDto) {
     	 Offer offerInDb = this.offerRepository.findByCode(code);
          if (offerInDb == null) {
