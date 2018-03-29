@@ -3,6 +3,8 @@ package es.upm.miw.documents.core;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import javax.validation.constraints.NotNull;
+
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -15,10 +17,10 @@ public class Offer {
 	private String id;
     @Indexed(unique = true)
 	private String code;
-	private String description;
+	private Date expiration;
 	private Float percentage;
 	private Date creationDate;
-	private Date expiration;
+	private String description;	
 	
 	public Offer () {
 		
