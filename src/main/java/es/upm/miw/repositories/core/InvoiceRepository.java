@@ -16,4 +16,6 @@ public interface InvoiceRepository extends MongoRepository<Invoice, String> {
     
     List<Invoice> findByTicketIn(List<Ticket> tickets);
 
+    Invoice findByTicket(Ticket ticket);
+
 }
