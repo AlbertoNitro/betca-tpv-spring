@@ -11,17 +11,19 @@ import es.upm.miw.documents.core.User;
 
 public interface TicketRepository extends MongoRepository<Ticket, String> {
 
-	Ticket findByReference(String reference);
+    Ticket findByReference(String reference);
 
-	List<Ticket> findByUserOrderByCreationDateDesc(User user);
+    List<Ticket> findByUserOrderByCreationDateDesc(User user);
 
-	List<Ticket> findByCreationDateGreaterThan(Date date);
+    List<Ticket> findByCreationDateGreaterThan(Date date);
 
-	Ticket findFirstByOrderByCreationDateDescIdDesc();
+    Ticket findFirstByOrderByCreationDateDescIdDesc();
 
-	List<Ticket> findByCreationDateBetween(Date initialDate, Date finalDate);
+    List<Ticket> findByCreationDateBetween(Date initialDate, Date finalDate);
 
-	@Query(value = "{'$and':[{'shoppingList': {'$elemMatch' :{'article.$id': ?0}}}, {creationDate:{ $gte: ?1, $lt: ?2}}]}", fields = "{'creationDate' :1, 'shoppingList.$' :1}")
-	List<Ticket> findByIdArticleDatesBetween(String id, Date dateStart, Date dateFinish);
+    Ticket findFirstByUserOrderByCreationDateDesc(User user);
+
+    @Query(value = "{'$and':[{'shoppingList': {'$elemMatch' :{'article.$id': ?0}}}, {creationDate:{ $gte: ?1, $lt: ?2}}]}", fields = "{'creationDate' :1, 'shoppingList.$' :1}")
+    List<Ticket> findByIdArticleDatesBetween(String id, Date dateStart, Date dateFinish);
 
 }

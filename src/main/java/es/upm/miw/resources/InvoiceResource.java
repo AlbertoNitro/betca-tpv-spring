@@ -17,7 +17,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import es.upm.miw.controllers.InvoiceController;
-import es.upm.miw.dtos.InvoiceDto;
+import es.upm.miw.dtos.InvoiceCreationInputDto;
+import es.upm.miw.dtos.InvoiceOutputDto;
 import es.upm.miw.dtos.TicketCreationInputDto;
 import es.upm.miw.resources.exceptions.FieldInvalidException;
 import es.upm.miw.resources.exceptions.InvoiceIdNotFoundException;
@@ -36,22 +37,22 @@ public class InvoiceResource {
     private InvoiceController invoiceController;
 
     @PostMapping(produces = {"application/pdf", "application/json"})
-    public @ResponseBody byte[] createInvoice(@Valid @RequestBody TicketCreationInputDto ticketCreationDto) throws FieldInvalidException {
-        return this.invoiceController.createInvoice(ticketCreationDto).orElseThrow(() -> new FieldInvalidException("Article exception"));
+    public @ResponseBody byte[] createInvoice(@Valid @RequestBody InvoiceCreationInputDto invoiceCreationInputDto) throws FieldInvalidException {
+        return this.invoiceController.createInvoice(invoiceCreationInputDto).orElseThrow(() -> new FieldInvalidException("Article exception"));
     }
     
     @GetMapping(value = ID_ID)
-    public InvoiceDto readInvice(@PathVariable String id) throws InvoiceIdNotFoundException {
+    public InvoiceOutputDto readInvoice(@PathVariable String id) throws InvoiceIdNotFoundException {
         return this.invoiceController.read(id).orElseThrow(() -> new InvoiceIdNotFoundException(id));
     }
 
     @GetMapping(value = SEARCH_DATE)
-    public List<InvoiceDto> findBetweenDates(@RequestParam long start, @RequestParam long end) {
+    public List<InvoiceOutputDto> findBetweenDates(@RequestParam long start, @RequestParam long end) {
         return this.invoiceController.findBetweenDates(new Date(start), new Date(end));
     }
     
     @GetMapping(value = SEARCH_MOBILE)
-    public List<InvoiceDto> findByMobile(@RequestParam String mobile) {
+    public List<InvoiceOutputDto> findByMobile(@RequestParam String mobile) {
         return this.invoiceController.findByMobile(mobile);
     }
 

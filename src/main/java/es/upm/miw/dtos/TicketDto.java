@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 import es.upm.miw.documents.core.Shopping;
 import es.upm.miw.documents.core.Ticket;
+import es.upm.miw.documents.core.User;
 
 @JsonInclude(Include.NON_NULL)
 public class TicketDto {
@@ -19,7 +20,7 @@ public class TicketDto {
 
     private Date creationDate;
 
-    private String userId;
+    private User user;
 
     @NotNull
     private List<ShoppingDto> shoppingList;
@@ -31,7 +32,7 @@ public class TicketDto {
     public TicketDto(Ticket ticket) {
         this.id = ticket.getId();
         this.creationDate = ticket.getCreationDate();
-        this.userId = ticket.getUser().getId();
+        this.user = ticket.getUser();
         shoppingList = new ArrayList<ShoppingDto>();
         for (Shopping shopping : ticket.getShoppingList()) {
             shoppingList.add(new ShoppingDto(shopping));
@@ -62,17 +63,17 @@ public class TicketDto {
         this.shoppingList = shoppingList;
     }
 
-    public String getUserId() {
-        return userId;
+    public User getUser() {
+        return user;
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
+    public void setUser(User user) {
+        this.user = user;
     }
 
     @Override
     public String toString() {
-        return "TicketDto [id=" + id + ", creationDate=" + creationDate + ", userId=" + userId + ", shoppingList=" + shoppingList + "]";
+        return "TicketDto [id=" + id + ", creationDate=" + creationDate + ", user=" + user + ", shoppingList=" + shoppingList + "]";
     }
 
 }

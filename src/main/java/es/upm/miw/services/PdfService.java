@@ -149,7 +149,7 @@ public class PdfService {
         return pdf;
     }
 
-    public Optional<byte[]> generateInvioce(Invoice invoice, BigDecimal taxBase) {
+    public Optional<byte[]> generateInvioce(Invoice invoice) {
         final int INCREMENTAL_INVOICE_HEIGHT = 11;
         final String path = "/invoices/invoice-" + invoice.getId();
 
@@ -171,8 +171,8 @@ public class PdfService {
                     shopping.getShoppingTotal().setScale(2, RoundingMode.HALF_UP) + "€");
         }
 
-        pdf.tableColspanRight("BASE IMPONIBLE: " + taxBase.setScale(2, RoundingMode.HALF_UP) + "€");
-        pdf.tableColspanRight("IVA: " + (invoice.getTicket().getTicketTotal().subtract(taxBase).setScale(2, RoundingMode.HALF_UP)) + "€");
+        pdf.tableColspanRight("BASE IMPONIBLE: " + invoice.getBaseTax().setScale(2, RoundingMode.HALF_UP) + "€");
+        pdf.tableColspanRight("IVA: " + invoice.getTax().setScale(2, RoundingMode.HALF_UP) + "€");
         pdf.tableColspanRight("TOTAL: " +invoice.getTicket().getTicketTotal().setScale(2, RoundingMode.HALF_UP) + "€");
         pdf.line();
         pdf.line().paragraph("Gracias por su compra");
