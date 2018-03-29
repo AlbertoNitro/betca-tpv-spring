@@ -1,7 +1,8 @@
 package es.upm.miw.resources;
 
-import java.util.ArrayList;
 import java.util.List;
+
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -15,10 +16,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import es.upm.miw.documents.core.Offer;
+import es.upm.miw.controllers.OfferController;
 import es.upm.miw.dtos.OfferInputDto;
 import es.upm.miw.dtos.OfferOutputDto;
-import es.upm.miw.repositories.core.OfferRepository;
+import es.upm.miw.resources.exceptions.ForbiddenException;
+import es.upm.miw.resources.exceptions.OfferCodeRepeatedException;
+import es.upm.miw.resources.exceptions.OfferInvalidExpirationDateException;
 
 @PreAuthorize("hasRole('ADMIN') or hasRole('MANAGER') or hasRole('OPERATOR')")
 @RestController
@@ -29,37 +32,32 @@ public class OfferResource {
 
     public static final String OFFER_ID = "/{id}";
     
+
     @Autowired
-    private OfferRepository offerRepository;
+    private OfferController offerController;
     
     @PostMapping
-    public void createOffer(@RequestBody OfferInputDto offerDto)  {
-        Offer offer = new Offer(offerDto.getCode(), offerDto.getPercentage(), offerDto.getExpiration());
-        this.offerRepository.save(offer);
+    public void createOffer(@Valid @RequestBody OfferInputDto offerInputDto) throws OfferCodeRepeatedException, 
+      OfferInvalidExpirationDateException {
+    	throw new OfferCodeRepeatedException();
     }
 
     @PutMapping(value = OFFER_ID)
-    public void putOffer() {
-    	System.out.println("putting offer");
+    public void putOffer(@Valid @RequestBody OfferInputDto offerInputDto) throws OfferInvalidExpirationDateException {
+    	throw new OfferInvalidExpirationDateException();
     }
 
     @DeleteMapping(value = OFFER_ID)
-    public void deleteOffer(@PathVariable String id) {	
-    	System.out.println("Deleting Offer with id: " + id );
+    public void deleteOffer(@PathVariable String id) throws ForbiddenException {	
     }
 
     @RequestMapping(value = OFFER_ID, method = RequestMethod.GET)
-    public void readOffer(@PathVariable String id){
-    	System.out.println("Deleting Offer with id: " + id );
+    public void readOffer(@PathVariable String id) throws ForbiddenException {
+    	 throw new ForbiddenException();
     }
 
     @GetMapping
     public List<OfferOutputDto> readOfferAll() {
-        List<Offer> offerList = this.offerRepository.findAll();
-        List<OfferOutputDto> offerOutputDtoList = new ArrayList<OfferOutputDto>();
-        for (int i = 0; i < offerList.size(); i++) {
-            offerOutputDtoList.add(new OfferOutputDto(offerList.get(i)));
-        }
-        return offerOutputDtoList;
+        return this.offerController.readOfferAll();
     }
 }
