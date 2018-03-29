@@ -17,8 +17,8 @@ import es.upm.miw.documents.core.Invoice;
 import es.upm.miw.documents.core.Shopping;
 import es.upm.miw.documents.core.Ticket;
 import es.upm.miw.documents.core.User;
-import es.upm.miw.dtos.InvoiceDto;
-import es.upm.miw.dtos.TicketCreationInputDto;
+import es.upm.miw.dtos.InvoiceCreationInputDto;
+import es.upm.miw.dtos.InvoiceOutputDto;
 import es.upm.miw.repositories.core.InvoiceRepository;
 import es.upm.miw.repositories.core.TicketRepository;
 import es.upm.miw.repositories.core.UserRepository;
@@ -32,9 +32,6 @@ public class InvoiceController {
 
     @Autowired
     private TicketRepository ticketRepository;
-
-    @Autowired
-    private TicketController ticketController;
 
     @Autowired
     private UserRepository userRepository;
@@ -54,15 +51,14 @@ public class InvoiceController {
     @Value("${miw.tax.free}")
     private BigDecimal ivaFree;
 
-    public Optional<byte[]> createInvoice(TicketCreationInputDto ticketCreationDto) {
-        Optional<Ticket> ticket = this.ticketController.createTicket(ticketCreationDto);
-        if (ticket.isPresent()) {
-            Invoice invoice = new Invoice(this.nextInvoiceId(), ticketRepository.findOne(ticket.get().getId()));
-            this.invoiceRepository.save(invoice);
+    public Optional<byte[]> createInvoice(InvoiceCreationInputDto invoiceCreationInputDto) {
+        User user = this.userRepository.findByMobile(invoiceCreationInputDto.getMobile());
+        Ticket ticket = this.ticketRepository.findOne(invoiceCreationInputDto.getTicketId());
 
+        if (user != null && ticket != null) {
             BigDecimal taxBaseTotal = BigDecimal.ZERO.setScale(4);
             BigDecimal uno = new BigDecimal("1").setScale(4);
-            for (Shopping shopping : ticket.get().getShoppingList()) {
+            for (Shopping shopping : ticket.getShoppingList()) {
                 switch (shopping.getArticle().getTax()) {
                 case GENERAL:
                     taxBaseTotal = taxBaseTotal.add(shopping.getShoppingTotal().divide(ivaGeneral.add(uno), 4, RoundingMode.HALF_UP));
@@ -79,7 +75,11 @@ public class InvoiceController {
                     assert false;
                 }
             }
-            return pdfService.generateInvioce(invoice, taxBaseTotal);
+
+            Invoice invoice = new Invoice(this.nextInvoiceId(), taxBaseTotal, ticket.getTicketTotal().subtract(taxBaseTotal), user, ticket);
+            this.invoiceRepository.save(invoice);
+
+            return pdfService.generateInvioce(invoice);
         } else {
             return Optional.empty();
         }
@@ -97,32 +97,32 @@ public class InvoiceController {
         return nextId;
     }
 
-    public Optional<InvoiceDto> read(String id) {
+    public Optional<InvoiceOutputDto> read(String id) {
         Invoice invoice = this.invoiceRepository.findOne(id);
         if (invoice != null) {
-            return Optional.of(new InvoiceDto(invoice));
+            return Optional.of(new InvoiceOutputDto(invoice));
         } else {
             return Optional.empty();
         }
     }
 
-    public List<InvoiceDto> findBetweenDates(Date start, Date end) {
+    public List<InvoiceOutputDto> findBetweenDates(Date start, Date end) {
         List<Invoice> invoiceList = this.invoiceRepository.findByCreationDateBetween(start, end);
-        List<InvoiceDto> invoiceListDto = new ArrayList<InvoiceDto>();
+        List<InvoiceOutputDto> invoiceListDto = new ArrayList<InvoiceOutputDto>();
         for (Invoice ticket : invoiceList) {
-            invoiceListDto.add(new InvoiceDto(ticket.getId()));
+            invoiceListDto.add(new InvoiceOutputDto(ticket.getId()));
         }
         return invoiceListDto;
     }
 
-    public List<InvoiceDto> findByMobile(String mobile) {
-        List<InvoiceDto> invoiceListDto = new ArrayList<InvoiceDto>();
+    public List<InvoiceOutputDto> findByMobile(String mobile) {
+        List<InvoiceOutputDto> invoiceListDto = new ArrayList<InvoiceOutputDto>();
         User user = this.userRepository.findByMobile(mobile);
         if (user != null) {
             List<Ticket> ticketList = this.ticketRepository.findByUserOrderByCreationDateDesc(user);
             List<Invoice> invoiceList = this.invoiceRepository.findByTicketIn(ticketList);
             for (Invoice invoice : invoiceList) {
-                invoiceListDto.add(new InvoiceDto(invoice.getId()));
+                invoiceListDto.add(new InvoiceOutputDto(invoice.getId()));
             }
         }
         return invoiceListDto;

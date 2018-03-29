@@ -143,4 +143,16 @@ public class TicketController {
         }
         return ticketListDto;
     }
+
+    public Optional<TicketDto> findLastByMobile(String mobile) {
+        User user = this.userRepository.findByMobile(mobile);
+        if (user != null) {
+            Ticket ticket = this.ticketRepository.findFirstByUserOrderByCreationDateDesc(user);
+            if (ticket != null) {
+                return Optional.of(new TicketDto(ticket));
+            }
+        }
+        return Optional.empty();
+    }
+
 }
