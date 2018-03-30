@@ -78,7 +78,7 @@ public class OfferController {
 
     public boolean codeRepeated(String code, OfferInputDto offerInputDto) {
     	Offer offer = offerRepository.findByCode(offerInputDto.getCode());
-    	return offer != null && code != null && !offer.getCode().equals(code);
+    	return offer != null && code != null && offer.getCode().equals(code);
     }
     
     public boolean isExpirationDateValid(OfferInputDto offerInputDto) {
