@@ -270,8 +270,10 @@ offerList:
   - code: AAA
     percentage: 0.25
     expiration: 2018-01-02
+    creationDate: 2017-21-31 
   - code: BBB
     percentage: 0.50
     expiration: 2018-12-02
+    creationDate: 2017-21-31 
     description: "Descuento en segunda compra"  
 
