@@ -38,8 +38,8 @@ public class OfferResource {
     @PostMapping
     public void createOffer(@Valid @RequestBody OfferInputDto offerInputDto) 
     		throws OfferCodeRepeatedException, OfferInvalidExpirationDateException {    	
-    	if (!offerController.codeRepeated(offerInputDto)) {
-    		throw new OfferInvalidExpirationDateException();
+    	if (offerController.codeRepeated(offerInputDto)) {
+    		throw new OfferCodeRepeatedException();
     	}
     	
     	if (!offerController.isExpirationDateValid(offerInputDto)) {
@@ -50,12 +50,12 @@ public class OfferResource {
 
     @PutMapping(value = OFFER_ID)
     public void putOffer(@Valid @RequestBody OfferInputDto offerInputDto) 
-    		throws OfferInvalidExpirationDateException, ForbiddenException, OfferInvalidExpirationDateException{
+    		throws ForbiddenException, OfferInvalidExpirationDateException, OfferCodeRepeatedException{
     	if (!offerController.isExpirationDateValid(offerInputDto)) {
     		throw new OfferInvalidExpirationDateException();
     	}
-    	if (!offerController.codeRepeated(offerInputDto)) {
-    		throw new OfferInvalidExpirationDateException();
+    	if (offerController.codeRepeated(offerInputDto)) {
+    		throw new OfferCodeRepeatedException();
     	}
     	if (!offerController.putOffer(offerInputDto)) {
     		throw new ForbiddenException(); 
