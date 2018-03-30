@@ -31,9 +31,22 @@ public class OfferResourceFunctionalTesting {
 	
 	private SimpleDateFormat factoryDate=  new SimpleDateFormat(Offer.DATE_FORMAT);
 	
+    @After
+    public void after() {
+    	this.restService.loginAdmin().restBuilder().path(OfferResource.OFFERS).path(OfferResource.OFFER_CODE).expand("TEST").delete().build();
+    }
+	
     @Test
     public void testCreateOffer() throws ParseException {
-    	OfferInputDto offerInputDto = new OfferInputDto("TEST-A", new Float(0.5), factoryDate.parse("2018-12-01"));
+    	OfferInputDto offerInputDto = new OfferInputDto("TEST", new Float(0.5), factoryDate.parse("2018-12-01"));
+    	this.restService.loginAdmin().restBuilder().path(OfferResource.OFFERS).body(offerInputDto).post().build();
+    }
+    
+    @Test
+    public void testCreateOfferRepeatedException() throws ParseException {
+    	this.thrown.expect(new HttpMatcher(HttpStatus.BAD_REQUEST));
+    	OfferInputDto offerInputDto = new OfferInputDto("TEST", new Float(0.5), factoryDate.parse("2018-12-01"));
+    	this.restService.loginAdmin().restBuilder().path(OfferResource.OFFERS).body(offerInputDto).post().build();
     	this.restService.loginAdmin().restBuilder().path(OfferResource.OFFERS).body(offerInputDto).post().build();
     }
     
@@ -47,30 +60,50 @@ public class OfferResourceFunctionalTesting {
     @Test
     public void testCreateOfferWithoutPercentageException() throws ParseException {
     	this.thrown.expect(new HttpMatcher(HttpStatus.BAD_REQUEST));
+    	OfferInputDto offerInputDto = new OfferInputDto("TEST", null, factoryDate.parse("2018-12-01"));
+    	this.restService.loginAdmin().restBuilder().path(OfferResource.OFFERS).body(offerInputDto).post().build();
     }
     
     @Test
     public void testCreateOfferWithoutExpirationDateException() {
-    	thrown.expect(new HttpMatcher(HttpStatus.BAD_REQUEST));
+    	this.thrown.expect(new HttpMatcher(HttpStatus.BAD_REQUEST));
+    	OfferInputDto offerInputDto = new OfferInputDto("TEST", new Float(0.5), null);
+    	this.restService.loginAdmin().restBuilder().path(OfferResource.OFFERS).body(offerInputDto).post().build();
     }
     
     @Test
-    public void testCreateOfferWithExpirationDateThatIsExpiredException() {
-    	thrown.expect(new HttpMatcher(HttpStatus.BAD_REQUEST));
+    public void testCreateOfferWithExpirationDateThatIsExpiredException() throws ParseException {
+    	OfferInputDto offerInputDto = new OfferInputDto("TEST", new Float(0.5), factoryDate.parse("2018-01-01"));
+    	this.thrown.expect(new HttpMatcher(HttpStatus.BAD_REQUEST));
+    	this.restService.loginAdmin().restBuilder().path(OfferResource.OFFERS).body(offerInputDto).post().build();
     }
     
     @Test
-    public void testPutOffer() {
-    	
+    public void testReadOffer() throws ParseException {
+    	OfferInputDto offerInputDto = new OfferInputDto("TEST", new Float(0.5), factoryDate.parse("2018-12-01"));
+    	this.restService.loginAdmin().restBuilder().path(OfferResource.OFFERS).body(offerInputDto).post().build();
+        String json = this.restService.loginAdmin().restBuilder(new RestBuilder<String>()).clazz(String.class).path(OfferResource.OFFERS).path(OfferResource.OFFER_CODE).expand("TEST").get().build();
+        System.out.println("------------>"+json);
     }
     
     @Test
-    public void testPutOfferWithThatNotExistException() {
-        thrown.expect(new HttpMatcher(HttpStatus.NOT_FOUND));
+    public void testReadOfferThatNotExistException() throws ParseException {
+    	this.thrown.expect(new HttpMatcher(HttpStatus.BAD_REQUEST));
+        this.restService.loginAdmin().restBuilder().path(OfferResource.OFFERS).path(OfferResource.OFFER_CODE).expand("TEST-NOT-FOUND").get().build();
     }
     
     @Test
-    public void testReadOffer() {
-
+    public void testPutOffer() throws ParseException {
+    	OfferInputDto offerInputDto = new OfferInputDto("TEST", new Float(0.5), factoryDate.parse("2018-12-01"));
+    	this.restService.loginAdmin().restBuilder().path(OfferResource.OFFERS).body(offerInputDto).post().build();
+    	offerInputDto.setPercentage(new Float(0.7));
+        this.restService.loginAdmin().restBuilder().path(OfferResource.OFFERS).path(OfferResource.OFFER_CODE).expand("TEST").body(offerInputDto).put().build();
+    }
+    
+    @Test
+    public void testPutOfferThatNotExistException() throws ParseException {
+        thrown.expect(new HttpMatcher(HttpStatus.BAD_REQUEST));
+        OfferInputDto offerInputDto = new OfferInputDto("TEST", new Float(0.5), factoryDate.parse("2018-12-01"));
+        this.restService.loginAdmin().restBuilder().path(OfferResource.OFFERS).path(OfferResource.OFFER_CODE).expand("TEST").body(offerInputDto).put().build();
     }
 }
