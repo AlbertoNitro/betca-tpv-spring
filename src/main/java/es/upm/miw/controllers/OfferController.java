@@ -36,10 +36,6 @@ public class OfferController {
         }
     }
     
-    public boolean putOffer(OfferInputDto offerInputDto) {
-    	return this.putOffer(offerInputDto.getCode(), offerInputDto);
-    }
-
     public boolean putOffer(String code, OfferInputDto offerInputDto) {
     	 Offer offerInDb = this.offerRepository.findByCode(code);
          if (offerInDb == null) {
@@ -73,9 +69,9 @@ public class OfferController {
     }
     
     public boolean codeRepeated(OfferInputDto offerInputDto) {
-    	return this.codeRepeated(offerInputDto.getCode(), offerInputDto);
+    	return codeRepeated(offerInputDto.getCode(), offerInputDto);
     }
-
+    
     public boolean codeRepeated(String code, OfferInputDto offerInputDto) {
     	Offer offer = offerRepository.findByCode(offerInputDto.getCode());
     	return offer != null && code != null && offer.getCode().equals(code);
