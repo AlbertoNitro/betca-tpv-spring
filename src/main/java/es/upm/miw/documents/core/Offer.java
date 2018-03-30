@@ -3,15 +3,13 @@ package es.upm.miw.documents.core;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import javax.validation.constraints.NotNull;
-
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document
 public class Offer {
-	static String DATE_FORMAT = "dd-MM-yyyy";
+	public static String DATE_FORMAT = "yyyy-MM-dd";
 	
 	@Id
 	private String id;
@@ -23,20 +21,15 @@ public class Offer {
 	private String description;	
 	
 	public Offer () {
-		
+		this.creationDate = new Date();
 	}
 	
 	public Offer(String code, Float percentage, Date expiration) {
-		this();
-		this.creationDate = new Date();
-		this.code = code;
-		this.percentage = percentage;
-		this.expiration = expiration;
+		this(code, percentage, expiration, null);
 	}
 	
 	public Offer(String code, Float percentage, Date expiration, String description) {
 		this();
-		this.creationDate = new Date();
 		this.code = code;
 		this.percentage = percentage;
 		this.expiration = expiration;
@@ -107,11 +100,9 @@ public class Offer {
 
 	@Override
 	public String toString() {
-		String date = "null";
-		if (creationDate != null) {
-			date = new SimpleDateFormat(Offer.DATE_FORMAT).format(creationDate.getTime());
-		}
-		return "Offer [code=" + code + ", creationDate=" + date + ", expiration=" + expiration + ", percentage="
+  	    String creationDateStr = new SimpleDateFormat(Offer.DATE_FORMAT).format(creationDate.getTime());
+  	    String expirationStr = new SimpleDateFormat(Offer.DATE_FORMAT).format(expiration.getTime());
+		return "Offer [id ="+ id +"code=" + code + ", creationDate=" + creationDateStr + ", expiration=" + expirationStr + ", percentage="
 				+ percentage + ", description=" + description + " ]";
 	}
 }

@@ -80,11 +80,9 @@ public class OfferOutputDto {
 
     @Override
 	public String toString() {
-		String date = "null";
-		if (creationDate != null) {
-			date = new SimpleDateFormat("dd-MMM-yyyy").format(creationDate.getTime());
-		}
-		return "Offer [code=" + code + ", creationDate=" + date + ", expiration=" + expiration + ", percentage="
+  	    String creationDateStr = new SimpleDateFormat(Offer.DATE_FORMAT).format(creationDate.getTime());
+  	    String expirationStr = new SimpleDateFormat(Offer.DATE_FORMAT).format(expiration.getTime());
+		return "OfferOutputDto [code=" + code + ", creationDate=" + creationDateStr + ", expiration=" + expirationStr + ", percentage="
 				+ percentage + ", description=" + description + " ]";
 	}
 }
