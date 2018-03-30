@@ -30,7 +30,7 @@ import es.upm.miw.resources.exceptions.OfferInvalidExpirationDateException;
 public class OfferResource {
 	
     public static final String OFFERS = "/offers";
-    public static final String OFFER_ID = "/{code}";
+    public static final String OFFER_CODE = "/{code}";
     
     @Autowired
     private OfferController offerController;
@@ -48,28 +48,28 @@ public class OfferResource {
     	offerController.createOffer(offerInputDto);
     }
 
-    @PutMapping(value = OFFER_ID)
-    public void putOffer(@Valid @RequestBody OfferInputDto offerInputDto) 
+    @PutMapping(value = OFFER_CODE)
+    public void putOffer(@PathVariable String code, @Valid @RequestBody OfferInputDto offerInputDto) 
     		throws ForbiddenException, OfferInvalidExpirationDateException, OfferCodeRepeatedException{
     	if (!offerController.isExpirationDateValid(offerInputDto)) {
     		throw new OfferInvalidExpirationDateException();
     	}
-    	if (offerController.codeRepeated(offerInputDto)) {
+    	if (!offerController.codeRepeated(code, offerInputDto)) {
     		throw new OfferCodeRepeatedException();
     	}
-    	if (!offerController.putOffer(offerInputDto)) {
+    	if (!offerController.putOffer(code, offerInputDto)) {
     		throw new ForbiddenException(); 
     	}
     }
 
-    @DeleteMapping(value = OFFER_ID)
+    @DeleteMapping(value = OFFER_CODE)
     public void deleteOffer(@PathVariable String code) throws ForbiddenException {	
     	if (!offerController.deleteOffer(code)) {
     		throw new ForbiddenException(); 
     	}
     }
 
-    @RequestMapping(value = OFFER_ID, method = RequestMethod.GET)
+    @RequestMapping(value = OFFER_CODE, method = RequestMethod.GET)
     public OfferOutputDto readOffer(@PathVariable String code) throws OfferCodeNotFoundException {
     	 return this.offerController.readOffer(code).orElseThrow(() -> new OfferCodeNotFoundException(code));
     }
