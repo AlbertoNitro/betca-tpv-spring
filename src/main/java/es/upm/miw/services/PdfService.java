@@ -159,7 +159,7 @@ public class PdfService {
                 .paragraph("Nombre: " + invoice.getUser().getUsername())
                 .paragraph("Dirección: " + invoice.getUser().getAddress());
         pdf.line();
-        pdf.line().paragraphEmphasized("FACTURA N° " + invoice.getId());
+        pdf.line().paragraphEmphasized("FACTURA N° " + invoice.getId()).barCode(invoice.getId());
         pdf.line();
         SimpleDateFormat formatter = new SimpleDateFormat(DATE_FORMAT);
         pdf.paragraphEmphasized(formatter.format(invoice.getCreationDated()));
