@@ -48,6 +48,7 @@ public class OfferController {
              offerInDb.setPercentage(offerInputDto.getPercentage());
              offerInDb.setExpiration(offerInputDto.getExpiration());
              offerInDb.setDescription(offerInputDto.getDescription());
+             this.offerRepository.save(offerInDb);
              return true;
          }
     }
@@ -81,11 +82,6 @@ public class OfferController {
     }
     
     public boolean isExpirationDateValid(OfferInputDto offerInputDto) {
-    	return this.isExpirationDateValid(offerInputDto.getExpiration(), offerInputDto);
-    }
-    
-    public boolean isExpirationDateValid(Date expiration, OfferInputDto offerInputDto) {
-    	Offer offer = offerRepository.findByCode(offerInputDto.getCode());
-    	return offer != null && expiration != null && offer.getExpiration().after(new Date());
+    	return offerInputDto.getExpiration().after(new Date());
     }
 }
