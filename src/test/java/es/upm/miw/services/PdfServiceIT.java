@@ -13,11 +13,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import es.upm.miw.documents.core.Article;
 import es.upm.miw.documents.core.Budget;
-import es.upm.miw.documents.core.Invoice;
 import es.upm.miw.documents.core.Shopping;
-import es.upm.miw.documents.core.Tax;
 import es.upm.miw.documents.core.Ticket;
-import es.upm.miw.documents.core.User;
 import es.upm.miw.documents.core.Voucher;
 import es.upm.miw.utils.Barcode;
 
@@ -74,29 +71,5 @@ public class PdfServiceIT {
         Voucher voucher = new Voucher(new BigDecimal(55));
         voucher.setId("a3b2");
         pdfService.generateVoucher(voucher);
-    }
-
-    @Test
-    public void testGenerateInvoice() {
-        User user = new User("121212121", "Juan", "juan", "1104456987", "Direccion", "");
-        Article articleTaxFree = new Article("23581", "Descripción articulo", new BigDecimal("100.10"));
-        articleTaxFree.setTax(Tax.FREE);
-        Article articleTaxSuperReduced = new Article("23582", "Descripción articulo", new BigDecimal("100.10"));
-        articleTaxSuperReduced.setTax(Tax.SUPER_REDUCED);
-        Article articleTaxReduced = new Article("23583", "Descripción articulo", new BigDecimal("100.10"));
-        articleTaxReduced.setTax(Tax.REDUCED);
-        Article articleTaxGeneral = new Article("23584","Descripción articulo", new BigDecimal("100.10"));
-        articleTaxGeneral.setTax(Tax.GENERAL);
-        Shopping[] shoppingList = new Shopping[6];
-        shoppingList[0] = new Shopping(2, new BigDecimal("20"), articleTaxFree);
-        shoppingList[1] = new Shopping(3, new BigDecimal("40"), articleTaxFree);
-        shoppingList[2] = new Shopping(2, new BigDecimal("20"), articleTaxSuperReduced);
-        shoppingList[3] = new Shopping(3, new BigDecimal("90"), articleTaxReduced);
-        shoppingList[4] = new Shopping(2, new BigDecimal("85"), articleTaxGeneral);
-        shoppingList[5] = new Shopping(3, new BigDecimal("50"), articleTaxGeneral);
-
-        Ticket ticket = new Ticket(1, new BigDecimal("20"), shoppingList, user);
-        Invoice invoice = new Invoice(1, ticket);
-        pdfService.generateInvioce(invoice);
     }
 }

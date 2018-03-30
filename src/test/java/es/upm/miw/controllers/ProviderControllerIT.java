@@ -25,7 +25,7 @@ public class ProviderControllerIT {
     
     @Before
     public void before() {
-        this.providerDto = new ProviderDto("TP","TCompany",null,null,null,null,true);
+        this.providerDto = new ProviderDto();
     }
     
     @Test
@@ -36,6 +36,7 @@ public class ProviderControllerIT {
     
     @Test
     public void testCompanyRepeatedFalse() {
+        this.providerDto.setCompany("non exist");
         assertFalse(providerController.companyRepeated(this.providerDto));
     }
         

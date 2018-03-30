@@ -17,7 +17,8 @@ tokenList:
 # Users
 # mobiles: 666666000 a 666666666 RESERVADOS AQUI
 userList:
-  - mobile: 666666000
+  - &us0
+    mobile: 666666000
     username: u000
     password: p000
     email: u000@gmail.com
@@ -87,16 +88,16 @@ providerList:
   - &pr1
     id: provider1
     company: company-p1
+    nif: 12345678b
     address: C/ TPV-provider, 2, 1A, 28000 Madrid
-    mobile: 666666101
     phone: 9166666601
+    email: p1@gmail.com
     note: provider 1
     active: true
   - &pr2
     id: provider2
     company: company-p2
     address: C/ TPV-provider, 2, 1A, 28000 Madrid
-    mobile: 666666101
     phone: 9166666601
     note: provider 2
     active: false  
@@ -104,7 +105,6 @@ providerList:
     id: provider3
     company: company-p3
     address: C/ TPV-provider, 2, 1A, 28000 Madrid
-    mobile: 666666101
     phone: 9166666601
     note: provider 3
     active: true
@@ -258,12 +258,16 @@ invoiceList:
 cashMovementList:
   - value: 666.666
     comment: "test A"
+    user: *us0
   - value: 0.666
     comment: "test B"
+    user: *us0
   - value: 30.3
     comment: "test C"
+    user: *us0
   - value: 50.6
     comment: "test D" 
+    user: *us0
     
 # Offers
 offerList:

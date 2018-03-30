@@ -1,5 +1,7 @@
 package es.upm.miw.controllers;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
@@ -8,17 +10,15 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 
-import es.upm.miw.documents.core.Article;
 import es.upm.miw.documents.core.Invoice;
 import es.upm.miw.documents.core.Shopping;
-import es.upm.miw.documents.core.ShoppingState;
 import es.upm.miw.documents.core.Ticket;
 import es.upm.miw.documents.core.User;
-import es.upm.miw.dtos.ShoppingDto;
-import es.upm.miw.dtos.TicketCreationInputDto;
-import es.upm.miw.repositories.core.ArticleRepository;
+import es.upm.miw.dtos.InvoiceCreationInputDto;
+import es.upm.miw.dtos.InvoiceOutputDto;
 import es.upm.miw.repositories.core.InvoiceRepository;
 import es.upm.miw.repositories.core.TicketRepository;
 import es.upm.miw.repositories.core.UserRepository;
@@ -37,44 +37,52 @@ public class InvoiceController {
     private UserRepository userRepository;
 
     @Autowired
-    private ArticleRepository articleRepository;
-
-    @Autowired
     private PdfService pdfService;
 
-    public Optional<byte[]> createInvoice(TicketCreationInputDto ticketCreationDto) {
-        User user = this.userRepository.findByMobile(ticketCreationDto.getUserMobile());
-        List<Shopping> shoppingList = new ArrayList<>();
-        for (ShoppingDto shoppingDto : ticketCreationDto.getShoppingCart()) {
-            Article article = this.articleRepository.findOne(shoppingDto.getCode());
-            if (article == null) {
-                return Optional.empty();
-            }
-            Shopping shopping = new Shopping(shoppingDto.getAmount(), shoppingDto.getDiscount(), article);
-            if (shoppingDto.isCommitted()) {
-                shopping.setShoppingState(ShoppingState.COMMITTED);
-            } else {
-                shopping.setShoppingState(ShoppingState.NOT_COMMITTED);
-            }
-            shoppingList.add(shopping);
-        }
-        Ticket ticket = new Ticket(this.nextId(), ticketCreationDto.getCash(), shoppingList.toArray(new Shopping[0]), user);
-        this.ticketRepository.save(ticket);
-        Invoice invoice = new Invoice(this.nextInvoiceId(), ticketRepository.findOne(ticket.getId()));
-        this.invoiceRepository.save(invoice);
-        return pdfService.generateInvioce(invoice);
-    }
+    @Value("${miw.tax.general}")
+    private BigDecimal ivaGeneral;
 
-    private int nextId() {
-        int nextId = 1;
-        Ticket ticket = ticketRepository.findFirstByOrderByCreationDateDescIdDesc();
-        if (ticket != null) {
-            Date startOfDay = Date.from(LocalDate.now().atStartOfDay(ZoneId.systemDefault()).toInstant());
-            if (ticket.getCreationDate().compareTo(startOfDay) >= 0) {
-                nextId = ticket.simpleId() + 1;
+    @Value("${miw.tax.reduced}")
+    private BigDecimal ivaReduced;
+
+    @Value("${miw.tax.super.reduced}")
+    private BigDecimal ivaSuperReduced;
+
+    @Value("${miw.tax.free}")
+    private BigDecimal ivaFree;
+
+    public Optional<byte[]> createInvoice(InvoiceCreationInputDto invoiceCreationInputDto) {
+        User user = this.userRepository.findByMobile(invoiceCreationInputDto.getMobile());
+        Ticket ticket = this.ticketRepository.findOne(invoiceCreationInputDto.getTicketId());
+
+        if (user != null && ticket != null) {
+            BigDecimal taxBaseTotal = BigDecimal.ZERO.setScale(4);
+            BigDecimal uno = new BigDecimal("1").setScale(4);
+            for (Shopping shopping : ticket.getShoppingList()) {
+                switch (shopping.getArticle().getTax()) {
+                case GENERAL:
+                    taxBaseTotal = taxBaseTotal.add(shopping.getShoppingTotal().divide(ivaGeneral.add(uno), 4, RoundingMode.HALF_UP));
+                    break;
+                case REDUCED:
+                    taxBaseTotal = taxBaseTotal.add(shopping.getShoppingTotal().divide(ivaReduced.add(uno), 4, RoundingMode.HALF_UP));
+                    break;
+                case SUPER_REDUCED:
+                    taxBaseTotal = taxBaseTotal.add(shopping.getShoppingTotal().divide(ivaSuperReduced.add(uno), 4, RoundingMode.HALF_UP));
+                    break;
+                case FREE:
+                    break;
+                default:
+                    assert false;
+                }
             }
+
+            Invoice invoice = new Invoice(this.nextInvoiceId(), taxBaseTotal, ticket.getTicketTotal().subtract(taxBaseTotal), user, ticket);
+            this.invoiceRepository.save(invoice);
+
+            return pdfService.generateInvioce(invoice);
+        } else {
+            return Optional.empty();
         }
-        return nextId;
     }
 
     private int nextInvoiceId() {
@@ -82,11 +90,54 @@ public class InvoiceController {
         Invoice invoice = invoiceRepository.findFirstByOrderByCreationDateDescIdDesc();
         if (invoice != null) {
             Date startOfDay = Date.from(LocalDate.now().atStartOfDay(ZoneId.systemDefault()).toInstant());
-            if (invoice.getCreated().compareTo(startOfDay) >= 0) {
+            if (invoice.getCreationDated().compareTo(startOfDay) >= 0) {
                 nextId = invoice.simpleId() + 1;
             }
         }
         return nextId;
     }
+
+    public Optional<InvoiceOutputDto> read(String id) {
+        Invoice invoice = this.invoiceRepository.findOne(id);
+        if (invoice != null) {
+            return Optional.of(new InvoiceOutputDto(invoice));
+        } else {
+            return Optional.empty();
+        }
+    }
+
+    public List<InvoiceOutputDto> findBetweenDates(Date start, Date end) {
+        List<Invoice> invoiceList = this.invoiceRepository.findByCreationDateBetween(start, end);
+        List<InvoiceOutputDto> invoiceListDto = new ArrayList<InvoiceOutputDto>();
+        for (Invoice ticket : invoiceList) {
+            invoiceListDto.add(new InvoiceOutputDto(ticket.getId()));
+        }
+        return invoiceListDto;
+    }
+
+    public List<InvoiceOutputDto> findByMobile(String mobile) {
+        List<InvoiceOutputDto> invoiceListDto = new ArrayList<InvoiceOutputDto>();
+        User user = this.userRepository.findByMobile(mobile);
+        if (user != null) {
+            List<Ticket> ticketList = this.ticketRepository.findByUserOrderByCreationDateDesc(user);
+            List<Invoice> invoiceList = this.invoiceRepository.findByTicketIn(ticketList);
+            for (Invoice invoice : invoiceList) {
+                invoiceListDto.add(new InvoiceOutputDto(invoice.getId()));
+            }
+        }
+        return invoiceListDto;
+    }
+    
+    public InvoiceOutputDto findByTicket(String ticketId) {
+        Ticket ticket = this.ticketRepository.findOne(ticketId);
+        if (ticket != null) {
+            Invoice invoice = this.invoiceRepository.findByTicket(ticket);
+            if(invoice!=null) {
+                return new InvoiceOutputDto(invoice);
+            }
+        }
+        return new InvoiceOutputDto();
+    }
+
 
 }
