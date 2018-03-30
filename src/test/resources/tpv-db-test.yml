@@ -17,7 +17,8 @@ tokenList:
 # Users
 # mobiles: 666666000 a 666666666 RESERVADOS AQUI
 userList:
-  - mobile: 666666000
+  - &us0
+    mobile: 666666000
     username: u000
     password: p000
     email: u000@gmail.com
@@ -257,12 +258,16 @@ invoiceList:
 cashMovementList:
   - value: 666.666
     comment: "test A"
+    user: *us0
   - value: 0.666
     comment: "test B"
+    user: *us0
   - value: 30.3
     comment: "test C"
+    user: *us0
   - value: 50.6
     comment: "test D" 
+    user: *us0
     
 # Offers
 offerList:
