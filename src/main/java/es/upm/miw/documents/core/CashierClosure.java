@@ -90,6 +90,10 @@ public class CashierClosure {
         return withdrawal;
     }
 
+    public void setWithdrawal(BigDecimal withdrawal) {
+        this.withdrawal = withdrawal;
+    }
+
     public BigDecimal getInitialCash() {
         return initialCash;
     }

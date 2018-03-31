@@ -1,5 +1,6 @@
 package es.upm.miw.dtos;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -14,18 +15,21 @@ public class CashierClosureLastOutputDto {
     @JsonInclude(Include.NON_NULL)
     private Date closureDate;
 
+    private BigDecimal finalCash;
+
     public CashierClosureLastOutputDto() {
         // Empty for framework
     }
 
-    public CashierClosureLastOutputDto(Boolean closed, Date closureDate) {
+    public CashierClosureLastOutputDto(Boolean closed, Date closureDate, BigDecimal finalCash) {
         super();
         this.closed = closed;
         this.closureDate = closureDate;
+        this.finalCash = finalCash;
     }
 
     public CashierClosureLastOutputDto(CashierClosure cashierClosure) {
-        this(cashierClosure.isClosed(), cashierClosure.getClosureDate());
+        this(cashierClosure.isClosed(), cashierClosure.getClosureDate(),cashierClosure.getFinalCash());
     }
 
     public Boolean isClosed() {
@@ -44,9 +48,17 @@ public class CashierClosureLastOutputDto {
         this.closureDate = closureDate;
     }
 
+    public BigDecimal getFinalCash() {
+        return finalCash;
+    }
+
+    public void setFinalCash(BigDecimal finalCash) {
+        this.finalCash = finalCash;
+    }
+
     @Override
     public String toString() {
-        return "CashierClosureLastDto [closed=" + closed + ", closureDate=" + closureDate + "]";
+        return "CashierClosureLastOutputDto [closed=" + closed + ", closureDate=" + closureDate + ", finalCash=" + finalCash + "]";
     }
 
 }

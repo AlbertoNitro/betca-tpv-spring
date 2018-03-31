@@ -89,6 +89,16 @@ public class CashierClosureController {
             Date cashierOpenedDate = cashierClosureRepository.findFirstByOrderByOpeningDateDesc().getOpeningDate();
             lastCashierClosure.close(cashierClosureDto.getFinalCash(), this.salesCash(cashierOpenedDate), cashierClosureDto.getSalesCard(),
                     this.usedVouchers(cashierOpenedDate), cashierClosureDto.getComment());
+            lastCashierClosure.setDeposit(BigDecimal.ZERO);
+            lastCashierClosure.setWithdrawal(BigDecimal.ZERO);
+            List<CashMovement> cashMovementList = cashMovementRepository.findByCreationDateGreaterThan(cashierOpenedDate);
+            for (CashMovement cashMovement : cashMovementList) {
+                if(cashMovement.getValue().signum()==1) {
+                    lastCashierClosure.setDeposit(lastCashierClosure.getDeposit().add(cashMovement.getValue()));
+                }else {
+                    lastCashierClosure.setWithdrawal(lastCashierClosure.getWithdrawal().add(cashMovement.getValue().negate()));                   
+                }
+            }
             this.cashierClosureRepository.save(lastCashierClosure);
             return Optional.empty();
 
