@@ -59,7 +59,7 @@ public class CashierClosureControllerIT {
     @Test
     public void testGetTotalCardAndCashCashierClosure() throws IOException {
         cashierClosureController.openCashierClosure();
-        assertNotNull(this.cashierClosureController.getTotalCardAndCash());
+        assertNotNull(this.cashierClosureController.readTotalsFromLast());
         this.databaseSeederService.deleteAllAndCreateAdmin();
         this.databaseSeederService.seedDatabase();
     }

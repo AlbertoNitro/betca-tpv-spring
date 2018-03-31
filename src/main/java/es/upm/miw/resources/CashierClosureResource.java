@@ -41,20 +41,25 @@ public class CashierClosureResource {
 
     public static final String MOVEMENTS = "/movements";
 
-     @Autowired
+    @Autowired
     private CashierClosureController cashierClosureController;
 
     @GetMapping(value = LAST)
     public CashierClosureLastOutputDto getCashierClosureLast() {
         return cashierClosureController.getCashierClosureLast();
     }
-    
+
     @PostMapping(value = LAST + MOVEMENTS)
     public void createCashMovement(@Valid @RequestBody CashierMovementInputDto cashierMovementDto) throws CashierMovementException {
         Optional<String> error = this.cashierClosureController.createCashierMovement(cashierMovementDto);
         if (error.isPresent()) {
             throw new CashierMovementException(error.get());
         }
+    }
+
+    @RequestMapping(value = LAST + TOTALS, method = RequestMethod.GET)
+    public CashierClosureSearchOutputDto readTotalsFromLast() throws CashierClosedException {
+        return this.cashierClosureController.readTotalsFromLast().orElseThrow(()-> new CashierClosedException("Cashier already closed"));
     }
 
     @PostMapping
@@ -78,11 +83,6 @@ public class CashierClosureResource {
             @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) @RequestParam("dateStart") Date dateStart,
             @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) @RequestParam(value = "dateFinish") Date dateFinish) {
         return this.cashierClosureController.findSalesByDateBetween(dateStart, dateFinish);
-    }
-
-    @RequestMapping(value = TOTALS, method = RequestMethod.GET)
-    public CashierClosureSearchOutputDto getTotalCardAndCash() {
-        return this.cashierClosureController.getTotalCardAndCash();
     }
 
 }

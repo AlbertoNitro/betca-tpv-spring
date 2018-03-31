@@ -102,25 +102,22 @@ public class CashierClosureController {
         }
     }
 
-    public CashierClosureSearchOutputDto getTotalCardAndCash() {
+    public Optional<CashierClosureSearchOutputDto> readTotalsFromLast() {
         CashierClosure lastCashierClosure = this.cashierClosureRepository.findFirstByOrderByOpeningDateDesc();
-        CashierClosureSearchOutputDto cashierClosureDto = new CashierClosureSearchOutputDto(new BigDecimal("0"), new BigDecimal("0"));
 
-        if (lastCashierClosure != null && !lastCashierClosure.isClosed()) {
-            Date cashierOpenedDate = cashierClosureRepository.findFirstByOrderByOpeningDateDesc().getOpeningDate();
-
-            BigDecimal totalCash = new BigDecimal("0"), totalCard = new BigDecimal("0");
-            totalCash = totalCash.add(cashDeposited(cashierOpenedDate));
-            totalCash = totalCash.add(cashMovements(cashierOpenedDate));
-
-            totalCard = totalCard.add(salesCash(cashierOpenedDate));
-            totalCard = totalCard.subtract(totalVouchers(cashierOpenedDate));
-            totalCard = totalCard.subtract(cashDeposited(cashierOpenedDate));
-
-            cashierClosureDto.setTotalCard(totalCard);
-            cashierClosureDto.setTotalCash(totalCash);
+        if (lastCashierClosure.isClosed()) {
+            return Optional.empty();
         }
-        return cashierClosureDto;
+
+        Date cashierOpenedDate = lastCashierClosure.getOpeningDate();
+        CashierClosureSearchOutputDto cashierClosureDto = new CashierClosureSearchOutputDto();
+
+        BigDecimal totalCash = this.cashierClosureRepository.findFirstByOrderByClosureDateDesc().getFinalCash();
+        cashierClosureDto.setTotalCash(totalCash.add(this.cashDeposited(cashierOpenedDate)).add(this.cashMovements(cashierOpenedDate)));
+        cashierClosureDto.setTotalVoucher(this.totalVouchers(cashierOpenedDate));
+        cashierClosureDto.setTotalCard(this.salesCash(cashierOpenedDate).subtract(cashierClosureDto.getTotalVoucher())
+                .subtract(this.cashDeposited(cashierOpenedDate)));
+        return Optional.of(cashierClosureDto);
     }
 
     private BigDecimal usedVouchers(Date cashierOpenedDate) {
