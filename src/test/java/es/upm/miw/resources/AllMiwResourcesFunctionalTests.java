@@ -12,13 +12,13 @@ import org.junit.runners.Suite.SuiteClasses;
     BudgetResourceFunctionalTesting.class,
     CashierClosureResourceFunctionalTesting.class,
     InvoiceResourceFunctionalTesting.class,
+    OrderResourceFunctionalTesting.class,
+    OrderBodyResourceFunctionalTesting.class,
     ProviderResourceFunctionalTesting.class,
     TicketResourceFunctionalTesting.class,
     TokenResourceFunctionalTesting.class,
     UserResourceFunctionalTesting.class,
-    VoucherResourceFunctionalTesting.class,
-    OrderResourceFunctionalTesting.class,
-    OrderBodyResourceFunctionalTesting.class
+    VoucherResourceFunctionalTesting.class
 })
 public class AllMiwResourcesFunctionalTests {
 

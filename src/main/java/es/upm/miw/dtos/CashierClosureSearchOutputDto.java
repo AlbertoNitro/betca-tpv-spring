@@ -6,36 +6,40 @@ import java.util.Date;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
+@JsonInclude(Include.NON_NULL)
 public class CashierClosureSearchOutputDto {
 
 	private BigDecimal salesCard;
 
-	private BigDecimal salesCash;
-	
-    @JsonInclude(Include.NON_NULL)
+	private BigDecimal finalCash;
+
 	private Date closureDate;
+	
+	private BigDecimal totalCash;	
 	
 	private BigDecimal totalCard;
 	
-	private BigDecimal totalCash;
+    private BigDecimal totalVoucher;
 	
 	
 	public CashierClosureSearchOutputDto() {
 		// Empty for framework
 	}
 
-	public CashierClosureSearchOutputDto(BigDecimal salesCard, BigDecimal salesCash, Date closureDate) {
+	public CashierClosureSearchOutputDto(BigDecimal salesCard, BigDecimal finalCash, Date closureDate) {
 		this.salesCard = salesCard;
-		this.salesCash = salesCash;
+		this.finalCash = finalCash;
 		this.closureDate = closureDate;
 	}
 	
-	public CashierClosureSearchOutputDto(BigDecimal totalCard, BigDecimal totalCash) {
-		this.totalCard = totalCard;
-		this.totalCash = totalCash;
-	}
 
-	public BigDecimal getSalesCard() {
+	public CashierClosureSearchOutputDto(BigDecimal totalCash, BigDecimal totalCard, BigDecimal totalVoucher) {
+        this.totalCash = totalCash;
+        this.totalCard = totalCard;
+        this.totalVoucher = totalVoucher;
+    }
+
+    public BigDecimal getSalesCard() {
 		return salesCard;
 	}
 
@@ -43,12 +47,12 @@ public class CashierClosureSearchOutputDto {
 		this.salesCard = salesCard;
 	}
 
-	public BigDecimal getSalesCash() {
-		return salesCash;
+	public BigDecimal getFinalCash() {
+		return finalCash;
 	}
 
-	public void setSalesCash(BigDecimal salesCash) {
-		this.salesCash = salesCash;
+	public void setFinalCash(BigDecimal salesCash) {
+		this.finalCash = salesCash;
 	}
 	
 	public BigDecimal getTotalCard() {
@@ -67,7 +71,15 @@ public class CashierClosureSearchOutputDto {
 		this.totalCash = totalCash;
 	}
 
-	public Date getClosureDate() {
+	public BigDecimal getTotalVoucher() {
+        return totalVoucher;
+    }
+
+    public void setTotalVoucher(BigDecimal totalVoucher) {
+        this.totalVoucher = totalVoucher;
+    }
+
+    public Date getClosureDate() {
 		return closureDate;
 	}
 
@@ -76,9 +88,9 @@ public class CashierClosureSearchOutputDto {
 	}
 
 	@Override
-	public String toString() {
-		return "CashierClosureStatisOutputDto [salesCard=" + salesCard + ", salesCash=" + salesCash + ", closureDate="
-				+ closureDate + ", totalCard=" + totalCard + ", totalCash=" + totalCash + "]";
-	}
+    public String toString() {
+        return "CashierClosureSearchOutputDto [salesCard=" + salesCard + ", finalCash=" + finalCash + ", closureDate=" + closureDate
+                + ", totalCash=" + totalCash + ", totalCard=" + totalCard + ", totalVoucher=" + totalVoucher + "]";
+    }
 
 }
