@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 import es.upm.miw.controllers.CashierClosureController;
 import es.upm.miw.dtos.CashierClosureInputDto;
 import es.upm.miw.dtos.CashierClosureLastOutputDto;
+import es.upm.miw.dtos.CashierClosureClosedOutputDto;
 import es.upm.miw.dtos.CashierClosureSearchOutputDto;
 import es.upm.miw.dtos.CashierMovementInputDto;
 import es.upm.miw.resources.exceptions.CashierClosedException;
@@ -39,6 +40,8 @@ public class CashierClosureResource {
 
     public static final String TOTALS = "/totals";
 
+    public static final String DATE = "/date";
+
     public static final String MOVEMENTS = "/movements";
 
     @Autowired
@@ -49,6 +52,14 @@ public class CashierClosureResource {
         return cashierClosureController.getCashierClosureLast();
     }
 
+    @PatchMapping(value = LAST)
+    public void closeCashierClosure(@Valid @RequestBody CashierClosureInputDto cashierClosureDto) throws CashierClosedException {
+        Optional<String> error = cashierClosureController.close(cashierClosureDto);
+        if (error.isPresent()) {
+            throw new CashierClosedException(error.get());
+        }
+    }
+    
     @PostMapping(value = LAST + MOVEMENTS)
     public void createCashMovement(@Valid @RequestBody CashierMovementInputDto cashierMovementDto) throws CashierMovementException {
         Optional<String> error = this.cashierClosureController.createCashierMovement(cashierMovementDto);
@@ -57,9 +68,14 @@ public class CashierClosureResource {
         }
     }
 
-    @RequestMapping(value = LAST + TOTALS, method = RequestMethod.GET)
+    @GetMapping(value = LAST + TOTALS)
     public CashierClosureSearchOutputDto readTotalsFromLast() throws CashierClosedException {
-        return this.cashierClosureController.readTotalsFromLast().orElseThrow(()-> new CashierClosedException("Cashier already closed"));
+        return this.cashierClosureController.readTotalsFromLast().orElseThrow(() -> new CashierClosedException("Cashier already closed"));
+    }
+
+    @GetMapping(value = SEARCH + DATE)
+    public List<CashierClosureClosedOutputDto> findBetweenDate(@RequestParam long start, @RequestParam long end) {
+        return this.cashierClosureController.findBetweenDate(new Date(start), new Date(end));
     }
 
     @PostMapping
@@ -67,14 +83,6 @@ public class CashierClosureResource {
         Optional<String> error = cashierClosureController.openCashierClosure();
         if (error.isPresent()) {
             throw new CashierCreateException(error.get());
-        }
-    }
-
-    @PatchMapping(value = LAST)
-    public void closeCashierClosure(@Valid @RequestBody CashierClosureInputDto cashierClosureDto) throws CashierClosedException {
-        Optional<String> error = cashierClosureController.close(cashierClosureDto);
-        if (error.isPresent()) {
-            throw new CashierClosedException(error.get());
         }
     }
 
