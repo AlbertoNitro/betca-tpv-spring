@@ -19,9 +19,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import es.upm.miw.controllers.CashierClosureController;
 import es.upm.miw.dtos.CashierClosureInputDto;
-import es.upm.miw.dtos.CashierClosureLastOutputDto;
-import es.upm.miw.dtos.CashierClosureClosedOutputDto;
-import es.upm.miw.dtos.CashierClosureSearchOutputDto;
+import es.upm.miw.dtos.CashierLastOutputDto;
+import es.upm.miw.dtos.ClosedCashierOutputDto;
+import es.upm.miw.dtos.CashierClosingOutputDto;
 import es.upm.miw.dtos.CashierMovementInputDto;
 import es.upm.miw.resources.exceptions.CashierClosedException;
 import es.upm.miw.resources.exceptions.CashierCreateException;
@@ -48,7 +48,7 @@ public class CashierClosureResource {
     private CashierClosureController cashierClosureController;
 
     @GetMapping(value = LAST)
-    public CashierClosureLastOutputDto getCashierClosureLast() {
+    public CashierLastOutputDto getCashierClosureLast() {
         return cashierClosureController.getCashierClosureLast();
     }
 
@@ -69,12 +69,12 @@ public class CashierClosureResource {
     }
 
     @GetMapping(value = LAST + TOTALS)
-    public CashierClosureSearchOutputDto readTotalsFromLast() throws CashierClosedException {
+    public CashierClosingOutputDto readTotalsFromLast() throws CashierClosedException {
         return this.cashierClosureController.readTotalsFromLast().orElseThrow(() -> new CashierClosedException("Cashier already closed"));
     }
 
     @GetMapping(value = SEARCH + DATE)
-    public List<CashierClosureClosedOutputDto> findBetweenDate(@RequestParam long start, @RequestParam long end) {
+    public List<ClosedCashierOutputDto> findBetweenDate(@RequestParam long start, @RequestParam long end) {
         return this.cashierClosureController.findBetweenDate(new Date(start), new Date(end));
     }
 
@@ -87,7 +87,7 @@ public class CashierClosureResource {
     }
 
     @RequestMapping(value = SEARCH, method = RequestMethod.GET)
-    public List<CashierClosureSearchOutputDto> findSalesByDateBetween(
+    public List<CashierClosingOutputDto> findSalesByDateBetween(
             @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) @RequestParam("dateStart") Date dateStart,
             @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) @RequestParam(value = "dateFinish") Date dateFinish) {
         return this.cashierClosureController.findSalesByDateBetween(dateStart, dateFinish);

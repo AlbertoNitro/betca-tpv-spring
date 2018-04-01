@@ -7,7 +7,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 @JsonInclude(Include.NON_NULL)
-public class CashierClosureSearchOutputDto {
+public class CashierClosingOutputDto {
 
 	private BigDecimal salesCard;
 
@@ -22,18 +22,18 @@ public class CashierClosureSearchOutputDto {
     private BigDecimal totalVoucher;
 	
 	
-	public CashierClosureSearchOutputDto() {
+	public CashierClosingOutputDto() {
 		// Empty for framework
 	}
 
-	public CashierClosureSearchOutputDto(BigDecimal salesCard, BigDecimal finalCash, Date closureDate) {
+	public CashierClosingOutputDto(BigDecimal salesCard, BigDecimal finalCash, Date closureDate) {
 		this.salesCard = salesCard;
 		this.finalCash = finalCash;
 		this.closureDate = closureDate;
 	}
 	
 
-	public CashierClosureSearchOutputDto(BigDecimal totalCash, BigDecimal totalCard, BigDecimal totalVoucher) {
+	public CashierClosingOutputDto(BigDecimal totalCash, BigDecimal totalCard, BigDecimal totalVoucher) {
         this.totalCash = totalCash;
         this.totalCard = totalCard;
         this.totalVoucher = totalVoucher;

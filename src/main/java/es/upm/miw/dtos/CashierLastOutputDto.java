@@ -8,7 +8,7 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 import es.upm.miw.documents.core.CashierClosure;
 
-public class CashierClosureLastOutputDto {
+public class CashierLastOutputDto {
 
     private Boolean closed;
 
@@ -17,18 +17,18 @@ public class CashierClosureLastOutputDto {
 
     private BigDecimal finalCash;
 
-    public CashierClosureLastOutputDto() {
+    public CashierLastOutputDto() {
         // Empty for framework
     }
 
-    public CashierClosureLastOutputDto(Boolean closed, Date closureDate, BigDecimal finalCash) {
+    public CashierLastOutputDto(Boolean closed, Date closureDate, BigDecimal finalCash) {
         super();
         this.closed = closed;
         this.closureDate = closureDate;
         this.finalCash = finalCash;
     }
 
-    public CashierClosureLastOutputDto(CashierClosure cashierClosure) {
+    public CashierLastOutputDto(CashierClosure cashierClosure) {
         this(cashierClosure.isClosed(), cashierClosure.getClosureDate(),cashierClosure.getFinalCash());
     }
 

@@ -15,9 +15,9 @@ import es.upm.miw.documents.core.Ticket;
 import es.upm.miw.documents.core.User;
 import es.upm.miw.documents.core.Voucher;
 import es.upm.miw.dtos.CashierClosureInputDto;
-import es.upm.miw.dtos.CashierClosureLastOutputDto;
-import es.upm.miw.dtos.CashierClosureClosedOutputDto;
-import es.upm.miw.dtos.CashierClosureSearchOutputDto;
+import es.upm.miw.dtos.CashierLastOutputDto;
+import es.upm.miw.dtos.ClosedCashierOutputDto;
+import es.upm.miw.dtos.CashierClosingOutputDto;
 import es.upm.miw.dtos.CashierMovementInputDto;
 import es.upm.miw.repositories.core.CashMovementRepository;
 import es.upm.miw.repositories.core.CashierClosureRepository;
@@ -57,15 +57,15 @@ public class CashierClosureController {
         return Optional.empty();
     }
 
-    public CashierClosureLastOutputDto getCashierClosureLast() {
+    public CashierLastOutputDto getCashierClosureLast() {
         CashierClosure cashierClosure = this.cashierClosureRepository.findFirstByOrderByOpeningDateDesc();
         if (cashierClosure != null) {
-            return new CashierClosureLastOutputDto(cashierClosure);
+            return new CashierLastOutputDto(cashierClosure);
         } else {
             cashierClosure = new CashierClosure(new BigDecimal("0"));
             cashierClosure.close(new BigDecimal("0"), new BigDecimal("0"), new BigDecimal("0"), new BigDecimal("0"), "Initial");
             this.cashierClosureRepository.save(cashierClosure);
-            return new CashierClosureLastOutputDto(cashierClosure);
+            return new CashierLastOutputDto(cashierClosure);
         }
     }
 
@@ -107,7 +107,7 @@ public class CashierClosureController {
         }
     }
 
-    public Optional<CashierClosureSearchOutputDto> readTotalsFromLast() {
+    public Optional<CashierClosingOutputDto> readTotalsFromLast() {
         CashierClosure lastCashierClosure = this.cashierClosureRepository.findFirstByOrderByOpeningDateDesc();
 
         if (lastCashierClosure.isClosed()) {
@@ -115,7 +115,7 @@ public class CashierClosureController {
         }
 
         Date cashierOpenedDate = lastCashierClosure.getOpeningDate();
-        CashierClosureSearchOutputDto cashierClosureDto = new CashierClosureSearchOutputDto();
+        CashierClosingOutputDto cashierClosureDto = new CashierClosingOutputDto();
         
         cashierClosureDto.setTotalCash(lastCashierClosure.getInitialCash().add(this.cashDeposited(cashierOpenedDate)).add(this.cashMovements(cashierOpenedDate)));
         cashierClosureDto.setTotalVoucher(this.totalVouchers(cashierOpenedDate));
@@ -169,20 +169,20 @@ public class CashierClosureController {
         return total;
     }
 
-    public List<CashierClosureSearchOutputDto> findSalesByDateBetween(Date startDate, Date dateFinish) {
+    public List<CashierClosingOutputDto> findSalesByDateBetween(Date startDate, Date dateFinish) {
         List<CashierClosure> salesList = this.cashierClosureRepository.findSalesCashierClosureByDateBetween(startDate, dateFinish);
-        List<CashierClosureSearchOutputDto> salesListDto = new ArrayList<CashierClosureSearchOutputDto>();
+        List<CashierClosingOutputDto> salesListDto = new ArrayList<CashierClosingOutputDto>();
         for (CashierClosure sales : salesList) {
-            salesListDto.add(new CashierClosureSearchOutputDto(sales.getSalesCash(), sales.getSalesCard(), sales.getClosureDate()));
+            salesListDto.add(new CashierClosingOutputDto(sales.getSalesCash(), sales.getSalesCard(), sales.getClosureDate()));
         }
         return salesListDto;
     }
 
-    public List<CashierClosureClosedOutputDto> findBetweenDate(Date start, Date end) {
+    public List<ClosedCashierOutputDto> findBetweenDate(Date start, Date end) {
         List<CashierClosure> cashierClosureList = this.cashierClosureRepository.findByOpeningDateBetweenAndClosureDateNotNull(start, end);
-        List<CashierClosureClosedOutputDto> cashierClosureClosedOutputDto = new ArrayList<CashierClosureClosedOutputDto>();
+        List<ClosedCashierOutputDto> cashierClosureClosedOutputDto = new ArrayList<ClosedCashierOutputDto>();
         for (CashierClosure ticket : cashierClosureList) {
-            cashierClosureClosedOutputDto.add(new CashierClosureClosedOutputDto(ticket));
+            cashierClosureClosedOutputDto.add(new ClosedCashierOutputDto(ticket));
         }
         return cashierClosureClosedOutputDto;
     }
