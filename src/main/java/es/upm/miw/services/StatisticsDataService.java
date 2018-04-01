@@ -82,7 +82,7 @@ public class StatisticsDataService {
 			List<Integer> numArticlePerMonthCollection = new ArrayList<Integer>();
 			HashMap<Integer, Integer> value = articleData.getValue();
 
-			for (int i = initMonth; i < endMonth; i++) {
+			for (int i = initMonth; i <= endMonth; i++) {
 
 				if (value.containsKey(i))
 					numArticlePerMonthCollection.add(value.get(i));

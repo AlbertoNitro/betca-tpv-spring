@@ -110,6 +110,7 @@ providerList:
     active: true
     
 # Articles
+# ar11 y ar12 RESERVADOS
 articleList:
   - &ar0
     code: 1
@@ -182,6 +183,20 @@ articleList:
     retailPrice: 100
     tax: GENERAL
     provider: *pr0  
+  - &ar11
+    code: 13253
+    reference: ar11
+    description: Artic
+    retailPrice: 100
+    tax: GENERAL
+    provider: *pr0  
+  - &ar12
+    code: 13254
+    reference: ar12
+    description: Artic
+    retailPrice: 50
+    tax: GENERAL
+    provider: *pr0  
 
 # Shopping
 shoppingList:
@@ -220,6 +235,20 @@ shoppingList:
     article: *ar2
     shoppingState: COMMITTED
     description: "various"
+  - &sh6
+    amount: 3
+    retailPrice: 1.2
+    discount: 0
+    article: *ar11
+    shoppingState: COMMITTED
+    description: "various"
+  - &sh7
+    amount: 3
+    retailPrice: 1.2
+    discount: 0
+    article: *ar12
+    shoppingState: COMMITTED
+    description: "various"
 
 # Ticket
 ticketList:
@@ -245,6 +274,28 @@ ticketList:
     shoppingList: 
       - *sh4
       - *sh5
+    user: *us4
+  - &ti4
+    id: 20170112-1
+    reference: 6P0ISee_twnGEzf8qA1BdAsGQqE
+    cashDeposited: 0
+    shoppingList: 
+      - *sh6
+      - *sh7
+    user: *us4
+  - &ti5
+    id: 20170212-2
+    reference: 6P0ISee_twnGEzf8qA1BdAsGQqE
+    cashDeposited: 0
+    shoppingList: 
+      - *sh6
+    user: *us4
+  - &ti6
+    id: 20170312-2
+    reference: 6P0ISee_twnGEzf8qA1BdAsGQqE
+    cashDeposited: 0
+    shoppingList: 
+      - *sh7
     user: *us4
     
 # Invoice
