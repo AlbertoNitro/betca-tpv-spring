@@ -5,7 +5,7 @@ import java.util.Date;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
-
+import es.upm.miw.documents.core.Role;
 import es.upm.miw.documents.core.User;
 
 @JsonInclude(Include.NON_NULL)
@@ -20,6 +20,8 @@ public class UserDto extends UserMinimumDto {
     private String address;
 
     private Boolean active;
+    
+    private Role[] roles;
 
     private Date registrationDate;
 
@@ -105,14 +107,23 @@ public class UserDto extends UserMinimumDto {
         this.registrationDate = registrationDate;
     }
 
-    @Override
+    
+	public Role[] getRoles() {
+		return roles;
+	}
+
+	public void setRoles(Role[] roles) {
+		this.roles = roles;
+	}
+	
+	@Override
     public String toString() {
         String date = "null";
         if (registrationDate != null) {
             date = new SimpleDateFormat("dd-MMM-yyyy").format(registrationDate.getTime());
         }   
         return "[" + super.toString() + "UserDto [password=" + password + ", email=" + email + ", dni=" + dni + ", address=" + address
-                + ", active=" + active + ", registrationDate=" + date + "] ]";
+                + ", active=" + active + ", registrationDate=" + date + ", roles=" + java.util.Arrays.toString(roles) + "] ]";
     }
-
+	
 }
