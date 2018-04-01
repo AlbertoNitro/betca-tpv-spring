@@ -15,6 +15,7 @@ import es.upm.miw.documents.core.Shopping;
 import es.upm.miw.documents.core.ShoppingState;
 import es.upm.miw.documents.core.Ticket;
 import es.upm.miw.documents.core.User;
+import es.upm.miw.dtos.HistoricalProductOutPutDto;
 import es.upm.miw.dtos.ShoppingDto;
 import es.upm.miw.dtos.TicketCreationInputDto;
 import es.upm.miw.dtos.TicketDto;
@@ -23,6 +24,7 @@ import es.upm.miw.repositories.core.ArticleRepository;
 import es.upm.miw.repositories.core.TicketRepository;
 import es.upm.miw.repositories.core.UserRepository;
 import es.upm.miw.services.PdfService;
+import es.upm.miw.services.StatisticsDataService;
 
 @Controller
 public class TicketController {
@@ -38,6 +40,9 @@ public class TicketController {
 
     @Autowired
     private PdfService pdfService;
+    
+    @Autowired
+    private StatisticsDataService statisticsDataService;
 
     private int nextId() {
         int nextId = 1;
@@ -143,7 +148,7 @@ public class TicketController {
         }
         return ticketListDto;
     }
-
+    
     public List<TicketDto> findByMobile(String mobile) {
         List<TicketDto> ticketListDto = new ArrayList<TicketDto>();
         User user = this.userRepository.findByMobile(mobile);
@@ -169,4 +174,8 @@ public class TicketController {
         return Optional.empty();
     }
 
+    public List<HistoricalProductOutPutDto> getHistoricalProductsDataBetweenDates(Date initDate, Date endDate) {
+
+		return this.statisticsDataService.GetHistoricalData(initDate, endDate);
+	}
 }
