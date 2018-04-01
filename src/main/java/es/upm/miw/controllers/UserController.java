@@ -70,6 +70,7 @@ public class UserController {
             user.setPassword(userDto.getPassword());
             user.setAddress(userDto.getAddress());
             user.setActive(userDto.isActive());
+            user.setRoles(userDto.getRoles());
             this.userRepository.save(user);
         } else {
             return false;

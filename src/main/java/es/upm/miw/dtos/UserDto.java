@@ -29,25 +29,28 @@ public class UserDto extends UserMinimumDto {
         // Empty for framework
     }
 
-    public UserDto(String mobile, String username, String password, String email, String dni, String address, Boolean active) {
+    public UserDto(String mobile, String username, String password, String email, String dni, String address, Boolean active, Role[] roles) {
         super(mobile, username);
         this.password = password;
         this.email = email;
         this.setDni(dni);
         this.address = address;
         this.active = active;
+        this.roles = roles;
     }
 
     public UserDto(String mobileNamePass) {
-        this(mobileNamePass, "name" + mobileNamePass, "pass" + mobileNamePass, null, null, null, null);
+        this(mobileNamePass, "name" + mobileNamePass, "pass" + mobileNamePass, null, null, null, null, null);
     }
 
     public UserDto(User user) {
         super(user.getMobile(), user.getUsername());
+        this.password = user.getPassword();
         this.email = user.getEmail();
         this.dni = user.getDni();
         this.address = user.getAddress();
         this.active = user.isActive();
+        this.roles = user.getRoles();
         this.registrationDate = user.getRegistrationDate();
     }
 

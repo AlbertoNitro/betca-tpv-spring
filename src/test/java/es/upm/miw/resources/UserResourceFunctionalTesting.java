@@ -2,6 +2,7 @@ package es.upm.miw.resources;
 
 import static org.junit.Assert.assertEquals;
 
+import org.apache.log4j.Logger;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
@@ -15,6 +16,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import es.upm.miw.documents.core.Role;
 import es.upm.miw.dtos.UserDto;
 
 @RunWith(SpringRunner.class)
