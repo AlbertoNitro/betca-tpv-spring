@@ -5,7 +5,7 @@ import java.util.Date;
 
 import es.upm.miw.documents.core.CashierClosure;
 
-public class CashierClosureClosedOutputDto {
+public class ClosedCashierOutputDto {
 
     private String id;
 
@@ -25,10 +25,10 @@ public class CashierClosureClosedOutputDto {
 
     private Date closureDate;
 
-    public CashierClosureClosedOutputDto() {
+    public ClosedCashierOutputDto() {
     }
 
-    public CashierClosureClosedOutputDto(CashierClosure cashierClosure) {
+    public ClosedCashierOutputDto(CashierClosure cashierClosure) {
         this.id = cashierClosure.getId();
         this.openingDate = cashierClosure.getOpeningDate();
         this.initialCash = cashierClosure.getInitialCash();

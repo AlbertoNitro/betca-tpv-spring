@@ -25,8 +25,8 @@ import org.springframework.web.client.HttpClientErrorException;
 
 import es.upm.miw.controllers.CashierClosureController;
 import es.upm.miw.dtos.CashierClosureInputDto;
-import es.upm.miw.dtos.CashierClosureLastOutputDto;
-import es.upm.miw.dtos.CashierClosureSearchOutputDto;
+import es.upm.miw.dtos.CashierLastOutputDto;
+import es.upm.miw.dtos.CashierClosingOutputDto;
 import es.upm.miw.dtos.CashierMovementInputDto;
 
 @RunWith(SpringRunner.class)
@@ -72,8 +72,8 @@ public class CashierClosureResourceFunctionalTesting {
 
     @Test
     public void testGetCashierClosureLast() {
-        CashierClosureLastOutputDto cashierClosureLastDto = restService.loginAdmin()
-                .restBuilder(new RestBuilder<CashierClosureLastOutputDto>()).clazz(CashierClosureLastOutputDto.class)
+        CashierLastOutputDto cashierClosureLastDto = restService.loginAdmin()
+                .restBuilder(new RestBuilder<CashierLastOutputDto>()).clazz(CashierLastOutputDto.class)
                 .path(CashierClosureResource.CASHIER_CLOSURES).path(CashierClosureResource.LAST).get().build();
         assertTrue(cashierClosureLastDto.isClosed());
     }
@@ -82,11 +82,11 @@ public class CashierClosureResourceFunctionalTesting {
     public void testFindSalesByDateBetween() throws ParseException {
         Date startDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse("2018-01-01 00:00:00");
         Date dateFinish = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse("2018-12-01 11:59:59");
-        List<CashierClosureSearchOutputDto> searchOutputDtos = Arrays.asList(restService.loginAdmin()
-                .restBuilder(new RestBuilder<CashierClosureSearchOutputDto[]>()).clazz(CashierClosureSearchOutputDto[].class)
+        List<CashierClosingOutputDto> searchOutputDtos = Arrays.asList(restService.loginAdmin()
+                .restBuilder(new RestBuilder<CashierClosingOutputDto[]>()).clazz(CashierClosingOutputDto[].class)
                 .path(CashierClosureResource.CASHIER_CLOSURES).path(CashierClosureResource.SEARCH).param("dateStart", "2018-01-01 00:00:00")
                 .param("dateFinish", "2018-12-01 23:00:00").get().build());
-        List<CashierClosureSearchOutputDto> searchOutputDtos_ = cashierClosureController.findSalesByDateBetween(startDate, dateFinish);
+        List<CashierClosingOutputDto> searchOutputDtos_ = cashierClosureController.findSalesByDateBetween(startDate, dateFinish);
         assertEquals(searchOutputDtos_.size(), searchOutputDtos.size());
     }
 
