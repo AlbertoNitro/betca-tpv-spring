@@ -51,7 +51,7 @@ public class TicketController {
         return nextId;
     }
 
-    public Optional<Ticket> createTicket(TicketCreationInputDto ticketCreationDto) {
+    private Optional<Ticket> createTicket(TicketCreationInputDto ticketCreationDto) {
         User user = this.userRepository.findByMobile(ticketCreationDto.getUserMobile());
         List<Shopping> shoppingList = new ArrayList<>();
         for (ShoppingDto shoppingDto : ticketCreationDto.getShoppingCart()) {
@@ -66,6 +66,8 @@ public class TicketController {
                 shopping.setShoppingState(ShoppingState.NOT_COMMITTED);
             }
             shoppingList.add(shopping);
+            article.setStock(article.getStock() - shoppingDto.getAmount());
+            this.articleRepository.save(article);
         }
         Ticket ticket = new Ticket(this.nextId(), ticketCreationDto.getCash(), shoppingList.toArray(new Shopping[0]), user);
         this.ticketRepository.save(ticket);
@@ -101,7 +103,14 @@ public class TicketController {
         Ticket ticket = this.ticketRepository.findOne(id);
         assert ticket != null;
         for (int i = 0; i < ticket.getShoppingList().length; i++) {
-            ticket.getShoppingList()[i].setAmount(ticketDto.getShoppingList().get(i).getAmount());
+            int amountDifference = ticket.getShoppingList()[i].getAmount() - ticketDto.getShoppingList().get(i).getAmount();
+            if (amountDifference > 0) {
+                ticket.getShoppingList()[i].setAmount(ticketDto.getShoppingList().get(i).getAmount());
+                Article article = ticket.getShoppingList()[i].getArticle();
+                article.setStock(article.getStock() + amountDifference);
+                this.articleRepository.save(article);
+            }
+
             if (ticketDto.getShoppingList().get(i).isCommitted()) {
                 ticket.getShoppingList()[i].setShoppingState(ShoppingState.COMMITTED);
             }
