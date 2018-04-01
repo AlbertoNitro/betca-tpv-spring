@@ -37,13 +37,19 @@ public class UserRepositoryIT {
         this.userRepository.save(user);
     }
 
-    @SuppressWarnings("deprecation")
 	@Test
     public void testFindByMobile() {
         User userBd = userRepository.findByMobile("666001000");
         assertNotNull(userBd);
         assertEquals("666001000", userBd.getUsername());
-        Role[] roles = new Role[]{Role.ADMIN};
+    }
+    
+    @SuppressWarnings("deprecation")
+	@Test
+    public void testRolesDb() {
+        User userBd = userRepository.findByMobile("666001000");
+        assertNotNull(userBd);
+        Role[] roles = new Role[]{Role.CUSTOMER};
         assertEquals(roles, userBd.getRoles());
     }
 
