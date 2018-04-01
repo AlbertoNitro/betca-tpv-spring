@@ -15,6 +15,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import es.upm.miw.documents.core.Role;
 import es.upm.miw.documents.core.Token;
 import es.upm.miw.documents.core.User;
 import es.upm.miw.dtos.UserMinimumDto;
@@ -36,11 +37,14 @@ public class UserRepositoryIT {
         this.userRepository.save(user);
     }
 
-    @Test
+    @SuppressWarnings("deprecation")
+	@Test
     public void testFindByMobile() {
         User userBd = userRepository.findByMobile("666001000");
         assertNotNull(userBd);
         assertEquals("666001000", userBd.getUsername());
+        Role[] roles = new Role[]{Role.ADMIN};
+        assertEquals(roles, userBd.getRoles());
     }
 
     @Test
