@@ -1,11 +1,14 @@
 package es.upm.miw.controllers;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.Date;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +17,8 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import es.upm.miw.dtos.CashierClosureInputDto;
+import es.upm.miw.dtos.CashierMovementInputDto;
+import es.upm.miw.repositories.core.CashMovementRepository;
 import es.upm.miw.services.DatabaseSeederService;
 
 @RunWith(SpringRunner.class)
@@ -21,34 +26,50 @@ import es.upm.miw.services.DatabaseSeederService;
 @TestPropertySource(locations = "classpath:test.properties")
 public class CashierClosureControllerIT {
 
-	@Autowired
-	private CashierClosureController cashierClosureController;
+    @Autowired
+    private CashierClosureController cashierClosureController;
 
-	@Autowired
-	private DatabaseSeederService databaseSeederService;
+    @Autowired
+    private DatabaseSeederService databaseSeederService;
 
-	@Test
-	public void testClose() throws IOException {
-		cashierClosureController.createCashierClosure();
-		CashierClosureInputDto cashierClosureDto = new CashierClosureInputDto(new BigDecimal("100"),
-				new BigDecimal("50"), "testClose");
-		cashierClosureController.close(cashierClosureDto);
-		this.databaseSeederService.deleteAllAndCreateAdmin();
-		this.databaseSeederService.seedDatabase("tpv-db-test.yml");
+    @Autowired
+    private CashMovementRepository cashMovementRepository;
 
-	}
+    private CashierMovementInputDto cashMovementDto;
 
-	@Test
-	public void testFindSalesByDateBetween() {
-		assertNotNull(this.cashierClosureController.findSalesByDateBetween(new Date(), new Date()));
-	}
+    @Before
+    public void before() {
+        this.cashMovementDto = new CashierMovementInputDto(new BigDecimal(32), "testRandom", "666666000");
+    }
 
-	@Test
-	public void testGetTotalCardAndCashCashierClosure() throws IOException {
-		cashierClosureController.createCashierClosure();
-		assertNotNull(this.cashierClosureController.getTotalCardAndCash());
-		this.databaseSeederService.deleteAllAndCreateAdmin();
-		this.databaseSeederService.seedDatabase("tpv-db-test.yml");
-	}
+    @Test
+    public void testClose() throws IOException {
+        cashierClosureController.openCashierClosure();
+        CashierClosureInputDto cashierClosureDto = new CashierClosureInputDto(new BigDecimal("100"), new BigDecimal("50"), "testClose");
+        cashierClosureController.close(cashierClosureDto);
+        this.databaseSeederService.seedDatabase();
+    }
+
+    @Test
+    public void testFindSalesByDateBetween() {
+        assertNotNull(this.cashierClosureController.findSalesByDateBetween(new Date(), new Date()));
+    }
+
+    @Test
+    public void testGetTotalCardAndCashCashierClosure() throws IOException {
+        cashierClosureController.openCashierClosure();
+        assertNotNull(this.cashierClosureController.readTotalsFromLast());
+        this.databaseSeederService.seedDatabase();
+    }
+
+    @Test
+    public void create() throws IOException {
+        cashierClosureController.openCashierClosure();
+        this.cashierClosureController.createCashierMovement(cashMovementDto);
+        int size = this.cashMovementRepository.findAll().size();
+        assertTrue(size > 0);
+        assertEquals(this.cashMovementRepository.findAll().get(size - 1).getComment(), "testRandom");
+        this.databaseSeederService.seedDatabase();
+    }
 
 }

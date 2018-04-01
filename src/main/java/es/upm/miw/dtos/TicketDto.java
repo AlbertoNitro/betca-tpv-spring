@@ -19,6 +19,8 @@ public class TicketDto {
 
     private Date creationDate;
 
+    private UserDto user;
+
     @NotNull
     private List<ShoppingDto> shoppingList;
 
@@ -29,10 +31,15 @@ public class TicketDto {
     public TicketDto(Ticket ticket) {
         this.id = ticket.getId();
         this.creationDate = ticket.getCreationDate();
+        if(ticket.getUser()==null) {
+            this.user=null;
+        }else {
+            this.user = new UserDto(ticket.getUser());
+        }
         shoppingList = new ArrayList<ShoppingDto>();
         for (Shopping shopping : ticket.getShoppingList()) {
             shoppingList.add(new ShoppingDto(shopping));
-        }     
+        }
     }
 
     public String getId() {
@@ -59,9 +66,17 @@ public class TicketDto {
         this.shoppingList = shoppingList;
     }
 
+    public UserDto getUser() {
+        return user;
+    }
+
+    public void setUser(UserDto user) {
+        this.user = user;
+    }
+
     @Override
     public String toString() {
-        return "TicketDto [id=" + id + ", creationDate=" + creationDate + ", shoppingList=" + shoppingList + "]";
+        return "TicketDto [id=" + id + ", creationDate=" + creationDate + ", user=" + user + ", shoppingList=" + shoppingList + "]";
     }
 
 }

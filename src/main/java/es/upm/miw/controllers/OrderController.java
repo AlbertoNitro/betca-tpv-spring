@@ -26,7 +26,7 @@ public class OrderController {
     }
 
     public void createOrder(OrderDto orderDto) {
-        Order order = new Order(orderDto.getId(), orderDto.getProvider_id(), orderDto.getOrder_date());
+        Order order = new Order(orderDto.getId(), orderDto.getProvider_id());
         this.orderRepository.save(order);
     }
 

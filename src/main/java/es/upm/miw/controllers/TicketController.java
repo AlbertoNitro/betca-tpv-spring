@@ -55,8 +55,8 @@ public class TicketController {
         }
         return nextId;
     }
-    
-    public Optional<byte[]> createTicket(TicketCreationInputDto ticketCreationDto) {
+
+    private Optional<Ticket> createTicket(TicketCreationInputDto ticketCreationDto) {
         User user = this.userRepository.findByMobile(ticketCreationDto.getUserMobile());
         List<Shopping> shoppingList = new ArrayList<>();
         for (ShoppingDto shoppingDto : ticketCreationDto.getShoppingCart()) {
@@ -71,10 +71,21 @@ public class TicketController {
                 shopping.setShoppingState(ShoppingState.NOT_COMMITTED);
             }
             shoppingList.add(shopping);
+            article.setStock(article.getStock() - shoppingDto.getAmount());
+            this.articleRepository.save(article);
         }
         Ticket ticket = new Ticket(this.nextId(), ticketCreationDto.getCash(), shoppingList.toArray(new Shopping[0]), user);
         this.ticketRepository.save(ticket);
-        return pdfService.generateTicket(ticket);
+        return Optional.of(ticket);
+    }
+
+    public Optional<byte[]> createTicketAndPdf(TicketCreationInputDto ticketCreationDto) {
+        Optional<Ticket> ticket = this.createTicket(ticketCreationDto);
+        if (ticket.isPresent()) {
+            return pdfService.generateTicket(ticket.get());
+        } else {
+            return Optional.empty();
+        }
     }
 
     public boolean existTicket(String id) {
@@ -97,11 +108,23 @@ public class TicketController {
         Ticket ticket = this.ticketRepository.findOne(id);
         assert ticket != null;
         for (int i = 0; i < ticket.getShoppingList().length; i++) {
-            ticket.getShoppingList()[i].setAmount(ticketDto.getShoppingList().get(i).getAmount());
+            int amountDifference = ticket.getShoppingList()[i].getAmount() - ticketDto.getShoppingList().get(i).getAmount();
+            if (amountDifference > 0) {
+                ticket.getShoppingList()[i].setAmount(ticketDto.getShoppingList().get(i).getAmount());
+                Article article = ticket.getShoppingList()[i].getArticle();
+                article.setStock(article.getStock() + amountDifference);
+                this.articleRepository.save(article);
+            }
+
             if (ticketDto.getShoppingList().get(i).isCommitted()) {
                 ticket.getShoppingList()[i].setShoppingState(ShoppingState.COMMITTED);
             }
         }
+        User user = null;
+        if (ticketDto.getUser() != null) {
+            user = this.userRepository.findByMobile(ticketDto.getUser().getMobile());
+        }
+        ticket.setUser(user);
         this.ticketRepository.save(ticket);
         return pdfService.generateTicket(ticket);
     }
@@ -124,6 +147,31 @@ public class TicketController {
             }
         }
         return ticketListDto;
+    }
+    
+    public List<TicketDto> findByMobile(String mobile) {
+        List<TicketDto> ticketListDto = new ArrayList<TicketDto>();
+        User user = this.userRepository.findByMobile(mobile);
+        if (user != null) {
+            List<Ticket> ticketList = this.ticketRepository.findByUserOrderByCreationDateDesc(user);
+            for (Ticket ticket : ticketList) {
+                TicketDto ticketDto = new TicketDto();
+                ticketDto.setId(ticket.getId());
+                ticketListDto.add(ticketDto);
+            }
+        }
+        return ticketListDto;
+    }
+
+    public Optional<TicketDto> findLastByMobile(String mobile) {
+        User user = this.userRepository.findByMobile(mobile);
+        if (user != null) {
+            Ticket ticket = this.ticketRepository.findFirstByUserOrderByCreationDateDesc(user);
+            if (ticket != null) {
+                return Optional.of(new TicketDto(ticket));
+            }
+        }
+        return Optional.empty();
     }
 
     public List<HistoricalProductOutPutDto> getHistoricalProductsDataBetweenDates(Date initDate, Date endDate) {

@@ -28,15 +28,8 @@ public class OrderBodyControllerIT {
     }
 
     @Test
-    public void findOrderBodyDtoByIdTest() {
-        assertEquals("OB1", this.orderBodyController.findOrderBodyDtoById("OB1").getId());
-        assertEquals("article1", this.orderBodyController.findOrderBodyDtoById("OB1").getId_article());
-        assertEquals("descrip-a1", this.orderBodyController.findOrderBodyDtoById("OB1").getArticle_name());
-    }
-    
-    @Test
     public void findOrderBodyByIdTest() {
-        assertEquals(true, this.orderBodyController.findAllByIdOrder("2018-1").size()>0);
+        assertEquals(true, this.orderBodyController.findAllByIdOrder("2018-1").size() > 0);
     }
 
     public OrderBodyControllerIT() {

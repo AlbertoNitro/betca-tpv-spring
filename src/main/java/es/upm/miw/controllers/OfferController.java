@@ -15,6 +15,7 @@ import es.upm.miw.repositories.core.OfferRepository;
 
 @Controller
 public class OfferController {
+	
     @Autowired
     private OfferRepository offerRepository;
 
@@ -26,7 +27,7 @@ public class OfferController {
     	offerRepository.save(offer);
     }
     
-    public Optional<OfferOutputDto> readUser(String code) {
+    public Optional<OfferOutputDto> readOffer(String code) {
         Offer offerInDb = this.offerRepository.findByCode(code);
         if (offerInDb == null) {
             return Optional.empty();
@@ -43,6 +44,7 @@ public class OfferController {
              offerInDb.setPercentage(offerInputDto.getPercentage());
              offerInDb.setExpiration(offerInputDto.getExpiration());
              offerInDb.setDescription(offerInputDto.getDescription());
+             this.offerRepository.save(offerInDb);
              return true;
          }
     }
@@ -57,27 +59,25 @@ public class OfferController {
         } 
     }
 
-    public List<OfferOutputDto> readCustomerAll() {
-        return new ArrayList<OfferOutputDto>();
+    public List<OfferOutputDto> readOfferAll() {
+        List<Offer> offerList = this.offerRepository.findAll();
+        List<OfferOutputDto> offerOutputDtoList = new ArrayList<OfferOutputDto>();
+        for (int i = 0; i < offerList.size(); i++) {
+            offerOutputDtoList.add(new OfferOutputDto(offerList.get(i)));
+        }
+        return offerOutputDtoList;
     }
     
     public boolean codeRepeated(OfferInputDto offerInputDto) {
-    	return this.codeRepeated(offerInputDto.getCode(), offerInputDto);
+    	return codeRepeated(offerInputDto.getCode(), offerInputDto);
     }
-
+    
     public boolean codeRepeated(String code, OfferInputDto offerInputDto) {
     	Offer offer = offerRepository.findByCode(offerInputDto.getCode());
-    	if (offer == null) return false;
-    	if (code == null) return false;
-    	return offer.getCode().equals(code);
+    	return offer != null && code != null && offer.getCode().equals(code);
     }
     
-    public boolean isExpiration(OfferInputDto offerInputDto) {
-    	return this.isExpiration(offerInputDto.getExpiration(), offerInputDto);
-    }
-    
-    public boolean isExpiration(Date expiration, OfferInputDto offerInputDto) {
-    	Offer offer = offerRepository.findByCode(offerInputDto.getCode());
-    	return offer != null && expiration != null && offer.getExpiration().before(new Date());
+    public boolean isExpirationDateValid(OfferInputDto offerInputDto) {
+    	return offerInputDto.getExpiration().after(new Date());
     }
 }

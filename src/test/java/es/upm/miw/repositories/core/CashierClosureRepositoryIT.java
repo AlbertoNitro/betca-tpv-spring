@@ -26,46 +26,54 @@ import es.upm.miw.documents.core.CashierClosure;
 @TestPropertySource(locations = "classpath:test.properties")
 public class CashierClosureRepositoryIT {
 
-	@Autowired
-	private CashierClosureRepository cashierClosureRepository;
+    @Autowired
+    private CashierClosureRepository cashierClosureRepository;
 
-	CashierClosure cashierClosure1;
-	CashierClosure cashierClosure2;
+    CashierClosure cashierClosure1;
 
-	@Before
-	public void before() {
-		cashierClosure1 = new CashierClosure();
-		cashierClosure1.close(new BigDecimal("100"), new BigDecimal("200"), new BigDecimal("100"), new BigDecimal("0"),
-				"");
-		cashierClosureRepository.save(cashierClosure1);
-		cashierClosure2 = new CashierClosure();
-		cashierClosureRepository.save(cashierClosure2);
+    CashierClosure cashierClosure2;
 
-	}
+    @Before
+    public void before() {
+        cashierClosure1 = new CashierClosure();
+        cashierClosure1.close(new BigDecimal("100"), new BigDecimal("200"), new BigDecimal("100"), new BigDecimal("0"), "");
+        cashierClosureRepository.save(cashierClosure1);
+        cashierClosure2 = new CashierClosure();
+        cashierClosureRepository.save(cashierClosure2);
 
-	//@Test
-	public void testFindFirstByOrderByOpeningDateDesc() {
-		assertEquals(cashierClosure2.getId(), cashierClosureRepository.findFirstByOrderByOpeningDateDesc().getId());
-	}
+    }
 
-	@Test
-	public void testFindFirstByOrderByClosureDateDesc() {
-		assertEquals(cashierClosure1.getId(), cashierClosureRepository.findFirstByOrderByClosureDateDesc().getId());
-	}
+    // @Test
+    public void testFindFirstByOrderByOpeningDateDesc() {
+        assertEquals(cashierClosure2.getId(), cashierClosureRepository.findFirstByOrderByOpeningDateDesc().getId());
+    }
 
-	@Test
-	public void testFindSalesByDateBetween() throws ParseException {
-		Date startDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse("2018-01-01 00:00:00");
-		Date dateFinish = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse("2018-12-01 23:59:59");
-		List<CashierClosure> CashierClosureListByRangeDates = cashierClosureRepository.findSalesCashierClosureByDateBetween(startDate,dateFinish);
-		assertNotNull(CashierClosureListByRangeDates);
-		assertTrue(CashierClosureListByRangeDates.size() >= 0);
-	}
+    @Test
+    public void testFindFirstByOrderByClosureDateDesc() {
+        assertEquals(cashierClosure1.getId(), cashierClosureRepository.findFirstByOrderByClosureDateDesc().getId());
+    }
 
-	@After
-	public void after() {
-		cashierClosureRepository.delete(cashierClosure1);
-		cashierClosureRepository.delete(cashierClosure2);
-	}
+    @Test
+    public void testFindByOpeningDateBetweenAndClosureDateNotNull() {
+        Date start = new Date(0);
+        List<CashierClosure> cashierClosureList = cashierClosureRepository.findByOpeningDateBetweenAndClosureDateNotNull(start, new Date());
+        assertTrue(cashierClosureList.size() > 0);
+    }
+
+    @Test
+    public void testFindSalesByDateBetween() throws ParseException {
+        Date startDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse("2018-01-01 00:00:00");
+        Date dateFinish = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse("2018-12-01 23:59:59");
+        List<CashierClosure> CashierClosureListByRangeDates = cashierClosureRepository.findSalesCashierClosureByDateBetween(startDate,
+                dateFinish);
+        assertNotNull(CashierClosureListByRangeDates);
+        assertTrue(CashierClosureListByRangeDates.size() >= 0);
+    }
+
+    @After
+    public void after() {
+        cashierClosureRepository.delete(cashierClosure1);
+        cashierClosureRepository.delete(cashierClosure2);
+    }
 
 }

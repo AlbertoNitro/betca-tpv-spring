@@ -35,9 +35,15 @@ public class TicketResource {
     public static final String TICKETS = "/tickets";
 
     public static final String ID_ID = "/{id}";
+
     public static final String SEARCH_DATE = "/search/date";
+
+    public static final String SEARCH_MOBILE = "/search/mobile";
+
+    public static final String SEARCH_MOBILE_LAST = "/search/mobile/last";
     
     public static final String SEARCH_BY_ID_AND_DATES = "/searchByIdAndDates";
+
     public static final String SEARCH_BY_CREATION_DATES = "/searchByCreationDates";
 
     @Autowired
@@ -45,7 +51,8 @@ public class TicketResource {
 
     @PostMapping(produces = {"application/pdf", "application/json"})
     public byte[] createTicket(@Valid @RequestBody TicketCreationInputDto ticketCreationDto) throws FieldInvalidException {
-        return this.ticketController.createTicket(ticketCreationDto).orElseThrow(() -> new FieldInvalidException("Article exception"));
+        return this.ticketController.createTicketAndPdf(ticketCreationDto)
+                .orElseThrow(() -> new FieldInvalidException("Article exception"));
     }
 
     @GetMapping(value = ID_ID)
@@ -56,6 +63,16 @@ public class TicketResource {
     @GetMapping(value = SEARCH_DATE)
     public List<TicketDto> findBetweenDates(@RequestParam long start, @RequestParam long end) {
         return this.ticketController.findBetweenDates(new Date(start), new Date(end));
+    }
+
+    @GetMapping(value = SEARCH_MOBILE)
+    public List<TicketDto> findByMobile(@RequestParam String mobile) {
+        return this.ticketController.findByMobile(mobile);
+    }
+    
+    @GetMapping(value = SEARCH_MOBILE_LAST)
+    public TicketDto findLastByMobile(@RequestParam String mobile) throws TicketIdNotFoundException {
+        return this.ticketController.findLastByMobile(mobile).orElseThrow(() -> new TicketIdNotFoundException("mobile: "+mobile));
     }
 
     @PutMapping(value = ID_ID, produces = {"application/pdf", "application/json"})

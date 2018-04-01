@@ -1,6 +1,5 @@
 package es.upm.miw.resources;
 
-
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -20,33 +19,28 @@ import es.upm.miw.dtos.OrderBodyDto;
 public class OrderBodyResourceFunctionalTesting {
     @Rule
     public ExpectedException thrown = ExpectedException.none();
+
     @Autowired
     private RestService restService;
-    
+
     private OrderBodyDto orderBodyDto;
 
-    
     @Before
     public void Before() {
-        this.orderBodyDto = new OrderBodyDto("OB33","2018-1","article1","descrip-a1");
+        this.orderBodyDto = new OrderBodyDto("OB33", "2018-1", "article1", "descrip-a1");
         this.restService.loginAdmin().restBuilder().path(OrderBodyResource.ORDERBODY).body(this.orderBodyDto).post().build();
     }
-    
+
     @Test
-    public void readOrderBodyTest() {
-        String json=restService.restBuilder(new RestBuilder<String>()).clazz(String.class).path(OrderBodyResource.ORDERBODY).path(OrderBodyResource.ORDERBODY_ID).expand("OB33").get().build();
-        System.out.println("----RETORNO-------->"+json);
-    }
-    
-    @Test 
     public void readAllOrderBodyByIdOrder() {
-        String json=restService.restBuilder(new RestBuilder<String>()).clazz(String.class).path(OrderBodyResource.ORDERBODY).path(OrderBodyResource.ORDERBODYOPTION).param("id", "2018-1").get().build();
-        System.out.println("----RETORNO-------->"+json);
-        
+        String json = restService.restBuilder(new RestBuilder<String>()).clazz(String.class).path(OrderBodyResource.ORDERBODY)
+                .path(OrderBodyResource.ORDERBODY_ID).expand("2018-1").get().build();
+        System.out.println("----RETORNO-------->" + json);
+
     }
+
     public OrderBodyResourceFunctionalTesting() {
         // TODO Auto-generated constructor stub
     }
 
 }
-

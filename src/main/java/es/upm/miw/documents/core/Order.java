@@ -30,6 +30,12 @@ public class Order {
         this.order_date = orderDate;
     }
 
+    public Order(String id, String id_provider) {
+        super();
+        this.id = id;
+        this.id_provider = id_provider;
+    }
+
     public Order(String id, String id_provider, Date order_date) {
         super();
         this.id = id;
