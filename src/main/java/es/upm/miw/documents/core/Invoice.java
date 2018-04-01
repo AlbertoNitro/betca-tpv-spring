@@ -1,5 +1,6 @@
 package es.upm.miw.documents.core;
 
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -17,21 +18,26 @@ public class Invoice {
 
     private Date creationDate;
 
+    private BigDecimal baseTax;
+
+    private BigDecimal tax;
+
     @DBRef
     private Ticket ticket;
+
+    @DBRef
+    private User user;
 
     public Invoice() {
         creationDate = new Date();
     }
 
-    public Invoice(int idOfYear, Ticket ticket) {
+    public Invoice(int idOfYear, BigDecimal baseTax, BigDecimal tax, User user, Ticket ticket) {
         this();
         this.id = new SimpleDateFormat(DATE_FORMAT).format(new Date()) + idOfYear;
-        this.ticket = ticket;
-    }
-    
-    public Invoice(Ticket ticket) {
-        this(); 
+        this.baseTax = baseTax;
+        this.tax = tax;
+        this.user = user;
         this.ticket = ticket;
     }
 
@@ -51,12 +57,40 @@ public class Invoice {
         this.ticket = ticket;
     }
 
-    public Date getCreated() {
+    public Date getCreationDated() {
         return creationDate;
     }
 
-    public void setCreated(Date creationDate) {
+    public void setCreationDate(Date creationDate) {
         this.creationDate = creationDate;
+    }
+
+    public int simpleId() {
+        return Integer.parseInt(String.valueOf(id).substring(DATE_FORMAT.length()));
+    }
+
+    public BigDecimal getBaseTax() {
+        return baseTax;
+    }
+
+    public void setBaseTax(BigDecimal baseTax) {
+        this.baseTax = baseTax;
+    }
+
+    public BigDecimal getTax() {
+        return tax;
+    }
+
+    public void setTax(BigDecimal tax) {
+        this.tax = tax;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     @Override

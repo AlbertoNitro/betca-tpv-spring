@@ -11,7 +11,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import es.upm.miw.dtos.ArticleOutputDto;
+import es.upm.miw.dtos.ArticleDto;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -28,7 +28,7 @@ public class ArticleRepositoryIT {
 
     @Test
     public void testFindMinimumByCode() {
-        ArticleOutputDto articleOutputDto = articleRepository.findMinimumByCode("article1");
+        ArticleDto articleOutputDto = articleRepository.findMinimumByCode("article1");
         assertEquals("article1", articleOutputDto.getCode());
         assertEquals("ref-a1", articleOutputDto.getReference());
         assertEquals("descrip-a1", articleOutputDto.getDescription());

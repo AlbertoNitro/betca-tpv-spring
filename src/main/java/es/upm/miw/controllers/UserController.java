@@ -32,6 +32,9 @@ public class UserController {
     }
 
     public boolean dniRepeated(String mobile, UserDto userDto) {
+        if (userDto.getDni() == null || userDto.getDni().trim().isEmpty()) {
+            return false;
+        }
         User user = this.userRepository.findByDni(userDto.getDni());
         return userDto.getDni() != null && user != null && !user.getMobile().equals(mobile);
     }
@@ -41,6 +44,9 @@ public class UserController {
     }
 
     public boolean emailRepeated(String mobile, UserDto userDto) {
+        if (userDto.getEmail() == null || userDto.getEmail().trim().isEmpty()) {
+            return false;
+        }
         User user = this.userRepository.findByEmail(userDto.getEmail());
         return userDto.getEmail() != null && user != null && !user.getMobile().equals(mobile);
     }

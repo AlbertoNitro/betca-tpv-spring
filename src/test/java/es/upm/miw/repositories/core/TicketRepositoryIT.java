@@ -1,6 +1,7 @@
 package es.upm.miw.repositories.core;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.text.ParseException;
@@ -16,6 +17,7 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import es.upm.miw.documents.core.Ticket;
+import es.upm.miw.documents.core.User;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -24,6 +26,9 @@ public class TicketRepositoryIT {
 
     @Autowired
     private TicketRepository ticketRepository;
+
+    @Autowired
+    private UserRepository userRepository;
 
     @Test
     public void testFindByReference() {
@@ -46,9 +51,24 @@ public class TicketRepositoryIT {
     @Test
     public void findByCreationDateBetween() throws ParseException {
         Date initialDate = new SimpleDateFormat("yyyy-mm-dd").parse("2017-01-11");
-        List<Ticket> ticketListByRangeDates = ticketRepository.findByCreationDateBetween(initialDate, new Date());
-        List<Ticket> ticketAllList = ticketRepository.findAll();
+        List<Ticket> ticketListByRangeDates = this.ticketRepository.findByCreationDateBetween(initialDate, new Date());
+        List<Ticket> ticketAllList = this.ticketRepository.findAll();
         assertTrue(ticketListByRangeDates.size() >= ticketAllList.size());
+    }
+
+    @Test
+    public void testFindByIdArticleDateBetween() throws ParseException {
+        Date startDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse("2018-01-01 00:00:00");
+        List<Ticket> ticketListByIdAndRangeDates = ticketRepository.findByIdArticleDatesBetween("article1", startDate, new Date());
+        assertNotNull(ticketListByIdAndRangeDates);
+        assertTrue(ticketListByIdAndRangeDates.size() >= 0);
+    }
+
+    @Test
+    public void testFindByUserOrderByCreationDateDesc() {
+        User user = this.userRepository.findByMobile("666666004");
+        List<Ticket> ticketList = this.ticketRepository.findByUserOrderByCreationDateDesc(user);
+        assertTrue(ticketList.size() >= 2);
     }
 
 }

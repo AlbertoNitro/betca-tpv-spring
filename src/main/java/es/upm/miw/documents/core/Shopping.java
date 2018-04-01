@@ -6,13 +6,13 @@ import org.springframework.data.mongodb.core.mapping.DBRef;
 
 public class Shopping {
 
-    private Integer amount;
-
-    private BigDecimal discount;
-
     private String description;
 
     private BigDecimal retailPrice;
+    
+    private Integer amount;
+
+    private BigDecimal discount;
 
     private ShoppingState shoppingState;
 

@@ -1,10 +1,10 @@
 package es.upm.miw.dtos;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
-
 import es.upm.miw.documents.core.Role;
 import es.upm.miw.documents.core.User;
 
@@ -116,12 +116,14 @@ public class UserDto extends UserMinimumDto {
 		this.roles = roles;
 	}
 	
-    @Override
+	@Override
     public String toString() {
-        return "[" + super.toString() + " UserDto [password=" + password + ", email=" + email + ", dni=" + dni + ", address=" + address
-                + ", active=" + active + ", registrationDate=" + registrationDate + ", roles=" + java.util.Arrays.toString(roles) + "] ]";
+        String date = "null";
+        if (registrationDate != null) {
+            date = new SimpleDateFormat("dd-MMM-yyyy").format(registrationDate.getTime());
+        }   
+        return "[" + super.toString() + "UserDto [password=" + password + ", email=" + email + ", dni=" + dni + ", address=" + address
+                + ", active=" + active + ", registrationDate=" + date + ", roles=" + java.util.Arrays.toString(roles) + "] ]";
     }
-
-
-
+	
 }

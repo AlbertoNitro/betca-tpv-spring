@@ -15,21 +15,17 @@ public class Article {
 
     private Date registrationDate;
 
-    private String reference;
-
     private String description;
-
+    
     private BigDecimal retailPrice;
 
-    private String image;
+    private String reference;
 
     private Integer stock;
 
-    private BigDecimal wholesalePrice;
+    private Tax tax;
 
     private Boolean discontinued;
-
-    private Tax tax;
 
     @DBRef
     private Provider provider;
@@ -38,32 +34,23 @@ public class Article {
         this.registrationDate = new Date();
         this.discontinued = false;
         this.stock = 0;
+        this.tax = Tax.GENERAL;
     }
-    
-	public Article(String code, String description, Number retailPrice) {
-		this.code = code;
-		this.description = description;
-		this.retailPrice = new BigDecimal(retailPrice.toString());
-		
-	}
 
-    public Article(String code, String reference, String description, Provider provider, Tax tax) {
+    public Article(String code, String description, BigDecimal retailPrice) {
         this();
         this.code = code;
-        this.reference = reference;
         this.description = description;
+        this.retailPrice = retailPrice;
+    }
+
+    public Article(String code, String description, BigDecimal retailPrice, String reference, Integer stock, Provider provider,
+            Boolean discontinued) {
+        this(code, description, retailPrice);
+        this.reference = reference;
+        this.stock = stock;
         this.provider = provider;
-        this.tax = tax;
-    }
-    
-    public Article reference(String reference) {
-    		this.setReference(reference);
-    		return this;
-    }
-    
-    public Article stock(Integer stock) {
-		this.setStock(stock);
-		return this;
+        this.discontinued = discontinued;
     }
 
     public String getCode() {
@@ -98,14 +85,6 @@ public class Article {
         this.retailPrice = retailPrice;
     }
 
-    public String getImage() {
-        return image;
-    }
-
-    public void setImage(String image) {
-        this.image = image;
-    }
-
     public Integer getStock() {
         return stock;
     }
@@ -114,20 +93,16 @@ public class Article {
         this.stock = stock;
     }
 
-    public BigDecimal getWholesalePrice() {
-        return wholesalePrice;
-    }
-
-    public void setWholesalePrice(BigDecimal wholesalePrice) {
-        this.wholesalePrice = wholesalePrice;
-    }
-
     public boolean isDiscontinued() {
         return discontinued;
     }
 
     public void setDiscontinued(Boolean discontinued) {
         this.discontinued = discontinued;
+    }
+
+    public Boolean getDiscontinued() {
+        return discontinued;
     }
 
     public Provider getProvider() {
@@ -150,10 +125,6 @@ public class Article {
         return registrationDate;
     }
 
-    public String longDescription() {
-        return this.reference + " (" + this.stock + ")" + this.wholesalePrice + "€";
-    }
-
     @Override
     public int hashCode() {
         return this.code.hashCode();
@@ -172,17 +143,12 @@ public class Article {
         }
         return (code.equals(((Article) obj).code));
     }
-    
 
     @Override
     public String toString() {
         return "Article [code=" + code + ", registrationDate=" + registrationDate + ", reference=" + reference + ", description="
-                + description + ", retailPrice=" + retailPrice + ", image=" + image + ", stock=" + stock + ", wholesalePrice="
-                + wholesalePrice + ", discontinued=" + discontinued + ", tax=" + tax + ", provider=" + provider.getId() + "]";
-    }
-    
-    public Article build() {
-    		return this;
+                + description + ", retailPrice=" + retailPrice + ", stock=" + stock + ", discontinued=" + discontinued + ", tax=" + tax
+                + ", provider=" + provider + "]";
     }
 
 }

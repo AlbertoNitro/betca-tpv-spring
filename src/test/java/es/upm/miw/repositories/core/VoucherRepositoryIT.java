@@ -1,7 +1,6 @@
 package es.upm.miw.repositories.core;
 
 import static org.junit.Assert.assertEquals;
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -30,5 +29,12 @@ public class VoucherRepositoryIT {
         List<Voucher> voucherList = this.voucherRepository.findByDateOfUseGreaterThan(date);
         assertEquals(30.3, voucherList.get(0).getValue().doubleValue(), 10 - 10);
     }
-
-}
+    
+    @Test
+    public void testFindByCreationDateGreaterThan() throws ParseException {
+        Date date = new SimpleDateFormat("yyyy-mm-dd").parse("2018-01-06");
+        List<Voucher> voucherList = voucherRepository.findByCreationDateGreaterThan(date);
+        assertEquals(666.666, voucherList.get(0).getValue().doubleValue(), 10 - 10);
+    }
+    
+ }

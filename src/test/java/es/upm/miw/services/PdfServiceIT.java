@@ -13,11 +13,9 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import es.upm.miw.documents.core.Article;
 import es.upm.miw.documents.core.Budget;
-import es.upm.miw.documents.core.Invoice;
 import es.upm.miw.documents.core.Shopping;
-import es.upm.miw.documents.core.Tax;
 import es.upm.miw.documents.core.Ticket;
-import es.upm.miw.documents.core.User;
+import es.upm.miw.documents.core.Voucher;
 import es.upm.miw.utils.Barcode;
 
 @RunWith(SpringRunner.class)
@@ -32,14 +30,14 @@ public class PdfServiceIT {
     public void testGenerateLabels24() {
         List<Article> articles = new ArrayList<>();
         for (int i = 0; i < 25; i++) {
-            articles.add(new Article(new Barcode().generateEan13code(i), "", "description " + i, null, null));
+            articles.add(new Article(new Barcode().generateEan13code(i), "description " + i, null));
         }
         pdfService.generateLabels24(articles);
     }
 
     @Test
     public void testGenerateTicket() {
-        Article article = new Article("23581", "referencia", "Descripción articulo", null, null);
+        Article article = new Article("23581","Descripción articulo", null);
         article.setRetailPrice(new BigDecimal("100.10"));
         Shopping[] shoppingList = new Shopping[6];
         shoppingList[0] = new Shopping(2, new BigDecimal("20"), article);
@@ -54,7 +52,7 @@ public class PdfServiceIT {
 
     @Test
     public void testGenerateBudget() {
-        Article article = new Article("23581", "referencia", "Descripción articulo", null, null);
+        Article article = new Article("23581","Descripción articulo", null);
         article.setRetailPrice(new BigDecimal("100.10"));
         Shopping[] shoppingList = new Shopping[6];
         shoppingList[0] = new Shopping(2, new BigDecimal("20"), article);
@@ -64,31 +62,14 @@ public class PdfServiceIT {
         shoppingList[4] = new Shopping(2, new BigDecimal("85"), article);
         shoppingList[5] = new Shopping(3, new BigDecimal("50"), article);
         Budget budget = new Budget(shoppingList);
-        budget.setId("1234");
+        budget.setId("a3b2");
         pdfService.generateBudget(budget);
     }
-    
-    @Test
-    public void testGenerateInvoice() {
-        User user = new User("121212121", "Juan", "juan", "1104456987", "Direccion", "");
-        Article articleTaxFree = new Article("23581", "referencia1", "Descripción articulo", null, Tax.FREE);
-        articleTaxFree.setRetailPrice(new BigDecimal("100.10"));
-        Article articleTaxSuperReduced = new Article("23582", "referencia2", "Descripción articulo", null, Tax.SUPER_REDUCED);
-        articleTaxSuperReduced.setRetailPrice(new BigDecimal("100.10"));
-        Article articleTaxReduced = new Article("23583", "referencia3", "Descripción articulo", null, Tax.REDUCED);
-        articleTaxReduced.setRetailPrice(new BigDecimal("100.10"));
-        Article articleTaxGeneral = new Article("23584", "referencia4", "Descripción articulo", null, Tax.GENERAL);
-        articleTaxGeneral.setRetailPrice(new BigDecimal("100.10"));
-        Shopping[] shoppingList = new Shopping[6];
-        shoppingList[0] = new Shopping(2, new BigDecimal("20"), articleTaxFree);
-        shoppingList[1] = new Shopping(3, new BigDecimal("40"), articleTaxFree);
-        shoppingList[2] = new Shopping(2, new BigDecimal("20"), articleTaxSuperReduced);
-        shoppingList[3] = new Shopping(3, new BigDecimal("90"), articleTaxReduced);
-        shoppingList[4] = new Shopping(2, new BigDecimal("85"), articleTaxGeneral);
-        shoppingList[5] = new Shopping(3, new BigDecimal("50"), articleTaxGeneral);
 
-        Ticket ticket = new Ticket(1, new BigDecimal("20"), shoppingList, user);
-        Invoice invoice =  new Invoice(1, ticket);
-        pdfService.generateInvioce(invoice); 
+    @Test
+    public void testGenerateVoucher() {
+        Voucher voucher = new Voucher(new BigDecimal(55));
+        voucher.setId("a3b2");
+        pdfService.generateVoucher(voucher);
     }
 }
