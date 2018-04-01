@@ -1,31 +1,3 @@
-<<<<<<< HEAD
-# Providers
-providerList:
-  - &pr0
-    company: varios
-    
-# Articles
-articleList:
-  - &ar0
-    code: 1
-    reference: varios
-    description: Varios
-    retailPrice: 100
-    tax: GENERAL
-    provider: *pr0
-
-# Offers 
-offerList:
-  - id: 1111
-    code: CCC
-    percentage: 0.25
-    expiration: 2018-01-12
-  - id: 2222
-    code: DDD
-    percentage: 0.50
-    expiration: 2018-12-12   
-    description: "Descuento en segunda compra"  
-=======
 # Providers
 providerList:
   - &pr0
@@ -54,4 +26,3 @@ offerList:
     expiration: 2018-12-12   
     creationDate: 2017-12-31
     description: "Descuento indicado en segunda compra"  
->>>>>>> refs/heads/develop
