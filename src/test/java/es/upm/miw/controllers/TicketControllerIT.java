@@ -7,7 +7,10 @@ import static org.junit.Assert.assertTrue;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 import org.junit.Test;
@@ -18,6 +21,7 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import es.upm.miw.documents.core.Ticket;
+import es.upm.miw.dtos.HistoricalProductOutPutDto;
 import es.upm.miw.dtos.ShoppingDto;
 import es.upm.miw.dtos.TicketCreationInputDto;
 import es.upm.miw.dtos.TicketDto;
@@ -75,5 +79,32 @@ public class TicketControllerIT {
     public void testFindByIdArticleDateBetween() {
         assertNotNull(this.ticketController.findByIdArticleDatesBetween("article1", new Date(), new Date()));
     }
+    
+    
+    @Test
+	public void TestGeHistoricalProductsDataBetweenDates() {
+		Boolean result = false;
+		Calendar today = Calendar.getInstance();
+		today.set(Calendar.HOUR_OF_DAY, 0);
+		today.add(Calendar.DATE, 7);
+		today.add(Calendar.MONTH, -1);
+		Date initDate = today.getTime();
+		today.add(Calendar.MONTH, 1);
+		Date endDate = today.getTime();
+		
+		List<HistoricalProductOutPutDto> historicalData = ticketController.getHistoricalProductsDataBetweenDates(initDate, endDate);
+		
+		List<String> articleNamesCollection = Arrays.asList("ar11","ar12");
+		for(HistoricalProductOutPutDto item : historicalData) {
+			if(articleNamesCollection.contains(item.getProductName() )) {
+				if(item.getNumProductsPerMonth().contains(6)) {
+					result = true;
+				}
+				else
+					result = false;
+			}
+		}
+		assertTrue(result);
+	}
 
 }
