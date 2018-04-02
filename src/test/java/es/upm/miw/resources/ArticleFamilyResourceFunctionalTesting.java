@@ -30,20 +30,9 @@ public class ArticleFamilyResourceFunctionalTesting {
 
     @Test
     public void testReadAllArticles() {
-        List<ArticleDto> articleOutputDtoList = Arrays
-                .asList(restService.loginAdmin().restBuilder(new RestBuilder<ArticleDto[]>()).clazz(ArticleDto[].class)
-                        .path(ArticleFamilyResource.ARTICLESFAMILY).path(ArticleFamilyResource.ARTICLES).get().build());
 
-        assertEquals(articleOutputDtoList.size(), articleOutputDtoList.size());
     }
 
-    @Test
-    public void testGetFamilyByReference() {
-        String reference = articleFamilyRepository.findAll().get(1).getReference();
-        ArticleFamiliaOutputDto articleFamiliaOutputDto = restService.loginManager().restBuilder(new RestBuilder<ArticleFamiliaOutputDto>())
-                .clazz(ArticleFamiliaOutputDto.class).path(ArticleFamilyResource.ARTICLESFAMILY).path(ArticleFamilyResource.REFERENCE)
-                .expand(reference).get().build();
-        assertNotNull(articleFamiliaOutputDto.getListArticles().size());
-    }
+
 
 }
