@@ -15,6 +15,7 @@ import es.upm.miw.documents.core.Shopping;
 import es.upm.miw.documents.core.ShoppingState;
 import es.upm.miw.documents.core.Ticket;
 import es.upm.miw.documents.core.User;
+import es.upm.miw.dtos.HistoricalProductOutPutDto;
 import es.upm.miw.dtos.ShoppingDto;
 import es.upm.miw.dtos.TicketCreationInputDto;
 import es.upm.miw.dtos.TicketDto;
@@ -23,6 +24,7 @@ import es.upm.miw.repositories.core.ArticleRepository;
 import es.upm.miw.repositories.core.TicketRepository;
 import es.upm.miw.repositories.core.UserRepository;
 import es.upm.miw.services.PdfService;
+import es.upm.miw.services.StatisticsDataService;
 
 @Controller
 public class TicketController {
@@ -38,6 +40,9 @@ public class TicketController {
 
     @Autowired
     private PdfService pdfService;
+    
+    @Autowired
+    private StatisticsDataService statisticsDataService;
 
     private int nextId() {
         int nextId = 1;
@@ -51,7 +56,7 @@ public class TicketController {
         return nextId;
     }
 
-    public Optional<Ticket> createTicket(TicketCreationInputDto ticketCreationDto) {
+    private Optional<Ticket> createTicket(TicketCreationInputDto ticketCreationDto) {
         User user = this.userRepository.findByMobile(ticketCreationDto.getUserMobile());
         List<Shopping> shoppingList = new ArrayList<>();
         for (ShoppingDto shoppingDto : ticketCreationDto.getShoppingCart()) {
@@ -66,6 +71,8 @@ public class TicketController {
                 shopping.setShoppingState(ShoppingState.NOT_COMMITTED);
             }
             shoppingList.add(shopping);
+            article.setStock(article.getStock() - shoppingDto.getAmount());
+            this.articleRepository.save(article);
         }
         Ticket ticket = new Ticket(this.nextId(), ticketCreationDto.getCash(), shoppingList.toArray(new Shopping[0]), user);
         this.ticketRepository.save(ticket);
@@ -101,7 +108,14 @@ public class TicketController {
         Ticket ticket = this.ticketRepository.findOne(id);
         assert ticket != null;
         for (int i = 0; i < ticket.getShoppingList().length; i++) {
-            ticket.getShoppingList()[i].setAmount(ticketDto.getShoppingList().get(i).getAmount());
+            int amountDifference = ticket.getShoppingList()[i].getAmount() - ticketDto.getShoppingList().get(i).getAmount();
+            if (amountDifference > 0) {
+                ticket.getShoppingList()[i].setAmount(ticketDto.getShoppingList().get(i).getAmount());
+                Article article = ticket.getShoppingList()[i].getArticle();
+                article.setStock(article.getStock() + amountDifference);
+                this.articleRepository.save(article);
+            }
+
             if (ticketDto.getShoppingList().get(i).isCommitted()) {
                 ticket.getShoppingList()[i].setShoppingState(ShoppingState.COMMITTED);
             }
@@ -134,7 +148,7 @@ public class TicketController {
         }
         return ticketListDto;
     }
-
+    
     public List<TicketDto> findByMobile(String mobile) {
         List<TicketDto> ticketListDto = new ArrayList<TicketDto>();
         User user = this.userRepository.findByMobile(mobile);
@@ -160,4 +174,8 @@ public class TicketController {
         return Optional.empty();
     }
 
+    public List<HistoricalProductOutPutDto> getHistoricalProductsDataBetweenDates(Date initDate, Date endDate) {
+
+		return this.statisticsDataService.GetHistoricalData(initDate, endDate);
+	}
 }

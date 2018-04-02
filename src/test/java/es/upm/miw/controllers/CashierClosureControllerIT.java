@@ -47,8 +47,7 @@ public class CashierClosureControllerIT {
         cashierClosureController.openCashierClosure();
         CashierClosureInputDto cashierClosureDto = new CashierClosureInputDto(new BigDecimal("100"), new BigDecimal("50"), "testClose");
         cashierClosureController.close(cashierClosureDto);
-        this.databaseSeederService.deleteAllAndCreateAdmin();
-        this.databaseSeederService.seedDatabase("tpv-db-test.yml");
+        this.databaseSeederService.seedDatabase();
     }
 
     @Test
@@ -59,8 +58,7 @@ public class CashierClosureControllerIT {
     @Test
     public void testGetTotalCardAndCashCashierClosure() throws IOException {
         cashierClosureController.openCashierClosure();
-        assertNotNull(this.cashierClosureController.getTotalCardAndCash());
-        this.databaseSeederService.deleteAllAndCreateAdmin();
+        assertNotNull(this.cashierClosureController.readTotalsFromLast());
         this.databaseSeederService.seedDatabase();
     }
 

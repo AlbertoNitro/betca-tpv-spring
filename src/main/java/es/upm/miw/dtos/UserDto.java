@@ -5,7 +5,7 @@ import java.util.Date;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
-
+import es.upm.miw.documents.core.Role;
 import es.upm.miw.documents.core.User;
 
 @JsonInclude(Include.NON_NULL)
@@ -20,6 +20,8 @@ public class UserDto extends UserMinimumDto {
     private String address;
 
     private Boolean active;
+    
+    private Role[] roles;
 
     private Date registrationDate;
 
@@ -27,25 +29,28 @@ public class UserDto extends UserMinimumDto {
         // Empty for framework
     }
 
-    public UserDto(String mobile, String username, String password, String email, String dni, String address, Boolean active) {
+    public UserDto(String mobile, String username, String password, String email, String dni, String address, Boolean active, Role[] roles) {
         super(mobile, username);
         this.password = password;
         this.email = email;
         this.setDni(dni);
         this.address = address;
         this.active = active;
+        this.roles = roles;
     }
 
     public UserDto(String mobileNamePass) {
-        this(mobileNamePass, "name" + mobileNamePass, "pass" + mobileNamePass, null, null, null, null);
+        this(mobileNamePass, "name" + mobileNamePass, "pass" + mobileNamePass, null, null, null, true, new Role[] {Role.CUSTOMER});
     }
 
     public UserDto(User user) {
         super(user.getMobile(), user.getUsername());
+        this.password = user.getPassword();
         this.email = user.getEmail();
         this.dni = user.getDni();
         this.address = user.getAddress();
         this.active = user.isActive();
+        this.roles = user.getRoles();
         this.registrationDate = user.getRegistrationDate();
     }
 
@@ -105,14 +110,23 @@ public class UserDto extends UserMinimumDto {
         this.registrationDate = registrationDate;
     }
 
-    @Override
+    
+	public Role[] getRoles() {
+		return roles;
+	}
+
+	public void setRoles(Role[] roles) {
+		this.roles = roles;
+	}
+	
+	@Override
     public String toString() {
         String date = "null";
         if (registrationDate != null) {
             date = new SimpleDateFormat("dd-MMM-yyyy").format(registrationDate.getTime());
         }   
         return "[" + super.toString() + "UserDto [password=" + password + ", email=" + email + ", dni=" + dni + ", address=" + address
-                + ", active=" + active + ", registrationDate=" + date + "] ]";
+                + ", active=" + active + ", registrationDate=" + date + ", roles=" + java.util.Arrays.toString(roles) + "] ]";
     }
-
+	
 }

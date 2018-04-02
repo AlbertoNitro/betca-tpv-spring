@@ -5,11 +5,9 @@ import java.math.BigDecimal;
 import javax.validation.constraints.NotNull;
 
 import es.upm.miw.documents.core.CashMovement;
-import es.upm.miw.dtos.validations.BigDecimalPositive;
 
 public class CashierMovementInputDto {
 	
-    @BigDecimalPositive
 	private BigDecimal value;
 	
     @NotNull

@@ -96,14 +96,17 @@ public class UserResourceFunctionalTesting {
 
     @Test
     public void testPutCustomer() {
-        restService.loginAdmin().restBuilder().path(UserResource.USERS).body(this.userDto).post().build();
-        userDto.setMobile("666000003");
-        userDto.setEmail("new@gmail.com");
+        this.testCreateCustomer();
+        this.userDto.setMobile("666000003");
+        this.userDto.setEmail("new@gmail.com");
         restService.restBuilder().path(UserResource.USERS).path(UserResource.MOBILE_ID).expand("666000000").body(this.userDto).put()
                 .build();
         UserDto userDto2 = restService.restBuilder(new RestBuilder<UserDto>()).clazz(UserDto.class).path(UserResource.USERS)
                 .path(UserResource.MOBILE_ID).expand("666000003").get().build();
         assertEquals("new@gmail.com", userDto2.getEmail());
+        userDto.setMobile("666000000");
+        restService.restBuilder().path(UserResource.USERS).path(UserResource.MOBILE_ID).expand("666000003").body(this.userDto).put()
+        .build();
     }
 
     @Test

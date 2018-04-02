@@ -67,8 +67,10 @@ public class UserController {
             user.setUsername(userDto.getUsername());
             user.setEmail(userDto.getEmail());
             user.setDni(userDto.getDni());
+            user.setPassword(userDto.getPassword());
             user.setAddress(userDto.getAddress());
             user.setActive(userDto.isActive());
+            user.setRoles(userDto.getRoles());
             this.userRepository.save(user);
         } else {
             return false;
