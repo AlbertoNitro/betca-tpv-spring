@@ -61,7 +61,7 @@ public class CashierClosureController {
         CashierClosure cashierClosure = this.cashierClosureRepository.findFirstByOrderByOpeningDateDesc();
         if (cashierClosure != null) {
             return new CashierLastOutputDto(cashierClosure);
-        } else {
+        } else { // Sólo ocurre una sola vez en el despliegue con bd vacias
             cashierClosure = new CashierClosure(new BigDecimal("0"));
             cashierClosure.close(new BigDecimal("0"), new BigDecimal("0"), new BigDecimal("0"), new BigDecimal("0"), "Initial");
             this.cashierClosureRepository.save(cashierClosure);
