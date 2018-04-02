@@ -40,7 +40,7 @@ public class UserDto extends UserMinimumDto {
     }
 
     public UserDto(String mobileNamePass) {
-        this(mobileNamePass, "name" + mobileNamePass, "pass" + mobileNamePass, null, null, null, null, null);
+        this(mobileNamePass, "name" + mobileNamePass, "pass" + mobileNamePass, null, null, null, true, new Role[] {Role.CUSTOMER});
     }
 
     public UserDto(User user) {

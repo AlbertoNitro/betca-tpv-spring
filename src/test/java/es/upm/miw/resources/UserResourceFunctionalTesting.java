@@ -2,7 +2,6 @@ package es.upm.miw.resources;
 
 import static org.junit.Assert.assertEquals;
 
-import org.apache.log4j.Logger;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
@@ -16,7 +15,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import es.upm.miw.documents.core.Role;
 import es.upm.miw.dtos.UserDto;
 
 @RunWith(SpringRunner.class)
@@ -98,14 +96,17 @@ public class UserResourceFunctionalTesting {
 
     @Test
     public void testPutCustomer() {
-        restService.loginAdmin().restBuilder().path(UserResource.USERS).body(this.userDto).post().build();
-        userDto.setMobile("666000003");
-        userDto.setEmail("new@gmail.com");
+        this.testCreateCustomer();
+        this.userDto.setMobile("666000003");
+        this.userDto.setEmail("new@gmail.com");
         restService.restBuilder().path(UserResource.USERS).path(UserResource.MOBILE_ID).expand("666000000").body(this.userDto).put()
                 .build();
         UserDto userDto2 = restService.restBuilder(new RestBuilder<UserDto>()).clazz(UserDto.class).path(UserResource.USERS)
                 .path(UserResource.MOBILE_ID).expand("666000003").get().build();
         assertEquals("new@gmail.com", userDto2.getEmail());
+        userDto.setMobile("666000000");
+        restService.restBuilder().path(UserResource.USERS).path(UserResource.MOBILE_ID).expand("666000003").body(this.userDto).put()
+        .build();
     }
 
     @Test
