@@ -13,15 +13,18 @@ import org.springframework.web.bind.annotation.RestController;
 import es.upm.miw.controllers.ArticleController;
 import es.upm.miw.controllers.ArticleFamilyController;
 import es.upm.miw.dtos.ArticleFamiliaOutputDto;
+import es.upm.miw.dtos.ArticlesFamiliaOutputDto;
 import es.upm.miw.dtos.ArticleDto;
 import es.upm.miw.dtos.FamilyOutputDto;
-import es.upm.miw.resources.exceptions.ArticleFamilyNotFoudException;;
+import es.upm.miw.resources.exceptions.ArticlesFamilyNotFoudException;;
 
 @PreAuthorize("hasRole('ADMIN') or hasRole('MANAGER') or hasRole('OPERATOR')")
 @RestController
-@RequestMapping(ArticleFamilyResource.ARTICLESFAMILY)
-public class ArticleFamilyResource {
-    public static final String ARTICLESFAMILY = "/articlesfamily";
+@RequestMapping(ArticlesFamilyResource.ARTICLES_FAMILY)
+public class ArticlesFamilyResource {
+    public static final String ARTICLES_FAMILY = "/articles-family";
+    
+    public static final String ID_ID = "/{id}";
 
     public static final String FAMILY = "/family";
 
@@ -40,10 +43,10 @@ public class ArticleFamilyResource {
         return this.articleFamilyController.getListaCompositeFamily();
     }
 
-    @GetMapping(value = REFERENCE)
-    public ArticleFamiliaOutputDto readAllGetArticlesOfFamily(@PathVariable String reference) throws ArticleFamilyNotFoudException {
-        return this.articleFamilyController.getListArticlesOfFamily(reference)
-                .orElseThrow(() -> new ArticleFamilyNotFoudException(reference));
+    @GetMapping(value = ID_ID)
+    public List<ArticlesFamiliaOutputDto> readArticlesFamily(@PathVariable String id) throws ArticlesFamilyNotFoudException {
+        return this.articleFamilyController.readArticlesFamily(id)
+                .orElseThrow(() -> new ArticlesFamilyNotFoudException(id));
     }
 
     @RequestMapping(value = FAMILY, method = RequestMethod.GET)
