@@ -6,8 +6,8 @@ import org.junit.runners.Suite.SuiteClasses;
 
 @RunWith(Suite.class)
 @SuiteClasses({
-    ArticleFamilyRepositoriesIT.class,
     ArticleRepositoryIT.class,
+    ArticlesFamilyRepositoryIT.class,
     CashierClosureRepositoryIT.class,
     InvoiceRepositoryIT.class,
     ProviderRepositoryIT.class,
