@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import es.upm.miw.controllers.ArticleController;
 import es.upm.miw.controllers.ArticlesFamilyController;
 import es.upm.miw.documents.core.FamilyType;
+import es.upm.miw.dtos.ArticleDto;
 import es.upm.miw.dtos.ArticlesFamilyDto;
 import es.upm.miw.resources.exceptions.ArticlesFamilyCreationException;
 import es.upm.miw.resources.exceptions.ArticlesFamilyNotFoudException;
@@ -32,6 +33,8 @@ public class ArticlesFamilyResource {
 
     public static final String LIST = "/list";
 
+    public static final String ARTICLE = "/article";
+
     @Autowired
     ArticlesFamilyController articlesFamilyController;
 
@@ -43,6 +46,11 @@ public class ArticlesFamilyResource {
         return this.articlesFamilyController.readArticlesFamily(id).orElseThrow(() -> new ArticlesFamilyNotFoudException(id));
     }
 
+    @GetMapping(value = ID_ID + ARTICLE)
+    public ArticleDto readIdArticle(@PathVariable String id) throws ArticlesFamilyNotFoudException {
+        return this.articlesFamilyController.readIdArticle(id).orElseThrow(() -> new ArticlesFamilyNotFoudException(id));
+    }
+
     @PostMapping(value = ID_ID + LIST)
     public void addChild(@PathVariable String id, @RequestBody String childId) throws ArticlesFamilyNotFoudException {
         Optional<String> error = articlesFamilyController.addChild(id, childId);
@@ -52,8 +60,7 @@ public class ArticlesFamilyResource {
     }
 
     @DeleteMapping(value = ID_ID + LIST + CHILD_ID)
-    public void deleteChild(@PathVariable String id, @PathVariable String childId)
-            throws ArticlesFamilyNotFoudException {
+    public void deleteChild(@PathVariable String id, @PathVariable String childId) throws ArticlesFamilyNotFoudException {
         Optional<String> error = articlesFamilyController.deleteChild(id, childId);
         if (error.isPresent()) {
             throw new ArticlesFamilyNotFoudException(error.get());

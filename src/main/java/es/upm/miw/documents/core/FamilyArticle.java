@@ -44,9 +44,13 @@ public class FamilyArticle extends ArticlesFamily {
         return null;
     }
 
+    public Article getArticle() {
+        return article;
+    }
+
     @Override
     public String toString() {
-        return "FamilyArticle [super.toString() + article=" + article + "]";
+        return "FamilyArticle ["+super.toString() + "article=" + article + "]";
     }
 
 }

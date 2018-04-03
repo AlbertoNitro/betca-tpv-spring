@@ -44,11 +44,13 @@ public class ArticleDto {
         this.stock = stock;
     }
 
-    public ArticleDto(Article article, String provider) {
+    public ArticleDto(Article article) {
         this(article.getCode(), article.getDescription(), article.getReference(), article.getRetailPrice(), article.getStock());
         this.setDiscontinued(article.getDiscontinued());
         this.setRegistrationDate(article.getRegistrationDate());
-        this.setProvider(provider);
+        if (article.getProvider() != null) {
+            this.setProvider(article.getProvider().getId());
+        }
     }
 
     public String getCode() {
