@@ -31,14 +31,16 @@ public class ArticlesFamilyRepositoryIT {
     public void testSaveAndFindOne() {
         Article article = new Article("test1", "description1", BigDecimal.ZERO, "reference1", 10, null, false);
         this.articleRepository.save(article);
+        
         FamilyArticle familyArticle = new FamilyArticle(article);
         this.articlesFamilyRepository.save(familyArticle);
+        
         FamilyComposite familyComposite = new FamilyComposite(FamilyType.ARTICLES, "FM1", "familia1");
         familyComposite.add(familyArticle);
         this.articlesFamilyRepository.save(familyComposite);
 
         assertNotNull(this.articlesFamilyRepository.findOne(familyComposite.getId()));
-
+        
         this.articlesFamilyRepository.delete(familyComposite);
         this.articlesFamilyRepository.delete(familyArticle);
         this.articleRepository.delete(article);

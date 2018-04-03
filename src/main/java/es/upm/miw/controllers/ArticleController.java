@@ -28,13 +28,9 @@ public class ArticleController {
 
     public Optional<ArticleDto> readArticle(String code) {
         ArticleDto articleDto = null;
-        String providerId = null;
         Article article = this.articleRepository.findOne(code);
         if (article != null) {
-            if (article.getProvider() != null) {
-                providerId = article.getProvider().getId();
-            }
-            articleDto = new ArticleDto(article, providerId);
+            articleDto = new ArticleDto(article);
         }
         if (articleDto == null && code.length() < 5) {
             try {

@@ -12,9 +12,11 @@ import es.upm.miw.documents.core.ArticlesFamily;
 import es.upm.miw.documents.core.FamilyArticle;
 import es.upm.miw.documents.core.FamilyComposite;
 import es.upm.miw.documents.core.FamilyType;
+import es.upm.miw.dtos.ArticleDto;
 import es.upm.miw.dtos.ArticlesFamilyDto;
 import es.upm.miw.repositories.core.ArticleRepository;
 import es.upm.miw.repositories.core.ArticlesFamilyRepository;
+import es.upm.miw.repositories.core.FamilyArticleRepository;
 
 @Controller
 public class ArticlesFamilyController {
@@ -23,6 +25,9 @@ public class ArticlesFamilyController {
 
     @Autowired
     private ArticlesFamilyRepository articlesFamilyRepository;
+
+    @Autowired
+    private FamilyArticleRepository familyArticleRepository;
 
     @Autowired
     private ArticleRepository articlesRepository;
@@ -92,6 +97,36 @@ public class ArticlesFamilyController {
         family.getArticlesFamilyList().add(familyChild);
         this.articlesFamilyRepository.save(family);
         return Optional.empty();
+    }
+
+    public Optional<String> deleteChild(String id, String childId) {
+        ArticlesFamily family = this.articlesFamilyRepository.findOne(id);
+        if (family == null) {
+            Optional.of("family Id not found. " + id);
+        }
+        if (family.getFamilyType().equals(FamilyType.ARTICLE)) {
+            Optional.of("family Id does not allow to delete. " + id);
+        }
+        ArticlesFamily familyChild = this.articlesFamilyRepository.findOne(childId);
+        if (familyChild == null) {
+            Optional.of("family Id not found. " + familyChild);
+        }
+        if (family.getFamilyType().equals(FamilyType.SIZES) && !familyChild.getFamilyType().equals(FamilyType.ARTICLE)) {
+            Optional.of("family Id does not allow to delete another family. " + id + "->" + familyChild);
+        }
+
+        family.getArticlesFamilyList().remove(familyChild);
+        this.articlesFamilyRepository.save(family);
+        System.out.println("despues de eliminar..." + family);
+        return Optional.empty();
+    }
+
+    public Optional<ArticleDto> readIdArticle(String id) {
+        FamilyArticle familyArticle = this.familyArticleRepository.findOne(id);
+        if (familyArticle == null || !familyArticle.getFamilyType().equals(FamilyType.ARTICLE)) {
+            Optional.empty();
+        }
+        return Optional.of(new ArticleDto(familyArticle.getArticle()));
     }
 
 }
