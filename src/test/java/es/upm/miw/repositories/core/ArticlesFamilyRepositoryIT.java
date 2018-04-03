@@ -25,22 +25,25 @@ public class ArticlesFamilyRepositoryIT {
     private ArticleRepository articleRepository;
 
     @Autowired
-    private ArticlesFamilyRepository familyComponentRepository;
+    private ArticlesFamilyRepository articlesFamilyRepository;
 
     @Test
     public void testSaveAndFindOne() {
         Article article = new Article("test1", "description1", BigDecimal.ZERO, "reference1", 10, null, false);
         this.articleRepository.save(article);
         FamilyArticle familyArticle = new FamilyArticle(article);
-        this.familyComponentRepository.save(familyArticle);
+        this.articlesFamilyRepository.save(familyArticle);
         FamilyComposite familyComposite = new FamilyComposite(FamilyType.ARTICLES, "FM1", "familia1");
         familyComposite.add(familyArticle);
-        this.familyComponentRepository.save(familyComposite);
+        this.articlesFamilyRepository.save(familyComposite);
 
-        assertNotNull(this.familyComponentRepository.findOne(familyComposite.getId()));
+        assertNotNull(this.articlesFamilyRepository.findOne(familyComposite.getId()));
 
-        this.familyComponentRepository.delete(familyComposite);
-        this.familyComponentRepository.delete(familyArticle);
+        this.articlesFamilyRepository.delete(familyComposite);
+        this.articlesFamilyRepository.delete(familyArticle);
         this.articleRepository.delete(article);
     }
+  
+    
+
 }

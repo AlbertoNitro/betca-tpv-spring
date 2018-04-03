@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-@Document(collection = "familyComponent")
+@Document(collection = "articlesFamily")
 public class FamilyArticle extends ArticlesFamily {
 
     @DBRef
@@ -22,18 +22,13 @@ public class FamilyArticle extends ArticlesFamily {
     }
 
     @Override
-    public String description() {
+    public String getDescription() {
         return this.article.getDescription();
     }
 
     @Override
-    public Integer stock() {
+    public Integer getStock() {
         return this.article.getStock();
-    }
-
-    @Override
-    public String getId() {
-        return  this.article.getCode();
     }
 
     @Override
@@ -45,7 +40,7 @@ public class FamilyArticle extends ArticlesFamily {
     }
 
     @Override
-    public List<ArticlesFamily> list() {
+    public List<ArticlesFamily> getArticlesFamilyList() {
         return null;
     }
 
