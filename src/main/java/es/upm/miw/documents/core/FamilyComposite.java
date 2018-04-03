@@ -3,22 +3,25 @@ package es.upm.miw.documents.core;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-@Document(collection = "familyComponent")
+@Document(collection = "articlesFamily")
 public class FamilyComposite extends ArticlesFamily {
 
     private String reference;
 
     private String description;
     
-    private List<ArticlesFamily> familyComponentList;
+    @DBRef
+    private List<ArticlesFamily> articlesFamilyList;
 
+    
     public FamilyComposite(FamilyType familyType, String reference, String description) {
         super(familyType);
         this.reference = reference;
         this.description = description;
-        this.familyComponentList= new ArrayList<>();
+        this.articlesFamilyList= new ArrayList<>();
     }
 
     @Override
@@ -27,35 +30,40 @@ public class FamilyComposite extends ArticlesFamily {
     }
 
     @Override
-    public String description() {
+    public String getDescription() {
         return this.description;
     }
 
     @Override
-    public Integer stock() {
+    public Integer getStock() {
         return null;
     }
 
     @Override
-    public void add(ArticlesFamily familyComponent) {
-        assert familyComponent!=null;
-        this.familyComponentList.add(familyComponent);
+    public void add(ArticlesFamily articlesFamilyList) {
+        assert articlesFamilyList!=null;
+        this.articlesFamilyList.add(articlesFamilyList);
     }
 
     @Override
-    public void remove(ArticlesFamily familyComponent) {
-        assert familyComponent!=null;
-        this.familyComponentList.remove(familyComponent);
+    public void remove(ArticlesFamily articlesFamilyList) {
+        assert articlesFamilyList!=null;
+        this.articlesFamilyList.remove(articlesFamilyList);
+    }
+    
+    public void setArticlesFamilyList(List<ArticlesFamily> articlesFamilyList) {
+        this.articlesFamilyList = articlesFamilyList;
     }
 
     @Override
-    public List<ArticlesFamily> list() {
-        return this.familyComponentList;
+    public List<ArticlesFamily> getArticlesFamilyList() {
+        return this.articlesFamilyList;
     }
+    
 
     @Override
     public String toString() {
-        return "FamilyComposite [reference=" + reference + ", description=" + description + ", familyComponentList=" + familyComponentList
+        return "FamilyComposite [reference=" + reference + ", description=" + description + ", articlesFamilyList=" + articlesFamilyList
                 + ", toString()=" + super.toString() + "]";
     }
 

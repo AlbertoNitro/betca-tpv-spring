@@ -1,18 +1,23 @@
 package es.upm.miw.resources;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import es.upm.miw.controllers.ArticleController;
 import es.upm.miw.controllers.ArticlesFamilyController;
-import es.upm.miw.dtos.ArticlesFamiliaOutputDto;
-import es.upm.miw.resources.exceptions.ArticlesFamilyNotFoudException;;
+import es.upm.miw.documents.core.FamilyType;
+import es.upm.miw.dtos.ArticlesFamilyDto;
+import es.upm.miw.resources.exceptions.ArticlesFamilyCreationException;
+import es.upm.miw.resources.exceptions.ArticlesFamilyNotFoudException;
 
 @PreAuthorize("hasRole('ADMIN') or hasRole('MANAGER') or hasRole('OPERATOR')")
 @RestController
@@ -22,15 +27,51 @@ public class ArticlesFamilyResource {
 
     public static final String ID_ID = "/{id}";
 
+    public static final String LIST = "/list";
+
     @Autowired
     ArticlesFamilyController articlesFamilyController;
 
     @Autowired
     ArticleController articleController;
 
-    @GetMapping(value = ID_ID)
-    public List<ArticlesFamiliaOutputDto> readArticlesFamily(@PathVariable String id) throws ArticlesFamilyNotFoudException {
+    @GetMapping(value = ID_ID + LIST)
+    public List<ArticlesFamilyDto> read(@PathVariable String id) throws ArticlesFamilyNotFoudException {
         return this.articlesFamilyController.readArticlesFamily(id).orElseThrow(() -> new ArticlesFamilyNotFoudException(id));
+    }
+
+    @PostMapping(value = ID_ID + LIST)
+    public void addChild(@PathVariable String id, @RequestBody String childId) throws ArticlesFamilyNotFoudException {
+        Optional<String> error = articlesFamilyController.addChild(id,childId);
+        if (error.isPresent()) {
+            throw new ArticlesFamilyNotFoudException(error.get());
+        }
+    }
+
+    @GetMapping
+    public List<ArticlesFamilyDto> readAll() {
+        return this.articlesFamilyController.readAll();
+    }
+
+    @PostMapping
+    public void crete(@RequestBody ArticlesFamilyDto articlesFamilyDto) throws ArticlesFamilyCreationException {
+        if (articlesFamilyDto.getFamilyType().equals(FamilyType.ARTICLE)) {
+            if (articlesFamilyDto.getArticleId() == null) {
+                throw new ArticlesFamilyCreationException("Article id field must have value");
+            }
+        } else {
+            if (articlesFamilyDto.getDescription() == null) {
+                throw new ArticlesFamilyCreationException("Description field must have value");
+            }
+            if (articlesFamilyDto.getReference() == null) {
+                throw new ArticlesFamilyCreationException("Reference field must have value");
+            }
+        }
+        Optional<String> error = articlesFamilyController.create(articlesFamilyDto);
+        if (error.isPresent()) {
+            throw new ArticlesFamilyCreationException(error.get());
+        }
+
     }
 
 }
