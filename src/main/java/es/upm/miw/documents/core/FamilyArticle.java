@@ -32,11 +32,11 @@ public class FamilyArticle extends ArticlesFamily {
     }
 
     @Override
-    public void add(ArticlesFamily familyComponent) { 
+    public void add(ArticlesFamily familyComponent) {
     }
 
     @Override
-    public void remove(ArticlesFamily familyComponent) { 
+    public void remove(ArticlesFamily familyComponent) {
     }
 
     @Override
@@ -46,7 +46,7 @@ public class FamilyArticle extends ArticlesFamily {
 
     @Override
     public String toString() {
-        return "FamilyArticle [article=" + article + ", toString()=" + super.toString() + "]";
+        return "FamilyArticle [super.toString() + article=" + article + "]";
     }
 
 }

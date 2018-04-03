@@ -94,4 +94,26 @@ public class ArticlesFamilyController {
         return Optional.empty();
     }
 
+    public Optional<String> deleteChild(String id, String childId) {
+        ArticlesFamily family = this.articlesFamilyRepository.findOne(id);
+        if (family == null) {
+            Optional.of("family Id not found. " + id);
+        }
+        if (family.getFamilyType().equals(FamilyType.ARTICLE)) {
+            Optional.of("family Id does not allow to delete. " + id);
+        }
+        ArticlesFamily familyChild = this.articlesFamilyRepository.findOne(childId);
+        if (familyChild == null) {
+            Optional.of("family Id not found. " + familyChild);
+        }
+        if (family.getFamilyType().equals(FamilyType.SIZES) && !familyChild.getFamilyType().equals(FamilyType.ARTICLE)) {
+            Optional.of("family Id does not allow to delete another family. " + id + "->" + familyChild);
+        }
+
+        family.getArticlesFamilyList().remove(familyChild);
+        this.articlesFamilyRepository.save(family);
+        System.out.println("despues de eliminar..."+family);
+        return Optional.empty();
+    }
+
 }

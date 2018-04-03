@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -27,6 +28,8 @@ public class ArticlesFamilyResource {
 
     public static final String ID_ID = "/{id}";
 
+    public static final String CHILD_ID = "/{childId}";
+
     public static final String LIST = "/list";
 
     @Autowired
@@ -36,13 +39,22 @@ public class ArticlesFamilyResource {
     ArticleController articleController;
 
     @GetMapping(value = ID_ID + LIST)
-    public List<ArticlesFamilyDto> read(@PathVariable String id) throws ArticlesFamilyNotFoudException {
+    public List<ArticlesFamilyDto> readIdList(@PathVariable String id) throws ArticlesFamilyNotFoudException {
         return this.articlesFamilyController.readArticlesFamily(id).orElseThrow(() -> new ArticlesFamilyNotFoudException(id));
     }
 
     @PostMapping(value = ID_ID + LIST)
     public void addChild(@PathVariable String id, @RequestBody String childId) throws ArticlesFamilyNotFoudException {
-        Optional<String> error = articlesFamilyController.addChild(id,childId);
+        Optional<String> error = articlesFamilyController.addChild(id, childId);
+        if (error.isPresent()) {
+            throw new ArticlesFamilyNotFoudException(error.get());
+        }
+    }
+
+    @DeleteMapping(value = ID_ID + LIST + CHILD_ID)
+    public void deleteChild(@PathVariable String id, @PathVariable String childId)
+            throws ArticlesFamilyNotFoudException {
+        Optional<String> error = articlesFamilyController.deleteChild(id, childId);
         if (error.isPresent()) {
             throw new ArticlesFamilyNotFoudException(error.get());
         }

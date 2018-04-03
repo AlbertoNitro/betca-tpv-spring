@@ -41,6 +41,26 @@ public abstract class ArticlesFamily {
 
     public abstract List<ArticlesFamily> getArticlesFamilyList();
 
+    
+    @Override
+    public int hashCode() {
+        return this.id.hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        return id.equals(((ArticlesFamily) obj).id);
+    }
+
     @Override
     public String toString() {
         return "ArticlesFamily [id=" + id + ", familyType=" + familyType + "]";
