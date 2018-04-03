@@ -6,16 +6,17 @@ import org.junit.runners.Suite.SuiteClasses;
 
 @RunWith(Suite.class)
 @SuiteClasses({
-    ArticleControllerIT.class,
-    BudgetControllerIT.class,
-    CashierClosureControllerIT.class,
-    InvoiceControllerIT.class,
-    ProviderControllerIT.class,
-    TicketControllerIT.class,
-    UserControllerIT.class,
-    VoucherControllerIT.class,
-    OrderControllerIT.class,
-    OrderBodyControllerIT.class
+        ArticleControllerIT.class,
+        BudgetControllerIT.class,
+        CashierClosureControllerIT.class,
+        InvoiceControllerIT.class,
+        ProviderControllerIT.class,
+        TicketControllerIT.class,
+        UserControllerIT.class,
+        VoucherControllerIT.class,
+        OrderControllerIT.class,
+        OrderBodyControllerIT.class,
+        SchedulerControllerIT.class
 })
 public class AllMiwControllersIntegrationTests {
 
