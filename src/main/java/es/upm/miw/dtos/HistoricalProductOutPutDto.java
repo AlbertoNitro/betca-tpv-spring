@@ -7,6 +7,10 @@ public class HistoricalProductOutPutDto {
 	private List<Integer> NumProductsPerMonth;
 	private String ProductName;
 
+	public HistoricalProductOutPutDto() {
+		//Empty for Spring
+	}
+
 	public HistoricalProductOutPutDto(List<Integer> numProductsPerMonth, String productName) {
 		super();
 		this.NumProductsPerMonth = numProductsPerMonth;

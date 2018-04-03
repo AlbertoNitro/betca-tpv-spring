@@ -43,6 +43,8 @@ public class TicketResource {
     public static final String SEARCH_BY_ID_AND_DATES = "/searchByIdAndDates";
 
     public static final String SEARCH_BY_CREATION_DATES = "/searchByCreationDates";
+    
+    public static final String HISTORICAL_PRODUCTS = "/historicalProducts";
 
     @Autowired
     private TicketController ticketController;
@@ -89,7 +91,7 @@ public class TicketResource {
         return this.ticketController.findByIdArticleDatesBetween(id, dateStart, dateFinish);
     }
 
-    @RequestMapping(value = "historicalProducts", method = RequestMethod.GET)
+    @RequestMapping(value = HISTORICAL_PRODUCTS, method = RequestMethod.GET)
     public List<HistoricalProductOutPutDto> getHistoricalProductsData(
             @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) @RequestParam("initDate") Date startDate,
             @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) @RequestParam("endDate") Date endDate) {
