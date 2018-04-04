@@ -10,22 +10,26 @@ import java.util.List;
 public interface ArticleRepository extends MongoRepository<Article, String> {
 
     @Query(value = "{'code' : ?0}", fields = "{'reference' : 1, 'description' : 1, 'retailPrice' : 1, 'stock' : 1}")
-    ArticleDto findMinimumByCode(String code);  
+    ArticleDto findMinimumByCode(String code);
     
-	Article findArticleByCode(String string);
+    @Query(value = "{}", fields = "{'description' : 1}")
+    List<ArticleDto> findAllMinimum();
 
-	Article findArticleByDescription(String string);
+    Article findArticleByCode(String string);
+  
+    @Query(value = "{$or:["
+            + "{reference : {$in : [null, ''] }},"
+            + "{description : {$in : [null, ''] }},"
+            + "{retailPrice : {$in : [null, 0] }},"
+            + "{stock : null },"
+            + "{provider : null }"
+            + "]}", 
+            fields = "{description : 1}")
+    List<ArticleDto> findByReferenceIsNullOrEmptyOrDescriptionIsNullOrEmptyOrRetailPriceIsNullOrZeroOrStockIsNullOrProviderIsNull();
 
-    @Query(value =  "{$and:[{'reference': {'$regex': ?0}},{'description': {'$regex': ?1}}]}", fields = "{'reference' : 1, 'description' : 1, 'retailPrice' : 1, 'stock' : 1}")
-    List<ArticleDto> findByReferenceAndDescriptionLike(String reference,String description);
-	
-    @Query(value =  "{$and:[{'reference': {'$regex': ?0}},{'description': {'$regex': ?1}},{'provider': ?2}]}", fields = "{'reference' : 1, 'description' : 1, 'retailPrice' : 1, 'stock' : 1}")
-    List<ArticleDto> findByReferenceDescriptionProvider(String reference,String description,String provider);
+    List<Article> findByReferenceLikeIgnoreCaseAndDescriptionLikeIgnoreCase(String reference, String description);
 
-    @Query(value =  "{$and:[{'description': {'$regex': ?0}}]}", fields = "{'reference' : 1, 'description' : 1, 'retailPrice' : 1, 'stock' : 1}")
-    List<ArticleDto> findByDescriptionLike(String description);
-	
-    @Query(value =  "{$and:[{'description': {'$regex': ?0}},{'provider': ?1}]}", fields = "{'reference' : 1, 'description' : 1, 'retailPrice' : 1, 'stock' : 1}")
-    List<ArticleDto> findByDescriptionProvider(String description,String provider);
-	 
+    List<Article> findByReferenceLikeIgnoreCaseAndDescriptionLikeIgnoreCaseAndProvider(String reference, String description,
+            String provider);
+
 }
