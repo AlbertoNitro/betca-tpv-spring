@@ -16,6 +16,8 @@ import es.upm.miw.documents.core.ShoppingState;
 import es.upm.miw.documents.core.Ticket;
 import es.upm.miw.documents.core.User;
 import es.upm.miw.dtos.HistoricalProductOutPutDto;
+import es.upm.miw.dtos.IncomeComparision;
+import es.upm.miw.dtos.NumProductsSoldDto;
 import es.upm.miw.dtos.ShoppingDto;
 import es.upm.miw.dtos.TicketCreationInputDto;
 import es.upm.miw.dtos.TicketDto;
@@ -177,5 +179,15 @@ public class TicketController {
     public List<HistoricalProductOutPutDto> getHistoricalProductsDataBetweenDates(Date initDate, Date endDate) {
 
 		return this.statisticsDataService.GetHistoricalData(initDate, endDate);
+	}
+    
+    public List<NumProductsSoldDto> getNumProductsSold(Date initDate, Date endDate) {
+
+		return this.statisticsDataService.GetNumProductsSold(initDate, endDate);
+	}
+    
+    public List<IncomeComparision> getIncomeComparisionData(Date initDate, Date endDate) {
+
+		return this.statisticsDataService.GetIncomeComparisionData(initDate, endDate);
 	}
 }
