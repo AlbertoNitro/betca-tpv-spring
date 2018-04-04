@@ -14,6 +14,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.Optional;
 
 import static junit.framework.TestCase.assertTrue;
 import static junit.framework.TestCase.fail;
@@ -32,6 +33,11 @@ public class SchedulerControllerIT {
     @Before
     public void before(){
         this.schedulerDto = new SchedulerDto();
+        Date now = new Date();
+        this.schedulerDto.setDateTime(now);
+        this.schedulerDto.setTitle("Title");
+        this.schedulerDto.setDescription("Description");
+        schedulerController.create(this.schedulerDto);
     }
 
     //@After
@@ -41,18 +47,12 @@ public class SchedulerControllerIT {
 
     @Test
     public void testCreateScheduler(){
-        this.schedulerDto.setDateTime(new Date());
-        this.schedulerDto.setTitle("Title");
-        this.schedulerDto.setDescription("Description");
-        schedulerController.create(this.schedulerDto);
+        SchedulerDto schedulerDtoTest = schedulerController.create(this.schedulerDto);
+        assert(schedulerDtoTest != null);
     }
 
     @Test
     public void testReadAllScheduler(){
-        Date now = new Date();
-        this.schedulerDto.setDateTime(now);
-        this.schedulerDto.setTitle("Title");
-        this.schedulerDto.setDescription("Description");
         schedulerController.create(this.schedulerDto);
 
         Date pastDate = new GregorianCalendar(2018, 2, 12, 19,30).getTime();
@@ -64,5 +64,28 @@ public class SchedulerControllerIT {
         assertTrue(schedulerList != null);
         assertEquals(2, schedulerList.size());
         assertTrue(schedulerList.get(0).getDateTime().before(schedulerList.get(1).getDateTime()));
+    }
+
+    @Test
+    public void testReadScheduler(){
+        SchedulerDto schedulerDTOTest = schedulerController.create(this.schedulerDto);
+        assert(schedulerDTOTest != null);
+
+        Optional<SchedulerDto> optional = schedulerController.read(schedulerDTOTest.getId());
+        SchedulerDto schedulerDtoFromDDBB = optional.get();
+        assertTrue(optional.isPresent());
+
+        assertTrue( schedulerDtoFromDDBB.getId().equals(schedulerDTOTest.getId()));
+    }
+
+    @Test
+    public void testDeleteScheduler(){
+        SchedulerDto schedulerDTOTest = schedulerController.create(this.schedulerDto);
+        assert(schedulerDTOTest != null);
+
+        schedulerController.delete(schedulerDTOTest.getId());
+
+        Optional<SchedulerDto> optional = schedulerController.read(schedulerDTOTest.getId());
+        assert(!optional.isPresent());
     }
 }
