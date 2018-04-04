@@ -28,6 +28,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import es.upm.miw.controllers.TicketController;
 import es.upm.miw.dtos.HistoricalProductOutPutDto;
+import es.upm.miw.dtos.NumProductsSoldDto;
 import es.upm.miw.dtos.ShoppingDto;
 import es.upm.miw.dtos.TicketCreationInputDto;
 import es.upm.miw.dtos.TicketSearchOutputDto;
@@ -134,10 +135,10 @@ public class TicketResourceFunctionalTesting {
 	}
 
 	@Test
-    public void testGetHistoricalProductsData() throws ParseException {
-        
-    	Boolean result = false;
-    	DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+	public void testGetHistoricalProductsData() throws ParseException {
+
+		Boolean result = false;
+		DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		Calendar today = Calendar.getInstance();
 		today.set(Calendar.HOUR_OF_DAY, 0);
 		today.add(Calendar.DATE, 7);
@@ -146,23 +147,53 @@ public class TicketResourceFunctionalTesting {
 		today.add(Calendar.MONTH, 1);
 		Date endDate = today.getTime();
 		String x = format.format(initDate);
-    	
-        List<HistoricalProductOutPutDto> historicalData = Arrays.asList(
-                restService.loginAdmin().restBuilder(new RestBuilder<HistoricalProductOutPutDto[]>()).clazz(HistoricalProductOutPutDto[].class)
-                        .path(TicketResource.TICKETS).path(TicketResource.HISTORICAL_PRODUCTS)
-                        .param("initDate", format.format(initDate)).param("endDate", format.format(endDate)).get().build());
-        
-        List<String> articleNamesCollection = Arrays.asList("ar11","ar12");
-		for(HistoricalProductOutPutDto item : historicalData) {
-			if(articleNamesCollection.contains(item.getProductName() )) {
-				if(item.getNumProductsPerMonth().contains(6)) {
+
+		List<HistoricalProductOutPutDto> historicalData = Arrays.asList(restService.loginAdmin()
+				.restBuilder(new RestBuilder<HistoricalProductOutPutDto[]>()).clazz(HistoricalProductOutPutDto[].class)
+				.path(TicketResource.TICKETS).path(TicketResource.HISTORICAL_PRODUCTS)
+				.param("initDate", format.format(initDate)).param("endDate", format.format(endDate)).get().build());
+
+		List<String> articleNamesCollection = Arrays.asList("ar11", "ar12");
+		for (HistoricalProductOutPutDto item : historicalData) {
+			if (articleNamesCollection.contains(item.getProductName())) {
+				if (item.getNumProductsPerMonth().contains(6)) {
 					result = true;
-				}
-				else
+				} else
 					result = false;
 			}
 		}
 		assertTrue(result);
-    }
+	}
+
+	@Test
+	public void testGetNumProductsSold() throws ParseException {
+
+		Boolean result = false;
+		DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		Calendar today = Calendar.getInstance();
+		today.set(Calendar.HOUR_OF_DAY, 0);
+		today.add(Calendar.DATE, 7);
+		today.add(Calendar.MONTH, -1);
+		Date initDate = today.getTime();
+		today.add(Calendar.MONTH, 1);
+		Date endDate = today.getTime();
+		String x = format.format(initDate);
+
+		List<NumProductsSoldDto> data = Arrays.asList(restService.loginAdmin()
+				.restBuilder(new RestBuilder<NumProductsSoldDto[]>()).clazz(NumProductsSoldDto[].class)
+				.path(TicketResource.TICKETS).path(TicketResource.NUM_PRODUCTS_SOLD)
+				.param("initDate", format.format(initDate)).param("endDate", format.format(endDate)).get().build());
+
+		List<String> articleNamesCollection = Arrays.asList("ar11", "ar12");
+		for (NumProductsSoldDto item : data) {
+			if (articleNamesCollection.contains(item.getProductName())) {
+				if (item.getQuantity() == 6) {
+					result = true;
+				} else
+					result = false;
+			}
+		}
+		assertTrue(result);
+	}
 
 }
