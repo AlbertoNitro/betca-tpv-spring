@@ -1,19 +1,13 @@
 package es.upm.miw.resources;
 
-import es.upm.miw.controllers.ArticleController;
 import es.upm.miw.controllers.SchedulerController;
-import es.upm.miw.dtos.ArticleDto;
 import es.upm.miw.dtos.SchedulerDto;
-import es.upm.miw.resources.exceptions.ArticleCodeNotFoundException;
 import es.upm.miw.resources.exceptions.SchedulerIdNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import java.util.List;
-
-import static es.upm.miw.resources.ArticleResource.CODE_ID;
 
 @PreAuthorize("hasRole('ADMIN') or hasRole('MANAGER') or hasRole('OPERATOR')")
 @RestController
