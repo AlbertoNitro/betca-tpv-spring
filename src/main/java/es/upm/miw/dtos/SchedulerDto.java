@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.google.common.util.concurrent.AbstractScheduledService;
 import es.upm.miw.documents.core.Scheduler;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
@@ -32,9 +33,15 @@ public class SchedulerDto extends SchedulerMinimumDto {
 
     @Override
     public String toString() {
+        String dateTime = "";
+
+        if (super.getDateTime() != null) {
+            dateTime = new SimpleDateFormat("yyyy-MM-dd HH:mm").format(super.getDateTime().getTime());
+        }
+
         return "SchedulerDto{" +
                 "id='" + super.getId() + '\'' +
-                ", dateTime=" + super.getDateTime().toString() +
+                ", dateTime=" + dateTime +
                 ", title='" + super.getTitle() + '\'' +
                 "description='" + description + '\'' +
                 '}';
