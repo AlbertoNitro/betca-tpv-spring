@@ -1,9 +1,7 @@
 package es.upm.miw.resources;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Random;
 
 import javax.validation.Valid;
 
@@ -123,17 +121,7 @@ public class TicketResource {
 			@DateTimeFormat(iso = DateTimeFormat.ISO.DATE) @RequestParam("initDate") Date startDate,
 			@DateTimeFormat(iso = DateTimeFormat.ISO.DATE) @RequestParam("endDate") Date endDate) {
 
-		List<IncomeComparision> result = new ArrayList<IncomeComparision>();
-
-		Random rn = new Random();
-
-		for (int i = 0; i < rn.nextInt(20); i++) {
-			float x = rn.nextFloat() * 100;
-			result.add(new IncomeComparision(x, x / 90 * 100, "product" + i));
-
-		}
-
-		return result;
+		return this.ticketController.getIncomeComparisionData(startDate, endDate);
 	}
 
 }
