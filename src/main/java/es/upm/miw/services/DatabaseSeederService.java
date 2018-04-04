@@ -6,6 +6,7 @@ import java.util.Optional;
 
 import javax.annotation.PostConstruct;
 
+import es.upm.miw.repositories.core.*;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -16,17 +17,6 @@ import org.yaml.snakeyaml.constructor.Constructor;
 
 import es.upm.miw.documents.core.Role;
 import es.upm.miw.documents.core.User;
-import es.upm.miw.repositories.core.ArticleRepository;
-import es.upm.miw.repositories.core.ArticlesFamilyRepository;
-import es.upm.miw.repositories.core.BudgetRepository;
-import es.upm.miw.repositories.core.CashMovementRepository;
-import es.upm.miw.repositories.core.CashierClosureRepository;
-import es.upm.miw.repositories.core.InvoiceRepository;
-import es.upm.miw.repositories.core.OfferRepository;
-import es.upm.miw.repositories.core.ProviderRepository;
-import es.upm.miw.repositories.core.TicketRepository;
-import es.upm.miw.repositories.core.UserRepository;
-import es.upm.miw.repositories.core.VoucherRepository;
 
 @Service
 public class DatabaseSeederService {
@@ -76,6 +66,9 @@ public class DatabaseSeederService {
     @Autowired
     private ArticlesFamilyRepository articlesFamilyRepository;
 
+    @Autowired
+	private SchedulerRepository schedulerRepository;
+
 	@PostConstruct
 	public void seedDatabase() {
 		if (ymlFileName.isPresent()) {
@@ -124,6 +117,9 @@ public class DatabaseSeederService {
 		if (tpvGraph.getOfferList() != null) {
 			this.offerRepository.save(tpvGraph.getOfferList());
 		}
+		if (tpvGraph.getSchedulerList() != null) {
+			this.schedulerRepository.save(tpvGraph.getSchedulerList());
+		}
 		// -----------------------------------------------------------------------
 
 		Logger.getLogger(this.getClass()).warn("------------------------- Seed: " + ymlFileName + "-----------");
@@ -143,6 +139,7 @@ public class DatabaseSeederService {
 		this.offerRepository.deleteAll();
 		this.budgetRepository.deleteAll();
 		this.articlesFamilyRepository.deleteAll();
+		this.schedulerRepository.deleteAll();
 		this.createAdminIfNotExist();
 		// -----------------------------------------------------------------------
 	}
