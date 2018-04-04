@@ -31,5 +31,7 @@ public interface ArticleRepository extends MongoRepository<Article, String> {
 
     List<Article> findByReferenceLikeIgnoreCaseAndDescriptionLikeIgnoreCaseAndProvider(String reference, String description,
             String provider);
+    
+    Article findFirstByCodeStartingWithOrderByCodeDesc(String code);
 
 }

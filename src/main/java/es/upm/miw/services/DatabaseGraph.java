@@ -1,10 +1,13 @@
 package es.upm.miw.services;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import es.upm.miw.documents.core.Article;
 import es.upm.miw.documents.core.CashMovement;
 import es.upm.miw.documents.core.CashierClosure;
+import es.upm.miw.documents.core.FamilyArticle;
+import es.upm.miw.documents.core.FamilyComposite;
 import es.upm.miw.documents.core.Invoice;
 import es.upm.miw.documents.core.Offer;
 import es.upm.miw.documents.core.Provider;
@@ -16,119 +19,163 @@ import es.upm.miw.documents.core.Voucher;
 
 public class DatabaseGraph {
 
-	private List<User> userList;
+    private List<User> userList;
 
-	private List<Token> tokenList;
+    private List<Token> tokenList;
 
-	private List<Provider> providerList;
+    private List<Provider> providerList;
 
-	private List<Article> articleList;
+    private List<Article> articleList;
 
-	private List<Voucher> voucherList;
+    private List<FamilyArticle> familyArticleList;
 
-	private List<CashMovement> cashMovementList;
+    private List<FamilyComposite> familyCompositeList;
 
-	private List<Ticket> ticketList;
+    private List<Voucher> voucherList;
 
-	private List<Shopping> shoppingList;
+    private List<CashMovement> cashMovementList;
 
-	private List<Invoice> invoiceList;
+    private List<Ticket> ticketList;
 
-	private List<CashierClosure> cashierClosureList;
+    private List<Shopping> shoppingList;
 
-	private List<Offer> offerList;
+    private List<Invoice> invoiceList;
 
-	public DatabaseGraph() {
-		// Empty for framework
-	}
-	
+    private List<CashierClosure> cashierClosureList;
 
-	public List<Offer> getOfferList() {
-		return offerList;
-	}
+    private List<Offer> offerList;
 
-	public void setOfferList(List<Offer> offerList) {
-		this.offerList = offerList;
-	}
+    public DatabaseGraph() {
+        this.userList = new ArrayList<User>();
 
-	public List<User> getUserList() {
-		return userList;
-	}
+        this.tokenList = new ArrayList<Token>();
 
-	public void setUserList(List<User> userList) {
-		this.userList = userList;
-	}
+        this.providerList = new ArrayList<Provider>();
 
-	public List<Token> getTokenList() {
-		return tokenList;
-	}
+        this.articleList = new ArrayList<Article>();
 
-	public void setTokenList(List<Token> tokenList) {
-		this.tokenList = tokenList;
-	}
+        this.familyArticleList = new ArrayList<FamilyArticle>();
 
-	public List<Provider> getProviderList() {
-		return providerList;
-	}
+        this.familyCompositeList = new ArrayList<FamilyComposite>();
 
-	public void setProviderList(List<Provider> providerList) {
-		this.providerList = providerList;
-	}
+        this.voucherList = new ArrayList<Voucher>();
 
-	public List<Article> getArticleList() {
-		return articleList;
-	}
+        this.cashMovementList = new ArrayList<CashMovement>();
 
-	public void setArticleList(List<Article> articleList) {
-		this.articleList = articleList;
-	}
+        this.ticketList = new ArrayList<Ticket>();
 
-	public List<Voucher> getVoucherList() {
-		return voucherList;
-	}
+        this.shoppingList = new ArrayList<Shopping>();
 
-	public void setVoucherList(List<Voucher> voucherList) {
-		this.voucherList = voucherList;
-	}
+        this.invoiceList = new ArrayList<Invoice>();
 
-	public List<CashMovement> getCashMovementList() {
-		return cashMovementList;
-	}
+        this.cashierClosureList = new ArrayList<CashierClosure>();
 
-	public void setCashMovementList(List<CashMovement> cashMovementList) {
-		this.cashMovementList = cashMovementList;
-	}
+        this.offerList = new ArrayList<Offer>();
 
-	public List<Ticket> getTicketList() {
-		return ticketList;
-	}
+    }
 
-	public void setTicketList(List<Ticket> ticketList) {
-		this.ticketList = ticketList;
-	}
+    public List<Offer> getOfferList() {
+        return offerList;
+    }
 
-	public List<Shopping> getShoppingList() {
-		return shoppingList;
-	}
+    public void setOfferList(List<Offer> offerList) {
+        this.offerList = offerList;
+    }
 
-	public void setShoppingList(List<Shopping> shoppingList) {
-		this.shoppingList = shoppingList;
-	}
+    public List<User> getUserList() {
+        return userList;
+    }
 
-	public List<Invoice> getInvoiceList() {
-		return invoiceList;
-	}
+    public void setUserList(List<User> userList) {
+        this.userList = userList;
+    }
 
-	public void setInvoiceList(List<Invoice> invoiceList) {
-		this.invoiceList = invoiceList;
-	}
+    public List<Token> getTokenList() {
+        return tokenList;
+    }
 
-	public List<CashierClosure> getCashierClosureList() {
-		return cashierClosureList;
-	}
+    public void setTokenList(List<Token> tokenList) {
+        this.tokenList = tokenList;
+    }
 
-	public void setCashierClosureList(List<CashierClosure> cashierClosureList) {
-		this.cashierClosureList = cashierClosureList;
-	}
+    public List<Provider> getProviderList() {
+        return providerList;
+    }
+
+    public void setProviderList(List<Provider> providerList) {
+        this.providerList = providerList;
+    }
+
+    public List<Article> getArticleList() {
+        return articleList;
+    }
+
+    public void setArticleList(List<Article> articleList) {
+        this.articleList = articleList;
+    }
+
+    public List<FamilyArticle> getFamilyArticleList() {
+        return familyArticleList;
+    }
+
+    public void setFamilyArticleList(List<FamilyArticle> familyArticleList) {
+        this.familyArticleList = familyArticleList;
+    }
+
+    public List<FamilyComposite> getFamilyCompositeList() {
+        return familyCompositeList;
+    }
+
+    public void setFamilyCompositeList(List<FamilyComposite> familyCompositeList) {
+        this.familyCompositeList = familyCompositeList;
+    }
+
+    public List<Voucher> getVoucherList() {
+        return voucherList;
+    }
+
+    public void setVoucherList(List<Voucher> voucherList) {
+        this.voucherList = voucherList;
+    }
+
+    public List<CashMovement> getCashMovementList() {
+        return cashMovementList;
+    }
+
+    public void setCashMovementList(List<CashMovement> cashMovementList) {
+        this.cashMovementList = cashMovementList;
+    }
+
+    public List<Ticket> getTicketList() {
+        return ticketList;
+    }
+
+    public void setTicketList(List<Ticket> ticketList) {
+        this.ticketList = ticketList;
+    }
+
+    public List<Shopping> getShoppingList() {
+        return shoppingList;
+    }
+
+    public void setShoppingList(List<Shopping> shoppingList) {
+        this.shoppingList = shoppingList;
+    }
+
+    public List<Invoice> getInvoiceList() {
+        return invoiceList;
+    }
+
+    public void setInvoiceList(List<Invoice> invoiceList) {
+        this.invoiceList = invoiceList;
+    }
+
+    public List<CashierClosure> getCashierClosureList() {
+        return cashierClosureList;
+    }
+
+    public void setCashierClosureList(List<CashierClosure> cashierClosureList) {
+        this.cashierClosureList = cashierClosureList;
+    }
 
 }

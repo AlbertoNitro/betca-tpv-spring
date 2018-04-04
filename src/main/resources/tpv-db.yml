@@ -1,17 +1,3 @@
-# Providers
-providerList:
-  - &pr0
-    company: varios
-    
-# Articles
-articleList:
-  - &ar0
-    code: 1
-    reference: varios
-    description: Varios
-    retailPrice: 100
-    tax: GENERAL
-    provider: *pr0
 
 # Offers 
 offerList:
