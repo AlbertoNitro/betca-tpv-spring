@@ -1,5 +1,6 @@
 package es.upm.miw.services;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -14,6 +15,7 @@ import es.upm.miw.documents.core.Article;
 import es.upm.miw.documents.core.Shopping;
 import es.upm.miw.documents.core.Ticket;
 import es.upm.miw.dtos.HistoricalProductOutPutDto;
+import es.upm.miw.dtos.IncomeComparision;
 import es.upm.miw.dtos.NumProductsSoldDto;
 import es.upm.miw.repositories.core.TicketRepository;
 
@@ -93,7 +95,6 @@ public class StatisticsDataService {
 	}
 
 	public List<NumProductsSoldDto> GetNumProductsSold(Date initDate, Date endDate) {
-
 		List<NumProductsSoldDto> result = new ArrayList<NumProductsSoldDto>();
 
 		List<Ticket> tickectsCollection = ticketRepository.findByCreationDateBetween(initDate, endDate);
@@ -116,11 +117,55 @@ public class StatisticsDataService {
 				}
 			}
 		}
-		for (Map.Entry<String,Integer> articleData : mapAux.entrySet()) {
-			result.add(new NumProductsSoldDto(articleData.getValue(),articleData.getKey()));
+		for (Map.Entry<String, Integer> articleData : mapAux.entrySet()) {
+			result.add(new NumProductsSoldDto(articleData.getValue(), articleData.getKey()));
 		}
 
 		return result;
+	}
+
+	public List<IncomeComparision> GetIncomeComparisionData(Date initDate, Date endDate) {
+
+		List<IncomeComparision> result = new ArrayList<IncomeComparision>();
+
+		List<Ticket> tickectsCollection = ticketRepository.findByCreationDateBetween(initDate, endDate);
+
+		HashMap<String, Float> mapAuxProductPrice = new HashMap<String, Float>();
+		HashMap<String, Float> mapAuxIncome = new HashMap<String, Float>();
+		for (Ticket ticket : tickectsCollection) {
+
+			for (Shopping shopping : ticket.getShoppingList()) {
+
+				Article articleAux = shopping.getArticle();
+				BigDecimal productPrice = BigDecimal.valueOf(shopping.getAmount())
+						.multiply(articleAux.getRetailPrice());
+				BigDecimal income = shopping.getDiscount().intValue() > 0 ? productPrice.divide(shopping.getDiscount())
+						: productPrice;
+
+				if (!mapAuxProductPrice.containsKey(articleAux.getReference())
+						&& !mapAuxIncome.containsKey(articleAux.getReference())) {
+
+					mapAuxIncome.put(articleAux.getReference(), income.floatValue());
+					mapAuxProductPrice.put(articleAux.getReference(), productPrice.floatValue());
+
+				} else {
+
+					mapAuxProductPrice.put(articleAux.getReference(),
+							mapAuxProductPrice.get(articleAux.getReference()) + productPrice.floatValue());
+					mapAuxIncome.put(articleAux.getReference(),
+							mapAuxIncome.get(articleAux.getReference()) + income.floatValue());
+
+				}
+			}
+		}
+
+		for (Map.Entry<String, Float> incomeItem : mapAuxIncome.entrySet()) {
+			result.add(new IncomeComparision(mapAuxProductPrice.get(incomeItem.getKey()), incomeItem.getValue(),
+					incomeItem.getKey()));
+		}
+
+		return result;
+
 	}
 
 }
