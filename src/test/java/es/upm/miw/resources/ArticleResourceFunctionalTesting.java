@@ -56,17 +56,6 @@ public class ArticleResourceFunctionalTesting {
         assertEquals("article1", articleOutputDto.getCode());
     }
     
-	@Test
-	public void testpostFastArticle() {
-		ArticleDto articulo = new ArticleDto();
-		articulo.setCode("1");
-		articulo.setDescription("blabla");
-		Number retailPrice = 2;
-		articulo.setRetailPrice(new BigDecimal(retailPrice.toString()));
-		restService.loginAdmin().restBuilder().path(ArticleResource.ARTICLES).body(articulo).post().build();
-		assertEquals("blabla", this.articleRepository.findArticleByDescription("blabla").getDescription());
-	}
-
     @Test
     public void testReadArticleOperator() {
         ArticleDto articleOutputDto = restService.loginOperator().restBuilder(new RestBuilder<ArticleDto>())
@@ -148,7 +137,7 @@ public class ArticleResourceFunctionalTesting {
 		articuloFilter.setRetailPriceMax(new BigDecimal(retailPriceMax.toString()));
 		
         List<ArticleDto> articleOutputDto = Arrays.asList(restService.loginAdmin().restBuilder(new RestBuilder<ArticleDto[]>())
-                .clazz(ArticleDto[].class).path(ArticleResource.ARTICLES).path(ArticleResource.FILTER).body(articuloFilter).post()
+                .clazz(ArticleDto[].class).path(ArticleResource.ARTICLES).path(ArticleResource.SEARCH).body(articuloFilter).post()
                 .build());
       
        assertEquals(1, articleOutputDto.size());
