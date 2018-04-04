@@ -89,7 +89,7 @@ public class PdfService {
         }
         this.totalPrice(pdf, ticket.getTicketTotal());
         pdf.line().paragraph("Periodo de devolución o cambio: 15 dias a partir de la fecha del ticket");
-        pdf.paragraphEmphasized("Gracias por su compra");
+        pdf.paragraphEmphasized("Gracias por usar nuestros servicios.");
         if (notCommitted) {
             pdf.qrCode(ticket.getReference());
         }
@@ -115,6 +115,7 @@ public class PdfService {
         }
         this.totalPrice(pdf, budget.getBudgetTotal());
         pdf.line().paragraph("Este presupuesto es válido durante 15 días. A partir de esa fecha los precios pueden variar.");
+        pdf.paragraphEmphasized("Gracias por usar nuestros servicios.");
 
         return pdf.build();
     }
@@ -123,7 +124,7 @@ public class PdfService {
         final String path = "/vouchers/voucher-" + voucher.getId();
         PdfTicketBuilder pdf = this.addCompanyDetails(path, 2);
 
-        pdf.line().paragraphEmphasized("VOUCHER");
+        pdf.line().paragraphEmphasized("VALE");
         pdf.barCode(new Encrypting().encodeHexInBase64UrlSafe(voucher.getId())).line();
 
         pdf.paragraphEmphasized("      Valor: " + voucher.getValue() + " €").line();
@@ -175,7 +176,7 @@ public class PdfService {
         pdf.tableColspanRight("IVA: " + invoice.getTax().setScale(2, RoundingMode.HALF_UP) + "€");
         pdf.tableColspanRight("TOTAL: " +invoice.getTicket().getTicketTotal().setScale(2, RoundingMode.HALF_UP) + "€");
         pdf.line();
-        pdf.line().paragraph("Gracias por su compra");
+        pdf.paragraphEmphasized("Gracias por usar nuestros servicios.");
 
         return pdf.build();
     }
