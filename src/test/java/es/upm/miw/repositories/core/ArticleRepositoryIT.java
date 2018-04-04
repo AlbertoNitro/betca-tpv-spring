@@ -36,4 +36,20 @@ public class ArticleRepositoryIT {
         assertEquals(new Integer(0), articleOutputDto.getStock());
     }
 
+    @Test
+    public void testFindByReferenceLikeIgnoreCaseAndDescriptionLikeIgnoreCase() {
+        this.articleRepository.findByReferenceLikeIgnoreCaseAndDescriptionLikeIgnoreCase("F", "");
+    }
+
+    @Test
+    public void testFindByReferenceLikeIgnoreCaseAndDescriptionLikeIgnoreCaseAndProvider() {
+        this.articleRepository.findByReferenceLikeIgnoreCaseAndDescriptionLikeIgnoreCaseAndProvider("", "", "provider1");
+    }
+
+    @Test
+    public void testFindByReferenceIsNullOrEmptyOrDescriptionIsNullOrEmptyOrRetailPriceIsNullOrZeroOrStockIsNullOrProviderIsNull() {
+        this.articleRepository
+                .findByReferenceIsNullOrEmptyOrDescriptionIsNullOrEmptyOrRetailPriceIsNullOrZeroOrStockIsNullOrProviderIsNull();
+    }
+
 }
