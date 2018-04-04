@@ -62,7 +62,7 @@ public class SchedulerControllerIT {
 
         List<SchedulerDto> schedulerList = schedulerController.readAll();
         assertTrue(schedulerList != null);
-        assertEquals(2, schedulerList.size());
+        assertEquals(5, schedulerList.size());
         assertTrue(schedulerList.get(0).getDateTime().before(schedulerList.get(1).getDateTime()));
     }
 
