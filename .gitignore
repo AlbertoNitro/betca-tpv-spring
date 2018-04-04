@@ -1,5 +1,7 @@
+/.idea
 /.settings/
 /target/
 /.classpath
 /.project
 /logs/
+betca-tpv-spring.iml
