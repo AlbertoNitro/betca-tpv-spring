@@ -57,12 +57,13 @@ public class ArticleController {
     }
 
     public List<ArticleDto> readMinimumAll() {
-        List<Article> articleList = this.articleRepository.findAll();
-        List<ArticleDto> articleListDto = new ArrayList<ArticleDto>();
-        for (Article articulo : articleList) {
-            articleListDto.add(new ArticleDto(articulo.getCode(), articulo.getDescription()));
-        }
-        return articleListDto;
+        return this.articleRepository.findAllMinimum();
+//        List<Article> articleList = this.articleRepository.findAll();
+//        List<ArticleDto> articleListDto = new ArrayList<ArticleDto>();
+//        for (Article articulo : articleList) {
+//            articleListDto.add(new ArticleDto(articulo.getCode(), articulo.getDescription()));
+//        }
+//        return articleListDto;
     }
 
     public List<ArticleDto> readMinimumAllIncompletes() {

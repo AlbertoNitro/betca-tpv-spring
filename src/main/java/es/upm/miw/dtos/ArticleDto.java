@@ -4,20 +4,26 @@ import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import javax.validation.constraints.NotNull;
+
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 import es.upm.miw.documents.core.Article;
+import es.upm.miw.dtos.validations.BigDecimalPositive;
 
 @JsonInclude(Include.NON_NULL)
 public class ArticleDto {
 
+    @NotNull
     private String code;
 
     private String reference;
 
+    @NotNull
     private String description;
 
+    @BigDecimalPositive
     private BigDecimal retailPrice;
 
     private Integer stock;

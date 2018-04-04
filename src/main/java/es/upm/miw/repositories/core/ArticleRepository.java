@@ -11,6 +11,9 @@ public interface ArticleRepository extends MongoRepository<Article, String> {
 
     @Query(value = "{'code' : ?0}", fields = "{'reference' : 1, 'description' : 1, 'retailPrice' : 1, 'stock' : 1}")
     ArticleDto findMinimumByCode(String code);
+    
+    @Query(value = "{}", fields = "{'description' : 1}")
+    List<ArticleDto> findAllMinimum();
 
     Article findArticleByCode(String string);
   
