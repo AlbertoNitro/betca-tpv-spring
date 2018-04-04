@@ -2,11 +2,10 @@ package es.upm.miw.documents.core;
 
 import java.util.List;
 
-
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-@Document
+@Document(collection = "articlesFamily")
 public abstract class ArticlesFamily {
 
     @Id
@@ -22,21 +21,45 @@ public abstract class ArticlesFamily {
         return id;
     }
 
+    public void setId(String id) {
+        this.id = id;
+    }
+
     public FamilyType getFamilyType() {
         return familyType;
     }
 
     public abstract String getReference();
 
-    public abstract String description();
+    public abstract String getDescription();
 
-    public abstract Integer stock();
+    public abstract Integer getStock();
 
     public abstract void add(ArticlesFamily articlesFamily);
 
     public abstract void remove(ArticlesFamily articlesFamily);
+
+    public abstract List<ArticlesFamily> getArticlesFamilyList();
+
     
-    public abstract List<ArticlesFamily> list();
+    @Override
+    public int hashCode() {
+        return this.id.hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        return id.equals(((ArticlesFamily) obj).id);
+    }
 
     @Override
     public String toString() {

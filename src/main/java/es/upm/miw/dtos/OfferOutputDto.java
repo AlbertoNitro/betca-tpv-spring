@@ -18,7 +18,6 @@ public class OfferOutputDto {
     private String description;
 
     public OfferOutputDto() {
-        // Empty for framework
     }
 
 	public OfferOutputDto(Offer offer) {
