@@ -137,9 +137,9 @@ public class StatisticsDataService {
 			for (Shopping shopping : ticket.getShoppingList()) {
 
 				Article articleAux = shopping.getArticle();
-				BigDecimal productPrice = BigDecimal.valueOf(shopping.getAmount())
-						.multiply(articleAux.getRetailPrice());
-				BigDecimal income = shopping.getDiscount().intValue() > 0 ? productPrice.divide(shopping.getDiscount())
+				BigDecimal productPrice = BigDecimal.valueOf(shopping.getAmount()).multiply(shopping.getRetailPrice());
+				BigDecimal income = shopping.getDiscount().intValue() > 0
+						? productPrice.subtract(productPrice.multiply(shopping.getDiscount().divide(new BigDecimal(100))))
 						: productPrice;
 
 				if (!mapAuxProductPrice.containsKey(articleAux.getReference())
