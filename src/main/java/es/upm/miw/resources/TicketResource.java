@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import es.upm.miw.controllers.TicketController;
 import es.upm.miw.dtos.HistoricalProductOutPutDto;
+import es.upm.miw.dtos.IncomeComparision;
 import es.upm.miw.dtos.NumProductsSoldDto;
 import es.upm.miw.dtos.TicketCreationInputDto;
 import es.upm.miw.dtos.TicketDto;
@@ -50,6 +51,8 @@ public class TicketResource {
 	public static final String HISTORICAL_PRODUCTS = "/historicalProducts";
 
 	public static final String NUM_PRODUCTS_SOLD = "/numProductsSold";
+
+	public static final String COMPARISION_INCOME = "/comparisionIncome";
 
 	@Autowired
 	private TicketController ticketController;
@@ -113,6 +116,24 @@ public class TicketResource {
 			@DateTimeFormat(iso = DateTimeFormat.ISO.DATE) @RequestParam("endDate") Date endDate) {
 
 		return this.ticketController.getNumProductsSold(startDate, endDate);
+	}
+
+	@RequestMapping(value = COMPARISION_INCOME, method = RequestMethod.GET)
+	public List<IncomeComparision> getComparisionIncome(
+			@DateTimeFormat(iso = DateTimeFormat.ISO.DATE) @RequestParam("initDate") Date startDate,
+			@DateTimeFormat(iso = DateTimeFormat.ISO.DATE) @RequestParam("endDate") Date endDate) {
+
+		List<IncomeComparision> result = new ArrayList<IncomeComparision>();
+
+		Random rn = new Random();
+
+		for (int i = 0; i < rn.nextInt(20); i++) {
+			float x = rn.nextFloat() * 100;
+			result.add(new IncomeComparision(x, x / 90 * 100, "product" + i));
+
+		}
+
+		return result;
 	}
 
 }
