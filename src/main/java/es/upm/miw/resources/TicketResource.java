@@ -112,15 +112,7 @@ public class TicketResource {
 			@DateTimeFormat(iso = DateTimeFormat.ISO.DATE) @RequestParam("initDate") Date startDate,
 			@DateTimeFormat(iso = DateTimeFormat.ISO.DATE) @RequestParam("endDate") Date endDate) {
 
-		List<NumProductsSoldDto> result = new ArrayList<NumProductsSoldDto>();
-
-		Random rand = new Random();
-
-		for (int i = 0; i < rand.nextInt(20); i++) {
-			result.add(new NumProductsSoldDto(rand.nextInt(100), "product" + i));
-		}
-
-		return result;
+		return this.ticketController.getNumProductsSold(startDate, endDate);
 	}
 
 }

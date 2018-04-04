@@ -3,21 +3,18 @@ package es.upm.miw.services;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Dictionary;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import es.upm.miw.documents.core.Article;
 import es.upm.miw.documents.core.Shopping;
-import es.upm.miw.documents.core.ShoppingState;
 import es.upm.miw.documents.core.Ticket;
 import es.upm.miw.dtos.HistoricalProductOutPutDto;
-import es.upm.miw.repositories.core.ArticleRepository;
+import es.upm.miw.dtos.NumProductsSoldDto;
 import es.upm.miw.repositories.core.TicketRepository;
 
 @Service
@@ -25,9 +22,6 @@ public class StatisticsDataService {
 
 	@Autowired
 	private TicketRepository ticketRepository;
-
-	@Autowired
-	private ArticleRepository articleRepository;
 
 	public List<HistoricalProductOutPutDto> GetHistoricalData(Date initDate, Date endDate) {
 
@@ -51,11 +45,11 @@ public class StatisticsDataService {
 
 		HashMap<String, HashMap<Integer, Integer>> resultAux = new HashMap<String, HashMap<Integer, Integer>>();
 		for (Ticket ticket : tickectsCollection) {
-			
+
 			Calendar ticketCalendar = Calendar.getInstance();
 			ticketCalendar.setTime(ticket.getCreationDate());
 			Integer ticketMonth = ticketCalendar.get(Calendar.MONTH);
-			
+
 			for (Shopping shopping : ticket.getShoppingList()) {
 
 				Article articleAux = shopping.getArticle();
@@ -70,13 +64,12 @@ public class StatisticsDataService {
 					if (!mapAux.containsKey(ticketMonth)) {
 						mapAux.put(ticketMonth, +shopping.getAmount());
 					} else {
-						mapAux.put(ticketMonth,
-								((int) mapAux.get(ticketMonth)) + shopping.getAmount());
+						mapAux.put(ticketMonth, ((int) mapAux.get(ticketMonth)) + shopping.getAmount());
 					}
 				}
 			}
 		}
-		
+
 		for (Map.Entry<String, HashMap<Integer, Integer>> articleData : resultAux.entrySet()) {
 
 			List<Integer> numArticlePerMonthCollection = new ArrayList<Integer>();
@@ -98,4 +91,36 @@ public class StatisticsDataService {
 
 		return result;
 	}
+
+	public List<NumProductsSoldDto> GetNumProductsSold(Date initDate, Date endDate) {
+
+		List<NumProductsSoldDto> result = new ArrayList<NumProductsSoldDto>();
+
+		List<Ticket> tickectsCollection = ticketRepository.findByCreationDateBetween(initDate, endDate);
+
+		HashMap<String, Integer> mapAux = new HashMap<String, Integer>();
+		for (Ticket ticket : tickectsCollection) {
+
+			for (Shopping shopping : ticket.getShoppingList()) {
+
+				Article articleAux = shopping.getArticle();
+				if (!mapAux.containsKey(articleAux.getReference())) {
+
+					mapAux.put(articleAux.getReference(), shopping.getAmount());
+
+				} else {
+
+					mapAux.put(articleAux.getReference(),
+							((int) mapAux.get(articleAux.getReference())) + shopping.getAmount());
+
+				}
+			}
+		}
+		for (Map.Entry<String,Integer> articleData : mapAux.entrySet()) {
+			result.add(new NumProductsSoldDto(articleData.getValue(),articleData.getKey()));
+		}
+
+		return result;
+	}
+
 }
