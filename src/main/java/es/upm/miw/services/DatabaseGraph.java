@@ -2,133 +2,132 @@ package es.upm.miw.services;
 
 import java.util.List;
 
-import es.upm.miw.documents.core.Article;
-import es.upm.miw.documents.core.CashMovement;
-import es.upm.miw.documents.core.CashierClosure;
-import es.upm.miw.documents.core.Invoice;
-import es.upm.miw.documents.core.Offer;
-import es.upm.miw.documents.core.Provider;
-import es.upm.miw.documents.core.Shopping;
-import es.upm.miw.documents.core.Ticket;
-import es.upm.miw.documents.core.Token;
-import es.upm.miw.documents.core.User;
-import es.upm.miw.documents.core.Voucher;
+import es.upm.miw.documents.core.*;
 
 public class DatabaseGraph {
 
-	private List<User> userList;
+    private List<User> userList;
 
-	private List<Token> tokenList;
+    private List<Token> tokenList;
 
-	private List<Provider> providerList;
+    private List<Provider> providerList;
 
-	private List<Article> articleList;
+    private List<Article> articleList;
 
-	private List<Voucher> voucherList;
+    private List<Voucher> voucherList;
 
-	private List<CashMovement> cashMovementList;
+    private List<CashMovement> cashMovementList;
 
-	private List<Ticket> ticketList;
+    private List<Ticket> ticketList;
 
-	private List<Shopping> shoppingList;
+    private List<Shopping> shoppingList;
 
-	private List<Invoice> invoiceList;
+    private List<Invoice> invoiceList;
 
-	private List<CashierClosure> cashierClosureList;
+    private List<CashierClosure> cashierClosureList;
 
-	private List<Offer> offerList;
+    private List<Offer> offerList;
 
-	public DatabaseGraph() {
-		// Empty for framework
-	}
-	
+    private List<Scheduler> schedulerList;
 
-	public List<Offer> getOfferList() {
-		return offerList;
-	}
+    public DatabaseGraph() {
+        // Empty for framework
+    }
 
-	public void setOfferList(List<Offer> offerList) {
-		this.offerList = offerList;
-	}
 
-	public List<User> getUserList() {
-		return userList;
-	}
+    public List<Offer> getOfferList() {
+        return offerList;
+    }
 
-	public void setUserList(List<User> userList) {
-		this.userList = userList;
-	}
+    public void setOfferList(List<Offer> offerList) {
+        this.offerList = offerList;
+    }
 
-	public List<Token> getTokenList() {
-		return tokenList;
-	}
+    public List<User> getUserList() {
+        return userList;
+    }
 
-	public void setTokenList(List<Token> tokenList) {
-		this.tokenList = tokenList;
-	}
+    public void setUserList(List<User> userList) {
+        this.userList = userList;
+    }
 
-	public List<Provider> getProviderList() {
-		return providerList;
-	}
+    public List<Token> getTokenList() {
+        return tokenList;
+    }
 
-	public void setProviderList(List<Provider> providerList) {
-		this.providerList = providerList;
-	}
+    public void setTokenList(List<Token> tokenList) {
+        this.tokenList = tokenList;
+    }
 
-	public List<Article> getArticleList() {
-		return articleList;
-	}
+    public List<Provider> getProviderList() {
+        return providerList;
+    }
 
-	public void setArticleList(List<Article> articleList) {
-		this.articleList = articleList;
-	}
+    public void setProviderList(List<Provider> providerList) {
+        this.providerList = providerList;
+    }
 
-	public List<Voucher> getVoucherList() {
-		return voucherList;
-	}
+    public List<Article> getArticleList() {
+        return articleList;
+    }
 
-	public void setVoucherList(List<Voucher> voucherList) {
-		this.voucherList = voucherList;
-	}
+    public void setArticleList(List<Article> articleList) {
+        this.articleList = articleList;
+    }
 
-	public List<CashMovement> getCashMovementList() {
-		return cashMovementList;
-	}
+    public List<Voucher> getVoucherList() {
+        return voucherList;
+    }
 
-	public void setCashMovementList(List<CashMovement> cashMovementList) {
-		this.cashMovementList = cashMovementList;
-	}
+    public void setVoucherList(List<Voucher> voucherList) {
+        this.voucherList = voucherList;
+    }
 
-	public List<Ticket> getTicketList() {
-		return ticketList;
-	}
+    public List<CashMovement> getCashMovementList() {
+        return cashMovementList;
+    }
 
-	public void setTicketList(List<Ticket> ticketList) {
-		this.ticketList = ticketList;
-	}
+    public void setCashMovementList(List<CashMovement> cashMovementList) {
+        this.cashMovementList = cashMovementList;
+    }
 
-	public List<Shopping> getShoppingList() {
-		return shoppingList;
-	}
+    public List<Ticket> getTicketList() {
+        return ticketList;
+    }
 
-	public void setShoppingList(List<Shopping> shoppingList) {
-		this.shoppingList = shoppingList;
-	}
+    public void setTicketList(List<Ticket> ticketList) {
+        this.ticketList = ticketList;
+    }
 
-	public List<Invoice> getInvoiceList() {
-		return invoiceList;
-	}
+    public List<Shopping> getShoppingList() {
+        return shoppingList;
+    }
 
-	public void setInvoiceList(List<Invoice> invoiceList) {
-		this.invoiceList = invoiceList;
-	}
+    public void setShoppingList(List<Shopping> shoppingList) {
+        this.shoppingList = shoppingList;
+    }
 
-	public List<CashierClosure> getCashierClosureList() {
-		return cashierClosureList;
-	}
+    public List<Invoice> getInvoiceList() {
+        return invoiceList;
+    }
 
-	public void setCashierClosureList(List<CashierClosure> cashierClosureList) {
-		this.cashierClosureList = cashierClosureList;
-	}
+    public void setInvoiceList(List<Invoice> invoiceList) {
+        this.invoiceList = invoiceList;
+    }
 
+    public List<CashierClosure> getCashierClosureList() {
+        return cashierClosureList;
+    }
+
+    public void setCashierClosureList(List<CashierClosure> cashierClosureList) {
+        this.cashierClosureList = cashierClosureList;
+    }
+
+    public List<Scheduler> getSchedulerList() {
+        return schedulerList;
+    }
+
+    public void setSchedulerList(List<Scheduler> schedulerList) {
+        this.schedulerList = schedulerList;
+    }
 }

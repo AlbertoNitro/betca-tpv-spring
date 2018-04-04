@@ -17,7 +17,7 @@ public class SchedulerDto extends SchedulerMinimumDto {
         //Empty for framework
     }
 
-    private SchedulerDto(Scheduler scheduler) {
+    public SchedulerDto(Scheduler scheduler) {
         super(scheduler.getId(), scheduler.getDateTime(), scheduler.getTitle());
         this.description = scheduler.getDescription();
     }
