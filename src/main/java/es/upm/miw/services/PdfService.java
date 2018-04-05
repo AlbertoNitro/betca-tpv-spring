@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import es.upm.miw.documents.core.Article;
 import es.upm.miw.documents.core.Budget;
 import es.upm.miw.documents.core.Invoice;
+import es.upm.miw.documents.core.Reservation;
 import es.upm.miw.documents.core.Shopping;
 import es.upm.miw.documents.core.ShoppingState;
 import es.upm.miw.documents.core.Ticket;
@@ -126,6 +127,40 @@ public class PdfService {
         pdf.paragraphEmphasized("Gracias por usar nuestros servicios.");
         if (notCommitted) {
             pdf.qrCode(ticket.getReference());
+        }
+
+        return pdf.build();
+    }
+    
+    public Optional<byte[]> generateReservation(Reservation reservation) {
+        final String path = "/reservations/reservation-" + reservation.getId();
+        final int INCREMENTAL_HEIGHT = 11;
+        boolean notCommitted = false;
+        PdfTicketBuilder pdf = this.addCompanyDetails(path, INCREMENTAL_HEIGHT + reservation.getShoppingList().length);
+
+        pdf.line().paragraphEmphasized("RESERVATION");
+        pdf.barCode(reservation.getId()).line();
+        SimpleDateFormat formatter = new SimpleDateFormat(DATE_FORMAT);
+        pdf.paragraphEmphasized(formatter.format(reservation.getCreationDate()));
+        pdf.tableColumnsSizes(TABLE_COLUMNS_SIZES).tableColumnsHeader(TABLE_COLUMNS_HEADERS);
+        for (int i = 0; i < reservation.getShoppingList().length; i++) {
+            Shopping shopping = reservation.getShoppingList()[i];
+            String state = "";
+            if (shopping.getShoppingState() != ShoppingState.COMMITTED) {
+                state = "N";
+                notCommitted = true;
+            }
+
+            pdf.tableCell(String.valueOf(i + 1), shopping.getDescription(), "" + shopping.getAmount(),
+                    shopping.getDiscount().setScale(2, RoundingMode.HALF_UP) + "%",
+                    shopping.getShoppingTotal().setScale(2, RoundingMode.HALF_UP) + "€", state);
+
+        }
+        this.totalPrice(pdf, reservation.getTicketTotal());
+        pdf.line().paragraph("Periodo de reserva: 15 dias a partir de la fecha de la reserva");
+        pdf.paragraphEmphasized("Gracias por usar nuestros servicios.");
+        if (notCommitted) {
+            pdf.qrCode(reservation.getReference());
         }
 
         return pdf.build();
