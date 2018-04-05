@@ -10,6 +10,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import es.upm.miw.documents.core.Role;
 import es.upm.miw.dtos.UserDto;
 
 @RunWith(SpringRunner.class)
@@ -53,5 +54,55 @@ public class UserControllerIT {
 	public void testExistsMobileTrue() {
 		assertTrue(userController.existsMobile("666666001"));
 	}
-
+	
+	@Test
+	public void testIsRoleTrue() {
+		assertTrue(userController.isRole("666666000", Role.ADMIN));
+	}
+	
+	@Test
+	public void testIsRoleFalse() {
+		assertFalse(userController.isRole("666666001", Role.ADMIN));
+	}
+	
+	@Test
+	public void testIsAdminTrue() {
+		assertTrue(userController.isAdmin("666666000"));
+	}
+	
+	@Test
+	public void testIsAdminFalse() {
+		assertFalse(userController.isAdmin("666666001"));
+	}
+	
+	@Test
+	public void testIsManagerTrue() {
+		assertTrue(userController.isManager("666666000"));
+	}
+	
+	@Test
+	public void testIsManagerFalse() {
+		assertFalse(userController.isManager("666666002"));
+	}
+	
+	@Test
+	public void testIsOperatorTrue() {
+		assertTrue(userController.isOperator("666666000"));
+	}
+	
+	@Test
+	public void testIsOperatorFalse() {
+		assertFalse(userController.isOperator("666666002"));
+	}
+	
+	@Test
+	public void testIsCustormerTrue() {
+		assertTrue(userController.isCustormer("666666002"));
+	}
+	
+	@Test
+	public void testIsCustormerFalse() {
+		assertFalse(userController.isCustormer("666666000"));
+	}
+	
 }
