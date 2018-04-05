@@ -9,7 +9,8 @@ import org.junit.runners.Suite.SuiteClasses;
     BudgetTest.class,
     EncryptTest.class,
     ShoppingTest.class,
-    TicketTest.class
+    TicketTest.class,
+    UserTest.class
 })
 public class AllMiwDocumentsCoreTests {
 
