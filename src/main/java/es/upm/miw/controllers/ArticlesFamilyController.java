@@ -17,6 +17,7 @@ import es.upm.miw.dtos.ArticlesFamilyDto;
 import es.upm.miw.repositories.core.ArticleRepository;
 import es.upm.miw.repositories.core.ArticlesFamilyRepository;
 import es.upm.miw.repositories.core.FamilyArticleRepository;
+import es.upm.miw.repositories.core.FamilyCompositeRepository;
 
 @Controller
 public class ArticlesFamilyController {
@@ -28,6 +29,9 @@ public class ArticlesFamilyController {
 
     @Autowired
     private FamilyArticleRepository familyArticleRepository;
+    
+    @Autowired
+    private FamilyCompositeRepository familyCompositeRepository;
 
     @Autowired
     private ArticleRepository articlesRepository;
@@ -129,6 +133,17 @@ public class ArticlesFamilyController {
             Optional.empty();
         }
         return Optional.of(new ArticleDto(familyArticle.getArticle()));
+    }
+
+    public Optional<String> updateReferenceAndDescription(String id, ArticlesFamilyDto articlesFamilyDto) {
+        FamilyComposite family = this.familyCompositeRepository.findOne(id);
+        if (family == null) {
+            Optional.of("family Id not found. " + id);
+        }
+        family.setReference(articlesFamilyDto.getReference());
+        family.setDescription(articlesFamilyDto.getDescription());
+        this.familyCompositeRepository.save(family);
+        return Optional.empty();
     }
 
 }
