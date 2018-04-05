@@ -15,6 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import es.upm.miw.documents.core.Role;
 import es.upm.miw.dtos.UserDto;
 
 @RunWith(SpringRunner.class)
@@ -45,7 +46,25 @@ public class UserResourceFunctionalTesting {
         this.userDto.setPassword(null);
         restService.loginAdmin().restBuilder().path(UserResource.USERS).body(this.userDto).post().build();
     }
-
+    
+    @Test
+    public void testCreateUserAdmin() {
+        this.userDto.setRoles(new Role[] { Role.ADMIN });
+        restService.loginAdmin().restBuilder().path(UserResource.USERS).body(this.userDto).post().build();
+    }
+    
+    @Test
+    public void testCreateUserSetRoles() {
+        this.userDto.setRoles(new Role[] { Role.ADMIN, Role.MANAGER, Role.OPERATOR });
+        restService.loginAdmin().restBuilder().path(UserResource.USERS).body(this.userDto).post().build();
+    }
+    
+    @Test
+    public void testCreateUserRolesSetNull() {
+        this.userDto.setRoles(new Role[] {});
+        restService.loginAdmin().restBuilder().path(UserResource.USERS).body(this.userDto).post().build();
+    }
+    
     @Test
     public void testCreateCustomerWithoutUserException() {
         thrown.expect(new HttpMatcher(HttpStatus.BAD_REQUEST));
