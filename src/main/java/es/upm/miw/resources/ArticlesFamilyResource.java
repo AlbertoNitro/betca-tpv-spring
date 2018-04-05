@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -73,7 +74,7 @@ public class ArticlesFamilyResource {
     }
 
     @PostMapping
-    public void crete(@RequestBody ArticlesFamilyDto articlesFamilyDto) throws ArticlesFamilyCreationException {
+    public void create(@RequestBody ArticlesFamilyDto articlesFamilyDto) throws ArticlesFamilyCreationException {
         if (articlesFamilyDto.getFamilyType().equals(FamilyType.ARTICLE)) {
             if (articlesFamilyDto.getArticleId() == null) {
                 throw new ArticlesFamilyCreationException("Article id field must have value");
@@ -89,6 +90,21 @@ public class ArticlesFamilyResource {
         Optional<String> error = articlesFamilyController.create(articlesFamilyDto);
         if (error.isPresent()) {
             throw new ArticlesFamilyCreationException(error.get());
+        }
+    }
+
+    @PatchMapping(value = ID_ID)
+    public void updateReferenceAndDescription(@PathVariable String id, @RequestBody ArticlesFamilyDto articlesFamilyDto)
+            throws ArticlesFamilyNotFoudException, ArticlesFamilyCreationException {
+        if (articlesFamilyDto.getDescription() == null) {
+            throw new ArticlesFamilyCreationException("Description field must have value");
+        }
+        if (articlesFamilyDto.getReference() == null) {
+            throw new ArticlesFamilyCreationException("Reference field must have value");
+        }
+        Optional<String> error = articlesFamilyController.updateReferenceAndDescription(id, articlesFamilyDto);
+        if (error.isPresent()) {
+            throw new ArticlesFamilyNotFoudException(error.get());
         }
 
     }
