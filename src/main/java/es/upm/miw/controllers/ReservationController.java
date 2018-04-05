@@ -1,5 +1,6 @@
 package es.upm.miw.controllers;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
@@ -67,8 +68,18 @@ public class ReservationController {
             shoppingList.add(shopping);
             article.setStock(article.getStock() - shoppingDto.getAmount());
             this.articleRepository.save(article);
+            
         }
+        
+       
+        
         Reservation reservation = new Reservation(this.nextId(), reservationCreationDto.getCash(), shoppingList.toArray(new Shopping[0]), user);
+        BigDecimal depositAmount = new BigDecimal(0);
+        BigDecimal deposit = depositAmount.add(reservationCreationDto.getCard()).add(reservationCreationDto.getCash()).add(reservationCreationDto.getVoucher());
+        //totaltotalPrice = totalPrice.add(withTax, new MathContext(5));Price = totalPrice.add(withTax, new MathContext(5)); = totalPrice.add(withTax, new MathContext(5));
+        reservation.setCashDeposited(deposit);
+        System.out.println("El cash: " + reservationCreationDto.getCash());
+        System.out.println("El valor de cashDeposit es " + reservation.getCashDeposited());
         this.reservationRepository.save(reservation);
         return Optional.of(reservation);
     }
@@ -81,5 +92,4 @@ public class ReservationController {
             return Optional.empty();
         }
     }
-
 }

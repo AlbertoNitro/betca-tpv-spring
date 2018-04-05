@@ -156,6 +156,7 @@ public class PdfService {
                     shopping.getShoppingTotal().setScale(2, RoundingMode.HALF_UP) + "€", state);
 
         }
+        this.reservationAmount(pdf, reservation.getCashDeposited());
         this.totalPrice(pdf, reservation.getTicketTotal());
         pdf.line().paragraph("Periodo de reserva: 15 dias a partir de la fecha de la reserva");
         pdf.paragraphEmphasized("Gracias por usar nuestros servicios.");
@@ -211,6 +212,11 @@ public class PdfService {
         PdfTicketBuilder pdf = new PdfTicketBuilder(path, lines);
         pdf.addImage(this.logo).paragraphEmphasized(this.name).paragraphEmphasized("Tfn: " + this.phone);
         pdf.paragraph("NIF: " + this.nif + "   -   " + this.address).paragraph("Web: " + this.web + "   -   Email: " + this.email);
+        return pdf;
+    }
+    
+    private PdfTicketBuilder reservationAmount(PdfTicketBuilder pdf, BigDecimal amount) {
+        pdf.tableColspanRight("Reservation Amount: " + amount.setScale(2, RoundingMode.HALF_UP) + "€");
         return pdf;
     }
 
