@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -154,34 +155,34 @@ public class DatabaseSeederService {
     }
 
     protected void expandAllSizesAndCreateFamilyAndSaveAll(DatabaseGraph tpvGraph) {
-        FamilyComposite actualFamily = null; 
-        
+        FamilyComposite root = new FamilyComposite(FamilyType.ARTICLES, "root", "Root");
+        root.setId("root");
+        FamilyComposite actualFamily = null;
+
         for (Article article : tpvGraph.getArticleList()) {
 
             if (article.getCode().split(":").length > 1) {
                 if (actualFamily == null) {
                     actualFamily = new FamilyComposite(FamilyType.ARTICLES, article.getCode().split(":")[0],
                             article.getCode().split(":")[0]);
-                    System.out.println("------> se inicia familia..." + actualFamily);
                 } else if (!actualFamily.getReference().equals(article.getCode().split(":")[0])) {
                     this.articlesFamilyRepository.save(actualFamily);
-                    System.out.println("------> se finaliza familia..." + actualFamily);
+                    root.add(actualFamily);
                     actualFamily = new FamilyComposite(FamilyType.ARTICLES, article.getCode().split(":")[0],
                             article.getCode().split(":")[0]);
-                    System.out.println("------> se inicia familia..." + actualFamily);
                 }
             } else {
                 if (actualFamily != null) {
                     this.articlesFamilyRepository.save(actualFamily);
-                    System.out.println("------> se finaliza familia..." + actualFamily);
+                    root.add(actualFamily);
                     actualFamily = null;
                 }
             }
 
             if (article.getReference() != null && article.getReference().indexOf("[") != -1) {
-                List<Article> articleExpandList = this.expandArticle(article);
-                FamilyComposite familyCompositeSizes = new FamilyComposite(FamilyType.SIZES, this.extractBase(article.getReference()),
-                        this.extractBase(article.getDescription()));
+                List<Article> articleExpandList = this.expandArticlewithSizes(article);
+                FamilyComposite familyCompositeSizes = new FamilyComposite(FamilyType.SIZES, this.extractBaseWithoutSizes(article.getReference()),
+                        this.extractBaseWithoutSizes(article.getDescription()));
                 for (Article articleExpand : articleExpandList) {
                     FamilyArticle familyArticle = new FamilyArticle(articleExpand);
                     this.articleRepository.save(articleExpand);
@@ -190,43 +191,63 @@ public class DatabaseSeederService {
                 }
                 this.articlesFamilyRepository.save(familyCompositeSizes);
                 if (actualFamily != null) {
-                    System.out.println("------> se añade familia..." + familyCompositeSizes.getReference());
                     actualFamily.add(familyCompositeSizes);
                 }
             } else {
                 this.articleRepository.save(article);
             }
         }
-        
+
         if (actualFamily != null) {
             this.articlesFamilyRepository.save(actualFamily);
-            System.out.println("------> se finaliza familia..." + actualFamily);
-
+            root.add(actualFamily);
         }
-
+        this.articlesFamilyRepository.delete("root");
+        this.articlesFamilyRepository.save(root);
     }
 
-    private String extractBase(String str) {
+    private String extractBaseWithoutSizes(String str) {
         return str.substring(0, str.indexOf("["));
     }
 
-    protected List<Article> expandArticle(Article article) {
+    protected List<Article> expandArticlewithSizes(Article article) {
+        List<String> sizesSML = Arrays.asList("XXS", "XS", "S", "M", "L", "XL", "XXL");
         List<Article> articlesExpanded = new ArrayList<>();
-        String articleReferenceBase = this.extractBase(article.getReference());
-        String articleDescriptionBase = this.extractBase(article.getDescription());
+        String articleReferenceBase = this.extractBaseWithoutSizes(article.getReference());
+        String articleDescriptionBase = this.extractBaseWithoutSizes(article.getDescription());
         String[] sizes = article.getReference().substring(article.getReference().indexOf("[") + 1, article.getReference().indexOf("]"))
                 .split(",");
         String[] pricesInString = article.getDescription()
                 .substring(article.getDescription().indexOf("[") + 1, article.getDescription().indexOf("]")).split(",");
         for (int i = 0; i < sizes.length; i++) {
             String subSizes[] = sizes[i].split(":");
-            for (int size = Integer.parseInt(subSizes[0]); size <= Integer.parseInt(subSizes[1]); size += Integer.parseInt(subSizes[2])) {
+            int start, incremento = 2, end;
+            boolean numeric;
+            if (subSizes.length > 2) {
+                incremento = Integer.parseInt(subSizes[2]);
+            }
+            if (sizesSML.contains(subSizes[0])) {
+                incremento = 1;
+                start = sizesSML.indexOf(subSizes[0]);
+                end = sizesSML.indexOf(subSizes[1]);
+                numeric = false;
+            } else {
+                start = Integer.parseInt(subSizes[0]);
+                end = Integer.parseInt(subSizes[1]);
+                numeric = true;
+            }
+            for (int size = start; size <= end; size += incremento) {
                 Article articleExpanded = new Article();
                 articleExpanded.setCode(this.createEan13());
-                articleExpanded.setReference(articleReferenceBase + "~T" + size);
-                articleExpanded.setDescription(articleDescriptionBase + " T" + size);
+                if (numeric) {
+                    articleExpanded.setReference(articleReferenceBase + "~T" + size);
+                    articleExpanded.setDescription(articleDescriptionBase + " T" + size);
+                } else {
+                    articleExpanded.setReference(articleReferenceBase + "~T" + sizesSML.get(size));
+                    articleExpanded.setDescription(articleDescriptionBase + " T" + sizesSML.get(size));
+                }
                 articleExpanded.setRetailPrice(new BigDecimal(pricesInString[i]));
-                articleExpanded.setStock(30);
+                articleExpanded.setStock(10);
                 articleExpanded.setProvider(article.getProvider());
                 articlesExpanded.add(articleExpanded);
             }
