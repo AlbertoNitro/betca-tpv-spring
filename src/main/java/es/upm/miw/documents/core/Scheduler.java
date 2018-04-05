@@ -3,6 +3,7 @@ package es.upm.miw.documents.core;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Objects;
 
@@ -75,9 +76,12 @@ public class Scheduler {
 
     @Override
     public String toString() {
+
+        String dateTimeString = new SimpleDateFormat("yyyy-MM-dd HH:mm").format(dateTime.getTime());
+
         return "Scheduler{" +
                 "id='" + id + '\'' +
-                ", dateTime=" + dateTime +
+                ", dateTime=" + dateTimeString +
                 ", title='" + title + '\'' +
                 ", description='" + description + '\'' +
                 '}';

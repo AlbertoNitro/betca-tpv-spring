@@ -11,6 +11,7 @@ import es.upm.miw.documents.core.FamilyComposite;
 import es.upm.miw.documents.core.Invoice;
 import es.upm.miw.documents.core.Offer;
 import es.upm.miw.documents.core.Provider;
+import es.upm.miw.documents.core.Scheduler;
 import es.upm.miw.documents.core.Shopping;
 import es.upm.miw.documents.core.Ticket;
 import es.upm.miw.documents.core.Token;
@@ -19,91 +20,49 @@ import es.upm.miw.documents.core.Voucher;
 
 public class DatabaseGraph {
 
-    private List<User> userList;
-
-    private List<Token> tokenList;
-
-    private List<Provider> providerList;
-
     private List<Article> articleList;
+
+    private List<CashMovement> cashMovementList;
+
+    private List<CashierClosure> cashierClosureList;
+
+    private List<Scheduler> schedulerList;
 
     private List<FamilyArticle> familyArticleList;
 
     private List<FamilyComposite> familyCompositeList;
 
-    private List<Voucher> voucherList;
-
-    private List<CashMovement> cashMovementList;
-
-    private List<Ticket> ticketList;
-
-    private List<Shopping> shoppingList;
-
     private List<Invoice> invoiceList;
-
-    private List<CashierClosure> cashierClosureList;
 
     private List<Offer> offerList;
 
+    private List<Provider> providerList;
+
+    private List<Ticket> ticketList;
+
+    private List<Token> tokenList;
+
+    private List<Shopping> shoppingList;
+
+    private List<User> userList;
+
+    private List<Voucher> voucherList;
+
     public DatabaseGraph() {
-        this.userList = new ArrayList<User>();
-
-        this.tokenList = new ArrayList<Token>();
-
-        this.providerList = new ArrayList<Provider>();
-
-        this.articleList = new ArrayList<Article>();
-
-        this.familyArticleList = new ArrayList<FamilyArticle>();
-
-        this.familyCompositeList = new ArrayList<FamilyComposite>();
-
-        this.voucherList = new ArrayList<Voucher>();
-
-        this.cashMovementList = new ArrayList<CashMovement>();
-
-        this.ticketList = new ArrayList<Ticket>();
-
-        this.shoppingList = new ArrayList<Shopping>();
-
-        this.invoiceList = new ArrayList<Invoice>();
-
-        this.cashierClosureList = new ArrayList<CashierClosure>();
-
-        this.offerList = new ArrayList<Offer>();
-
-    }
-
-    public List<Offer> getOfferList() {
-        return offerList;
-    }
-
-    public void setOfferList(List<Offer> offerList) {
-        this.offerList = offerList;
-    }
-
-    public List<User> getUserList() {
-        return userList;
-    }
-
-    public void setUserList(List<User> userList) {
-        this.userList = userList;
-    }
-
-    public List<Token> getTokenList() {
-        return tokenList;
-    }
-
-    public void setTokenList(List<Token> tokenList) {
-        this.tokenList = tokenList;
-    }
-
-    public List<Provider> getProviderList() {
-        return providerList;
-    }
-
-    public void setProviderList(List<Provider> providerList) {
-        this.providerList = providerList;
+        this.articleList = new ArrayList<>();
+        this.cashierClosureList = new ArrayList<>();
+        this.cashMovementList = new ArrayList<>();
+        this.familyArticleList = new ArrayList<>();
+        this.familyCompositeList = new ArrayList<>();
+        this.invoiceList = new ArrayList<>();
+        this.offerList = new ArrayList<>();
+        this.providerList = new ArrayList<>();
+        this.schedulerList = new ArrayList<>();
+        this.shoppingList = new ArrayList<>();
+        this.ticketList = new ArrayList<>();
+        this.tokenList = new ArrayList<>();
+        this.userList = new ArrayList<>();
+        this.voucherList = new ArrayList<>();
     }
 
     public List<Article> getArticleList() {
@@ -112,6 +71,30 @@ public class DatabaseGraph {
 
     public void setArticleList(List<Article> articleList) {
         this.articleList = articleList;
+    }
+
+    public List<CashMovement> getCashMovementList() {
+        return cashMovementList;
+    }
+
+    public void setCashMovementList(List<CashMovement> cashMovementList) {
+        this.cashMovementList = cashMovementList;
+    }
+
+    public List<CashierClosure> getCashierClosureList() {
+        return cashierClosureList;
+    }
+
+    public void setCashierClosureList(List<CashierClosure> cashierClosureList) {
+        this.cashierClosureList = cashierClosureList;
+    }
+
+    public List<Scheduler> getSchedulerList() {
+        return schedulerList;
+    }
+
+    public void setSchedulerList(List<Scheduler> schedulerList) {
+        this.schedulerList = schedulerList;
     }
 
     public List<FamilyArticle> getFamilyArticleList() {
@@ -130,20 +113,28 @@ public class DatabaseGraph {
         this.familyCompositeList = familyCompositeList;
     }
 
-    public List<Voucher> getVoucherList() {
-        return voucherList;
+    public List<Invoice> getInvoiceList() {
+        return invoiceList;
     }
 
-    public void setVoucherList(List<Voucher> voucherList) {
-        this.voucherList = voucherList;
+    public void setInvoiceList(List<Invoice> invoiceList) {
+        this.invoiceList = invoiceList;
     }
 
-    public List<CashMovement> getCashMovementList() {
-        return cashMovementList;
+    public List<Offer> getOfferList() {
+        return offerList;
     }
 
-    public void setCashMovementList(List<CashMovement> cashMovementList) {
-        this.cashMovementList = cashMovementList;
+    public void setOfferList(List<Offer> offerList) {
+        this.offerList = offerList;
+    }
+
+    public List<Provider> getProviderList() {
+        return providerList;
+    }
+
+    public void setProviderList(List<Provider> providerList) {
+        this.providerList = providerList;
     }
 
     public List<Ticket> getTicketList() {
@@ -154,6 +145,14 @@ public class DatabaseGraph {
         this.ticketList = ticketList;
     }
 
+    public List<Token> getTokenList() {
+        return tokenList;
+    }
+
+    public void setTokenList(List<Token> tokenList) {
+        this.tokenList = tokenList;
+    }
+
     public List<Shopping> getShoppingList() {
         return shoppingList;
     }
@@ -162,20 +161,20 @@ public class DatabaseGraph {
         this.shoppingList = shoppingList;
     }
 
-    public List<Invoice> getInvoiceList() {
-        return invoiceList;
+    public List<User> getUserList() {
+        return userList;
     }
 
-    public void setInvoiceList(List<Invoice> invoiceList) {
-        this.invoiceList = invoiceList;
+    public void setUserList(List<User> userList) {
+        this.userList = userList;
     }
 
-    public List<CashierClosure> getCashierClosureList() {
-        return cashierClosureList;
+    public List<Voucher> getVoucherList() {
+        return voucherList;
     }
 
-    public void setCashierClosureList(List<CashierClosure> cashierClosureList) {
-        this.cashierClosureList = cashierClosureList;
+    public void setVoucherList(List<Voucher> voucherList) {
+        this.voucherList = voucherList;
     }
 
 }

@@ -33,10 +33,12 @@ import es.upm.miw.repositories.core.FamilyArticleRepository;
 import es.upm.miw.repositories.core.InvoiceRepository;
 import es.upm.miw.repositories.core.OfferRepository;
 import es.upm.miw.repositories.core.ProviderRepository;
+import es.upm.miw.repositories.core.SchedulerRepository;
 import es.upm.miw.repositories.core.TicketRepository;
 import es.upm.miw.repositories.core.UserRepository;
 import es.upm.miw.repositories.core.VoucherRepository;
 import es.upm.miw.utils.Barcode;
+
 
 @Service
 public class DatabaseSeederService {
@@ -89,7 +91,10 @@ public class DatabaseSeederService {
     @Autowired
     private FamilyArticleRepository familyArticleRepository;
 
-    private Long ean13;
+    @Autowired
+	private SchedulerRepository schedulerRepository;
+
+    private long ean13;
 
     @PostConstruct
     public void seedDatabase() {
@@ -110,7 +115,7 @@ public class DatabaseSeederService {
             this.ean13 = Long.parseLong(article.getCode().substring(0, 12));
         }
     }
-
+    
     public String createEan13() {
         this.ean13++;
         return new Barcode().generateEan13code(this.ean13);
@@ -146,6 +151,7 @@ public class DatabaseSeederService {
         this.ticketRepository.save(tpvGraph.getTicketList());
         this.invoiceRepository.save(tpvGraph.getInvoiceList());
         this.offerRepository.save(tpvGraph.getOfferList());
+        this.schedulerRepository.save(tpvGraph.getSchedulerList());
         // -----------------------------------------------------------------------
 
         Logger.getLogger(this.getClass()).warn("------------------------- Seed: " + ymlFileName + "-----------");
@@ -204,6 +210,7 @@ public class DatabaseSeederService {
     public void deleteAllAndCreateAdmin() {
         Logger.getLogger(this.getClass()).warn("------------------------- delete All And Create Admin-----------");
         // Delete Repositories -----------------------------------------------------
+        this.schedulerRepository.deleteAll();
         this.userRepository.deleteAll();
         this.ticketRepository.deleteAll();
         this.familyArticleRepository.deleteAll();
