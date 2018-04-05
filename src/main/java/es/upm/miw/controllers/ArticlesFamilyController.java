@@ -57,7 +57,9 @@ public class ArticlesFamilyController {
 
         for (ArticlesFamily articlesFamily : articlesFamilyList) {
             if (!ROOT.equals(articlesFamily.getId())) {
-                articlesFamiliaOutputDtoList.add(new ArticlesFamilyDto(articlesFamily.getId(), articlesFamily.getDescription()));
+                ArticlesFamilyDto articlesFamilyDto = new ArticlesFamilyDto(articlesFamily.getId(), articlesFamily.getDescription());
+                articlesFamilyDto.setFamilyType(articlesFamily.getFamilyType());
+                articlesFamiliaOutputDtoList.add(articlesFamilyDto);
             }
         }
         return articlesFamiliaOutputDtoList;
