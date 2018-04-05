@@ -22,6 +22,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import es.upm.miw.documents.core.Ticket;
 import es.upm.miw.dtos.HistoricalProductOutPutDto;
+import es.upm.miw.dtos.IncomeComparision;
 import es.upm.miw.dtos.NumProductsSoldDto;
 import es.upm.miw.dtos.ShoppingDto;
 import es.upm.miw.dtos.TicketCreationInputDto;
@@ -127,6 +128,38 @@ public class TicketControllerIT {
 					result = true;
 				} else
 					result = false;
+			}
+		}
+		assertTrue(result);
+	}
+	
+	@Test
+	public void TestGetIncomeComparisionData() {
+		Boolean result = false;
+		Calendar today = Calendar.getInstance();
+		today.set(Calendar.HOUR_OF_DAY, 0);
+		today.add(Calendar.DATE, 7);
+		today.add(Calendar.MONTH, -1);
+		Date initDate = today.getTime();
+		today.add(Calendar.MONTH, 1);
+		Date endDate = today.getTime();
+
+		List<IncomeComparision> data = ticketController.getIncomeComparisionData(initDate, endDate);
+
+		List<String> articleNamesCollection = Arrays.asList("ar11", "ar12", "ar13");
+		float expectedIncome = 120;
+		float expectedProductPrice = 150;
+		for (IncomeComparision item : data) {
+			if (articleNamesCollection.contains(item.getProductName())) {
+				if (item.getProductName().equals("ar13") && item.getIncome().equals(expectedIncome)
+						&& item.getProductPrice().equals(expectedProductPrice)) {
+					result = true;
+				} else if (item.getIncome().equals(item.getProductPrice())) {
+					result = true;
+				} else {
+					result = false;
+					break;
+				}
 			}
 		}
 		assertTrue(result);
