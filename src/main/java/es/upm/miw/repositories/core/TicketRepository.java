@@ -12,6 +12,8 @@ import es.upm.miw.documents.core.User;
 public interface TicketRepository extends MongoRepository<Ticket, String> {
 
     Ticket findByReference(String reference);
+    
+    Ticket findById(String id);
 
     List<Ticket> findByUserOrderByCreationDateDesc(User user);
 
