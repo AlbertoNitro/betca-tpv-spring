@@ -43,16 +43,17 @@ public class DatabaseSeederServiceIT {
 
     @Test
     public void testExpandArticle() {
-        Article article = new Article("1", "Pantalón Gris[15.99,17.99,19,99]", BigDecimal.TEN, "Pant.Gris[2:16:2,18:26:2,28:40:2]", 5, null, false);
-        System.out.println(this.databaseSeederService.expandArticle(article));
+        Article article = new Article("1", "Pantalón Gris[15.99,17.99,19,99]", BigDecimal.TEN, "Pant.Gris[2:16:2,18:26:2,28:40:2]", 5, null,
+                false);
+        System.out.println(this.databaseSeederService.expandArticlewithSizes(article));
 
     }
-    
+
     @Test
     public void testCreateEan13() {
         // System.out.println(this.databaseSeederService.createEan13());
     }
-    
+
     @Test
     public void testSeedDatabase() throws IOException {
         this.databaseSeederService.deleteAllAndCreateAdmin();
