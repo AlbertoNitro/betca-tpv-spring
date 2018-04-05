@@ -61,13 +61,16 @@ public class InvoiceController {
             for (Shopping shopping : ticket.getShoppingList()) {
                 switch (shopping.getArticle().getTax()) {
                 case GENERAL:
-                    taxBaseTotal = taxBaseTotal.add(shopping.getShoppingTotal().divide(ivaGeneral.add(uno), 4, RoundingMode.HALF_UP));
+                    taxBaseTotal = taxBaseTotal.add(shopping.getShoppingTotal().divide(ivaGeneral.add(uno), 4, RoundingMode.HALF_UP))
+                            .setScale(2, RoundingMode.HALF_UP);
                     break;
                 case REDUCED:
-                    taxBaseTotal = taxBaseTotal.add(shopping.getShoppingTotal().divide(ivaReduced.add(uno), 4, RoundingMode.HALF_UP));
+                    taxBaseTotal = taxBaseTotal.add(shopping.getShoppingTotal().divide(ivaReduced.add(uno), 4, RoundingMode.HALF_UP))
+                            .setScale(2, RoundingMode.HALF_UP);
                     break;
                 case SUPER_REDUCED:
-                    taxBaseTotal = taxBaseTotal.add(shopping.getShoppingTotal().divide(ivaSuperReduced.add(uno), 4, RoundingMode.HALF_UP));
+                    taxBaseTotal = taxBaseTotal.add(shopping.getShoppingTotal().divide(ivaSuperReduced.add(uno), 4, RoundingMode.HALF_UP))
+                            .setScale(2, RoundingMode.HALF_UP);
                     break;
                 case FREE:
                     break;
@@ -75,8 +78,8 @@ public class InvoiceController {
                     assert false;
                 }
             }
-
-            Invoice invoice = new Invoice(this.nextInvoiceId(), taxBaseTotal, ticket.getTicketTotal().subtract(taxBaseTotal), user, ticket);
+            Invoice invoice = new Invoice(this.nextInvoiceId(), taxBaseTotal,
+                    ticket.getTicketTotal().subtract(taxBaseTotal).setScale(2, RoundingMode.HALF_UP), user, ticket);
             this.invoiceRepository.save(invoice);
 
             return pdfService.generateInvioce(invoice);
@@ -127,17 +130,16 @@ public class InvoiceController {
         }
         return invoiceListDto;
     }
-    
+
     public InvoiceOutputDto findByTicket(String ticketId) {
         Ticket ticket = this.ticketRepository.findOne(ticketId);
         if (ticket != null) {
             Invoice invoice = this.invoiceRepository.findByTicket(ticket);
-            if(invoice!=null) {
+            if (invoice != null) {
                 return new InvoiceOutputDto(invoice);
             }
         }
         return new InvoiceOutputDto();
     }
-
 
 }

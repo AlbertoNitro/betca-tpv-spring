@@ -13,7 +13,7 @@ public interface ArticleRepository extends MongoRepository<Article, String> {
     ArticleDto findMinimumByCode(String code);
     
     @Query(value = "{}", fields = "{'description' : 1}")
-    List<ArticleDto> findAllMinimum();
+    List<Article> findAllMinimum();
 
     Article findArticleByCode(String string);
   
@@ -31,5 +31,7 @@ public interface ArticleRepository extends MongoRepository<Article, String> {
 
     List<Article> findByReferenceLikeIgnoreCaseAndDescriptionLikeIgnoreCaseAndProvider(String reference, String description,
             String provider);
+    
+    Article findFirstByCodeStartingWithOrderByCodeDesc(String code);
 
 }

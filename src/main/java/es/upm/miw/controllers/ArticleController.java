@@ -1,5 +1,6 @@
 package es.upm.miw.controllers;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -16,7 +17,9 @@ import es.upm.miw.repositories.core.ProviderRepository;
 @Controller
 public class ArticleController {
 
-    private static final String VARIOUS_CODE = "1";
+    private static final String VARIOUS_CODE = "1";    
+    private static final String VARIOUS_NAME = "Varios";
+    private static final BigDecimal VARIOUS_STOCK = new BigDecimal("100.00");
 
     @Autowired
     private ArticleRepository articleRepository;
@@ -34,6 +37,13 @@ public class ArticleController {
             try {
                 Double.parseDouble(code);
                 articleDto = this.articleRepository.findMinimumByCode(VARIOUS_CODE);
+                if (articleDto == null) { // SOLO ocurre una vez, después de vaciar la BD
+                    Provider provider = new Provider(VARIOUS_NAME, null, null, null, null, null);
+                    article = new Article(VARIOUS_CODE, VARIOUS_NAME, VARIOUS_STOCK, VARIOUS_NAME, 1000, provider, true);
+                    this.providerRepository.save(provider);
+                    this.articleRepository.save(article);
+                    articleDto = this.articleRepository.findMinimumByCode(VARIOUS_CODE);
+                }
             } catch (NumberFormatException nfe) {
                 // Nothing to do
             }
@@ -57,13 +67,12 @@ public class ArticleController {
     }
 
     public List<ArticleDto> readMinimumAll() {
-        return this.articleRepository.findAllMinimum();
-//        List<Article> articleList = this.articleRepository.findAll();
-//        List<ArticleDto> articleListDto = new ArrayList<ArticleDto>();
-//        for (Article articulo : articleList) {
-//            articleListDto.add(new ArticleDto(articulo.getCode(), articulo.getDescription()));
-//        }
-//        return articleListDto;
+        List<Article> articleList = this.articleRepository.findAll();
+        List<ArticleDto> articleListDto = new ArrayList<ArticleDto>();
+        for (Article articulo : articleList) {
+            articleListDto.add(new ArticleDto(articulo.getCode(), articulo.getDescription()));
+        }
+        return articleListDto;
     }
 
     public List<ArticleDto> readMinimumAllIncompletes() {
@@ -90,10 +99,10 @@ public class ArticleController {
         List<Article> articleList;
         List<ArticleDto> articleListDto = new ArrayList<ArticleDto>();
         if (provider == null) {
-            articleList= this.articleRepository.findByReferenceLikeIgnoreCaseAndDescriptionLikeIgnoreCase(reference, description);
+            articleList = this.articleRepository.findByReferenceLikeIgnoreCaseAndDescriptionLikeIgnoreCase(reference, description);
         } else {
-            articleList= this.articleRepository.findByReferenceLikeIgnoreCaseAndDescriptionLikeIgnoreCaseAndProvider(reference, description,
-                    provider);
+            articleList = this.articleRepository.findByReferenceLikeIgnoreCaseAndDescriptionLikeIgnoreCaseAndProvider(reference,
+                    description, provider);
         }
         for (Article article : articleList) {
             articleListDto.add(new ArticleDto(article));

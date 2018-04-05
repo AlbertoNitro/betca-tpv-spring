@@ -11,6 +11,10 @@ public class FamilyArticle extends ArticlesFamily {
     @DBRef
     private Article article;
 
+    
+    public FamilyArticle() {
+    }
+
     public FamilyArticle(Article article) {
         super(FamilyType.ARTICLE);
         this.article = article;
@@ -46,6 +50,10 @@ public class FamilyArticle extends ArticlesFamily {
 
     public Article getArticle() {
         return article;
+    }
+
+    public void setArticle(Article article) {
+        this.article = article;
     }
 
     @Override

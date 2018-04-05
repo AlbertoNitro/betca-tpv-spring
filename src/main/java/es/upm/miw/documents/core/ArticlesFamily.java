@@ -13,6 +13,9 @@ public abstract class ArticlesFamily {
 
     private FamilyType familyType;
 
+    public ArticlesFamily() {
+    }
+
     public ArticlesFamily(FamilyType familyType) {
         this.familyType = familyType;
     }
@@ -27,6 +30,10 @@ public abstract class ArticlesFamily {
 
     public FamilyType getFamilyType() {
         return familyType;
+    }
+
+    public void setFamilyType(FamilyType familyType) {
+        this.familyType = familyType;
     }
 
     public abstract String getReference();

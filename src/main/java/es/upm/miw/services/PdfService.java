@@ -7,7 +7,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Value;
+import javax.annotation.PostConstruct;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import es.upm.miw.documents.core.Article;
@@ -17,30 +19,41 @@ import es.upm.miw.documents.core.Shopping;
 import es.upm.miw.documents.core.ShoppingState;
 import es.upm.miw.documents.core.Ticket;
 import es.upm.miw.documents.core.Voucher;
+import es.upm.miw.repositories.core.PropertyRepository;
 import es.upm.miw.utils.Encrypting;
 
 @Service
 public class PdfService {
 
-    @Value("${miw.company.logo}")
+    public static String LOGO = "miw.company.logo";
+
+    public static String NAME = "miw.company.name";
+
+    public static String NIF = "miw.company.nif";
+
+    public static String PHONE = "miw.company.phone";
+
+    public static String ADDRESS = "miw.company.address";
+
+    public static String EMAIL = "miw.company.email";
+
+    public static String WEB = "miw.company.web";
+
+    @Autowired
+    private PropertyRepository propertyRepository;
+
     private String logo;
 
-    @Value("${miw.company.name}")
     private String name;
 
-    @Value("${miw.company.nif}")
     private String nif;
 
-    @Value("${miw.company.phone}")
     private String phone;
 
-    @Value("${miw.company.address}")
     private String address;
 
-    @Value("${miw.company.email}")
     private String email;
 
-    @Value("${miw.company.web}")
     private String web;
 
     private static final float[] TABLE_COLUMNS_SIZES = {20, 85, 20, 30, 40, 15};
@@ -52,6 +65,27 @@ public class PdfService {
     private static final String[] TABLE_COLUMNS_HEADERS_BUDGETS = {" ", "Desc.", "Ud.", "Dto.", "€"};
 
     private static final String DATE_FORMAT = "yyyy-MM-dd HH:mm";
+
+    @PostConstruct
+    public void constructor() {
+        if (this.propertyRepository.findOne(LOGO) == null) {
+            this.logo = "logo-upm.png";
+            this.name = "aster en Ingenieríeda Web. BETCA";
+            this.nif = "Q2818015F";
+            this.phone = "+34 913366000";
+            this.address = "Calle Alan Turing s/n, 28031 Madrid";
+            this.email = "miw@etsisi.upm.es";
+            this.web = "miw.etsisi.upm.es";
+        } else {
+            this.logo = this.propertyRepository.findOne(LOGO).getValue();
+            this.name = this.propertyRepository.findOne(NAME).getValue();
+            this.nif = this.propertyRepository.findOne(NIF).getValue();
+            this.phone = this.propertyRepository.findOne(PHONE).getValue();
+            this.address = this.propertyRepository.findOne(ADDRESS).getValue();
+            this.email = this.propertyRepository.findOne(EMAIL).getValue();
+            this.web = this.propertyRepository.findOne(WEB).getValue();
+        }
+    }
 
     public Optional<byte[]> generateLabels24(List<Article> articles) {
         final String path = "/labels/label24-" + new SimpleDateFormat("yyyyMMdd-HH-mm").format(new Date().getTime());
@@ -89,7 +123,7 @@ public class PdfService {
         }
         this.totalPrice(pdf, ticket.getTicketTotal());
         pdf.line().paragraph("Periodo de devolución o cambio: 15 dias a partir de la fecha del ticket");
-        pdf.paragraphEmphasized("Gracias por su compra");
+        pdf.paragraphEmphasized("Gracias por usar nuestros servicios.");
         if (notCommitted) {
             pdf.qrCode(ticket.getReference());
         }
@@ -115,6 +149,7 @@ public class PdfService {
         }
         this.totalPrice(pdf, budget.getBudgetTotal());
         pdf.line().paragraph("Este presupuesto es válido durante 15 días. A partir de esa fecha los precios pueden variar.");
+        pdf.paragraphEmphasized("Gracias por usar nuestros servicios.");
 
         return pdf.build();
     }
@@ -123,7 +158,7 @@ public class PdfService {
         final String path = "/vouchers/voucher-" + voucher.getId();
         PdfTicketBuilder pdf = this.addCompanyDetails(path, 2);
 
-        pdf.line().paragraphEmphasized("VOUCHER");
+        pdf.line().paragraphEmphasized("VALE");
         pdf.barCode(new Encrypting().encodeHexInBase64UrlSafe(voucher.getId())).line();
 
         pdf.paragraphEmphasized("      Valor: " + voucher.getValue() + " €").line();
@@ -156,8 +191,7 @@ public class PdfService {
         PdfTicketBuilder pdf = this.addCompanyDetails(path, INCREMENTAL_INVOICE_HEIGHT + invoice.getTicket().getShoppingList().length);
         pdf.line();
         pdf.paragraphEmphasized("Datos Cliente:").paragraph("DNI: " + invoice.getUser().getDni())
-                .paragraph("Nombre: " + invoice.getUser().getUsername())
-                .paragraph("Dirección: " + invoice.getUser().getAddress());
+                .paragraph("Nombre: " + invoice.getUser().getUsername()).paragraph("Dirección: " + invoice.getUser().getAddress());
         pdf.line();
         pdf.line().paragraphEmphasized("FACTURA N° " + invoice.getId()).barCode(invoice.getId());
         pdf.line();
@@ -173,12 +207,11 @@ public class PdfService {
 
         pdf.tableColspanRight("BASE IMPONIBLE: " + invoice.getBaseTax().setScale(2, RoundingMode.HALF_UP) + "€");
         pdf.tableColspanRight("IVA: " + invoice.getTax().setScale(2, RoundingMode.HALF_UP) + "€");
-        pdf.tableColspanRight("TOTAL: " +invoice.getTicket().getTicketTotal().setScale(2, RoundingMode.HALF_UP) + "€");
+        pdf.tableColspanRight("TOTAL: " + invoice.getTicket().getTicketTotal().setScale(2, RoundingMode.HALF_UP) + "€");
         pdf.line();
-        pdf.line().paragraph("Gracias por su compra");
+        pdf.paragraphEmphasized("Gracias por usar nuestros servicios.");
 
         return pdf.build();
     }
 
- 
 }

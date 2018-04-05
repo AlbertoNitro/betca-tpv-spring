@@ -76,7 +76,7 @@ public class ApiExceptionHandler {
     })
     @ResponseBody
     public ErrorMessage badRequest(Exception exception) {
-        return new ErrorMessage(exception, "");
+        return new ErrorMessage(exception, exception.getStackTrace().toString());
     }
 
     @ResponseStatus(HttpStatus.FORBIDDEN)
