@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 
 import org.junit.Test;
@@ -50,5 +51,11 @@ public class DatabaseSeederServiceIT {
     @Test
     public void testCreateEan13() {
         // System.out.println(this.databaseSeederService.createEan13());
+    }
+    
+    @Test
+    public void testSeedDatabase() throws IOException {
+        this.databaseSeederService.deleteAllAndCreateAdmin();
+        //this.databaseSeederService.seedDatabase("ranur.yml");
     }
 }
