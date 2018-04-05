@@ -101,15 +101,7 @@ public class Ticket {
 
     @Override
     public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = (prime * result) + ((cashDeposited == null) ? 0 : cashDeposited.hashCode());
-        result = (prime * result) + ((creationDate == null) ? 0 : creationDate.hashCode());
-        result = (prime * result) + ((id == null) ? 0 : id.hashCode());
-        result = (prime * result) + ((reference == null) ? 0 : reference.hashCode());
-        result = (prime * result) + Arrays.hashCode(shoppingList);
-        result = (prime * result) + ((user == null) ? 0 : user.hashCode());
-        return result;
+        return id.hashCode();
     }
 
     @Override
@@ -123,48 +115,9 @@ public class Ticket {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        Ticket other = (Ticket) obj;
-        if (cashDeposited == null) {
-            if (other.cashDeposited != null) {
-                return false;
-            }
-        } else if (!cashDeposited.equals(other.cashDeposited)) {
-            return false;
-        }
-        if (creationDate == null) {
-            if (other.creationDate != null) {
-                return false;
-            }
-        } else if (!creationDate.equals(other.creationDate)) {
-            return false;
-        }
-        if (id == null) {
-            if (other.id != null) {
-                return false;
-            }
-        } else if (!id.equals(other.id)) {
-            return false;
-        }
-        if (reference == null) {
-            if (other.reference != null) {
-                return false;
-            }
-        } else if (!reference.equals(other.reference)) {
-            return false;
-        }
-        if (!Arrays.equals(shoppingList, other.shoppingList)) {
-            return false;
-        }
-        if (user == null) {
-            if (other.user != null) {
-                return false;
-            }
-        } else if (!user.equals(other.user)) {
-            return false;
-        }
-        return true;
+        return id.equals(((Ticket) obj).id);
     }
-
+    
     @Override
     public String toString() {
         String createTime = new SimpleDateFormat("dd-MMM-yyyy HH:mm").format(this.creationDate.getTime());

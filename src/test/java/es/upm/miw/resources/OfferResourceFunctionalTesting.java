@@ -87,7 +87,7 @@ public class OfferResourceFunctionalTesting {
     
     @Test
     public void testReadOfferThatNotExistException() throws ParseException {
-    	this.thrown.expect(new HttpMatcher(HttpStatus.BAD_REQUEST));
+    	this.thrown.expect(new HttpMatcher(HttpStatus.NOT_FOUND));
         this.restService.loginAdmin().restBuilder().path(OfferResource.OFFERS).path(OfferResource.OFFER_CODE).expand("TEST-NOT-FOUND").get().build();
     }
     

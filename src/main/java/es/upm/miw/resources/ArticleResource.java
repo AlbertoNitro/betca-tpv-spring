@@ -12,10 +12,10 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import es.upm.miw.controllers.ArticleController;
-import es.upm.miw.dtos.ArticleInputDto;
 import es.upm.miw.dtos.ArticleDto;
 import es.upm.miw.resources.exceptions.ArticleCodeNotFoundException;
 
@@ -29,7 +29,7 @@ public class ArticleResource {
 
     public static final String CODE_ID = "/{code}";
 
-    public static final String FILTER = "/filter";
+    public static final String SEARCH = "/search";
 
     @Autowired
     private ArticleController articleController;
@@ -59,9 +59,10 @@ public class ArticleResource {
         this.articleController.putArticle(code, articleDto);
     }
 
-    @RequestMapping(value = FILTER, method = RequestMethod.POST)
-    public List<ArticleDto> readFilterArticle(@RequestBody ArticleInputDto dto) {
-        return this.articleController.readFilterArticle(dto);
+    @GetMapping(value = SEARCH)
+    public List<ArticleDto> readFilterArticle(@RequestParam(defaultValue = "") String reference,
+            @RequestParam(defaultValue = "") String description, @RequestParam(required = false) String provider) {
+        return this.articleController.find(reference,description,provider);
     }
 
 }

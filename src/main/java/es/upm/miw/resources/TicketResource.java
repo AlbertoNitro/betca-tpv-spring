@@ -20,6 +20,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import es.upm.miw.controllers.TicketController;
 import es.upm.miw.dtos.HistoricalProductOutPutDto;
+import es.upm.miw.dtos.IncomeComparision;
+import es.upm.miw.dtos.NumProductsSoldDto;
 import es.upm.miw.dtos.TicketCreationInputDto;
 import es.upm.miw.dtos.TicketDto;
 import es.upm.miw.dtos.TicketSearchOutputDto;
@@ -30,71 +32,96 @@ import es.upm.miw.resources.exceptions.TicketIdNotFoundException;
 @RestController
 @RequestMapping(TicketResource.TICKETS)
 public class TicketResource {
-    public static final String TICKETS = "/tickets";
+	public static final String TICKETS = "/tickets";
 
-    public static final String ID_ID = "/{id}";
+	public static final String ID_ID = "/{id}";
 
-    public static final String SEARCH_DATE = "/search/date";
+	public static final String SEARCH_DATE = "/search/date";
 
-    public static final String SEARCH_MOBILE = "/search/mobile";
+	public static final String SEARCH_MOBILE = "/search/mobile";
 
-    public static final String SEARCH_MOBILE_LAST = "/search/mobile/last";
-    
-    public static final String SEARCH_BY_ID_AND_DATES = "/searchByIdAndDates";
+	public static final String SEARCH_MOBILE_LAST = "/search/mobile/last";
 
-    public static final String SEARCH_BY_CREATION_DATES = "/searchByCreationDates";
+	public static final String SEARCH_BY_ID_AND_DATES = "/searchByIdAndDates";
 
-    @Autowired
-    private TicketController ticketController;
+	public static final String SEARCH_BY_CREATION_DATES = "/searchByCreationDates";
 
-    @PostMapping(produces = {"application/pdf", "application/json"})
-    public byte[] createTicket(@Valid @RequestBody TicketCreationInputDto ticketCreationDto) throws FieldInvalidException {
-        return this.ticketController.createTicketAndPdf(ticketCreationDto)
-                .orElseThrow(() -> new FieldInvalidException("Article exception"));
-    }
+	public static final String HISTORICAL_PRODUCTS = "/historicalProducts";
 
-    @GetMapping(value = ID_ID)
-    public TicketDto readTicket(@PathVariable String id) throws TicketIdNotFoundException {
-        return this.ticketController.read(id).orElseThrow(() -> new TicketIdNotFoundException(id));
-    }
+	public static final String NUM_PRODUCTS_SOLD = "/numProductsSold";
 
-    @GetMapping(value = SEARCH_DATE)
-    public List<TicketDto> findBetweenDates(@RequestParam long start, @RequestParam long end) {
-        return this.ticketController.findBetweenDates(new Date(start), new Date(end));
-    }
+	public static final String COMPARISION_INCOME = "/comparisionIncome";
 
-    @GetMapping(value = SEARCH_MOBILE)
-    public List<TicketDto> findByMobile(@RequestParam String mobile) {
-        return this.ticketController.findByMobile(mobile);
-    }
-    
-    @GetMapping(value = SEARCH_MOBILE_LAST)
-    public TicketDto findLastByMobile(@RequestParam String mobile) throws TicketIdNotFoundException {
-        return this.ticketController.findLastByMobile(mobile).orElseThrow(() -> new TicketIdNotFoundException("mobile: "+mobile));
-    }
+	@Autowired
+	private TicketController ticketController;
 
-    @PutMapping(value = ID_ID, produces = {"application/pdf", "application/json"})
-    public byte[] updateTicket(@PathVariable String id, @RequestBody TicketDto ticketDto)
-            throws TicketIdNotFoundException, FieldInvalidException {
-        if (!this.ticketController.existTicket(id)) {
-            throw new TicketIdNotFoundException(id);
-        }
-        return this.ticketController.updateTicket(id, ticketDto).orElseThrow(() -> new FieldInvalidException("Ticket Update Exception"));
-    }
+	@PostMapping(produces = { "application/pdf", "application/json" })
+	public byte[] createTicket(@Valid @RequestBody TicketCreationInputDto ticketCreationDto)
+			throws FieldInvalidException {
+		return this.ticketController.createTicketAndPdf(ticketCreationDto)
+				.orElseThrow(() -> new FieldInvalidException("Article exception"));
+	}
 
-    @RequestMapping(value = SEARCH_BY_ID_AND_DATES, method = RequestMethod.GET)
-    public List<TicketSearchOutputDto> findIdArticleDatesBetween(@RequestParam("id") String id,
-            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) @RequestParam("dateStart") Date dateStart,
-            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) @RequestParam(value = "dateFinish") Date dateFinish) {
-        return this.ticketController.findByIdArticleDatesBetween(id, dateStart, dateFinish);
-    }
+	@GetMapping(value = ID_ID)
+	public TicketDto readTicket(@PathVariable String id) throws TicketIdNotFoundException {
+		return this.ticketController.read(id).orElseThrow(() -> new TicketIdNotFoundException(id));
+	}
 
-    @RequestMapping(value = "historicalProducts", method = RequestMethod.GET)
-    public List<HistoricalProductOutPutDto> getHistoricalProductsData(
-            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) @RequestParam("initDate") Date startDate,
-            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) @RequestParam("endDate") Date endDate) {
+	@GetMapping(value = SEARCH_DATE)
+	public List<TicketDto> findBetweenDates(@RequestParam long start, @RequestParam long end) {
+		return this.ticketController.findBetweenDates(new Date(start), new Date(end));
+	}
 
-        return this.ticketController.getHistoricalProductsDataBetweenDates(startDate, endDate);
-    }
+	@GetMapping(value = SEARCH_MOBILE)
+	public List<TicketDto> findByMobile(@RequestParam String mobile) {
+		return this.ticketController.findByMobile(mobile);
+	}
+
+	@GetMapping(value = SEARCH_MOBILE_LAST)
+	public TicketDto findLastByMobile(@RequestParam String mobile) throws TicketIdNotFoundException {
+		return this.ticketController.findLastByMobile(mobile)
+				.orElseThrow(() -> new TicketIdNotFoundException("mobile: " + mobile));
+	}
+
+	@PutMapping(value = ID_ID, produces = { "application/pdf", "application/json" })
+	public byte[] updateTicket(@PathVariable String id, @RequestBody TicketDto ticketDto)
+			throws TicketIdNotFoundException, FieldInvalidException {
+		if (!this.ticketController.existTicket(id)) {
+			throw new TicketIdNotFoundException(id);
+		}
+		return this.ticketController.updateTicket(id, ticketDto)
+				.orElseThrow(() -> new FieldInvalidException("Ticket Update Exception"));
+	}
+
+	@RequestMapping(value = SEARCH_BY_ID_AND_DATES, method = RequestMethod.GET)
+	public List<TicketSearchOutputDto> findIdArticleDatesBetween(@RequestParam("id") String id,
+			@DateTimeFormat(iso = DateTimeFormat.ISO.DATE) @RequestParam("dateStart") Date dateStart,
+			@DateTimeFormat(iso = DateTimeFormat.ISO.DATE) @RequestParam(value = "dateFinish") Date dateFinish) {
+		return this.ticketController.findByIdArticleDatesBetween(id, dateStart, dateFinish);
+	}
+
+	@RequestMapping(value = HISTORICAL_PRODUCTS, method = RequestMethod.GET)
+	public List<HistoricalProductOutPutDto> getHistoricalProductsData(
+			@DateTimeFormat(iso = DateTimeFormat.ISO.DATE) @RequestParam("initDate") Date startDate,
+			@DateTimeFormat(iso = DateTimeFormat.ISO.DATE) @RequestParam("endDate") Date endDate) {
+
+		return this.ticketController.getHistoricalProductsDataBetweenDates(startDate, endDate);
+	}
+
+	@RequestMapping(value = NUM_PRODUCTS_SOLD, method = RequestMethod.GET)
+	public List<NumProductsSoldDto> getNumProductsSold(
+			@DateTimeFormat(iso = DateTimeFormat.ISO.DATE) @RequestParam("initDate") Date startDate,
+			@DateTimeFormat(iso = DateTimeFormat.ISO.DATE) @RequestParam("endDate") Date endDate) {
+
+		return this.ticketController.getNumProductsSold(startDate, endDate);
+	}
+
+	@RequestMapping(value = COMPARISION_INCOME, method = RequestMethod.GET)
+	public List<IncomeComparision> getComparisionIncome(
+			@DateTimeFormat(iso = DateTimeFormat.ISO.DATE) @RequestParam("initDate") Date startDate,
+			@DateTimeFormat(iso = DateTimeFormat.ISO.DATE) @RequestParam("endDate") Date endDate) {
+
+		return this.ticketController.getIncomeComparisionData(startDate, endDate);
+	}
 
 }

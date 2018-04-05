@@ -10,7 +10,6 @@ import org.springframework.stereotype.Controller;
 
 import es.upm.miw.documents.core.Article;
 import es.upm.miw.documents.core.Provider;
-import es.upm.miw.dtos.ArticleInputDto;
 import es.upm.miw.dtos.ArticleDto;
 import es.upm.miw.repositories.core.ArticleRepository;
 import es.upm.miw.repositories.core.ProviderRepository;
@@ -18,7 +17,9 @@ import es.upm.miw.repositories.core.ProviderRepository;
 @Controller
 public class ArticleController {
 
-    private static final String VARIOUS_CODE = "1";
+    private static final String VARIOUS_CODE = "1";    
+    private static final String VARIOUS_NAME = "Varios";
+    private static final BigDecimal VARIOUS_STOCK = new BigDecimal("100.00");
 
     @Autowired
     private ArticleRepository articleRepository;
@@ -28,18 +29,21 @@ public class ArticleController {
 
     public Optional<ArticleDto> readArticle(String code) {
         ArticleDto articleDto = null;
-        String providerId = null;
         Article article = this.articleRepository.findOne(code);
         if (article != null) {
-            if (article.getProvider() != null) {
-                providerId = article.getProvider().getId();
-            }
-            articleDto = new ArticleDto(article, providerId);
+            articleDto = new ArticleDto(article);
         }
         if (articleDto == null && code.length() < 5) {
             try {
                 Double.parseDouble(code);
                 articleDto = this.articleRepository.findMinimumByCode(VARIOUS_CODE);
+                if (articleDto == null) { // SOLO ocurre una vez, después de vaciar la BD
+                    Provider provider = new Provider(VARIOUS_NAME, null, null, null, null, null);
+                    article = new Article(VARIOUS_CODE, VARIOUS_NAME, VARIOUS_STOCK, VARIOUS_NAME, 1000, provider, true);
+                    this.providerRepository.save(provider);
+                    this.articleRepository.save(article);
+                    articleDto = this.articleRepository.findMinimumByCode(VARIOUS_CODE);
+                }
             } catch (NumberFormatException nfe) {
                 // Nothing to do
             }
@@ -72,14 +76,8 @@ public class ArticleController {
     }
 
     public List<ArticleDto> readMinimumAllIncompletes() {
-        List<Article> articleList = this.articleRepository.findAll();
-        List<ArticleDto> articleListDto = new ArrayList<ArticleDto>();
-        for (Article articulo : articleList) {
-            if (articulo.getReference() == null || articulo.getStock() == null || articulo.getProvider() == null) {
-                articleListDto.add(new ArticleDto(articulo.getCode(), articulo.getDescription()));
-            }
-        }
-        return articleListDto;
+        return this.articleRepository
+                .findByReferenceIsNullOrEmptyOrDescriptionIsNullOrEmptyOrRetailPriceIsNullOrZeroOrStockIsNullOrProviderIsNull();
     }
 
     public void putArticle(String code, ArticleDto articleDto) {
@@ -97,51 +95,17 @@ public class ArticleController {
         this.articleRepository.save(article);
     }
 
-    public List<ArticleDto> readFilterArticle(ArticleInputDto dto) {
+    public List<ArticleDto> find(String reference, String description, String provider) {
+        List<Article> articleList;
         List<ArticleDto> articleListDto = new ArrayList<ArticleDto>();
-        BigDecimal bg1 = new BigDecimal("0");
-
-        if (dto.getReference() == null) {
-            if (dto.getProvider() == "") {
-                articleListDto = this.articleRepository.findByDescriptionLike(dto.getDescription());
-                if (dto.getRetailPriceMax().compareTo(bg1) != 0) {
-                    articleListDto = this.filterRangeRetailPrice(dto, articleListDto);
-                } else {
-                    if (dto.getDescription() == "") {
-                        articleListDto.clear();
-                    }
-                }
-            } else {
-                articleListDto = this.articleRepository.findByDescriptionProvider(dto.getDescription(), dto.getProvider());
-                if (dto.getRetailPriceMax().compareTo(bg1) != 0) {
-                    articleListDto = this.filterRangeRetailPrice(dto, articleListDto);
-                }
-            }
+        if (provider == null) {
+            articleList = this.articleRepository.findByReferenceLikeIgnoreCaseAndDescriptionLikeIgnoreCase(reference, description);
         } else {
-            if (dto.getProvider() == "") {
-                articleListDto = this.articleRepository.findByReferenceAndDescriptionLike(dto.getReference(), dto.getDescription());
-                if (dto.getRetailPriceMax().compareTo(bg1) != 0) {
-                    articleListDto = this.filterRangeRetailPrice(dto, articleListDto);
-                }
-            } else {
-                articleListDto = this.articleRepository.findByReferenceDescriptionProvider(dto.getReference(), dto.getDescription(),
-                        dto.getProvider());
-                if (dto.getRetailPriceMax().compareTo(bg1) != 0) {
-                    articleListDto = this.filterRangeRetailPrice(dto, articleListDto);
-                }
-            }
+            articleList = this.articleRepository.findByReferenceLikeIgnoreCaseAndDescriptionLikeIgnoreCaseAndProvider(reference,
+                    description, provider);
         }
-        return articleListDto;
-    }
-
-    private List<ArticleDto> filterRangeRetailPrice(ArticleInputDto articleInputDto, List<ArticleDto> articleList) {
-        List<ArticleDto> articleListDto = new ArrayList<ArticleDto>();
-        for (ArticleDto article : articleList) {
-            if (article.getRetailPrice().compareTo(articleInputDto.getRetailPriceMin()) == 1
-                    && article.getRetailPrice().compareTo(articleInputDto.getRetailPriceMax()) == -1) {
-                articleListDto.add(new ArticleDto(article.getCode(), article.getDescription(), article.getReference(),
-                        article.getRetailPrice(), article.getStock()));
-            }
+        for (Article article : articleList) {
+            articleListDto.add(new ArticleDto(article));
         }
         return articleListDto;
     }

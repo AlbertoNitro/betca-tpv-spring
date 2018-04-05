@@ -10,15 +10,28 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 import es.upm.miw.resources.exceptions.ArticleCodeNotFoundException;
+import es.upm.miw.resources.exceptions.ArticlesFamilyCreationException;
+import es.upm.miw.resources.exceptions.ArticlesFamilyNotFoudException;
+import es.upm.miw.resources.exceptions.BudgetIdNotFoundException;
 import es.upm.miw.resources.exceptions.CashierClosedException;
 import es.upm.miw.resources.exceptions.CashierCreateException;
+import es.upm.miw.resources.exceptions.CashierMovementException;
 import es.upm.miw.resources.exceptions.ErrorMessage;
 import es.upm.miw.resources.exceptions.FileException;
 import es.upm.miw.resources.exceptions.ForbiddenException;
+import es.upm.miw.resources.exceptions.InvoiceIdNotFoundException;
+import es.upm.miw.resources.exceptions.OfferCodeNotFoundException;
+import es.upm.miw.resources.exceptions.OfferCodeRepeatedException;
+import es.upm.miw.resources.exceptions.OfferInvalidExpirationDateException;
+import es.upm.miw.resources.exceptions.OrderAlreadyExistException;
+import es.upm.miw.resources.exceptions.OrderBodyIdNotFoundException;
+import es.upm.miw.resources.exceptions.OrderIdNotFoundException;
 import es.upm.miw.resources.exceptions.ProviderFieldAlreadyExistException;
 import es.upm.miw.resources.exceptions.ProviderIdNotFoundException;
 import es.upm.miw.resources.exceptions.TicketIdNotFoundException;
 import es.upm.miw.resources.exceptions.UserIdNotFoundException;
+import es.upm.miw.resources.exceptions.VoucherConsumedException;
+import es.upm.miw.resources.exceptions.VoucherReferenceNotFoundException;
 import es.upm.miw.resources.exceptions.UserFieldAlreadyExistException;
 import es.upm.miw.resources.exceptions.FieldInvalidException;
 
@@ -26,8 +39,20 @@ import es.upm.miw.resources.exceptions.FieldInvalidException;
 public class ApiExceptionHandler {
 
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    @ExceptionHandler({TicketIdNotFoundException.class, UserIdNotFoundException.class, 
-        FileException.class, ArticleCodeNotFoundException.class, ProviderIdNotFoundException.class})
+    @ExceptionHandler({
+        ArticleCodeNotFoundException.class,
+        ArticlesFamilyNotFoudException.class,
+        BudgetIdNotFoundException.class,
+        FileException.class,
+        InvoiceIdNotFoundException.class,
+        OfferCodeNotFoundException.class,
+        OrderBodyIdNotFoundException.class,
+        OrderIdNotFoundException.class,
+        ProviderIdNotFoundException.class,
+        TicketIdNotFoundException.class,
+        UserIdNotFoundException.class,
+        VoucherReferenceNotFoundException.class
+    })
     @ResponseBody
     public ErrorMessage notFoundRequest(HttpServletRequest request, Exception exception) {
         return new ErrorMessage(exception, request.getRequestURI());
@@ -35,15 +60,30 @@ public class ApiExceptionHandler {
 
     // Exception
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ExceptionHandler({Exception.class, UserFieldAlreadyExistException.class, FieldInvalidException.class, CashierClosedException.class,
-            CashierCreateException.class, ProviderFieldAlreadyExistException.class})
+    @ExceptionHandler({
+        Exception.class,
+        ArticlesFamilyCreationException.class,
+        CashierClosedException.class,
+        CashierCreateException.class,
+        CashierMovementException.class,
+        FieldInvalidException.class,
+        OfferCodeRepeatedException.class,
+        OfferInvalidExpirationDateException.class,
+        OrderAlreadyExistException.class,
+        ProviderFieldAlreadyExistException.class,
+        UserFieldAlreadyExistException.class,
+        VoucherConsumedException.class
+    })
     @ResponseBody
     public ErrorMessage badRequest(Exception exception) {
-        return new ErrorMessage(exception, "");
+        return new ErrorMessage(exception, exception.getStackTrace().toString());
     }
 
     @ResponseStatus(HttpStatus.FORBIDDEN)
-    @ExceptionHandler({ForbiddenException.class, AccessDeniedException.class})
+    @ExceptionHandler({
+        AccessDeniedException.class,
+        ForbiddenException.class,
+    })
     @ResponseBody
     public ErrorMessage forbiddenRequest(Exception exception) {
         return new ErrorMessage(exception, "");

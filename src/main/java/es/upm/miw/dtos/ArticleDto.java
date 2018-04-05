@@ -4,20 +4,26 @@ import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import javax.validation.constraints.NotNull;
+
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 import es.upm.miw.documents.core.Article;
+import es.upm.miw.dtos.validations.BigDecimalPositive;
 
 @JsonInclude(Include.NON_NULL)
 public class ArticleDto {
 
+    @NotNull
     private String code;
 
     private String reference;
 
+    @NotNull
     private String description;
 
+    @BigDecimalPositive
     private BigDecimal retailPrice;
 
     private Integer stock;
@@ -44,11 +50,13 @@ public class ArticleDto {
         this.stock = stock;
     }
 
-    public ArticleDto(Article article, String provider) {
+    public ArticleDto(Article article) {
         this(article.getCode(), article.getDescription(), article.getReference(), article.getRetailPrice(), article.getStock());
         this.setDiscontinued(article.getDiscontinued());
         this.setRegistrationDate(article.getRegistrationDate());
-        this.setProvider(provider);
+        if (article.getProvider() != null) {
+            this.setProvider(article.getProvider().getId());
+        }
     }
 
     public String getCode() {

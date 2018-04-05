@@ -2,6 +2,10 @@ package es.upm.miw.services;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 import javax.annotation.PostConstruct;
@@ -14,140 +18,269 @@ import org.springframework.stereotype.Service;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.Constructor;
 
+import es.upm.miw.documents.core.Article;
+import es.upm.miw.documents.core.FamilyArticle;
+import es.upm.miw.documents.core.FamilyComposite;
+import es.upm.miw.documents.core.FamilyType;
+import es.upm.miw.documents.core.Provider;
 import es.upm.miw.documents.core.Role;
 import es.upm.miw.documents.core.User;
 import es.upm.miw.repositories.core.ArticleRepository;
+import es.upm.miw.repositories.core.ArticlesFamilyRepository;
 import es.upm.miw.repositories.core.BudgetRepository;
 import es.upm.miw.repositories.core.CashMovementRepository;
 import es.upm.miw.repositories.core.CashierClosureRepository;
+import es.upm.miw.repositories.core.FamilyArticleRepository;
 import es.upm.miw.repositories.core.InvoiceRepository;
 import es.upm.miw.repositories.core.OfferRepository;
 import es.upm.miw.repositories.core.ProviderRepository;
+import es.upm.miw.repositories.core.SchedulerRepository;
 import es.upm.miw.repositories.core.TicketRepository;
 import es.upm.miw.repositories.core.UserRepository;
 import es.upm.miw.repositories.core.VoucherRepository;
+import es.upm.miw.utils.Barcode;
 
 @Service
 public class DatabaseSeederService {
 
-	@Value("${miw.admin.mobile}")
-	private String mobile;
+    @Value("${miw.admin.mobile}")
+    private String mobile;
 
-	@Value("${miw.admin.username}")
-	private String username;
+    @Value("${miw.admin.username}")
+    private String username;
 
-	@Value("${miw.admin.password}")
-	private String password;
+    @Value("${miw.admin.password}")
+    private String password;
 
-	@Value("${miw.databaseSeeder.ymlFileName:#{null}}")
-	private Optional<String> ymlFileName;
+    @Value("${miw.databaseSeeder.ymlFileName:#{null}}")
+    private Optional<String> ymlFileName;
 
-	@Autowired
-	private UserRepository userRepository;
+    @Autowired
+    private UserRepository userRepository;
 
-	@Autowired
-	private VoucherRepository voucherRepository;
+    @Autowired
+    private VoucherRepository voucherRepository;
 
-	@Autowired
-	private CashMovementRepository cashMovementRepository;
+    @Autowired
+    private CashMovementRepository cashMovementRepository;
 
-	@Autowired
-	private ProviderRepository providerRepository;
+    @Autowired
+    private ProviderRepository providerRepository;
 
-	@Autowired
-	private ArticleRepository articleRepository;
+    @Autowired
+    private ArticleRepository articleRepository;
 
-	@Autowired
-	public TicketRepository ticketRepository;
+    @Autowired
+    public TicketRepository ticketRepository;
 
-	@Autowired
-	public InvoiceRepository invoiceRepository;
+    @Autowired
+    public InvoiceRepository invoiceRepository;
 
-	@Autowired
-	public CashierClosureRepository cashierClosureRepository;
-	
-	@Autowired
-	public OfferRepository offerRepository;
-	
+    @Autowired
+    public CashierClosureRepository cashierClosureRepository;
+
+    @Autowired
+    public OfferRepository offerRepository;
+
     @Autowired
     private BudgetRepository budgetRepository;
 
-	@PostConstruct
-	public void seedDatabase() {
-		if (ymlFileName.isPresent()) {
-			this.deleteAllAndCreateAdmin();
-			try {
-				this.seedDatabase(ymlFileName.get());
-			} catch (IOException e) {
-				Logger.getLogger(this.getClass()).error("File " + ymlFileName + " doesn't exist or can't be opened");
-			}
-		} else {
-			this.createAdminIfNotExist();
-		}
-	}
+    @Autowired
+    private ArticlesFamilyRepository articlesFamilyRepository;
 
-	public void seedDatabase(String ymlFileName) throws IOException {
-		assert ymlFileName != null && !ymlFileName.isEmpty();
-		Yaml yamlParser = new Yaml(new Constructor(DatabaseGraph.class));
-		InputStream input = new ClassPathResource(ymlFileName).getInputStream();
-		DatabaseGraph tpvGraph = (DatabaseGraph) yamlParser.load(input);
+    @Autowired
+    private FamilyArticleRepository familyArticleRepository;
 
-		// Save Repositories -----------------------------------------------------
-		if (tpvGraph.getUserList() != null) {
-			this.userRepository.save(tpvGraph.getUserList());
-		}
-		if (tpvGraph.getVoucherList() != null) {
-			this.voucherRepository.save(tpvGraph.getVoucherList());
-		}
-		if (tpvGraph.getCashMovementList() != null) {
-			this.cashMovementRepository.save(tpvGraph.getCashMovementList());
-		}
-		if (tpvGraph.getCashierClosureList() != null) {
-			this.cashierClosureRepository.save(tpvGraph.getCashierClosureList());
-		}
-		if (tpvGraph.getProviderList() != null) {
-			this.providerRepository.save(tpvGraph.getProviderList());
-		}
-		if (tpvGraph.getArticleList() != null) {
-			this.articleRepository.save(tpvGraph.getArticleList());
-		}
-		if (tpvGraph.getTicketList() != null) {
-			this.ticketRepository.save(tpvGraph.getTicketList());
-		}
-		if (tpvGraph.getInvoiceList() != null) {
-			this.invoiceRepository.save(tpvGraph.getInvoiceList());
-		}
-		if (tpvGraph.getOfferList() != null) {
-			this.offerRepository.save(tpvGraph.getOfferList());
-		}
-		// -----------------------------------------------------------------------
+    @Autowired
+    private SchedulerRepository schedulerRepository;
 
-		Logger.getLogger(this.getClass()).warn("------------------------- Seed: " + ymlFileName + "-----------");
-	}
+    private long ean13;
 
-	public void deleteAllAndCreateAdmin() {
-		Logger.getLogger(this.getClass()).warn("------------------------- delete All And Create Admin-----------");
-		// Delete Repositories -----------------------------------------------------
-		this.userRepository.deleteAll();
-		this.ticketRepository.deleteAll();
-		this.articleRepository.deleteAll();
-		this.voucherRepository.deleteAll();
-		this.cashMovementRepository.deleteAll();
-		this.providerRepository.deleteAll();
-		this.invoiceRepository.deleteAll();
-		this.cashierClosureRepository.deleteAll();
-		this.offerRepository.deleteAll();
-		this.budgetRepository.deleteAll();
-		this.createAdminIfNotExist();
-		// -----------------------------------------------------------------------
-	}
+    @PostConstruct
+    public void seedDatabase() {
+        if (ymlFileName.isPresent()) {
+            this.deleteAllAndCreateAdmin();
+            try {
+                this.seedDatabase(ymlFileName.get());
+            } catch (IOException e) {
+                Logger.getLogger(this.getClass()).error("File " + ymlFileName + " doesn't exist or can't be opened");
+            }
+        } else {
+            this.createAdminIfNotExist();
+        }
+        Article article = this.articleRepository.findFirstByCodeStartingWithOrderByCodeDesc("84000000");
+        if (article == null) {
+            this.ean13 = 840000000000L;
+        } else {
+            this.ean13 = Long.parseLong(article.getCode().substring(0, 12));
+        }
+    }
 
-	public void createAdminIfNotExist() {
-		if (this.userRepository.findByMobile(this.mobile) == null) {
-			User user = new User(this.mobile, this.username, this.password);
-			user.setRoles(new Role[] { Role.ADMIN });
-			this.userRepository.save(user);
-		}
-	}
+    public String createEan13() {
+        this.ean13++;
+        return new Barcode().generateEan13code(this.ean13);
+    }
+
+    public void seedDatabase(String ymlFileName) throws IOException {
+        assert ymlFileName != null && !ymlFileName.isEmpty();
+        Yaml yamlParser = new Yaml(new Constructor(DatabaseGraph.class));
+        InputStream input = new ClassPathResource(ymlFileName).getInputStream();
+        DatabaseGraph tpvGraph = (DatabaseGraph) yamlParser.load(input);
+
+        // Save Repositories -----------------------------------------------------
+        this.userRepository.save(tpvGraph.getUserList());
+        this.voucherRepository.save(tpvGraph.getVoucherList());
+        this.cashMovementRepository.save(tpvGraph.getCashMovementList());
+        this.cashierClosureRepository.save(tpvGraph.getCashierClosureList());
+        for (Provider provider : tpvGraph.getProviderList()) {
+            Provider providerBd = this.providerRepository.findByCompany(provider.getCompany());
+            if (providerBd == null) {
+                this.providerRepository.save(provider);
+            } else {
+                for (Article article : tpvGraph.getArticleList()) {
+                    if (article.getProvider().getCompany().equals(provider.getCompany())) {
+                        article.setProvider(providerBd);
+                    }
+                }
+            }
+        }
+        this.expandAllSizesAndCreateFamilyAndSaveAll(tpvGraph);
+        this.ticketRepository.save(tpvGraph.getTicketList());
+        this.invoiceRepository.save(tpvGraph.getInvoiceList());
+        this.offerRepository.save(tpvGraph.getOfferList());
+        this.schedulerRepository.save(tpvGraph.getSchedulerList());
+        // -----------------------------------------------------------------------
+
+        Logger.getLogger(this.getClass()).warn("------------------------- Seed: " + ymlFileName + "-----------");
+    }
+
+    protected void expandAllSizesAndCreateFamilyAndSaveAll(DatabaseGraph tpvGraph) {
+        FamilyComposite root = new FamilyComposite(FamilyType.ARTICLES, "root", "Root");
+        root.setId("root");
+        FamilyComposite actualFamily = null;
+
+        for (Article article : tpvGraph.getArticleList()) {
+
+            if (article.getCode().split(":").length > 1) {
+                if (actualFamily == null) {
+                    actualFamily = new FamilyComposite(FamilyType.ARTICLES, article.getCode().split(":")[0],
+                            article.getCode().split(":")[0]);
+                } else if (!actualFamily.getReference().equals(article.getCode().split(":")[0])) {
+                    this.articlesFamilyRepository.save(actualFamily);
+                    root.add(actualFamily);
+                    actualFamily = new FamilyComposite(FamilyType.ARTICLES, article.getCode().split(":")[0],
+                            article.getCode().split(":")[0]);
+                }
+            } else {
+                if (actualFamily != null) {
+                    this.articlesFamilyRepository.save(actualFamily);
+                    root.add(actualFamily);
+                    actualFamily = null;
+                }
+            }
+
+            if (article.getReference() != null && article.getReference().indexOf("[") != -1) {
+                List<Article> articleExpandList = this.expandArticlewithSizes(article);
+                FamilyComposite familyCompositeSizes = new FamilyComposite(FamilyType.SIZES, this.extractBaseWithoutSizes(article.getReference()),
+                        this.extractBaseWithoutSizes(article.getDescription()));
+                for (Article articleExpand : articleExpandList) {
+                    FamilyArticle familyArticle = new FamilyArticle(articleExpand);
+                    this.articleRepository.save(articleExpand);
+                    this.articlesFamilyRepository.save(familyArticle);
+                    familyCompositeSizes.add(familyArticle);
+                }
+                this.articlesFamilyRepository.save(familyCompositeSizes);
+                if (actualFamily != null) {
+                    actualFamily.add(familyCompositeSizes);
+                }
+            } else {
+                this.articleRepository.save(article);
+            }
+        }
+
+        if (actualFamily != null) {
+            this.articlesFamilyRepository.save(actualFamily);
+            root.add(actualFamily);
+        }
+        this.articlesFamilyRepository.delete("root");
+        this.articlesFamilyRepository.save(root);
+    }
+
+    private String extractBaseWithoutSizes(String str) {
+        return str.substring(0, str.indexOf("["));
+    }
+
+    protected List<Article> expandArticlewithSizes(Article article) {
+        List<String> sizesSML = Arrays.asList("XXS", "XS", "S", "M", "L", "XL", "XXL");
+        List<Article> articlesExpanded = new ArrayList<>();
+        String articleReferenceBase = this.extractBaseWithoutSizes(article.getReference());
+        String articleDescriptionBase = this.extractBaseWithoutSizes(article.getDescription());
+        String[] sizes = article.getReference().substring(article.getReference().indexOf("[") + 1, article.getReference().indexOf("]"))
+                .split(",");
+        String[] pricesInString = article.getDescription()
+                .substring(article.getDescription().indexOf("[") + 1, article.getDescription().indexOf("]")).split(",");
+        for (int i = 0; i < sizes.length; i++) {
+            String subSizes[] = sizes[i].split(":");
+            int start, incremento = 2, end;
+            boolean numeric;
+            if (subSizes.length > 2) {
+                incremento = Integer.parseInt(subSizes[2]);
+            }
+            if (sizesSML.contains(subSizes[0])) {
+                incremento = 1;
+                start = sizesSML.indexOf(subSizes[0]);
+                end = sizesSML.indexOf(subSizes[1]);
+                numeric = false;
+            } else {
+                start = Integer.parseInt(subSizes[0]);
+                end = Integer.parseInt(subSizes[1]);
+                numeric = true;
+            }
+            for (int size = start; size <= end; size += incremento) {
+                Article articleExpanded = new Article();
+                articleExpanded.setCode(this.createEan13());
+                if (numeric) {
+                    articleExpanded.setReference(articleReferenceBase + "~T" + size);
+                    articleExpanded.setDescription(articleDescriptionBase + " T" + size);
+                } else {
+                    articleExpanded.setReference(articleReferenceBase + "~T" + sizesSML.get(size));
+                    articleExpanded.setDescription(articleDescriptionBase + " T" + sizesSML.get(size));
+                }
+                articleExpanded.setRetailPrice(new BigDecimal(pricesInString[i]));
+                articleExpanded.setStock(10);
+                articleExpanded.setProvider(article.getProvider());
+                articlesExpanded.add(articleExpanded);
+            }
+        }
+        return articlesExpanded;
+    }
+
+    public void deleteAllAndCreateAdmin() {
+        Logger.getLogger(this.getClass()).warn("------------------------- delete All And Create Admin-----------");
+        // Delete Repositories -----------------------------------------------------
+        this.schedulerRepository.deleteAll();
+        this.userRepository.deleteAll();
+        this.ticketRepository.deleteAll();
+        this.familyArticleRepository.deleteAll();
+        this.articlesFamilyRepository.deleteAll();
+        this.articleRepository.deleteAll();
+        this.voucherRepository.deleteAll();
+        this.cashMovementRepository.deleteAll();
+        this.providerRepository.deleteAll();
+        this.invoiceRepository.deleteAll();
+        this.cashierClosureRepository.deleteAll();
+        this.offerRepository.deleteAll();
+        this.budgetRepository.deleteAll();
+        this.createAdminIfNotExist();
+        // -----------------------------------------------------------------------
+    }
+
+    public void createAdminIfNotExist() {
+        if (this.userRepository.findByMobile(this.mobile) == null) {
+            User user = new User(this.mobile, this.username, this.password);
+            user.setRoles(new Role[] {Role.ADMIN});
+            this.userRepository.save(user);
+        }
+    }
 
 }

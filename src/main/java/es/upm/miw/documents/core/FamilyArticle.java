@@ -5,11 +5,15 @@ import java.util.List;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-@Document(collection = "familyComponent")
+@Document(collection = "articlesFamily")
 public class FamilyArticle extends ArticlesFamily {
 
     @DBRef
     private Article article;
+
+    
+    public FamilyArticle() {
+    }
 
     public FamilyArticle(Article article) {
         super(FamilyType.ARTICLE);
@@ -22,36 +26,39 @@ public class FamilyArticle extends ArticlesFamily {
     }
 
     @Override
-    public String description() {
+    public String getDescription() {
         return this.article.getDescription();
     }
 
     @Override
-    public Integer stock() {
+    public Integer getStock() {
         return this.article.getStock();
     }
 
     @Override
-    public String getId() {
-        return  this.article.getCode();
+    public void add(ArticlesFamily familyComponent) {
     }
 
     @Override
-    public void add(ArticlesFamily familyComponent) { 
+    public void remove(ArticlesFamily familyComponent) {
     }
 
     @Override
-    public void remove(ArticlesFamily familyComponent) { 
-    }
-
-    @Override
-    public List<ArticlesFamily> list() {
+    public List<ArticlesFamily> getArticlesFamilyList() {
         return null;
+    }
+
+    public Article getArticle() {
+        return article;
+    }
+
+    public void setArticle(Article article) {
+        this.article = article;
     }
 
     @Override
     public String toString() {
-        return "FamilyArticle [article=" + article + ", toString()=" + super.toString() + "]";
+        return "FamilyArticle ["+super.toString() + "article=" + article + "]";
     }
 
 }
