@@ -133,7 +133,8 @@ public class PdfService {
 
     public Optional<byte[]> generateBudget(Budget budget) {
         final String path = "/budgets/budget-" + budget.getId();
-        PdfTicketBuilder pdf = this.addCompanyDetails(path, budget.getShoppingList().length + 2);
+        final int INCREMENTAL_HEIGHT = 4;
+        PdfTicketBuilder pdf = this.addCompanyDetails(path, INCREMENTAL_HEIGHT + budget.getShoppingList().length);
         pdf.line().paragraphEmphasized("PRESUPUESTO");
         pdf.barCode(new Encrypting().encodeHexInBase64UrlSafe(budget.getId())).line();
 
