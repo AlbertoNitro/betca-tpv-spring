@@ -39,7 +39,6 @@ import es.upm.miw.repositories.core.UserRepository;
 import es.upm.miw.repositories.core.VoucherRepository;
 import es.upm.miw.utils.Barcode;
 
-
 @Service
 public class DatabaseSeederService {
 
@@ -92,7 +91,7 @@ public class DatabaseSeederService {
     private FamilyArticleRepository familyArticleRepository;
 
     @Autowired
-	private SchedulerRepository schedulerRepository;
+    private SchedulerRepository schedulerRepository;
 
     private long ean13;
 
@@ -115,7 +114,7 @@ public class DatabaseSeederService {
             this.ean13 = Long.parseLong(article.getCode().substring(0, 12));
         }
     }
-    
+
     public String createEan13() {
         this.ean13++;
         return new Barcode().generateEan13code(this.ean13);
@@ -144,10 +143,7 @@ public class DatabaseSeederService {
                 }
             }
         }
-        this.expandAllSizes(tpvGraph);
-        this.articleRepository.save(tpvGraph.getArticleList());
-        this.articlesFamilyRepository.save(tpvGraph.getFamilyArticleList());
-        this.articlesFamilyRepository.save(tpvGraph.getFamilyCompositeList());
+        this.expandAllSizesAndCreateFamilyAndSaveAll(tpvGraph);
         this.ticketRepository.save(tpvGraph.getTicketList());
         this.invoiceRepository.save(tpvGraph.getInvoiceList());
         this.offerRepository.save(tpvGraph.getOfferList());
@@ -157,26 +153,57 @@ public class DatabaseSeederService {
         Logger.getLogger(this.getClass()).warn("------------------------- Seed: " + ymlFileName + "-----------");
     }
 
-    protected void expandAllSizes(DatabaseGraph tpvGraph) {
-        List<Article> articleListForRemove = new ArrayList<>();
-        List<Article> articleListForAdd = new ArrayList<>();
+    protected void expandAllSizesAndCreateFamilyAndSaveAll(DatabaseGraph tpvGraph) {
+        FamilyComposite actualFamily = null; 
+        
         for (Article article : tpvGraph.getArticleList()) {
+
+            if (article.getCode().split(":").length > 1) {
+                if (actualFamily == null) {
+                    actualFamily = new FamilyComposite(FamilyType.ARTICLES, article.getCode().split(":")[0],
+                            article.getCode().split(":")[0]);
+                    System.out.println("------> se inicia familia..." + actualFamily);
+                } else if (!actualFamily.getReference().equals(article.getCode().split(":")[0])) {
+                    this.articlesFamilyRepository.save(actualFamily);
+                    System.out.println("------> se finaliza familia..." + actualFamily);
+                    actualFamily = new FamilyComposite(FamilyType.ARTICLES, article.getCode().split(":")[0],
+                            article.getCode().split(":")[0]);
+                    System.out.println("------> se inicia familia..." + actualFamily);
+                }
+            } else {
+                if (actualFamily != null) {
+                    this.articlesFamilyRepository.save(actualFamily);
+                    System.out.println("------> se finaliza familia..." + actualFamily);
+                    actualFamily = null;
+                }
+            }
+
             if (article.getReference() != null && article.getReference().indexOf("[") != -1) {
                 List<Article> articleExpandList = this.expandArticle(article);
                 FamilyComposite familyCompositeSizes = new FamilyComposite(FamilyType.SIZES, this.extractBase(article.getReference()),
                         this.extractBase(article.getDescription()));
                 for (Article articleExpand : articleExpandList) {
                     FamilyArticle familyArticle = new FamilyArticle(articleExpand);
-                    tpvGraph.getFamilyArticleList().add(familyArticle);
+                    this.articleRepository.save(articleExpand);
+                    this.articlesFamilyRepository.save(familyArticle);
                     familyCompositeSizes.add(familyArticle);
                 }
-                articleListForAdd.addAll(articleExpandList);
-                articleListForRemove.add(article);
-                tpvGraph.getFamilyCompositeList().add(familyCompositeSizes);
+                this.articlesFamilyRepository.save(familyCompositeSizes);
+                if (actualFamily != null) {
+                    System.out.println("------> se añade familia..." + familyCompositeSizes.getReference());
+                    actualFamily.add(familyCompositeSizes);
+                }
+            } else {
+                this.articleRepository.save(article);
             }
         }
-        tpvGraph.getArticleList().removeAll(articleListForRemove);
-        tpvGraph.getArticleList().addAll(articleListForAdd);
+        
+        if (actualFamily != null) {
+            this.articlesFamilyRepository.save(actualFamily);
+            System.out.println("------> se finaliza familia..." + actualFamily);
+
+        }
+
     }
 
     private String extractBase(String str) {
