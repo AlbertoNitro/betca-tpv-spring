@@ -93,6 +93,8 @@ public class ArticleController {
         }
         article.setProvider(provider);
         this.articleRepository.save(article);
+        
+        System.out.println("Send email to customer: there is new stock of articles!");
     }
 
     public List<ArticleDto> find(String reference, String description, String provider) {
