@@ -68,11 +68,12 @@ public class PdfTicketBuilder extends PdfBuilder {
         code128.setCodeType(Barcode128.CODE128);
         code128.setCode(code.trim());
         Image code128Image = new Image(code128.createFormXObject(this.getDocument().getPdfDocument()));
-        int width = code.length() * 7;
+        int width = code.length() * 5 + 25;
         if (width > 100) {
-            width = 100;
+            width = 95;
         }
         code128Image.setWidthPercent(width);
+        code128Image.setHeight(50);
         code128Image.setHorizontalAlignment(HorizontalAlignment.CENTER);
         this.getDocument().add(code128Image);
         return this;

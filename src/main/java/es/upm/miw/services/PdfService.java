@@ -70,7 +70,7 @@ public class PdfService {
     public void constructor() {
         if (this.propertyRepository.findOne(LOGO) == null) {
             this.logo = "logo-upm.png";
-            this.name = "aster en Ingenieríeda Web. BETCA";
+            this.name = "Master en Ingenieríeda Web. BETCA";
             this.nif = "Q2818015F";
             this.phone = "+34 913366000";
             this.address = "Calle Alan Turing s/n, 28031 Madrid";
