@@ -14,12 +14,14 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 
 import es.upm.miw.documents.core.Invoice;
+import es.upm.miw.documents.core.Property;
 import es.upm.miw.documents.core.Shopping;
 import es.upm.miw.documents.core.Ticket;
 import es.upm.miw.documents.core.User;
 import es.upm.miw.dtos.InvoiceCreationInputDto;
 import es.upm.miw.dtos.InvoiceOutputDto;
 import es.upm.miw.repositories.core.InvoiceRepository;
+import es.upm.miw.repositories.core.PropertyRepository;
 import es.upm.miw.repositories.core.TicketRepository;
 import es.upm.miw.repositories.core.UserRepository;
 import es.upm.miw.services.PdfService;
@@ -35,6 +37,9 @@ public class InvoiceController {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private PropertyRepository propertyRepository;
 
     @Autowired
     private PdfService pdfService;
@@ -91,7 +96,12 @@ public class InvoiceController {
     private int nextInvoiceId() {
         int nextId = 1;
         Invoice invoice = invoiceRepository.findFirstByOrderByCreationDateDescIdDesc();
-        if (invoice != null) {
+        if (invoice == null) {
+            Property property = this.propertyRepository.findOne("miw.invoice.initial");
+            if (property != null) {
+                nextId = Integer.parseInt(property.getValue());
+            }
+        } else {
             Date startOfDay = Date.from(LocalDate.now().atStartOfDay(ZoneId.systemDefault()).toInstant());
             if (invoice.getCreationDated().compareTo(startOfDay) >= 0) {
                 nextId = invoice.simpleId() + 1;
