@@ -29,6 +29,14 @@ import com.itextpdf.layout.property.VerticalAlignment;
 
 public class PdfTicketBuilder extends PdfBuilder {
 
+    private static final int QR_CODE_PERCENT = 50;
+
+    private static final int BAR_CODE_HEIGHT = 50;
+
+    private static final int BAR_CODE_WIDTH_PERCENT_MIN = 25;
+
+    private static final int BAR_CODE_WIDTH_PERCENT_LENGHT = 5;
+
     private static final int TERMIC_FONT_SIZE = 7;
 
     private static final int TERMIC_FONT_SIZE_EMPHASIZEDD = 10;
@@ -68,12 +76,12 @@ public class PdfTicketBuilder extends PdfBuilder {
         code128.setCodeType(Barcode128.CODE128);
         code128.setCode(code.trim());
         Image code128Image = new Image(code128.createFormXObject(this.getDocument().getPdfDocument()));
-        int width = code.length() * 5 + 25;
+        int width = code.length() * BAR_CODE_WIDTH_PERCENT_LENGHT + BAR_CODE_WIDTH_PERCENT_MIN;
         if (width > 100) {
             width = 95;
         }
         code128Image.setWidthPercent(width);
-        code128Image.setHeight(50);
+        code128Image.setHeight(BAR_CODE_HEIGHT);
         code128Image.setHorizontalAlignment(HorizontalAlignment.CENTER);
         this.getDocument().add(code128Image);
         return this;
@@ -83,7 +91,7 @@ public class PdfTicketBuilder extends PdfBuilder {
         BarcodeQRCode qrcode = new BarcodeQRCode(code.trim());
         Image qrcodeImage = new Image(qrcode.createFormXObject(this.getDocument().getPdfDocument()));
         qrcodeImage.setHorizontalAlignment(HorizontalAlignment.CENTER);
-        qrcodeImage.setWidthPercent(50);
+        qrcodeImage.setWidthPercent(QR_CODE_PERCENT);
         this.getDocument().add(qrcodeImage);
         Paragraph paragraph = new Paragraph("Ref. " + code);
         paragraph.setTextAlignment(TextAlignment.CENTER);

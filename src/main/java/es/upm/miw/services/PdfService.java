@@ -176,7 +176,10 @@ public class PdfService {
     private PdfTicketBuilder addCompanyDetails(String path, int lines) {
         PdfTicketBuilder pdf = new PdfTicketBuilder(path, lines);
         pdf.addImage(this.logo).paragraphEmphasized(this.name).paragraphEmphasized("Tfn: " + this.phone);
-        pdf.paragraph("NIF: " + this.nif + "   -   " + this.address).paragraph("Web: " + this.web + "   -   Email: " + this.email);
+        pdf.paragraph("NIF: " + this.nif + "   -   " + this.address).paragraph("Email: " + this.email);
+        if(!this.web.isEmpty()) {
+            pdf.paragraph("Web: " + this.web);
+        }
         return pdf;
     }
 
