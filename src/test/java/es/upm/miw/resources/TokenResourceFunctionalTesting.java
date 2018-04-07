@@ -15,6 +15,7 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import es.upm.miw.documents.core.Role;
+import es.upm.miw.dtos.UserMinimumDto;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
@@ -56,6 +57,13 @@ public class TokenResourceFunctionalTesting {
         restService.loginAdmin();
         assertTrue(restService.restBuilder(new RestBuilder<Boolean>()).clazz(Boolean.class).path(TokenResource.TOKENS)
                 .path(TokenResource.AUTHENTICATED).get().build());
+    }
+
+    @Test
+    public void testUsername() {
+        restService.loginAdmin();
+        assertEquals("admin", restService.restBuilder(new RestBuilder<UserMinimumDto>()).clazz(UserMinimumDto.class).path(TokenResource.TOKENS)
+                .path(TokenResource.USERNAME).get().build().getUsername());
     }
 
 }

@@ -134,4 +134,9 @@ public class UserController {
         return this.userRepository.findCustomerAll();
     }
 
+    public UserMinimumDto username(String mobile) {
+        User user =this.userRepository.findByMobile(mobile);
+        return new UserMinimumDto(user.getMobile(),user.getUsername());
+    }
+
 }

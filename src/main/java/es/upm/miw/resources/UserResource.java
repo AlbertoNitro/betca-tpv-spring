@@ -64,7 +64,7 @@ public class UserResource {
             throw new UserFieldAlreadyExistException("Existing mobile");
         }
         if (this.userController.emailRepeated(mobile, userDto)) {
-           throw new UserFieldAlreadyExistException("Existing email");
+            throw new UserFieldAlreadyExistException("Existing email");
         }
         if (this.userController.dniRepeated(mobile, userDto)) {
             throw new UserFieldAlreadyExistException("Existing dni");

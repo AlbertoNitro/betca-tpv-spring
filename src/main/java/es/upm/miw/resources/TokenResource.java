@@ -10,8 +10,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import es.upm.miw.controllers.TokenController;
+import es.upm.miw.controllers.UserController;
 import es.upm.miw.dtos.TokenOutputDto;
+import es.upm.miw.dtos.UserMinimumDto;
 
+@PreAuthorize("hasRole('ADMIN') or hasRole('MANAGER') or hasRole('OPERATOR')")
 @RestController
 @RequestMapping(TokenResource.TOKENS)
 public class TokenResource {
@@ -19,9 +22,15 @@ public class TokenResource {
     public static final String TOKENS = "/tokens";
 
     public static final String AUTHENTICATED = "/authenticated";
+    
+    public static final String USERNAME = "/username";
 
     @Autowired
     private TokenController tokenController;
+    
+    @Autowired
+    private UserController userController;
+
 
     @PreAuthorize("authenticated")
     @PostMapping
@@ -29,10 +38,15 @@ public class TokenResource {
         return tokenController.login(activeUser.getUsername());
     }
 
-    @PreAuthorize("hasRole('ADMIN') or hasRole('MANAGER') or hasRole('OPERATOR')")
     @GetMapping(value = AUTHENTICATED)
-    public boolean tokenRoles(@AuthenticationPrincipal User activeUser) {
+    public boolean tokenRoles() {
         return true;
     }
+    
+    @GetMapping(value = USERNAME)
+    public UserMinimumDto username(@AuthenticationPrincipal User activeUser) {
+        return this.userController.username(activeUser.getUsername());
+    }
+    
 
 }
