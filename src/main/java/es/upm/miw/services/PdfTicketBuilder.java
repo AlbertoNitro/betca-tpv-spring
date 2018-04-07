@@ -74,7 +74,8 @@ public class PdfTicketBuilder extends PdfBuilder {
     public PdfTicketBuilder barCode(String code) {
         Barcode128 code128 = new Barcode128(this.getDocument().getPdfDocument());
         code128.setCodeType(Barcode128.CODE128);
-        code128.setCode(code.trim());
+        code128.setCode(code.trim().replace('-', '/').replace('_', '?'));  
+        code128.setAltText(code.trim());
         Image code128Image = new Image(code128.createFormXObject(this.getDocument().getPdfDocument()));
         int width = code.length() * BAR_CODE_WIDTH_PERCENT_LENGHT + BAR_CODE_WIDTH_PERCENT_MIN;
         if (width > 100) {

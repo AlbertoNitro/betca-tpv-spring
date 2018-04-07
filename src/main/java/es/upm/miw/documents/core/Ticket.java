@@ -14,7 +14,7 @@ import es.upm.miw.utils.Encrypting;
 @Document
 public class Ticket {
 
-    private static final String DATE_FORMAT = "yyyyMMdd-";
+    private static final String DATE_FORMAT = "yyyyMMdd";
 
     @Id
     private String id;

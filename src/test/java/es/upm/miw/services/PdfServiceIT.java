@@ -37,7 +37,7 @@ public class PdfServiceIT {
 
     @Test
     public void testGenerateTicket() {
-        Article article = new Article("23581","Descripción articulo", null);
+        Article article = new Article("23581", "Descripción articulo", null);
         article.setRetailPrice(new BigDecimal("100.10"));
         Shopping[] shoppingList = new Shopping[6];
         shoppingList[0] = new Shopping(2, new BigDecimal("20"), article);
@@ -52,7 +52,7 @@ public class PdfServiceIT {
 
     @Test
     public void testGenerateBudget() {
-        Article article = new Article("23581","Descripción articulo", null);
+        Article article = new Article("23581", "Descripción articulo", null);
         article.setRetailPrice(new BigDecimal("100.10"));
         Shopping[] shoppingList = new Shopping[6];
         shoppingList[0] = new Shopping(2, new BigDecimal("20"), article);
@@ -72,4 +72,5 @@ public class PdfServiceIT {
         voucher.setId("a3b2");
         pdfService.generateVoucher(voucher);
     }
+
 }
