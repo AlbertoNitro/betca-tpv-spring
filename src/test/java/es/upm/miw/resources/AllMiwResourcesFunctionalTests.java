@@ -13,7 +13,6 @@ import org.junit.runners.Suite.SuiteClasses;
     InvoiceResourceFunctionalTesting.class,
     OfferResourceFunctionalTesting.class,
     OrderResourceFunctionalTesting.class,
-    OrderBodyResourceFunctionalTesting.class,
     ProviderResourceFunctionalTesting.class,
     TicketResourceFunctionalTesting.class,
     TokenResourceFunctionalTesting.class,

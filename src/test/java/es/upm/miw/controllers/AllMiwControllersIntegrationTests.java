@@ -15,7 +15,6 @@ import org.junit.runners.Suite.SuiteClasses;
         UserControllerIT.class,
         VoucherControllerIT.class,
         OrderControllerIT.class,
-        OrderBodyControllerIT.class,
         SchedulerControllerIT.class
 })
 public class AllMiwControllersIntegrationTests {
