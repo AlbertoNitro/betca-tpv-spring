@@ -1,5 +1,6 @@
 package es.upm.miw.dtos;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -19,6 +20,8 @@ public class TicketDto {
 
     private Date creationDate;
 
+    private BigDecimal debt;
+
     private UserDto user;
 
     @NotNull
@@ -31,9 +34,10 @@ public class TicketDto {
     public TicketDto(Ticket ticket) {
         this.id = ticket.getId();
         this.creationDate = ticket.getCreationDate();
-        if(ticket.getUser()==null) {
-            this.user=null;
-        }else {
+        this.debt = ticket.getDebt();
+        if (ticket.getUser() == null) {
+            this.user = null;
+        } else {
             this.user = new UserDto(ticket.getUser());
         }
         shoppingList = new ArrayList<ShoppingDto>();
@@ -58,6 +62,14 @@ public class TicketDto {
         this.creationDate = creationDate;
     }
 
+    public BigDecimal getDebt() {
+        return debt;
+    }
+
+    public void setDebt(BigDecimal debt) {
+        this.debt = debt;
+    }
+
     public List<ShoppingDto> getShoppingList() {
         return shoppingList;
     }
@@ -76,7 +88,9 @@ public class TicketDto {
 
     @Override
     public String toString() {
-        return "TicketDto [id=" + id + ", creationDate=" + creationDate + ", user=" + user + ", shoppingList=" + shoppingList + "]";
+        return "TicketDto [id=" + id + ", creationDate=" + creationDate + ", debt=" + debt + ", user=" + user + ", shoppingList="
+                + shoppingList + "]";
     }
+
 
 }

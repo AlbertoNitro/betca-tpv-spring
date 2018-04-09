@@ -111,6 +111,7 @@ public class TicketController {
     public Optional<byte[]> updateTicket(String id, TicketDto ticketDto) {
         Ticket ticket = this.ticketRepository.findOne(id);
         assert ticket != null;
+        ticket.setDebt(ticketDto.getDebt());
         for (int i = 0; i < ticket.getShoppingList().length; i++) {
             int amountDifference = ticket.getShoppingList()[i].getAmount() - ticketDto.getShoppingList().get(i).getAmount();
             if (amountDifference > 0) {

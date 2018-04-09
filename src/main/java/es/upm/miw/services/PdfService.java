@@ -90,7 +90,6 @@ public class PdfService {
     public Optional<byte[]> generateLabels24(List<Article> articles) {
         final String path = "/labels/label24-" + new SimpleDateFormat("yyyyMMdd-HH-mm").format(new Date().getTime());
         PdfTag24Builder pdf = new PdfTag24Builder(path);
-
         for (Article article : articles) {
             pdf.addTag24(article.getDescription(), article.getCode());
         }
@@ -106,7 +105,9 @@ public class PdfService {
         if (ticket.getDebt().signum() == 0) {
             pdf.paragraphEmphasized("TICKET");
         } else {
-            pdf.paragraphEmphasized("RESERVA. Deuda: " + ticket.getDebt().setScale(2, RoundingMode.HALF_UP) + "€");
+            pdf.paragraphEmphasized("Abonado:" + ticket.getTicketTotal().subtract(ticket.getDebt()).setScale(2, RoundingMode.HALF_UP)
+                    + "€,  pendiente: " + ticket.getDebt().setScale(2, RoundingMode.HALF_UP) + "€");
+            pdf.paragraphEmphasized("RESERVA");
         }
         pdf.barCode(ticket.getId()).line();
         SimpleDateFormat formatter = new SimpleDateFormat(DATE_FORMAT);
@@ -127,16 +128,15 @@ public class PdfService {
         }
         this.totalPrice(pdf, ticket.getTicketTotal());
         pdf.line().paragraph("Periodo de devolución o cambio: 15 dias a partir de la fecha del ticket");
-        pdf.paragraphEmphasized("Gracias por su visita");
         if (notCommitted) {
             pdf.paragraphEmphasized("Artículos pendientes de entrega");
             if (ticket.getUser() != null) {
-
                 pdf.paragraph("Teléfono de contacto: " + ticket.getUser().getMobile() + " - " + ticket.getUser().getUsername().substring(0,
                         (ticket.getUser().getUsername().length() > 10) ? 10 : ticket.getUser().getUsername().length()));
             }
             // pdf.qrCode(ticket.getReference());
         }
+        pdf.paragraphEmphasized("Gracias por su visita");
 
         return pdf.build();
     }
@@ -161,7 +161,6 @@ public class PdfService {
         this.totalPrice(pdf, budget.getBudgetTotal());
         pdf.line().paragraph("Este presupuesto es válido durante 15 días. A partir de esa fecha los precios pueden variar.");
         pdf.paragraphEmphasized("Gracias por su visita");
-
         return pdf.build();
     }
 
@@ -179,7 +178,6 @@ public class PdfService {
 
         pdf.line().paragraph("Periodo de validez: ilimitado.");
         pdf.paragraphEmphasized("Gracias por su visita");
-
         return pdf.build();
     }
 
@@ -218,13 +216,11 @@ public class PdfService {
                     shopping.getDiscount().setScale(2, RoundingMode.HALF_UP) + "%",
                     shopping.getShoppingTotal().setScale(2, RoundingMode.HALF_UP) + "€");
         }
-
         pdf.tableColspanRight("BASE IMPONIBLE: " + invoice.getBaseTax().setScale(2, RoundingMode.HALF_UP) + "€");
         pdf.tableColspanRight("IVA: " + invoice.getTax().setScale(2, RoundingMode.HALF_UP) + "€");
         pdf.tableColspanRight("TOTAL: " + invoice.getTicket().getTicketTotal().setScale(2, RoundingMode.HALF_UP) + "€");
         pdf.line();
         pdf.paragraphEmphasized("Gracias por su visita");
-
         return pdf.build();
     }
 
