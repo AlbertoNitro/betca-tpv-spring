@@ -24,7 +24,7 @@ public class Order {
     private OrderLine[] orderLine;
 
     public Order(String description, Provider provider, OrderLine[] orderLine) {
-        this.openingDate= new Date();
+        this.openingDate = new Date();
         this.description = description;
         this.provider = provider;
         this.orderLine = orderLine;
@@ -66,6 +66,10 @@ public class Order {
     public String toString() {
         return "Order [id=" + id + ", description=" + description + ", provider=" + provider + ", openingDate=" + openingDate
                 + ", closingDate=" + closingDate + ", orderLine=" + orderLine + "]";
+    }
+
+    public void close() {
+        this.closingDate = new Date();
     }
 
 }

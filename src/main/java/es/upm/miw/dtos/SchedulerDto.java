@@ -1,11 +1,9 @@
 package es.upm.miw.dtos;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.google.common.util.concurrent.AbstractScheduledService;
 import es.upm.miw.documents.core.Scheduler;
 
 import java.text.SimpleDateFormat;
-import java.util.Date;
 
 import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
 

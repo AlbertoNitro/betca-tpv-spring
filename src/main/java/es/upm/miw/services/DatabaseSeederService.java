@@ -31,8 +31,10 @@ import es.upm.miw.repositories.core.BudgetRepository;
 import es.upm.miw.repositories.core.CashMovementRepository;
 import es.upm.miw.repositories.core.CashierClosureRepository;
 import es.upm.miw.repositories.core.FamilyArticleRepository;
+import es.upm.miw.repositories.core.FamilyCompositeRepository;
 import es.upm.miw.repositories.core.InvoiceRepository;
 import es.upm.miw.repositories.core.OfferRepository;
+import es.upm.miw.repositories.core.OrderRepository;
 import es.upm.miw.repositories.core.ProviderRepository;
 import es.upm.miw.repositories.core.SchedulerRepository;
 import es.upm.miw.repositories.core.TicketRepository;
@@ -90,9 +92,15 @@ public class DatabaseSeederService {
 
     @Autowired
     private FamilyArticleRepository familyArticleRepository;
+    
+    @Autowired
+    private FamilyCompositeRepository familyCompositeRepository;
 
     @Autowired
     private SchedulerRepository schedulerRepository;
+    
+    @Autowired
+    private OrderRepository orderRepository;
 
     private long ean13;
 
@@ -258,20 +266,26 @@ public class DatabaseSeederService {
     public void deleteAllAndCreateAdmin() {
         Logger.getLogger(this.getClass()).warn("------------------------- delete All And Create Admin-----------");
         // Delete Repositories -----------------------------------------------------
-        this.schedulerRepository.deleteAll();
-        this.userRepository.deleteAll();
-        this.ticketRepository.deleteAll();
-        this.familyArticleRepository.deleteAll();
-        this.articlesFamilyRepository.deleteAll();
-        this.articleRepository.deleteAll();
-        this.voucherRepository.deleteAll();
-        this.cashMovementRepository.deleteAll();
-        this.providerRepository.deleteAll();
+        this.familyCompositeRepository.deleteAll();
         this.invoiceRepository.deleteAll();
-        this.cashierClosureRepository.deleteAll();
+
+        this.ticketRepository.deleteAll();
+        this.orderRepository.deleteAll();
+        this.familyArticleRepository.deleteAll();   
+
+
+        this.cashMovementRepository.deleteAll();        
+        this.articleRepository.deleteAll();        
+        
+        this.schedulerRepository.deleteAll();
+        this.voucherRepository.deleteAll();
         this.offerRepository.deleteAll();
-        this.budgetRepository.deleteAll();
-        this.createAdminIfNotExist();
+        this.cashierClosureRepository.deleteAll();
+        this.budgetRepository.deleteAll();        
+        this.providerRepository.deleteAll();     
+        this.userRepository.deleteAll();
+        
+        this.createAdminIfNotExist();       
         // -----------------------------------------------------------------------
     }
 

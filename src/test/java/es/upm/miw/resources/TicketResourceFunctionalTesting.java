@@ -146,7 +146,7 @@ public class TicketResourceFunctionalTesting {
 		Date initDate = today.getTime();
 		today.add(Calendar.MONTH, 1);
 		Date endDate = today.getTime();
-		String x = format.format(initDate);
+		format.format(initDate);
 
 		List<HistoricalProductOutPutDto> historicalData = Arrays.asList(restService.loginAdmin()
 				.restBuilder(new RestBuilder<HistoricalProductOutPutDto[]>()).clazz(HistoricalProductOutPutDto[].class)
@@ -177,7 +177,7 @@ public class TicketResourceFunctionalTesting {
 		Date initDate = today.getTime();
 		today.add(Calendar.MONTH, 1);
 		Date endDate = today.getTime();
-		String x = format.format(initDate);
+		format.format(initDate);
 
 		List<NumProductsSoldDto> data = Arrays.asList(restService.loginAdmin()
 				.restBuilder(new RestBuilder<NumProductsSoldDto[]>()).clazz(NumProductsSoldDto[].class)
@@ -209,7 +209,7 @@ public class TicketResourceFunctionalTesting {
 		Date initDate = today.getTime();
 		today.add(Calendar.MONTH, 1);
 		Date endDate = today.getTime();
-		String x = format.format(initDate);
+		format.format(initDate);
 
 		
 		List<IncomeComparision> data = Arrays.asList(restService.loginAdmin()

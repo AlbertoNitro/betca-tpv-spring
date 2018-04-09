@@ -36,7 +36,7 @@ public class OrderControllerIT {
 
     @Test
     public void readOrderTest() {
-        OrderLine[] lines = new OrderLine[] {new OrderLine(this.articleRepository.findOne("article1"), 2)};
+        OrderLine[] lines = new OrderLine[] {new OrderLine(this.articleRepository.findOne("article1"), 2, 2)};
         this.order = new Order("prueba", this.providerRepository.findOne("provider1"), lines);
         this.orderRepository.save(this.order);
         assertTrue(this.orderController.readAll().size() > 0);
