@@ -1,6 +1,7 @@
 package es.upm.miw.documents.core;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
@@ -38,7 +39,7 @@ public class Ticket {
     public Ticket(int idOfday, BigDecimal cashDeposited, Shopping[] shoppingList, User user) {
         this();
         this.id = new SimpleDateFormat(DATE_FORMAT).format(new Date()) + idOfday;
-        this.cashDeposited = cashDeposited;
+        this.setCashDeposited(cashDeposited);
         this.shoppingList = shoppingList;
         this.user = user;
     }
@@ -88,7 +89,7 @@ public class Ticket {
     }
     
     public void setCashDeposited(BigDecimal cashDeposited) {
-        this.cashDeposited = cashDeposited;
+        this.cashDeposited = cashDeposited.setScale(2, RoundingMode.HALF_UP);
     }
 
     public BigDecimal getTicketTotal() {

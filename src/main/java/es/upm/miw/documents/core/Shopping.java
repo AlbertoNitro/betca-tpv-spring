@@ -1,6 +1,7 @@
 package es.upm.miw.documents.core;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 import org.springframework.data.mongodb.core.mapping.DBRef;
 
@@ -24,7 +25,7 @@ public class Shopping {
 
     public Shopping(Integer amount, BigDecimal discount, Article article) {
         this.amount = amount;
-        this.discount = discount;
+        this.setDiscount(discount);
         this.article = article;
         this.description = article.getDescription();
         this.retailPrice = article.getRetailPrice();
@@ -44,7 +45,7 @@ public class Shopping {
     }
 
     public void setDiscount(BigDecimal discount) {
-        this.discount = discount;
+        this.discount = discount.setScale(2, RoundingMode.HALF_UP);
     }
 
     public Article getArticle() {

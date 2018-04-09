@@ -1,6 +1,7 @@
 package es.upm.miw.controllers;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -93,10 +94,10 @@ public class CashierClosureController {
             lastCashierClosure.setWithdrawal(BigDecimal.ZERO);
             List<CashMovement> cashMovementList = cashMovementRepository.findByCreationDateGreaterThan(cashierOpenedDate);
             for (CashMovement cashMovement : cashMovementList) {
-                if(cashMovement.getValue().signum()==1) {
+                if (cashMovement.getValue().signum() == 1) {
                     lastCashierClosure.setDeposit(lastCashierClosure.getDeposit().add(cashMovement.getValue()));
-                }else {
-                    lastCashierClosure.setWithdrawal(lastCashierClosure.getWithdrawal().add(cashMovement.getValue().negate()));                   
+                } else {
+                    lastCashierClosure.setWithdrawal(lastCashierClosure.getWithdrawal().add(cashMovement.getValue().negate()));
                 }
             }
             this.cashierClosureRepository.save(lastCashierClosure);
@@ -116,11 +117,12 @@ public class CashierClosureController {
 
         Date cashierOpenedDate = lastCashierClosure.getOpeningDate();
         CashierClosingOutputDto cashierClosureDto = new CashierClosingOutputDto();
-        
-        cashierClosureDto.setTotalCash(lastCashierClosure.getInitialCash().add(this.cashDeposited(cashierOpenedDate)).add(this.cashMovements(cashierOpenedDate)));
-        cashierClosureDto.setTotalVoucher(this.totalVouchers(cashierOpenedDate));
+
+        cashierClosureDto.setTotalCash(lastCashierClosure.getInitialCash().add(this.cashDeposited(cashierOpenedDate))
+                .add(this.cashMovements(cashierOpenedDate)).setScale(2, RoundingMode.HALF_UP));
+        cashierClosureDto.setTotalVoucher(this.totalVouchers(cashierOpenedDate).setScale(2, RoundingMode.HALF_UP));
         cashierClosureDto.setTotalCard(this.salesCash(cashierOpenedDate).subtract(cashierClosureDto.getTotalVoucher())
-                .subtract(this.cashDeposited(cashierOpenedDate)));
+                .subtract(this.cashDeposited(cashierOpenedDate)).setScale(2, RoundingMode.HALF_UP));
         return Optional.of(cashierClosureDto);
     }
 
