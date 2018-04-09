@@ -6,6 +6,4 @@ import es.upm.miw.documents.core.Order;
 
 public interface OrderRepository extends MongoRepository<Order, String> {
 
-    public Order findById(String id);
-
 }

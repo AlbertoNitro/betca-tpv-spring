@@ -3,7 +3,9 @@ package es.upm.miw.resources;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.security.access.AccessDeniedException;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -24,7 +26,7 @@ import es.upm.miw.resources.exceptions.OfferCodeNotFoundException;
 import es.upm.miw.resources.exceptions.OfferCodeRepeatedException;
 import es.upm.miw.resources.exceptions.OfferInvalidExpirationDateException;
 import es.upm.miw.resources.exceptions.OrderAlreadyExistException;
-import es.upm.miw.resources.exceptions.OrderBodyIdNotFoundException;
+import es.upm.miw.resources.exceptions.OrderException;
 import es.upm.miw.resources.exceptions.OrderIdNotFoundException;
 import es.upm.miw.resources.exceptions.ProviderFieldAlreadyExistException;
 import es.upm.miw.resources.exceptions.ProviderIdNotFoundException;
@@ -46,7 +48,7 @@ public class ApiExceptionHandler {
         FileException.class,
         InvoiceIdNotFoundException.class,
         OfferCodeNotFoundException.class,
-        OrderBodyIdNotFoundException.class,
+        OrderException.class,
         OrderIdNotFoundException.class,
         ProviderIdNotFoundException.class,
         TicketIdNotFoundException.class,
@@ -61,7 +63,9 @@ public class ApiExceptionHandler {
     // Exception
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler({
-        Exception.class,
+        MethodArgumentNotValidException.class,
+        HttpMessageNotReadableException.class,
+        
         ArticlesFamilyCreationException.class,
         CashierClosedException.class,
         CashierCreateException.class,
@@ -79,6 +83,7 @@ public class ApiExceptionHandler {
         return new ErrorMessage(exception, exception.getStackTrace().toString());
     }
 
+
     @ResponseStatus(HttpStatus.FORBIDDEN)
     @ExceptionHandler({
         AccessDeniedException.class,
@@ -88,5 +93,17 @@ public class ApiExceptionHandler {
     public ErrorMessage forbiddenRequest(Exception exception) {
         return new ErrorMessage(exception, "");
     }
+    
+    // Exception
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    @ExceptionHandler({
+        Exception.class,
+    })
+    @ResponseBody
+    public ErrorMessage exception(Exception exception) {
+        exception.printStackTrace();
+        return new ErrorMessage(exception, exception.getStackTrace().toString());
+    }
+   
     
 }

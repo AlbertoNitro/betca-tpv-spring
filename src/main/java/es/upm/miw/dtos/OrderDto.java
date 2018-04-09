@@ -1,76 +1,68 @@
 package es.upm.miw.dtos;
 
-import java.sql.Date;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import javax.validation.constraints.NotNull;
 
 import es.upm.miw.documents.core.Order;
-import es.upm.miw.documents.core.Provider;
+import es.upm.miw.documents.core.OrderLine;
+import es.upm.miw.dtos.validations.ListNotEmpty;
 
-@JsonInclude(Include.NON_NULL)
-public class OrderDto {
+public class OrderDto extends OrderBaseOutputDto {
 
-    private String id;
+    @NotNull
+    private String providerId;
 
-    private String Provider_id;
+    @ListNotEmpty
+    private List<OrderLineDto> ordersLine;
 
-    private String Provider_name;
-
-    private Date Order_date;
+    private Date closingDate;
 
     public OrderDto() {
     }
 
-    public OrderDto(String id, String id_provider, String provider_name) {
-        this.id = id;
-        this.Provider_id = id_provider;
-        this.Provider_name = provider_name;
+    public OrderDto(Order order) {
+        this.setId(order.getId());
+        this.setDescription(order.getDescription());
+        this.setProviderCompany(order.getProvider().getCompany());
+        this.setOpeningDate(order.getOpeningDate());
+        this.setProviderId(order.getProvider().getId());
+        this.ordersLine = new ArrayList<>();
+        for (OrderLine orderLine : order.getOrderLine()) {
+            ordersLine.add(new OrderLineDto(orderLine));
+        }
+        this.closingDate = order.getClosingDate();
     }
 
-    public OrderDto(Order order, Provider provider) {
-        this.id = order.getId();
-        this.Provider_id = provider.getId();
-        this.Provider_name = provider.getCompany();
-
+    public String getProviderId() {
+        return providerId;
     }
 
-    public String getId() {
-        return id;
+    public void setProviderId(String providerId) {
+        this.providerId = providerId;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public List<OrderLineDto> getOrdersLine() {
+        return ordersLine;
     }
 
-    public String getProvider_id() {
-        return Provider_id;
+    public void setOrdersLine(List<OrderLineDto> ordersLineDto) {
+        this.ordersLine = ordersLineDto;
     }
 
-    public void setProvider_id(String provider_id) {
-        Provider_id = provider_id;
+    public Date getClosingDate() {
+        return closingDate;
     }
 
-    public String getProvider_name() {
-        return Provider_name;
-    }
-
-    public void setProvider_name(String provider_name) {
-        Provider_name = provider_name;
-    }
-
-    public Date getOrder_date() {
-        return Order_date;
-    }
-
-    public void setOrder_date(Date order_date) {
-        Order_date = order_date;
+    public void setClosingDate(Date closingDate) {
+        this.closingDate = closingDate;
     }
 
     @Override
     public String toString() {
-        return "OrderDto [id=" + id + ", Provider_id=" + Provider_id + ", Provider_name=" + Provider_name + ", Order_date=" + Order_date
-                + "]";
+        return "OrderDto [providerId=" + providerId + ", ordersLineDto=" + ordersLine + ", closingDate=" + closingDate + "]";
     }
 
 }

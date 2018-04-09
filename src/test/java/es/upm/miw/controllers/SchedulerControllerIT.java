@@ -2,7 +2,6 @@ package es.upm.miw.controllers;
 
 import es.upm.miw.documents.core.Scheduler;
 import es.upm.miw.dtos.SchedulerDto;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -17,7 +16,6 @@ import java.util.List;
 import java.util.Optional;
 
 import static junit.framework.TestCase.assertTrue;
-import static junit.framework.TestCase.fail;
 import static org.junit.Assert.assertEquals;
 
 @RunWith(SpringRunner.class)

@@ -21,7 +21,6 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -147,7 +146,7 @@ public class TicketResourceFunctionalTesting {
 		Date initDate = today.getTime();
 		today.add(Calendar.MONTH, 1);
 		Date endDate = today.getTime();
-		String x = format.format(initDate);
+		format.format(initDate);
 
 		List<HistoricalProductOutPutDto> historicalData = Arrays.asList(restService.loginAdmin()
 				.restBuilder(new RestBuilder<HistoricalProductOutPutDto[]>()).clazz(HistoricalProductOutPutDto[].class)
@@ -178,7 +177,7 @@ public class TicketResourceFunctionalTesting {
 		Date initDate = today.getTime();
 		today.add(Calendar.MONTH, 1);
 		Date endDate = today.getTime();
-		String x = format.format(initDate);
+		format.format(initDate);
 
 		List<NumProductsSoldDto> data = Arrays.asList(restService.loginAdmin()
 				.restBuilder(new RestBuilder<NumProductsSoldDto[]>()).clazz(NumProductsSoldDto[].class)
@@ -210,7 +209,7 @@ public class TicketResourceFunctionalTesting {
 		Date initDate = today.getTime();
 		today.add(Calendar.MONTH, 1);
 		Date endDate = today.getTime();
-		String x = format.format(initDate);
+		format.format(initDate);
 
 		
 		List<IncomeComparision> data = Arrays.asList(restService.loginAdmin()
