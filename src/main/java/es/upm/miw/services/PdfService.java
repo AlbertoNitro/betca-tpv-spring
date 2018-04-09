@@ -99,11 +99,15 @@ public class PdfService {
 
     public Optional<byte[]> generateTicket(Ticket ticket) {
         final String path = "/tickets/ticket-" + ticket.getId();
-        final int INCREMENTAL_HEIGHT = 11;
+        final int INCREMENTAL_HEIGHT = 9;
         boolean notCommitted = false;
-        PdfTicketBuilder pdf = this.addCompanyDetails(path, INCREMENTAL_HEIGHT + ticket.getShoppingList().length);
+        PdfTicketBuilder pdf = this.addCompanyDetails(path, INCREMENTAL_HEIGHT + ticket.getShoppingList().length).line();
 
-        pdf.line().paragraphEmphasized("TICKET");
+        if (ticket.getDebt().signum() == 0) {
+            pdf.paragraphEmphasized("TICKET");
+        } else {
+            pdf.paragraphEmphasized("RESERVA. Deuda: " + ticket.getDebt().setScale(2, RoundingMode.HALF_UP) + "€");
+        }
         pdf.barCode(ticket.getId()).line();
         SimpleDateFormat formatter = new SimpleDateFormat(DATE_FORMAT);
         pdf.paragraphEmphasized(formatter.format(ticket.getCreationDate()));
@@ -123,9 +127,15 @@ public class PdfService {
         }
         this.totalPrice(pdf, ticket.getTicketTotal());
         pdf.line().paragraph("Periodo de devolución o cambio: 15 dias a partir de la fecha del ticket");
-        pdf.paragraphEmphasized("Gracias por usar nuestros servicios.");
+        pdf.paragraphEmphasized("Gracias por su visita");
         if (notCommitted) {
-            pdf.qrCode(ticket.getReference());
+            pdf.paragraphEmphasized("Artículos pendientes de entrega");
+            if (ticket.getUser() != null) {
+
+                pdf.paragraph("Teléfono de contacto: " + ticket.getUser().getMobile() + " - " + ticket.getUser().getUsername().substring(0,
+                        (ticket.getUser().getUsername().length() > 10) ? 10 : ticket.getUser().getUsername().length()));
+            }
+            // pdf.qrCode(ticket.getReference());
         }
 
         return pdf.build();
@@ -150,14 +160,14 @@ public class PdfService {
         }
         this.totalPrice(pdf, budget.getBudgetTotal());
         pdf.line().paragraph("Este presupuesto es válido durante 15 días. A partir de esa fecha los precios pueden variar.");
-        pdf.paragraphEmphasized("Gracias por usar nuestros servicios.");
+        pdf.paragraphEmphasized("Gracias por su visita");
 
         return pdf.build();
     }
 
     public Optional<byte[]> generateVoucher(Voucher voucher) {
         final String path = "/vouchers/voucher-" + voucher.getId();
-        PdfTicketBuilder pdf = this.addCompanyDetails(path, 2);
+        PdfTicketBuilder pdf = this.addCompanyDetails(path, 3);
 
         pdf.line().paragraphEmphasized("VALE");
         pdf.barCode(new Encrypting().encodeHexInBase64UrlSafe(voucher.getId())).line();
@@ -168,7 +178,7 @@ public class PdfService {
         pdf.paragraphEmphasized(formatter.format(voucher.getCreationDate()));
 
         pdf.line().paragraph("Periodo de validez: ilimitado.");
-        pdf.paragraphEmphasized("Gracias por usar nuestros servicios.");
+        pdf.paragraphEmphasized("Gracias por su visita");
 
         return pdf.build();
     }
@@ -177,7 +187,7 @@ public class PdfService {
         PdfTicketBuilder pdf = new PdfTicketBuilder(path, lines);
         pdf.addImage(this.logo).paragraphEmphasized(this.name).paragraphEmphasized("Tfn: " + this.phone);
         pdf.paragraph("NIF: " + this.nif + "   -   " + this.address).paragraph("Email: " + this.email);
-        if(!this.web.isEmpty()) {
+        if (!this.web.isEmpty()) {
             pdf.paragraph("Web: " + this.web);
         }
         return pdf;
@@ -213,7 +223,7 @@ public class PdfService {
         pdf.tableColspanRight("IVA: " + invoice.getTax().setScale(2, RoundingMode.HALF_UP) + "€");
         pdf.tableColspanRight("TOTAL: " + invoice.getTicket().getTicketTotal().setScale(2, RoundingMode.HALF_UP) + "€");
         pdf.line();
-        pdf.paragraphEmphasized("Gracias por usar nuestros servicios.");
+        pdf.paragraphEmphasized("Gracias por su visita");
 
         return pdf.build();
     }

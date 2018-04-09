@@ -42,7 +42,7 @@ public class TicketController {
 
     @Autowired
     private PdfService pdfService;
-    
+
     @Autowired
     private StatisticsDataService statisticsDataService;
 
@@ -77,6 +77,8 @@ public class TicketController {
             this.articleRepository.save(article);
         }
         Ticket ticket = new Ticket(this.nextId(), ticketCreationDto.getCash(), shoppingList.toArray(new Shopping[0]), user);
+        ticket.setDebt(ticket.getTicketTotal().subtract(ticketCreationDto.getCash()).subtract(ticketCreationDto.getCard())
+                .subtract(ticketCreationDto.getVoucher()));
         this.ticketRepository.save(ticket);
         return Optional.of(ticket);
     }
@@ -150,7 +152,7 @@ public class TicketController {
         }
         return ticketListDto;
     }
-    
+
     public List<TicketDto> findByMobile(String mobile) {
         List<TicketDto> ticketListDto = new ArrayList<TicketDto>();
         User user = this.userRepository.findByMobile(mobile);
@@ -178,16 +180,16 @@ public class TicketController {
 
     public List<HistoricalProductOutPutDto> getHistoricalProductsDataBetweenDates(Date initDate, Date endDate) {
 
-		return this.statisticsDataService.GetHistoricalData(initDate, endDate);
-	}
-    
+        return this.statisticsDataService.GetHistoricalData(initDate, endDate);
+    }
+
     public List<NumProductsSoldDto> getNumProductsSold(Date initDate, Date endDate) {
 
-		return this.statisticsDataService.GetNumProductsSold(initDate, endDate);
-	}
-    
+        return this.statisticsDataService.GetNumProductsSold(initDate, endDate);
+    }
+
     public List<IncomeComparision> getIncomeComparisionData(Date initDate, Date endDate) {
 
-		return this.statisticsDataService.GetIncomeComparisionData(initDate, endDate);
-	}
+        return this.statisticsDataService.GetIncomeComparisionData(initDate, endDate);
+    }
 }
