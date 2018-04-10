@@ -58,35 +58,35 @@ public class UserController {
     public boolean existsMobile(String mobile) {
         return this.userRepository.findByMobile(mobile) != null;
     }
-    
-	public boolean isAdmin(String mobile) {
-		return isRole(mobile, Role.ADMIN);
-	}
-	
-	public boolean isManager(String mobile) {
-		return isRole(mobile, Role.MANAGER);
-	}
-	
-	public boolean isOperator(String mobile) {
-		return isRole(mobile, Role.OPERATOR);
-	}
-	
-	public boolean isCustormer(String mobile) {
-		return isRole(mobile, Role.CUSTOMER);
-	}
-	
-	public boolean isRole(String mobile, Role role) {
-		User user = this.userRepository.findByMobile(mobile);
-		boolean maybeRole = false;
-		Role[] roles = new Role[user.getRoles().length];
-		roles = user.getRoles();
-		for (int i = 0; i < roles.length; i++) {
-			if (roles[i] == role) {
-				maybeRole = true;
-			}
-		}
-		return maybeRole;
-	}
+
+    public boolean isAdmin(String mobile) {
+        return isRole(mobile, Role.ADMIN);
+    }
+
+    public boolean isManager(String mobile) {
+        return isRole(mobile, Role.MANAGER);
+    }
+
+    public boolean isOperator(String mobile) {
+        return isRole(mobile, Role.OPERATOR);
+    }
+
+    public boolean isCustormer(String mobile) {
+        return isRole(mobile, Role.CUSTOMER);
+    }
+
+    public boolean isRole(String mobile, Role role) {
+        User user = this.userRepository.findByMobile(mobile);
+        boolean maybeRole = false;
+        Role[] roles = new Role[user.getRoles().length];
+        roles = user.getRoles();
+        for (int i = 0; i < roles.length; i++) {
+            if (roles[i] == role) {
+                maybeRole = true;
+            }
+        }
+        return maybeRole;
+    }
 
     public boolean putUser(String mobile, UserDto userDto, Role[] roles) {
         User user = this.userRepository.findByMobile(mobile);
@@ -135,8 +135,19 @@ public class UserController {
     }
 
     public UserMinimumDto username(String mobile) {
-        User user =this.userRepository.findByMobile(mobile);
-        return new UserMinimumDto(user.getMobile(),user.getUsername());
+        User user = this.userRepository.findByMobile(mobile);
+        return new UserMinimumDto(user.getMobile(), user.getUsername());
+    }
+
+    public Optional<UserDto> readUser(String mobile, String mobileLogged) {
+        User userLogged = this.userRepository.findByMobile(mobileLogged); 
+        return this.readUser(mobile, userLogged.getRoles());
+    }
+
+    public boolean putUser(String mobile, UserDto userDto, String mobileLogged) {
+        User userLogged = this.userRepository.findByMobile(mobileLogged); 
+        System.out.println(">>>>>>>>> userLogged.getRoles() "+ userLogged.getRoles());
+        return this.putUser(mobile, userDto, userLogged.getRoles());
     }
 
 }
