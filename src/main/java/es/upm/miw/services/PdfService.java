@@ -56,13 +56,13 @@ public class PdfService {
 
     private String web;
 
-    private static final float[] TABLE_COLUMNS_SIZES = {20, 85, 20, 30, 40, 15};
+    private static final String[] TABLE_COLUMNS_HEADERS = {" ", "Desc.", "Ud.", "Dto.%", "€", "E."};
 
-    private static final float[] TABLE_COLUMNS_SIZES_BUDGETS = {20, 85, 20, 40, 40};
+    private static final float[] TABLE_COLUMNS_SIZES_TICKETS = {15, 90, 15, 25, 35, 15};
 
-    private static final String[] TABLE_COLUMNS_HEADERS = {" ", "Desc.", "Ud.", "Dto.", "€", "E."};
+    private static final String[] TABLE_COLUMNS_HEADERS_BUDGETS = {" ", "Desc.", "Ud.", "Dto.%", "€"};
 
-    private static final String[] TABLE_COLUMNS_HEADERS_BUDGETS = {" ", "Desc.", "Ud.", "Dto.", "€"};
+    private static final float[] TABLE_COLUMNS_SIZES_BUDGETS = {15, 95, 15, 25, 40};
 
     private static final String DATE_FORMAT = "yyyy-MM-dd HH:mm";
 
@@ -98,7 +98,7 @@ public class PdfService {
 
     public Optional<byte[]> generateTicket(Ticket ticket) {
         final String path = "/tickets/ticket-" + ticket.getId();
-        final int INCREMENTAL_HEIGHT = 9;
+        final int INCREMENTAL_HEIGHT = 12;
         boolean notCommitted = false;
         PdfTicketBuilder pdf = this.addCompanyDetails(path, INCREMENTAL_HEIGHT + ticket.getShoppingList().length).line();
 
@@ -112,7 +112,7 @@ public class PdfService {
         pdf.barCode(ticket.getId()).line();
         SimpleDateFormat formatter = new SimpleDateFormat(DATE_FORMAT);
         pdf.paragraphEmphasized(formatter.format(ticket.getCreationDate()));
-        pdf.tableColumnsSizes(TABLE_COLUMNS_SIZES).tableColumnsHeader(TABLE_COLUMNS_HEADERS);
+        pdf.tableColumnsSizes(TABLE_COLUMNS_SIZES_TICKETS).tableColumnsHeader(TABLE_COLUMNS_HEADERS);
         for (int i = 0; i < ticket.getShoppingList().length; i++) {
             Shopping shopping = ticket.getShoppingList()[i];
             String state = "";
@@ -120,11 +120,14 @@ public class PdfService {
                 state = "N";
                 notCommitted = true;
             }
-
-            pdf.tableCell(String.valueOf(i + 1), shopping.getDescription(), "" + shopping.getAmount(),
-                    shopping.getDiscount().setScale(2, RoundingMode.HALF_UP) + "%",
-                    shopping.getShoppingTotal().setScale(2, RoundingMode.HALF_UP) + "€", state);
-
+            if (shopping.getDiscount().doubleValue() < 0.005) {
+                pdf.tableCell(String.valueOf(i + 1), shopping.getDescription(), "" + shopping.getAmount(), "",
+                        shopping.getShoppingTotal().setScale(2, RoundingMode.HALF_UP) + "€", state);
+            } else {
+                pdf.tableCell(String.valueOf(i + 1), shopping.getDescription(), "" + shopping.getAmount(),
+                        "" + shopping.getDiscount().setScale(2, RoundingMode.HALF_UP),
+                        shopping.getShoppingTotal().setScale(2, RoundingMode.HALF_UP) + "€", state);
+            }
         }
         this.totalPrice(pdf, ticket.getTicketTotal());
         pdf.line().paragraph("Periodo de devolución o cambio: 15 dias a partir de la fecha del ticket");
@@ -137,13 +140,13 @@ public class PdfService {
             // pdf.qrCode(ticket.getReference());
         }
         pdf.paragraphEmphasized("Gracias por su visita");
-
+        pdf.paragraphEmphasized(" ");
         return pdf.build();
     }
 
     public Optional<byte[]> generateBudget(Budget budget) {
         final String path = "/budgets/budget-" + budget.getId();
-        final int INCREMENTAL_HEIGHT = 4;
+        final int INCREMENTAL_HEIGHT = 10;
         PdfTicketBuilder pdf = this.addCompanyDetails(path, INCREMENTAL_HEIGHT + budget.getShoppingList().length);
         pdf.line().paragraphEmphasized("PRESUPUESTO");
         pdf.barCode(new Encrypting().encodeHexInBase64UrlSafe(budget.getId())).line();
@@ -154,19 +157,25 @@ public class PdfService {
         pdf.tableColumnsSizes(TABLE_COLUMNS_SIZES_BUDGETS).tableColumnsHeader(TABLE_COLUMNS_HEADERS_BUDGETS);
         for (int i = 0; i < budget.getShoppingList().length; i++) {
             Shopping shopping = budget.getShoppingList()[i];
-            pdf.tableCell(String.valueOf(i + 1), shopping.getDescription(), "" + shopping.getAmount(),
-                    shopping.getDiscount().setScale(2, RoundingMode.HALF_UP) + "%",
-                    shopping.getShoppingTotal().setScale(2, RoundingMode.HALF_UP) + "€");
+            if (shopping.getDiscount().doubleValue() < 0.005) {
+                pdf.tableCell(String.valueOf(i + 1), shopping.getDescription(), "" + shopping.getAmount(), "",
+                        shopping.getShoppingTotal().setScale(2, RoundingMode.HALF_UP) + "€");
+            } else {
+                pdf.tableCell(String.valueOf(i + 1), shopping.getDescription(), "" + shopping.getAmount(),
+                        shopping.getDiscount().setScale(2, RoundingMode.HALF_UP) + "",
+                        shopping.getShoppingTotal().setScale(2, RoundingMode.HALF_UP) + "€");
+            }
         }
         this.totalPrice(pdf, budget.getBudgetTotal());
         pdf.line().paragraph("Este presupuesto es válido durante 15 días. A partir de esa fecha los precios pueden variar.");
         pdf.paragraphEmphasized("Gracias por su visita");
+        pdf.paragraphEmphasized(" ");
         return pdf.build();
     }
 
     public Optional<byte[]> generateVoucher(Voucher voucher) {
         final String path = "/vouchers/voucher-" + voucher.getId();
-        PdfTicketBuilder pdf = this.addCompanyDetails(path, 3);
+        PdfTicketBuilder pdf = this.addCompanyDetails(path, 6);
 
         pdf.line().paragraphEmphasized("VALE");
         pdf.barCode(new Encrypting().encodeHexInBase64UrlSafe(voucher.getId())).line();
@@ -178,6 +187,7 @@ public class PdfService {
 
         pdf.line().paragraph("Periodo de validez: ilimitado.");
         pdf.paragraphEmphasized("Gracias por su visita");
+        pdf.paragraphEmphasized(" ");
         return pdf.build();
     }
 
@@ -212,15 +222,21 @@ public class PdfService {
         pdf.tableColumnsSizes(TABLE_COLUMNS_SIZES_BUDGETS).tableColumnsHeader(TABLE_COLUMNS_HEADERS_BUDGETS);
         for (int i = 0; i < invoice.getTicket().getShoppingList().length; i++) {
             Shopping shopping = invoice.getTicket().getShoppingList()[i];
-            pdf.tableCell(String.valueOf(i + 1), shopping.getDescription(), "" + shopping.getAmount(),
-                    shopping.getDiscount().setScale(2, RoundingMode.HALF_UP) + "%",
-                    shopping.getShoppingTotal().setScale(2, RoundingMode.HALF_UP) + "€");
+            if (shopping.getDiscount().doubleValue() < 0.005) {
+                pdf.tableCell(String.valueOf(i + 1), shopping.getDescription(), "" + shopping.getAmount(), "",
+                        shopping.getShoppingTotal().setScale(2, RoundingMode.HALF_UP) + "€");
+            } else {
+                pdf.tableCell(String.valueOf(i + 1), shopping.getDescription(), "" + shopping.getAmount(),
+                        shopping.getDiscount().setScale(2, RoundingMode.HALF_UP) + "",
+                        shopping.getShoppingTotal().setScale(2, RoundingMode.HALF_UP) + "€");
+            }
         }
         pdf.tableColspanRight("BASE IMPONIBLE: " + invoice.getBaseTax().setScale(2, RoundingMode.HALF_UP) + "€");
         pdf.tableColspanRight("IVA: " + invoice.getTax().setScale(2, RoundingMode.HALF_UP) + "€");
         pdf.tableColspanRight("TOTAL: " + invoice.getTicket().getTicketTotal().setScale(2, RoundingMode.HALF_UP) + "€");
         pdf.line();
         pdf.paragraphEmphasized("Gracias por su visita");
+        pdf.paragraphEmphasized(" ");
         return pdf.build();
     }
 

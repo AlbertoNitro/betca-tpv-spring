@@ -41,7 +41,11 @@ public class PdfTicketBuilder extends PdfBuilder {
 
     private static final int TERMIC_FONT_SIZE_EMPHASIZEDD = 10;
 
-    private static final int TERMIC_MARGIN = 4;
+    private static final int TERMIC_MARGIN_LEFT = 10;
+    
+    private static final int TERMIC_MARGIN_RIGHT = 14;
+    
+    private static final int TERMIC_MARGIN_TOP_BOTTOM = 12;
 
     private static final float TERMIC_PAGE_WIDHT = 227;
 
@@ -56,7 +60,7 @@ public class PdfTicketBuilder extends PdfBuilder {
     public PdfTicketBuilder(String path, int lines) {
         super(path);
         this.prepareDocument(new PageSize(TERMIC_PAGE_WIDHT, TERMIC_PAGE_HEIGHT + lines * 15));
-        this.getDocument().setMargins(TERMIC_MARGIN, TERMIC_MARGIN, TERMIC_MARGIN, TERMIC_MARGIN);
+        this.getDocument().setMargins(TERMIC_MARGIN_TOP_BOTTOM, TERMIC_MARGIN_RIGHT, TERMIC_MARGIN_TOP_BOTTOM, TERMIC_MARGIN_LEFT);
         this.getDocument().setFontSize(TERMIC_FONT_SIZE);
         this.getDocument().setTextAlignment(TextAlignment.LEFT);
     }
