@@ -110,4 +110,11 @@ public class ArticleController {
         return articleListDto;
     }
 
+    public void updateArticle(String code, Integer stock) {
+        Article article = this.articleRepository.findOne(code);
+        assert article != null;
+        article.setStock(stock);
+        this.articleRepository.save(article);
+    }
+
 }

@@ -7,6 +7,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -63,6 +64,11 @@ public class ArticleResource {
     public List<ArticleDto> readFilterArticle(@RequestParam(defaultValue = "") String reference,
             @RequestParam(defaultValue = "") String description, @RequestParam(required = false) String provider) {
         return this.articleController.find(reference,description,provider);
+    }
+    
+    @PatchMapping(value = CODE_ID)
+    public void patchArticleStock(@PathVariable String code, @RequestBody ArticleDto articleDto) {
+        this.articleController.updateArticle(code, articleDto.getStock());
     }
 
 }
