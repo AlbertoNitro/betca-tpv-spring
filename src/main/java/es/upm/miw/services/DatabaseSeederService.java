@@ -202,6 +202,7 @@ public class DatabaseSeederService {
                     actualFamily.add(familyCompositeSizes);
                 }
             } else {
+                article.setCode(this.createEan13());
                 this.articleRepository.save(article);
             }
         }
