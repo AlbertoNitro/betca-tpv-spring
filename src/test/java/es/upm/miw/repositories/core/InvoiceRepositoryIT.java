@@ -19,7 +19,7 @@ public class InvoiceRepositoryIT {
 
     @Test
     public void testFindTicket() {
-        assertEquals("20180112-1", invoiceRepository.findOne("2018-1").getTicket().getId());
+        assertEquals("201801121", invoiceRepository.findOne("20181").getTicket().getId());
     }
 
     @Test

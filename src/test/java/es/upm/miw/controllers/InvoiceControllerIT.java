@@ -21,7 +21,7 @@ public class InvoiceControllerIT {
 
     @Test
     public void testCreateInvioce() {
-        assertTrue(this.invoiceController.createInvoice(new InvoiceCreationInputDto("666666004","20180112-1")).isPresent());
+        assertTrue(this.invoiceController.createInvoice(new InvoiceCreationInputDto("666666004","201801121")).isPresent());
     }
 
 }

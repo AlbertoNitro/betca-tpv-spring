@@ -92,13 +92,13 @@ public class DatabaseSeederService {
 
     @Autowired
     private FamilyArticleRepository familyArticleRepository;
-    
+
     @Autowired
     private FamilyCompositeRepository familyCompositeRepository;
 
     @Autowired
     private SchedulerRepository schedulerRepository;
-    
+
     @Autowired
     private OrderRepository orderRepository;
 
@@ -140,19 +140,24 @@ public class DatabaseSeederService {
         this.voucherRepository.save(tpvGraph.getVoucherList());
         this.cashMovementRepository.save(tpvGraph.getCashMovementList());
         this.cashierClosureRepository.save(tpvGraph.getCashierClosureList());
-        for (Provider provider : tpvGraph.getProviderList()) {
-            Provider providerBd = this.providerRepository.findByCompany(provider.getCompany());
-            if (providerBd == null) {
-                this.providerRepository.save(provider);
-            } else {
-                for (Article article : tpvGraph.getArticleList()) {
-                    if (article.getProvider().getCompany().equals(provider.getCompany())) {
-                        article.setProvider(providerBd);
+        if (ymlFileName.indexOf("test") != -1) {
+            this.providerRepository.save(tpvGraph.getProviderList());
+            this.articleRepository.save(tpvGraph.getArticleList());
+        } else {
+            for (Provider provider : tpvGraph.getProviderList()) {
+                Provider providerBd = this.providerRepository.findByCompany(provider.getCompany());
+                if (providerBd == null) {
+                    this.providerRepository.save(provider);
+                } else {
+                    for (Article article : tpvGraph.getArticleList()) {
+                        if (article.getProvider().getCompany().equals(provider.getCompany())) {
+                            article.setProvider(providerBd);
+                        }
                     }
                 }
             }
+            this.expandAllSizesAndCreateFamilyAndSaveAll(tpvGraph);
         }
-        this.expandAllSizesAndCreateFamilyAndSaveAll(tpvGraph);
         this.ticketRepository.save(tpvGraph.getTicketList());
         this.invoiceRepository.save(tpvGraph.getInvoiceList());
         this.offerRepository.save(tpvGraph.getOfferList());
@@ -189,8 +194,8 @@ public class DatabaseSeederService {
 
             if (article.getReference() != null && article.getReference().indexOf("[") != -1) {
                 List<Article> articleExpandList = this.expandArticlewithSizes(article);
-                FamilyComposite familyCompositeSizes = new FamilyComposite(FamilyType.SIZES, this.extractBaseWithoutSizes(article.getReference()),
-                        this.extractBaseWithoutSizes(article.getDescription()));
+                FamilyComposite familyCompositeSizes = new FamilyComposite(FamilyType.SIZES,
+                        this.extractBaseWithoutSizes(article.getReference()), this.extractBaseWithoutSizes(article.getDescription()));
                 for (Article articleExpand : articleExpandList) {
                     FamilyArticle familyArticle = new FamilyArticle(articleExpand);
                     this.articleRepository.save(articleExpand);
@@ -272,21 +277,20 @@ public class DatabaseSeederService {
 
         this.ticketRepository.deleteAll();
         this.orderRepository.deleteAll();
-        this.familyArticleRepository.deleteAll();   
+        this.familyArticleRepository.deleteAll();
 
+        this.cashMovementRepository.deleteAll();
+        this.articleRepository.deleteAll();
 
-        this.cashMovementRepository.deleteAll();        
-        this.articleRepository.deleteAll();        
-        
         this.schedulerRepository.deleteAll();
         this.voucherRepository.deleteAll();
         this.offerRepository.deleteAll();
         this.cashierClosureRepository.deleteAll();
-        this.budgetRepository.deleteAll();        
-        this.providerRepository.deleteAll();     
+        this.budgetRepository.deleteAll();
+        this.providerRepository.deleteAll();
         this.userRepository.deleteAll();
-        
-        this.createAdminIfNotExist();       
+
+        this.createAdminIfNotExist();
         // -----------------------------------------------------------------------
     }
 

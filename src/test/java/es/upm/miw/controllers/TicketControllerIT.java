@@ -55,6 +55,9 @@ public class TicketControllerIT {
 		this.ticketController.createTicketAndPdf(ticketCreationInputDto);
 		Ticket ticket2 = this.ticketRepository.findFirstByOrderByCreationDateDescIdDesc();
 
+        System.out.println(">>>> 1:"+ticket1.simpleId());
+        System.out.println(">>>> 2:"+ticket2.simpleId());
+		
 		assertEquals(ticket1.simpleId() + 1, ticket2.simpleId());
 
 		this.ticketRepository.delete(ticket1);
@@ -63,17 +66,17 @@ public class TicketControllerIT {
 
 	@Test
 	public void testExistTicket() {
-		assertTrue(this.ticketController.existTicket("20180112-1"));
-		assertFalse(this.ticketController.existTicket("20180112-5"));
+		assertTrue(this.ticketController.existTicket("201801121"));
+		assertFalse(this.ticketController.existTicket("201801125"));
 	}
 
 	@Test
 	public void testGetTicket() {
-		Optional<TicketDto> pdf1 = this.ticketController.read("20180112-1");
+		Optional<TicketDto> pdf1 = this.ticketController.read("201801121");
 		assertTrue(pdf1.isPresent());
-		Optional<TicketDto> pdf2 = this.ticketController.read("20180112-2");
+		Optional<TicketDto> pdf2 = this.ticketController.read("201801122");
 		assertTrue(pdf2.isPresent());
-		Optional<TicketDto> pdf3 = this.ticketController.read("20180112-3");
+		Optional<TicketDto> pdf3 = this.ticketController.read("201801123");
 		assertTrue(pdf3.isPresent());
 	}
 

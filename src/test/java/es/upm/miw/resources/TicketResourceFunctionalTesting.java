@@ -109,7 +109,7 @@ public class TicketResourceFunctionalTesting {
 	@Test
 	public void testGetTicket() {
 		byte[] bodyResponse = restService.loginAdmin().restBuilder(new RestBuilder<byte[]>())
-				.path(TicketResource.TICKETS).path(TicketResource.ID_ID).expand("20180112-1").clazz(byte[].class).get()
+				.path(TicketResource.TICKETS).path(TicketResource.ID_ID).expand("201801121").clazz(byte[].class).get()
 				.build();
 		assertNotNull(bodyResponse);
 	}

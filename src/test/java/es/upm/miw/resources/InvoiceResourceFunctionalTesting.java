@@ -26,7 +26,7 @@ public class InvoiceResourceFunctionalTesting {
 
     @Test
     public void testCreateInvoice() {
-        InvoiceCreationInputDto invoiceCreationInputDto = new InvoiceCreationInputDto("666666004","20180112-3");
+        InvoiceCreationInputDto invoiceCreationInputDto = new InvoiceCreationInputDto("666666004","201801123");
          restService.loginAdmin().restBuilder(new RestBuilder<byte[]>()).path(InvoiceResource.INVOICES).body(invoiceCreationInputDto)
                 .clazz(byte[].class).post().build();
     }

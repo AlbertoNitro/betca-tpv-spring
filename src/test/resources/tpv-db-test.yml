@@ -267,7 +267,7 @@ shoppingList:
 # Ticket
 ticketList:
   - &ti1
-    id: 20180112-1
+    id: 201801121
     reference: t2j_u9M9CisFmYGRFs1Uulgn7hI
     cashDeposited: 10.0
     shoppingList:
@@ -275,14 +275,14 @@ ticketList:
       - *sh2
     user: *us4
   - &ti2
-    id: 20180112-2
+    id: 201801122
     reference: 6P0ISee_twnGEzf8qd1Bd5sGQqE
     cashDeposited: 20.0
     shoppingList: 
       - *sh3
     user: *us4
   - &ti3
-    id: 20180112-3
+    id: 201801123
     reference: 6P0ISee_twnGEzf8qA1BdAsGQqE
     cashDeposited: 30.0
     shoppingList: 
@@ -290,7 +290,7 @@ ticketList:
       - *sh5
     user: *us4
   - &ti4
-    id: 20170112-1
+    id: 201701121
     reference: 6P0ISee_twnGEzf8qA1BdAsGQqE
     cashDeposited: 0
     shoppingList: 
@@ -298,21 +298,21 @@ ticketList:
       - *sh7
     user: *us4
   - &ti5
-    id: 20170212-2
+    id: 201702122
     reference: 6P0ISee_twnGEzf8qA1BdAsGQqE
     cashDeposited: 0
     shoppingList: 
       - *sh6
     user: *us4
   - &ti6
-    id: 20170312-2
+    id: 201703122
     reference: 6P0ISee_twnGEzf8qA1BdAsGQqE
     cashDeposited: 0
     shoppingList: 
       - *sh7
     user: *us4
   - &ti6
-    id: 20170404-2
+    id: 201704042
     reference: 6P0ISee_twnGEzf8qA1BdAsGQqE
     cashDeposited: 0
     shoppingList: 
@@ -321,9 +321,9 @@ ticketList:
     
 # Invoice
 invoiceList:
-  - id: 2018-1
+  - id: 20181
     ticket: *ti1
-  - id: 2018-2
+  - id: 20182
     ticket: *ti2
     
 # CashMovement
