@@ -139,8 +139,7 @@ public class PdfService {
             }
             // pdf.qrCode(ticket.getReference());
         }
-        pdf.paragraphEmphasized("Gracias por su visita");
-        pdf.paragraphEmphasized(" ");
+        pdf.paragraphEmphasized("Gracias por su visita").paragraphEmphasized(" ").line();
         return pdf.build();
     }
 
@@ -168,8 +167,7 @@ public class PdfService {
         }
         this.totalPrice(pdf, budget.getBudgetTotal());
         pdf.line().paragraph("Este presupuesto es válido durante 15 días. A partir de esa fecha los precios pueden variar.");
-        pdf.paragraphEmphasized("Gracias por su visita");
-        pdf.paragraphEmphasized(" ");
+        pdf.paragraphEmphasized("Gracias por su visita").paragraphEmphasized(" ").line();
         return pdf.build();
     }
 
@@ -186,8 +184,7 @@ public class PdfService {
         pdf.paragraphEmphasized(formatter.format(voucher.getCreationDate()));
 
         pdf.line().paragraph("Periodo de validez: ilimitado.");
-        pdf.paragraphEmphasized("Gracias por su visita");
-        pdf.paragraphEmphasized(" ");
+        pdf.paragraphEmphasized("Gracias por su visita").paragraphEmphasized(" ").line();
         return pdf.build();
     }
 
@@ -235,9 +232,9 @@ public class PdfService {
         pdf.tableColspanRight("IVA: " + invoice.getTax().setScale(2, RoundingMode.HALF_UP) + "€");
         pdf.tableColspanRight("TOTAL: " + invoice.getTicket().getTicketTotal().setScale(2, RoundingMode.HALF_UP) + "€");
         pdf.line();
-        pdf.paragraphEmphasized("Gracias por su visita");
-        pdf.paragraphEmphasized(" ");
+        pdf.paragraphEmphasized("Gracias por su visita").paragraphEmphasized(" ").line();
         return pdf.build();
+
     }
 
 }
