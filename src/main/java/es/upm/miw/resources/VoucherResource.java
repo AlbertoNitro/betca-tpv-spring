@@ -65,7 +65,7 @@ public class VoucherResource {
     
     @GetMapping(value = ID_ID)
     public VoucherDto readVoucher(@PathVariable String id) throws VoucherReferenceNotFoundException {
-        return this.voucherController.readVoucher(new Encrypting().decodeBase64InHex(id)).orElseThrow(() -> new VoucherReferenceNotFoundException(id));
+        return this.voucherController.readVoucher(id).orElseThrow(() -> new VoucherReferenceNotFoundException(id));
     }
 
 }
