@@ -13,6 +13,7 @@ import es.upm.miw.documents.core.Voucher;
 import es.upm.miw.dtos.VoucherDto;
 import es.upm.miw.repositories.core.VoucherRepository;
 import es.upm.miw.services.PdfService;
+import es.upm.miw.utils.Encrypting;
 
 @Controller
 public class VoucherController {
@@ -25,6 +26,11 @@ public class VoucherController {
 
     public Optional<byte[]> createVoucher(BigDecimal value) {
         Voucher voucher = new Voucher(value);
+        String id;
+        do {
+            id = new Encrypting().shortId64UrlSafe();
+        } while (this.voucherRepository.findOne(id) != null);
+        voucher.setId(id);
         this.voucherRepository.save(voucher);
         return pdfService.generateVoucher(voucher);
     }

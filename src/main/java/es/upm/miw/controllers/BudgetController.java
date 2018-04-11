@@ -40,6 +40,11 @@ public class BudgetController {
             shoppingList.add(shopping);
         }
         Budget budget = new Budget(shoppingList.toArray(new Shopping[0]));
+        String id;
+        do {
+            id = new Encrypting().shortId64UrlSafe();
+        } while (this.budgetRepository.findOne(id) != null);
+        budget.setId(id);
         this.budgetRepository.save(budget);
         return pdfService.generateBudget(budget);
     }
@@ -48,14 +53,14 @@ public class BudgetController {
         List<Budget> budgetList = this.budgetRepository.findAll();
         List<BudgetDto> budgetDtoList = new ArrayList<>();
         for (Budget budget : budgetList) {
-            BudgetDto budgetDto = new BudgetDto(new Encrypting().encodeHexInBase64UrlSafe(budget.getId()), null);
+            BudgetDto budgetDto = new BudgetDto(budget.getId(), null);
             budgetDtoList.add(budgetDto);
         }
         return budgetDtoList;
     }
 
     public Optional<byte[]> read(String id) {
-        Budget budget = this.budgetRepository.findOne(new Encrypting().decodeBase64InHex(id));
+        Budget budget = this.budgetRepository.findOne(id);
         if (budget != null) {
             return pdfService.generateBudget(budget);
         } else {

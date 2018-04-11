@@ -9,7 +9,6 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 import es.upm.miw.documents.core.Voucher;
 import es.upm.miw.dtos.validations.BigDecimalPositive;
-import es.upm.miw.utils.Encrypting;
 
 @JsonInclude(Include.NON_NULL)
 public class VoucherDto {
@@ -32,14 +31,14 @@ public class VoucherDto {
     }
 
     public VoucherDto(Voucher voucher) {
-        this.id = new Encrypting().encodeHexInBase64UrlSafe(voucher.getId());
+        this.id = voucher.getId();
         this.value = voucher.getValue();
         this.creationDate = voucher.getCreationDate();
         this.dateOfUse = voucher.getDateOfUse();
     }
 
     public VoucherDto minimumDto(Voucher voucher) {
-        this.id = new Encrypting().encodeHexInBase64UrlSafe(voucher.getId());
+        this.id = voucher.getId();
         this.value = voucher.getValue();
         return this;
     }

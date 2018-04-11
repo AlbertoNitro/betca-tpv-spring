@@ -20,7 +20,6 @@ import es.upm.miw.documents.core.ShoppingState;
 import es.upm.miw.documents.core.Ticket;
 import es.upm.miw.documents.core.Voucher;
 import es.upm.miw.repositories.core.PropertyRepository;
-import es.upm.miw.utils.Encrypting;
 
 @Service
 public class PdfService {
@@ -147,7 +146,7 @@ public class PdfService {
         final int INCREMENTAL_HEIGHT = 10;
         PdfTicketBuilder pdf = this.addCompanyDetails(path, INCREMENTAL_HEIGHT + budget.getShoppingList().length);
         pdf.line().paragraphEmphasized("PRESUPUESTO");
-        pdf.barCode(new Encrypting().encodeHexInBase64UrlSafe(budget.getId())).line();
+        pdf.barCode(budget.getId()).line();
 
         SimpleDateFormat formatter = new SimpleDateFormat(DATE_FORMAT);
         pdf.paragraphEmphasized(formatter.format(budget.getCreationDate()));
@@ -175,14 +174,14 @@ public class PdfService {
         PdfTicketBuilder pdf = this.addCompanyDetails(path, 6);
 
         pdf.line().paragraphEmphasized("VALE");
-        pdf.barCode(new Encrypting().encodeHexInBase64UrlSafe(voucher.getId())).line();
+        pdf.barCode(voucher.getId()).line();
 
         pdf.paragraphEmphasized("      Valor: " + voucher.getValue() + " €").line();
 
         SimpleDateFormat formatter = new SimpleDateFormat(DATE_FORMAT);
         pdf.paragraphEmphasized(formatter.format(voucher.getCreationDate()));
 
-        pdf.line().paragraph("Periodo de validez: ilimitado.");
+        pdf.line().paragraph("Periodo de validez: 2 años.");
         pdf.paragraphEmphasized("Gracias por su visita").paragraphEmphasized(" ").line();
         return pdf.build();
     }

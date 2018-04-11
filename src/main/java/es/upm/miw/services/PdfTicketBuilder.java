@@ -33,9 +33,9 @@ public class PdfTicketBuilder extends PdfBuilder {
 
     private static final int BAR_CODE_HEIGHT = 50;
 
-    private static final int BAR_CODE_WIDTH_PERCENT_MIN = 25;
+    private static final int BAR_CODE_WIDTH_PERCENT_MIN = 40;
 
-    private static final int BAR_CODE_WIDTH_PERCENT_LENGHT = 5;
+    private static final int BAR_CODE_WIDTH_PERCENT_LENGHT = 6;
 
     private static final int TERMIC_FONT_SIZE = 7;
 

@@ -19,5 +19,12 @@ public class EncryptingTest {
        String encode = new Encrypting().encodeHexInBase64UrlSafe("ff00b83445");
        assertEquals("ff00b83445",new Encrypting().decodeBase64InHex(encode));
     }
+    
+    @Test
+    public void testShortId64UrlSafe() {
+        System.out.println(new Encrypting().shortId64UrlSafe());
+        System.out.println(new Encrypting().shortId64UrlSafe());
+        System.out.println(new Encrypting().shortId64UrlSafe());
+    }
 
 }

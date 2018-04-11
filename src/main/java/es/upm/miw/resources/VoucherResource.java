@@ -44,13 +44,13 @@ public class VoucherResource {
 
     @PatchMapping(value = ID_ID)
     public BigDecimal consumeVoucher(@PathVariable String id) throws VoucherReferenceNotFoundException, VoucherConsumedException {
-        if (!this.voucherController.existsVoucher(new Encrypting().decodeBase64InHex(id))) {
+        if (!this.voucherController.existsVoucher(id)) {
             throw new VoucherReferenceNotFoundException();
         }
-        if (this.voucherController.consumedVoucher(new Encrypting().decodeBase64InHex(id))) {
+        if (this.voucherController.consumedVoucher(id)) {
             throw new VoucherConsumedException();
         }
-        return this.voucherController.consumeVoucher(new Encrypting().decodeBase64InHex(id));
+        return this.voucherController.consumeVoucher(id);
     }
 
     @GetMapping
