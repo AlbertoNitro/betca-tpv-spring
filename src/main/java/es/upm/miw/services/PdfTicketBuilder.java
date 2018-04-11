@@ -33,10 +33,6 @@ public class PdfTicketBuilder extends PdfBuilder {
 
     private static final int BAR_CODE_HEIGHT = 50;
 
-    private static final int BAR_CODE_WIDTH_PERCENT_MIN = 40;
-
-    private static final int BAR_CODE_WIDTH_PERCENT_LENGHT = 6;
-
     private static final int TERMIC_FONT_SIZE = 7;
 
     private static final int TERMIC_FONT_SIZE_EMPHASIZEDD = 10;
@@ -81,11 +77,7 @@ public class PdfTicketBuilder extends PdfBuilder {
         code128.setCode(code.trim().replace('-', '/').replace('_', '?'));  
         code128.setAltText(code.trim());
         Image code128Image = new Image(code128.createFormXObject(this.getDocument().getPdfDocument()));
-        int width = code.length() * BAR_CODE_WIDTH_PERCENT_LENGHT + BAR_CODE_WIDTH_PERCENT_MIN;
-        if (width > 100) {
-            width = 95;
-        }
-        code128Image.setWidthPercent(width);
+        code128Image.setWidthPercent(code128Image.getImageWidth());
         code128Image.setHeight(BAR_CODE_HEIGHT);
         code128Image.setHorizontalAlignment(HorizontalAlignment.CENTER);
         this.getDocument().add(code128Image);
