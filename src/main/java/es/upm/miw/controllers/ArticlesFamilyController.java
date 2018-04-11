@@ -22,14 +22,12 @@ import es.upm.miw.repositories.core.FamilyCompositeRepository;
 @Controller
 public class ArticlesFamilyController {
 
-    private static final String ROOT = "root";
-
     @Autowired
     private ArticlesFamilyRepository articlesFamilyRepository;
 
     @Autowired
     private FamilyArticleRepository familyArticleRepository;
-    
+
     @Autowired
     private FamilyCompositeRepository familyCompositeRepository;
 
@@ -40,12 +38,6 @@ public class ArticlesFamilyController {
         List<ArticlesFamilyDto> articlesFamiliaOutputDtoList = new ArrayList<>();
 
         ArticlesFamily articlesFamily = this.articlesFamilyRepository.findOne(id);
-        if (articlesFamily == null && ROOT.equals(id)) { // Solo ocurre una vez en deploy con BD vacias
-            ArticlesFamily root = new FamilyComposite(FamilyType.ARTICLES, ROOT, ROOT);
-            root.setId(ROOT);
-            this.articlesFamilyRepository.save(root);
-            articlesFamily = root;
-        }
         if (articlesFamily == null) {
             return Optional.empty();
         }
@@ -60,11 +52,9 @@ public class ArticlesFamilyController {
         List<ArticlesFamilyDto> articlesFamiliaOutputDtoList = new ArrayList<>();
 
         for (ArticlesFamily articlesFamily : articlesFamilyList) {
-            if (!ROOT.equals(articlesFamily.getId())) {
-                ArticlesFamilyDto articlesFamilyDto = new ArticlesFamilyDto(articlesFamily.getId(), articlesFamily.getDescription());
-                articlesFamilyDto.setFamilyType(articlesFamily.getFamilyType());
-                articlesFamiliaOutputDtoList.add(articlesFamilyDto);
-            }
+            ArticlesFamilyDto articlesFamilyDto = new ArticlesFamilyDto(articlesFamily.getId(), articlesFamily.getDescription());
+            articlesFamilyDto.setFamilyType(articlesFamily.getFamilyType());
+            articlesFamiliaOutputDtoList.add(articlesFamilyDto);
         }
         return articlesFamiliaOutputDtoList;
     }

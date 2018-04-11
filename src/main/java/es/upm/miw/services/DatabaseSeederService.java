@@ -156,7 +156,9 @@ public class DatabaseSeederService {
                     }
                 }
             }
-            this.expandAllSizesAndCreateFamilyAndSaveAll(tpvGraph);
+            if (!tpvGraph.getFamilyArticleList().isEmpty()) {
+                this.expandAllSizesAndCreateFamilyAndSaveAll(tpvGraph);
+            }
         }
         this.ticketRepository.save(tpvGraph.getTicketList());
         this.invoiceRepository.save(tpvGraph.getInvoiceList());
@@ -168,7 +170,10 @@ public class DatabaseSeederService {
     }
 
     protected void expandAllSizesAndCreateFamilyAndSaveAll(DatabaseGraph tpvGraph) {
-        FamilyComposite root = new FamilyComposite(FamilyType.ARTICLES, "root", "Root");
+        FamilyComposite root = this.familyCompositeRepository.findOne("root");
+        if (root == null) {
+            root = new FamilyComposite(FamilyType.ARTICLES, "root", "Root");
+        }
         root.setId("root");
         FamilyComposite actualFamily = null;
 
