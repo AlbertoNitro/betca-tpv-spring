@@ -13,10 +13,9 @@ public class FamilyComposite extends ArticlesFamily {
 
     private String description;
 
-    @DBRef
+    @DBRef(lazy = true)
     private List<ArticlesFamily> familyCompositeList;
 
-    
     public FamilyComposite() {
         super(FamilyType.ARTICLES);
         this.familyCompositeList = new ArrayList<>();
@@ -76,7 +75,7 @@ public class FamilyComposite extends ArticlesFamily {
     public List<ArticlesFamily> getArticlesFamilyList() {
         return this.familyCompositeList;
     }
-    
+
     @Override
     public String toString() {
         List<String> list = new ArrayList<>();
