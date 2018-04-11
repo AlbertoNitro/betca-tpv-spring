@@ -156,7 +156,7 @@ public class DatabaseSeederService {
                     }
                 }
             }
-            if (!tpvGraph.getFamilyArticleList().isEmpty()) {
+            if (!tpvGraph.getArticleList().isEmpty()) {
                 this.expandAllSizesAndCreateFamilyAndSaveAll(tpvGraph);
             }
         }
