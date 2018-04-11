@@ -176,7 +176,7 @@ public class PdfService {
         pdf.line().paragraphEmphasized("VALE");
         pdf.barCode(voucher.getId()).line();
 
-        pdf.paragraphEmphasized("      Valor: " + voucher.getValue() + " €").line();
+        pdf.paragraphEmphasized("      Valor: " + voucher.getValue().setScale(2, RoundingMode.HALF_UP)  + " €").line();
 
         SimpleDateFormat formatter = new SimpleDateFormat(DATE_FORMAT);
         pdf.paragraphEmphasized(formatter.format(voucher.getCreationDate()));
