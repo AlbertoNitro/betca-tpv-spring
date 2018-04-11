@@ -120,15 +120,14 @@ public class PdfService {
                 state = "N";
                 notCommitted = true;
             }
-            if (shopping.getDiscount().doubleValue() < 0.005) {
-                pdf.tableCell(String.valueOf(i + 1), shopping.getDescription(), "" + shopping.getAmount(), "",
-                        shopping.getShoppingTotal().setScale(2, RoundingMode.HALF_UP) + "€", state);
-            } else {
-                pdf.tableCell(String.valueOf(i + 1), shopping.getDescription(), "" + shopping.getAmount(),
-                        "" + shopping.getDiscount().setScale(2, RoundingMode.HALF_UP),
-                        shopping.getShoppingTotal().setScale(2, RoundingMode.HALF_UP) + "€", state);
+            String discount = "";
+            if ((shopping.getDiscount().doubleValue() > 0.009) && !shopping.getArticle().getCode().equals("1")) {
+                discount = "" + shopping.getDiscount().setScale(2, RoundingMode.HALF_UP);
             }
+            pdf.tableCell(String.valueOf(i + 1), shopping.getDescription(), "" + shopping.getAmount(), discount,
+                    shopping.getShoppingTotal().setScale(2, RoundingMode.HALF_UP) + "€", state);
         }
+
         this.totalPrice(pdf, ticket.getTicketTotal());
         pdf.line().paragraph("Periodo de devolución o cambio: 15 dias a partir de la fecha del ticket");
         if (notCommitted) {
@@ -156,14 +155,14 @@ public class PdfService {
         pdf.tableColumnsSizes(TABLE_COLUMNS_SIZES_BUDGETS).tableColumnsHeader(TABLE_COLUMNS_HEADERS_BUDGETS);
         for (int i = 0; i < budget.getShoppingList().length; i++) {
             Shopping shopping = budget.getShoppingList()[i];
-            if (shopping.getDiscount().doubleValue() < 0.005) {
-                pdf.tableCell(String.valueOf(i + 1), shopping.getDescription(), "" + shopping.getAmount(), "",
-                        shopping.getShoppingTotal().setScale(2, RoundingMode.HALF_UP) + "€");
-            } else {
-                pdf.tableCell(String.valueOf(i + 1), shopping.getDescription(), "" + shopping.getAmount(),
-                        shopping.getDiscount().setScale(2, RoundingMode.HALF_UP) + "",
-                        shopping.getShoppingTotal().setScale(2, RoundingMode.HALF_UP) + "€");
+            String discount = "";
+            if ((shopping.getDiscount().doubleValue() > 0.009) && !shopping.getArticle().getCode().equals("1")) {
+                discount = "" + shopping.getDiscount().setScale(2, RoundingMode.HALF_UP);
             }
+
+            pdf.tableCell(String.valueOf(i + 1), shopping.getDescription(), "" + shopping.getAmount(), discount,
+                    shopping.getShoppingTotal().setScale(2, RoundingMode.HALF_UP) + "€");
+
         }
         this.totalPrice(pdf, budget.getBudgetTotal());
         pdf.line().paragraph("Este presupuesto es válido durante 15 días. A partir de esa fecha los precios pueden variar.");
@@ -204,7 +203,7 @@ public class PdfService {
     }
 
     public Optional<byte[]> generateInvioce(Invoice invoice) {
-        final int INCREMENTAL_INVOICE_HEIGHT = 11;
+        final int INCREMENTAL_INVOICE_HEIGHT = 14;
         final String path = "/invoices/invoice-" + invoice.getId();
 
         PdfTicketBuilder pdf = this.addCompanyDetails(path, INCREMENTAL_INVOICE_HEIGHT + invoice.getTicket().getShoppingList().length);
@@ -219,14 +218,14 @@ public class PdfService {
         pdf.tableColumnsSizes(TABLE_COLUMNS_SIZES_BUDGETS).tableColumnsHeader(TABLE_COLUMNS_HEADERS_BUDGETS);
         for (int i = 0; i < invoice.getTicket().getShoppingList().length; i++) {
             Shopping shopping = invoice.getTicket().getShoppingList()[i];
-            if (shopping.getDiscount().doubleValue() < 0.005) {
-                pdf.tableCell(String.valueOf(i + 1), shopping.getDescription(), "" + shopping.getAmount(), "",
-                        shopping.getShoppingTotal().setScale(2, RoundingMode.HALF_UP) + "€");
-            } else {
-                pdf.tableCell(String.valueOf(i + 1), shopping.getDescription(), "" + shopping.getAmount(),
-                        shopping.getDiscount().setScale(2, RoundingMode.HALF_UP) + "",
-                        shopping.getShoppingTotal().setScale(2, RoundingMode.HALF_UP) + "€");
+            String discount = "";
+            if ((shopping.getDiscount().doubleValue() > 0.009) && !shopping.getArticle().getCode().equals("1")) {
+                discount = "" + shopping.getDiscount().setScale(2, RoundingMode.HALF_UP);
             }
+
+            pdf.tableCell(String.valueOf(i + 1), shopping.getDescription(), "" + shopping.getAmount(), discount,
+                    shopping.getShoppingTotal().setScale(2, RoundingMode.HALF_UP) + "€");
+
         }
         pdf.tableColspanRight("BASE IMPONIBLE: " + invoice.getBaseTax().setScale(2, RoundingMode.HALF_UP) + "€");
         pdf.tableColspanRight("IVA: " + invoice.getTax().setScale(2, RoundingMode.HALF_UP) + "€");
