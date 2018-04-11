@@ -16,7 +16,7 @@ public class Article {
     private Date registrationDate;
 
     private String description;
-    
+
     private BigDecimal retailPrice;
 
     private String reference;
@@ -27,7 +27,7 @@ public class Article {
 
     private Boolean discontinued;
 
-    @DBRef
+    @DBRef(lazy = true)
     private Provider provider;
 
     public Article() {
