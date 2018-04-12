@@ -33,7 +33,7 @@ public class TicketRepositoryIT {
     @Test
     public void testFindByReference() {
         assertEquals("666666004", ticketRepository.findByReference("t2j_u9M9CisFmYGRFs1Uulgn7hI").getUser().getMobile());
-        assertEquals(151, ticketRepository.findByReference("t2j_u9M9CisFmYGRFs1Uulgn7hI").getTicketTotal().doubleValue(), 10E-5);
+        assertEquals(151, ticketRepository.findByReference("t2j_u9M9CisFmYGRFs1Uulgn7hI").getTotal().doubleValue(), 10E-5);
     }
 
     @Test

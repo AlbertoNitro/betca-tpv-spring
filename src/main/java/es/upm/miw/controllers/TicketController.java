@@ -77,7 +77,7 @@ public class TicketController {
             this.articleRepository.save(article);
         }
         Ticket ticket = new Ticket(this.nextId(), ticketCreationDto.getCash(), shoppingList.toArray(new Shopping[0]), user);
-        ticket.setDebt(ticket.getTicketTotal().subtract(ticketCreationDto.getCash()).subtract(ticketCreationDto.getCard())
+        ticket.setDebt(ticket.getTotal().subtract(ticketCreationDto.getCash()).subtract(ticketCreationDto.getCard())
                 .subtract(ticketCreationDto.getVoucher()));
         ticket.setNote(ticketCreationDto.getNote());
         this.ticketRepository.save(ticket);

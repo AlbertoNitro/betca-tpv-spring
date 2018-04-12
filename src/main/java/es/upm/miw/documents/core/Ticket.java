@@ -114,10 +114,20 @@ public class Ticket {
         this.note = note;
     }
 
-    public BigDecimal getTicketTotal() {
+    public BigDecimal getTotal() {
         BigDecimal total = new BigDecimal(0);
         for (Shopping shopping : shoppingList) {
             total = total.add(shopping.getShoppingTotal());
+        }
+        return total;
+    }
+
+    public BigDecimal getTotalCommited() {
+        BigDecimal total = new BigDecimal(0);
+        for (Shopping shopping : shoppingList) {
+            if (ShoppingState.COMMITTED.equals(shopping.getShoppingState())) {
+                total = total.add(shopping.getShoppingTotal());
+            }
         }
         return total;
     }

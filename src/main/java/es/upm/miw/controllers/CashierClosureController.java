@@ -139,7 +139,7 @@ public class CashierClosureController {
         List<Ticket> ticketList = ticketRepository.findByCreationDateGreaterThan(cashierOpenedDate);
         BigDecimal total = new BigDecimal("0");
         for (Ticket ticket : ticketList) {
-            total = total.add(ticket.getTicketTotal());
+            total = total.add(ticket.getTotal());
         }
         return total;
     }

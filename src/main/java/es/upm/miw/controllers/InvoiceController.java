@@ -84,7 +84,7 @@ public class InvoiceController {
                 }
             }
             Invoice invoice = new Invoice(this.nextInvoiceId(), taxBaseTotal,
-                    ticket.getTicketTotal().subtract(taxBaseTotal).setScale(2, RoundingMode.HALF_UP), user, ticket);
+                    ticket.getTotal().subtract(taxBaseTotal).setScale(2, RoundingMode.HALF_UP), user, ticket);
             this.invoiceRepository.save(invoice);
 
             return pdfService.generateInvioce(invoice);

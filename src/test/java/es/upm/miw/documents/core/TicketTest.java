@@ -17,7 +17,7 @@ public class TicketTest {
         shoppingList[1] = new Shopping(3, new BigDecimal("40"), article);
         Ticket ticket = new Ticket();
         ticket.setShoppingList(shoppingList);
-        assertEquals(340.34,ticket.getTicketTotal().doubleValue(),10-10 );
+        assertEquals(340.34,ticket.getTotal().doubleValue(),10-10 );
     }
     
     @Test

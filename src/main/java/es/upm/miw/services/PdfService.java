@@ -97,16 +97,17 @@ public class PdfService {
 
     public Optional<byte[]> generateTicket(Ticket ticket) {
         final String path = "/tickets/ticket-" + ticket.getId();
-        final int INCREMENTAL_HEIGHT = 12;
+        final int INCREMENTAL_HEIGHT = 15;
         boolean notCommitted = false;
         PdfTicketBuilder pdf = this.addCompanyDetails(path, INCREMENTAL_HEIGHT + ticket.getShoppingList().length).line();
 
-        if (ticket.getDebt().signum() == 0) {
+        BigDecimal pendiente = ticket.getTotal().subtract(ticket.getTotalCommited()).setScale(2, RoundingMode.HALF_UP);
+        if (pendiente.signum() == 0) {
             pdf.paragraphEmphasized("TICKET");
         } else {
-            pdf.paragraphEmphasized("Abonado:" + ticket.getTicketTotal().subtract(ticket.getDebt()).setScale(2, RoundingMode.HALF_UP)
-                    + "€,  pendiente: " + ticket.getDebt().setScale(2, RoundingMode.HALF_UP) + "€");
-            pdf.paragraphEmphasized("RESERVA");
+            pdf.paragraphEmphasized("RESERVA: " + pendiente.subtract(ticket.getDebt()).setScale(2, RoundingMode.HALF_UP) + "€");
+            pdf.paragraphEmphasized("Abonado: " + ticket.getTotalCommited().setScale(2, RoundingMode.HALF_UP) + "€");
+            pdf.paragraphEmphasized("Pendiente: " + pendiente.setScale(2, RoundingMode.HALF_UP) + "€");
         }
         pdf.barCode(ticket.getId()).line();
         SimpleDateFormat formatter = new SimpleDateFormat(DATE_FORMAT);
@@ -127,11 +128,11 @@ public class PdfService {
                     shopping.getShoppingTotal().setScale(2, RoundingMode.HALF_UP) + "€", state);
         }
 
-        this.totalPrice(pdf, ticket.getTicketTotal());
+        this.totalPrice(pdf, ticket.getTotal());
         pdf.paragraph(ticket.getNote());
         pdf.line().paragraph("Periodo de devolución o cambio: 15 dias a partir de la fecha del ticket");
         if (notCommitted) {
-            pdf.paragraphEmphasized("Artículos pendientes de entrega");
+            pdf.paragraphEmphasized("Artículos pendientes de entrega. La reserva será devuelta con la entrega del último artículo");
             if (ticket.getUser() != null) {
                 pdf.paragraph("Teléfono de contacto: " + ticket.getUser().getMobile() + " - " + ticket.getUser().getUsername().substring(0,
                         (ticket.getUser().getUsername().length() > 10) ? 10 : ticket.getUser().getUsername().length()));
@@ -177,7 +178,7 @@ public class PdfService {
         pdf.line().paragraphEmphasized("VALE");
         pdf.barCode(voucher.getId()).line();
 
-        pdf.paragraphEmphasized("      Valor: " + voucher.getValue().setScale(2, RoundingMode.HALF_UP)  + " €").line();
+        pdf.paragraphEmphasized("      Valor: " + voucher.getValue().setScale(2, RoundingMode.HALF_UP) + " €").line();
 
         SimpleDateFormat formatter = new SimpleDateFormat(DATE_FORMAT);
         pdf.paragraphEmphasized(formatter.format(voucher.getCreationDate()));
@@ -205,7 +206,7 @@ public class PdfService {
     public Optional<byte[]> generateInvioce(Invoice invoice) {
         final int INCREMENTAL_INVOICE_HEIGHT = 16;
         final String path = "/invoices/invoice-" + invoice.getId();
-        
+
         PdfTicketBuilder pdf = new PdfTicketBuilder(path, INCREMENTAL_INVOICE_HEIGHT);
         pdf.addImage(this.logo).paragraphEmphasized(this.name).paragraphEmphasized("Tfn: " + this.phone);
         pdf.paragraph("NIF: " + this.nif + "   -   Nuria Ocaña Pérez");
@@ -214,7 +215,7 @@ public class PdfService {
         if (!this.web.isEmpty()) {
             pdf.paragraph("Web: " + this.web);
         }
-        
+
         pdf.line();
         pdf.paragraphEmphasized("Datos Cliente:").paragraph("DNI: " + invoice.getUser().getDni())
                 .paragraph("Nombre: " + invoice.getUser().getUsername()).paragraph("Dirección: " + invoice.getUser().getAddress());
@@ -237,7 +238,7 @@ public class PdfService {
         }
         pdf.tableColspanRight("BASE IMPONIBLE: " + invoice.getBaseTax().setScale(2, RoundingMode.HALF_UP) + "€");
         pdf.tableColspanRight("IVA: " + invoice.getTax().setScale(2, RoundingMode.HALF_UP) + "€");
-        pdf.tableColspanRight("TOTAL: " + invoice.getTicket().getTicketTotal().setScale(2, RoundingMode.HALF_UP) + "€");
+        pdf.tableColspanRight("TOTAL: " + invoice.getTicket().getTotal().setScale(2, RoundingMode.HALF_UP) + "€");
         pdf.line();
         pdf.paragraphEmphasized("Gracias por su visita").paragraphEmphasized(" ").line();
         return pdf.build();
