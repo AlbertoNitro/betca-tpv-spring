@@ -54,6 +54,7 @@ public class AdminResource {
         return "{\"state\":\"ok\"}";
     }
 
+    @PreAuthorize("hasRole('ADMIN') or hasRole('MANAGER') or hasRole('OPERATOR')")
     @DeleteMapping(value = STATE)
     public void shutDown() {
         configurableApplicationContext.close();

@@ -203,10 +203,18 @@ public class PdfService {
     }
 
     public Optional<byte[]> generateInvioce(Invoice invoice) {
-        final int INCREMENTAL_INVOICE_HEIGHT = 14;
+        final int INCREMENTAL_INVOICE_HEIGHT = 16;
         final String path = "/invoices/invoice-" + invoice.getId();
-
-        PdfTicketBuilder pdf = this.addCompanyDetails(path, INCREMENTAL_INVOICE_HEIGHT + invoice.getTicket().getShoppingList().length);
+        
+        PdfTicketBuilder pdf = new PdfTicketBuilder(path, INCREMENTAL_INVOICE_HEIGHT);
+        pdf.addImage(this.logo).paragraphEmphasized(this.name).paragraphEmphasized("Tfn: " + this.phone);
+        pdf.paragraph("NIF: " + this.nif + "   -   Nuria Ocaña Pérez");
+        pdf.paragraph(this.address);
+        pdf.paragraph("Email: " + this.email);
+        if (!this.web.isEmpty()) {
+            pdf.paragraph("Web: " + this.web);
+        }
+        
         pdf.line();
         pdf.paragraphEmphasized("Datos Cliente:").paragraph("DNI: " + invoice.getUser().getDni())
                 .paragraph("Nombre: " + invoice.getUser().getUsername()).paragraph("Dirección: " + invoice.getUser().getAddress());
