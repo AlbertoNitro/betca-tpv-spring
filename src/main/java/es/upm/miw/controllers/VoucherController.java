@@ -1,6 +1,7 @@
 package es.upm.miw.controllers;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -25,7 +26,7 @@ public class VoucherController {
     private PdfService pdfService;
 
     public Optional<byte[]> createVoucher(BigDecimal value) {
-        Voucher voucher = new Voucher(value);
+        Voucher voucher = new Voucher(value.setScale(2, RoundingMode.HALF_UP));
         String id;
         do {
             id = new Encrypting().shortId64UrlSafe();
