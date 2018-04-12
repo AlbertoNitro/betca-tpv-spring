@@ -128,6 +128,7 @@ public class PdfService {
         }
 
         this.totalPrice(pdf, ticket.getTicketTotal());
+        pdf.paragraph(ticket.getNote());
         pdf.line().paragraph("Periodo de devolución o cambio: 15 dias a partir de la fecha del ticket");
         if (notCommitted) {
             pdf.paragraphEmphasized("Artículos pendientes de entrega");

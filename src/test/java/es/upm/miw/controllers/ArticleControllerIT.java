@@ -20,7 +20,7 @@ public class ArticleControllerIT {
 
     @Test
     public void testReadArticleVarious() {
-        assertEquals("1", this.articleController.readArticle("1234").get().getCode());
+        assertEquals("1", this.articleController.readArticle("1").get().getCode());
         assertFalse(this.articleController.readArticle("12345").isPresent());
     }
 

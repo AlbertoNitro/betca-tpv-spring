@@ -43,7 +43,7 @@ public class TicketControllerIT {
 	@Test
 	public void testCreateTicket() {
 		TicketCreationInputDto ticketCreationInputDto = new TicketCreationInputDto(new BigDecimal("1150"),
-				new BigDecimal("0"), new BigDecimal("0"), new ArrayList<ShoppingDto>());
+				new BigDecimal("0"), new BigDecimal("0"), new ArrayList<ShoppingDto>(),"Nota asociada al ticket");
 		ticketCreationInputDto.getShoppingCart().add(new ShoppingDto("1", "various", new BigDecimal("100"), 1,
 				new BigDecimal("50.00"), new BigDecimal("50"), false));
 		ticketCreationInputDto.getShoppingCart().add(new ShoppingDto("1", "various", new BigDecimal("100"), 2,

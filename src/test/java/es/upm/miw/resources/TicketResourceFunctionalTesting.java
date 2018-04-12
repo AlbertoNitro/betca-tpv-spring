@@ -50,7 +50,7 @@ public class TicketResourceFunctionalTesting {
 	@Test
 	public void testCreateTicket() {
 		TicketCreationInputDto ticketCreationInputDto = new TicketCreationInputDto(new BigDecimal("1"),
-				new BigDecimal("1"), new BigDecimal("1"), new ArrayList<ShoppingDto>());
+				new BigDecimal("1"), new BigDecimal("1"), new ArrayList<ShoppingDto>(), "Nota asociada al ticket");
 		ticketCreationInputDto.getShoppingCart().add(new ShoppingDto("1", "various", new BigDecimal("100"), 1,
 				new BigDecimal("50.00"), new BigDecimal("50"), false));
 		ticketCreationInputDto.getShoppingCart().add(new ShoppingDto("1", "various", new BigDecimal("100"), 2,
@@ -65,7 +65,7 @@ public class TicketResourceFunctionalTesting {
 	public void testCreateTicketCashNegativeException() {
 		thrown.expect(new HttpMatcher(HttpStatus.BAD_REQUEST));
 		TicketCreationInputDto ticketCreationInputDto = new TicketCreationInputDto(new BigDecimal("-1"),
-				new BigDecimal("1"), new BigDecimal("1"), new ArrayList<ShoppingDto>());
+				new BigDecimal("1"), new BigDecimal("1"), new ArrayList<ShoppingDto>(), "Nota asociada al ticket");
 		restService.loginAdmin().restBuilder(new RestBuilder<byte[]>()).path(TicketResource.TICKETS)
 				.body(ticketCreationInputDto).clazz(byte[].class).post().build();
 	}
@@ -74,7 +74,7 @@ public class TicketResourceFunctionalTesting {
 	public void testCreateTicketCardNegativeException() {
 		thrown.expect(new HttpMatcher(HttpStatus.BAD_REQUEST));
 		TicketCreationInputDto ticketCreationInputDto = new TicketCreationInputDto(new BigDecimal("1"),
-				new BigDecimal("-1"), new BigDecimal("1"), new ArrayList<ShoppingDto>());
+				new BigDecimal("-1"), new BigDecimal("1"), new ArrayList<ShoppingDto>(), "Nota asociada al ticket");
 		restService.loginAdmin().restBuilder(new RestBuilder<byte[]>()).path(TicketResource.TICKETS)
 				.body(ticketCreationInputDto).clazz(byte[].class).post().build();
 	}
@@ -83,7 +83,7 @@ public class TicketResourceFunctionalTesting {
 	public void testCreateTicketVoucherNegativeException() {
 		thrown.expect(new HttpMatcher(HttpStatus.BAD_REQUEST));
 		TicketCreationInputDto ticketCreationInputDto = new TicketCreationInputDto(new BigDecimal("1"),
-				new BigDecimal("1"), new BigDecimal("-1"), new ArrayList<ShoppingDto>());
+				new BigDecimal("1"), new BigDecimal("-1"), new ArrayList<ShoppingDto>(), "Nota asociada al ticket");
 		restService.loginAdmin().restBuilder(new RestBuilder<byte[]>()).path(TicketResource.TICKETS)
 				.body(ticketCreationInputDto).clazz(byte[].class).post().build();
 	}
@@ -92,7 +92,7 @@ public class TicketResourceFunctionalTesting {
 	public void testCreateTicketShoppingNullException() {
 		thrown.expect(new HttpMatcher(HttpStatus.BAD_REQUEST));
 		TicketCreationInputDto ticketCreationInputDto = new TicketCreationInputDto(new BigDecimal("1"),
-				new BigDecimal("1"), new BigDecimal("1"), null);
+				new BigDecimal("1"), new BigDecimal("1"), null, "Nota asociada al ticket");
 		restService.loginAdmin().restBuilder(new RestBuilder<byte[]>()).path(TicketResource.TICKETS)
 				.body(ticketCreationInputDto).clazz(byte[].class).post().build();
 	}
@@ -101,7 +101,7 @@ public class TicketResourceFunctionalTesting {
 	public void testCreateTicketShoppingEmptyException() {
 		thrown.expect(new HttpMatcher(HttpStatus.BAD_REQUEST));
 		TicketCreationInputDto ticketCreationInputDto = new TicketCreationInputDto(new BigDecimal("1"),
-				new BigDecimal("1"), new BigDecimal("1"), new ArrayList<ShoppingDto>());
+				new BigDecimal("1"), new BigDecimal("1"), new ArrayList<ShoppingDto>(), "Nota asociada al ticket");
 		restService.loginAdmin().restBuilder(new RestBuilder<byte[]>()).path(TicketResource.TICKETS)
 				.body(ticketCreationInputDto).clazz(byte[].class).post().build();
 	}

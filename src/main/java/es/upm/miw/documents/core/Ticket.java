@@ -30,6 +30,8 @@ public class Ticket {
 
     private BigDecimal debt;
 
+    private String note;
+
     @DBRef
     private User user;
 
@@ -37,6 +39,7 @@ public class Ticket {
         this.creationDate = new Date();
         this.reference = new Encrypting().encryptInBase64UrlSafe();
         this.debt = BigDecimal.ZERO;
+        this.note = "";
     }
 
     public Ticket(int idOfday, BigDecimal cashDeposited, Shopping[] shoppingList, User user) {
@@ -103,6 +106,14 @@ public class Ticket {
         this.debt = debt;
     }
 
+    public String getNote() {
+        return note;
+    }
+
+    public void setNote(String note) {
+        this.note = note;
+    }
+
     public BigDecimal getTicketTotal() {
         BigDecimal total = new BigDecimal(0);
         for (Shopping shopping : shoppingList) {
@@ -135,7 +146,7 @@ public class Ticket {
         String createTime = new SimpleDateFormat("dd-MMM-yyyy HH:mm").format(this.creationDate.getTime());
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("Ticket[" + id + ": created=" + createTime + ", reference=" + reference + ", shoppingList="
-                + Arrays.toString(shoppingList) + ", cashDeposited=" + cashDeposited + ", debt: " + this.debt);
+                + Arrays.toString(shoppingList) + ", cashDeposited=" + cashDeposited + ", debt: " + this.debt + " , note: " + this.note);
         if (user != null) {
             stringBuilder.append(", userId=" + user.getMobile());
         }

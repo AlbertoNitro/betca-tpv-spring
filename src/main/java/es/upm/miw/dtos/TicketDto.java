@@ -22,6 +22,8 @@ public class TicketDto {
 
     private BigDecimal debt;
 
+    private String note;
+
     private UserDto user;
 
     @NotNull
@@ -35,6 +37,7 @@ public class TicketDto {
         this.id = ticket.getId();
         this.creationDate = ticket.getCreationDate();
         this.debt = ticket.getDebt();
+        this.note = ticket.getNote();
         if (ticket.getUser() == null) {
             this.user = null;
         } else {
@@ -86,11 +89,18 @@ public class TicketDto {
         this.user = user;
     }
 
-    @Override
-    public String toString() {
-        return "TicketDto [id=" + id + ", creationDate=" + creationDate + ", debt=" + debt + ", user=" + user + ", shoppingList="
-                + shoppingList + "]";
+    public String getNote() {
+        return note;
     }
 
+    public void setNote(String note) {
+        this.note = note;
+    }
+
+    @Override
+    public String toString() {
+        return "TicketDto [id=" + id + ", creationDate=" + creationDate + ", debt=" + debt + ", note=" + note + ", user=" + user
+                + ", shoppingList=" + shoppingList + "]";
+    }
 
 }

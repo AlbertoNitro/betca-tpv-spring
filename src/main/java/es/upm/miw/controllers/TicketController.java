@@ -79,6 +79,7 @@ public class TicketController {
         Ticket ticket = new Ticket(this.nextId(), ticketCreationDto.getCash(), shoppingList.toArray(new Shopping[0]), user);
         ticket.setDebt(ticket.getTicketTotal().subtract(ticketCreationDto.getCash()).subtract(ticketCreationDto.getCard())
                 .subtract(ticketCreationDto.getVoucher()));
+        ticket.setNote(ticketCreationDto.getNote());
         this.ticketRepository.save(ticket);
         return Optional.of(ticket);
     }
@@ -112,6 +113,7 @@ public class TicketController {
         Ticket ticket = this.ticketRepository.findOne(id);
         assert ticket != null;
         ticket.setDebt(ticketDto.getDebt());
+        ticket.setNote(ticketDto.getNote());
         for (int i = 0; i < ticket.getShoppingList().length; i++) {
             int amountDifference = ticket.getShoppingList()[i].getAmount() - ticketDto.getShoppingList().get(i).getAmount();
             if (amountDifference > 0) {
