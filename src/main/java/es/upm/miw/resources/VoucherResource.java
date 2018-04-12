@@ -21,7 +21,6 @@ import es.upm.miw.dtos.VoucherDto;
 import es.upm.miw.resources.exceptions.FileException;
 import es.upm.miw.resources.exceptions.VoucherConsumedException;
 import es.upm.miw.resources.exceptions.VoucherReferenceNotFoundException;
-import es.upm.miw.utils.Encrypting;
 
 @PreAuthorize("hasRole('ADMIN') or hasRole('MANAGER') or hasRole('OPERATOR')")
 @RestController

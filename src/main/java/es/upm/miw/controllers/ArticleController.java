@@ -17,8 +17,10 @@ import es.upm.miw.repositories.core.ProviderRepository;
 @Controller
 public class ArticleController {
 
-    private static final String VARIOUS_CODE = "1";    
+    private static final String VARIOUS_CODE = "1";
+
     private static final String VARIOUS_NAME = "Varios";
+
     private static final BigDecimal VARIOUS_STOCK = new BigDecimal("100.00");
 
     @Autowired
@@ -28,30 +30,17 @@ public class ArticleController {
     private ProviderRepository providerRepository;
 
     public Optional<ArticleDto> readArticle(String code) {
-        ArticleDto articleDto = null;
-        Article article = this.articleRepository.findOne(code);
-        if (article != null) {
-            articleDto = new ArticleDto(article);
+        ArticleDto articleDto = this.articleRepository.findMinimumByCode(code);
+        if (articleDto == null && VARIOUS_CODE.equals(code)) { // SOLO ocurre una vez, después de vaciar la BD
+            Provider provider = new Provider(VARIOUS_NAME, null, null, null, null, null);
+            this.providerRepository.save(provider);
+            this.articleRepository.save(new Article(VARIOUS_CODE, VARIOUS_NAME, VARIOUS_STOCK, VARIOUS_NAME, 1000, provider, true));
+            articleDto = this.articleRepository.findMinimumByCode(VARIOUS_CODE);
         }
-        if (articleDto == null && code.length() < 5) {
-            try {
-                Double.parseDouble(code);
-                articleDto = this.articleRepository.findMinimumByCode(VARIOUS_CODE);
-                if (articleDto == null) { // SOLO ocurre una vez, después de vaciar la BD
-                    Provider provider = new Provider(VARIOUS_NAME, null, null, null, null, null);
-                    article = new Article(VARIOUS_CODE, VARIOUS_NAME, VARIOUS_STOCK, VARIOUS_NAME, 1000, provider, true);
-                    this.providerRepository.save(provider);
-                    this.articleRepository.save(article);
-                    articleDto = this.articleRepository.findMinimumByCode(VARIOUS_CODE);
-                }
-            } catch (NumberFormatException nfe) {
-                // Nothing to do
-            }
-        }
-        if (articleDto == null) {
-            return Optional.empty();
-        } else {
+        if (articleDto != null) {
             return Optional.of(articleDto);
+        } else {
+            return Optional.empty();
         }
     }
 
