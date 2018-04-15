@@ -30,7 +30,7 @@ public class OrderResource {
 
     public static final String ID_ID = "/{id}";
 
-    public static final String CLOSING_DATE = "/closingDate";
+    public static final String CLOSING_DATE = "/closing-date";
 
     @Autowired
     private OrderController orderController;
