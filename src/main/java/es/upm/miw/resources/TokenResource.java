@@ -38,11 +38,6 @@ public class TokenResource {
         return tokenController.login(activeUser.getUsername());
     }
 
-    @GetMapping(value = AUTHENTICATED)
-    public boolean tokenRoles() {
-        return true;
-    }
-    
     @GetMapping(value = USERNAME)
     public UserMinimumDto username(@AuthenticationPrincipal User activeUser) {
         return this.userController.username(activeUser.getUsername());

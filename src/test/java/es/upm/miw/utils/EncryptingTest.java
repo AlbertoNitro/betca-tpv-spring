@@ -22,9 +22,7 @@ public class EncryptingTest {
     
     @Test
     public void testShortId64UrlSafe() {
-        System.out.println(new Encrypting().shortId64UrlSafe());
-        System.out.println(new Encrypting().shortId64UrlSafe());
-        System.out.println(new Encrypting().shortId64UrlSafe());
+       assertEquals(8,new Encrypting().shortId64UrlSafe().length());
     }
 
 }

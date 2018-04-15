@@ -31,13 +31,6 @@ public class AdminResourceFunctionalTesting {
     private RestService restService;
 
     @Test
-    public void testState() {
-        String json = restService.restBuilder(new RestBuilder<String>()).clazz(String.class).path(AdminResource.ADMINS)
-                .path(AdminResource.STATE).get().build();
-        assertEquals("{\"state\":\"ok\"}", json);
-    }
-
-    @Test
     public void testDeleteAndSeedDb() {
         restService.loginAdmin().restBuilder().path(AdminResource.ADMINS).path(AdminResource.DB).delete().build();
         try {

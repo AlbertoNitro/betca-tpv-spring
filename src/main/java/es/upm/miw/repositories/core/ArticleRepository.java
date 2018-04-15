@@ -33,5 +33,7 @@ public interface ArticleRepository extends MongoRepository<Article, String> {
             String provider);
     
     Article findFirstByCodeStartingWithOrderByCodeDesc(String code);
+    
+    int deleteByCodeStartingWith(String code);
 
 }

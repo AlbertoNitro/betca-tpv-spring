@@ -27,4 +27,8 @@ public class AdminController {
         }
     }
 
+    public void resetDb() {
+        this.databaseSeederService.reset();
+    }
+
 }

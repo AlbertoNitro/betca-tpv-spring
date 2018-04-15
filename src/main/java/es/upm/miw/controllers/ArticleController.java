@@ -30,15 +30,15 @@ public class ArticleController {
     private ProviderRepository providerRepository;
 
     public Optional<ArticleDto> readArticle(String code) {
-        ArticleDto articleDto = this.articleRepository.findMinimumByCode(code);
-        if (articleDto == null && VARIOUS_CODE.equals(code)) { // SOLO ocurre una vez, después de vaciar la BD
+        Article article = this.articleRepository.findOne(code);
+        if (article == null && VARIOUS_CODE.equals(code)) { // SOLO ocurre una vez, después de vaciar la BD
             Provider provider = new Provider(VARIOUS_NAME, null, null, null, null, null);
             this.providerRepository.save(provider);
             this.articleRepository.save(new Article(VARIOUS_CODE, VARIOUS_NAME, VARIOUS_STOCK, VARIOUS_NAME, 1000, provider, true));
-            articleDto = this.articleRepository.findMinimumByCode(VARIOUS_CODE);
+            article = this.articleRepository.findOne(VARIOUS_CODE);
         }
-        if (articleDto != null) {
-            return Optional.of(articleDto);
+        if (article != null) {
+            return Optional.of(new ArticleDto(article));
         } else {
             return Optional.empty();
         }

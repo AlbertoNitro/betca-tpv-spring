@@ -214,6 +214,11 @@ public class DatabaseSeederService {
             } else {
                 article.setCode(this.createEan13());
                 this.articleRepository.save(article);
+                FamilyArticle familyArticle = new FamilyArticle(article);
+                this.articlesFamilyRepository.save(familyArticle);
+                if (actualFamily != null) {
+                    actualFamily.add(familyArticle);
+                }
             }
         }
 
@@ -296,7 +301,24 @@ public class DatabaseSeederService {
         this.userRepository.deleteAll();
 
         this.createAdminIfNotExist();
+        this.ean13 = 840000000000L;
         // -----------------------------------------------------------------------
+    }
+    
+    public void reset() {
+        this.familyCompositeRepository.deleteAll();
+        this.invoiceRepository.deleteAll();
+        this.ticketRepository.deleteAll();
+        this.orderRepository.deleteAll();
+        this.familyArticleRepository.deleteAll();
+        this.cashMovementRepository.deleteAll();
+        this.schedulerRepository.deleteAll();
+        this.voucherRepository.deleteAll();
+        this.offerRepository.deleteAll();
+        this.cashierClosureRepository.deleteAll();
+        this.budgetRepository.deleteAll();
+        this.articleRepository.deleteByCodeStartingWith("84000000");
+        this.ean13 = 840000000000L;
     }
 
     public void createAdminIfNotExist() {

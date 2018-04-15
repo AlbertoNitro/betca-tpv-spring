@@ -34,6 +34,8 @@ public class AdminResource {
     public static final String STATE = "/state";
 
     public static final String DB = "/db";
+    
+    public static final String ARTICLES_WITHOUT_CODE = "/articles-without-code";
 
     public static final String USERS = "/users";
 
@@ -48,12 +50,6 @@ public class AdminResource {
     @Autowired
     private UserController userController;
 
-    @PreAuthorize("permitAll")
-    @GetMapping(value = STATE)
-    public String getState() {
-        return "{\"state\":\"ok\"}";
-    }
-
     @PreAuthorize("hasRole('ADMIN') or hasRole('MANAGER') or hasRole('OPERATOR')")
     @DeleteMapping(value = STATE)
     public void shutDown() {
@@ -65,6 +61,11 @@ public class AdminResource {
         this.adminController.deleteDb();
     }
 
+    @DeleteMapping(value = DB + ARTICLES_WITHOUT_CODE)
+    public void resetDb() {
+        this.adminController.resetDb();
+    }
+
     @PostMapping(value = DB)
     public void seedDb(@RequestBody String ymlFileName) throws FileException {
         Optional<String> error = this.adminController.seedDatabase(ymlFileName);
@@ -72,16 +73,17 @@ public class AdminResource {
             throw new FileException(error.get());
         }
     }
-
+    
     @PreAuthorize("hasRole('ADMIN') or hasRole('MANAGER') or hasRole('OPERATOR')")
     @GetMapping(value = USERS + MOBILE_ID)
     public UserDto readUser(@PathVariable String mobile, @AuthenticationPrincipal User activeUser) throws UserIdNotFoundException {
         return this.userController.readUser(mobile, activeUser.getUsername()).orElseThrow(() -> new UserIdNotFoundException(mobile));
     }
-    
+
     @PreAuthorize("hasRole('ADMIN') or hasRole('MANAGER') or hasRole('OPERATOR')")
     @PutMapping(value = USERS + MOBILE_ID)
-    public void updateUser(@PathVariable String mobile,  @Valid @RequestBody UserDto userDto, @AuthenticationPrincipal User activeUser) throws UserIdNotFoundException {
+    public void updateUser(@PathVariable String mobile, @Valid @RequestBody UserDto userDto, @AuthenticationPrincipal User activeUser)
+            throws UserIdNotFoundException {
         this.userController.putUser(mobile, userDto, activeUser.getUsername());
     }
 
