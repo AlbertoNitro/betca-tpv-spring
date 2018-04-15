@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 
 import es.upm.miw.documents.core.Article;
@@ -31,7 +32,7 @@ public class OrderController {
     private ArticleRepository articleRepository;
 
     public List<OrderBaseOutputDto> readAll() {
-        List<Order> orderList = this.orderRepository.findAll();
+        List<Order> orderList = this.orderRepository.findAll(new Sort(Sort.Direction.DESC, "openingDate"));
         List<OrderBaseOutputDto> orderDtoOutputList = new ArrayList<>();
         for (Order order : orderList) {
             orderDtoOutputList.add(new OrderBaseOutputDto(order));
