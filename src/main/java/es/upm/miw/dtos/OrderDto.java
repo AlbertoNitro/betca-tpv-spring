@@ -1,7 +1,6 @@
 package es.upm.miw.dtos;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import javax.validation.constraints.NotNull;
@@ -18,22 +17,16 @@ public class OrderDto extends OrderBaseOutputDto {
     @ListNotEmpty
     private List<OrderLineDto> ordersLine;
 
-    private Date closingDate;
-
     public OrderDto() {
     }
 
     public OrderDto(Order order) {
-        this.setId(order.getId());
-        this.setDescription(order.getDescription());
-        this.setProviderCompany(order.getProvider().getCompany());
-        this.setOpeningDate(order.getOpeningDate());
+        super(order);
         this.setProviderId(order.getProvider().getId());
         this.ordersLine = new ArrayList<>();
         for (OrderLine orderLine : order.getOrderLine()) {
             ordersLine.add(new OrderLineDto(orderLine));
         }
-        this.closingDate = order.getClosingDate();
     }
 
     public String getProviderId() {
@@ -52,17 +45,9 @@ public class OrderDto extends OrderBaseOutputDto {
         this.ordersLine = ordersLineDto;
     }
 
-    public Date getClosingDate() {
-        return closingDate;
-    }
-
-    public void setClosingDate(Date closingDate) {
-        this.closingDate = closingDate;
-    }
-
     @Override
     public String toString() {
-        return "OrderDto [providerId=" + providerId + ", ordersLineDto=" + ordersLine + ", closingDate=" + closingDate + "]";
+        return "OrderDto [providerId=" + providerId + ", ordersLine=" + ordersLine + "]";
     }
 
 }

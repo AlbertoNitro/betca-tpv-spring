@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 
 import es.upm.miw.documents.core.Voucher;
@@ -37,7 +38,7 @@ public class VoucherController {
     }
 
     public List<VoucherDto> readVoucherAll() {
-        List<Voucher> voucherList = this.voucherRepository.findAll();
+        List<Voucher> voucherList = this.voucherRepository.findAll(new Sort(Sort.Direction.DESC, "creationDate"));
         List<VoucherDto> voucherDtoList = new ArrayList<VoucherDto>();
         for (Voucher voucher : voucherList) {
             voucherDtoList.add(new VoucherDto().minimumDto(voucher));

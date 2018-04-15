@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 
 import es.upm.miw.documents.core.Article;
@@ -56,7 +57,7 @@ public class ArticleController {
     }
 
     public List<ArticleDto> readMinimumAll() {
-        List<Article> articleList = this.articleRepository.findAll();
+        List<Article> articleList = this.articleRepository.findAll(new Sort(Sort.Direction.DESC, "registrationDate"));
         List<ArticleDto> articleListDto = new ArrayList<ArticleDto>();
         for (Article articulo : articleList) {
             articleListDto.add(new ArticleDto(articulo.getCode(), articulo.getDescription()));

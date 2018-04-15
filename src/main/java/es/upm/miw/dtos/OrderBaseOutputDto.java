@@ -2,6 +2,9 @@ package es.upm.miw.dtos;
 
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+
 import es.upm.miw.documents.core.Order;
 
 public class OrderBaseOutputDto {
@@ -13,6 +16,10 @@ public class OrderBaseOutputDto {
     private String providerCompany;
 
     private Date openingDate;
+    
+    @JsonInclude(Include.NON_NULL)
+    private Date closingDate;
+
 
     public OrderBaseOutputDto() {
     }
@@ -22,6 +29,7 @@ public class OrderBaseOutputDto {
         this.description= order.getDescription();
         this.providerCompany= order.getProvider().getCompany();
         this.openingDate= order.getOpeningDate();
+        this.closingDate=order.getClosingDate();
     }
 
     public String getId() {
@@ -56,10 +64,18 @@ public class OrderBaseOutputDto {
         this.openingDate = openingDate;
     }
 
+    public Date getClosingDate() {
+        return closingDate;
+    }
+
+    public void setClosingDate(Date closingDate) {
+        this.closingDate = closingDate;
+    }
+
     @Override
     public String toString() {
         return "OrderBaseOutputDto [id=" + id + ", description=" + description + ", providerCompany=" + providerCompany + ", openingDate="
-                + openingDate + "]";
+                + openingDate + ", closingDate=" + closingDate + "]";
     }
 
 }
