@@ -1,6 +1,8 @@
 package es.upm.miw.controllers;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -43,6 +45,14 @@ public class ArticlesFamilyController {
         }
         for (ArticlesFamily articlesFamilyIn : articlesFamily.getArticlesFamilyList()) {
             articlesFamiliaOutputDtoList.add(new ArticlesFamilyDto(articlesFamilyIn));
+        }
+        if (FamilyType.ARTICLES.equals(articlesFamily.getFamilyType())) {
+            Collections.sort(articlesFamiliaOutputDtoList, new Comparator<ArticlesFamilyDto>() {
+                @Override
+                public int compare(ArticlesFamilyDto dto1, ArticlesFamilyDto dto2) {
+                    return dto1.getReference().compareTo(dto2.getReference());
+                }
+            });
         }
         return Optional.of(articlesFamiliaOutputDtoList);
     }

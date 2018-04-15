@@ -98,13 +98,13 @@ public class PdfService {
     public Optional<byte[]> generateTicket(Ticket ticket) {
         final String path = "/tickets/ticket-" + ticket.getId();
         final int INCREMENTAL_HEIGHT = 15;
-        boolean notCommitted = false;
+        int notCommitted = 0;
         PdfTicketBuilder pdf = this.addCompanyDetails(path, INCREMENTAL_HEIGHT + ticket.getShoppingList().length).line();
 
-        BigDecimal pendiente = ticket.getTotal().subtract(ticket.getTotalCommited()).setScale(2, RoundingMode.HALF_UP);
-        if (pendiente.signum() == 0) {
+        if (ticket.getDebt().signum() == 0) {
             pdf.paragraphEmphasized("TICKET");
         } else {
+            BigDecimal pendiente = ticket.getTotal().subtract(ticket.getTotalCommited()).setScale(2, RoundingMode.HALF_UP);
             pdf.paragraphEmphasized("RESERVA: " + pendiente.subtract(ticket.getDebt()).setScale(2, RoundingMode.HALF_UP) + "€");
             pdf.paragraphEmphasized("Abonado: " + ticket.getTotalCommited().setScale(2, RoundingMode.HALF_UP) + "€");
             pdf.paragraphEmphasized("Pendiente: " + pendiente.setScale(2, RoundingMode.HALF_UP) + "€");
@@ -113,12 +113,13 @@ public class PdfService {
         SimpleDateFormat formatter = new SimpleDateFormat(DATE_FORMAT);
         pdf.paragraphEmphasized(formatter.format(ticket.getCreationDate()));
         pdf.tableColumnsSizes(TABLE_COLUMNS_SIZES_TICKETS).tableColumnsHeader(TABLE_COLUMNS_HEADERS);
+
         for (int i = 0; i < ticket.getShoppingList().length; i++) {
             Shopping shopping = ticket.getShoppingList()[i];
             String state = "";
             if (shopping.getShoppingState() != ShoppingState.COMMITTED) {
                 state = "N";
-                notCommitted = true;
+                notCommitted++;
             }
             String discount = "";
             if ((shopping.getDiscount().doubleValue() > 0.009) && !shopping.getArticle().getCode().equals("1")) {
@@ -131,8 +132,8 @@ public class PdfService {
         this.totalPrice(pdf, ticket.getTotal());
         pdf.paragraph(ticket.getNote());
         pdf.line().paragraph("Periodo de devolución o cambio: 15 dias a partir de la fecha del ticket");
-        if (notCommitted) {
-            pdf.paragraphEmphasized("Artículos pendientes de entrega. La reserva será devuelta con la entrega del último artículo");
+        if (notCommitted > 0) {
+            pdf.paragraphEmphasized("Artículos pendientes de entrega: " + notCommitted);
             if (ticket.getUser() != null) {
                 pdf.paragraph("Teléfono de contacto: " + ticket.getUser().getMobile() + " - " + ticket.getUser().getUsername().substring(0,
                         (ticket.getUser().getUsername().length() > 10) ? 10 : ticket.getUser().getUsername().length()));
