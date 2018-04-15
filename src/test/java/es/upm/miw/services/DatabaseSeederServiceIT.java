@@ -49,9 +49,9 @@ public class DatabaseSeederServiceIT {
 
     }
 
-    @Test
+    //@Test
     public void testCreateEan13() {
-        // System.out.println(this.databaseSeederService.createEan13());
+        //System.out.println(this.databaseSeederService.createEan13());
     }
 
     // @Test

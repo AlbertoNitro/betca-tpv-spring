@@ -123,7 +123,6 @@ public class ArticlesFamilyController {
 
         family.getArticlesFamilyList().remove(familyChild);
         this.articlesFamilyRepository.save(family);
-        System.out.println("despues de eliminar..." + family);
         return Optional.empty();
     }
 

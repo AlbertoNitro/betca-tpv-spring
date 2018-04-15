@@ -54,9 +54,6 @@ public class TicketControllerIT {
 		Ticket ticket1 = this.ticketRepository.findFirstByOrderByCreationDateDescIdDesc();
 		this.ticketController.createTicketAndPdf(ticketCreationInputDto);
 		Ticket ticket2 = this.ticketRepository.findFirstByOrderByCreationDateDescIdDesc();
-
-        System.out.println(">>>> 1:"+ticket1.simpleId());
-        System.out.println(">>>> 2:"+ticket2.simpleId());
 		
 		assertEquals(ticket1.simpleId() + 1, ticket2.simpleId());
 

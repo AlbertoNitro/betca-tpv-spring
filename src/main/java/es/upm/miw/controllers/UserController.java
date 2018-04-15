@@ -146,7 +146,6 @@ public class UserController {
 
     public boolean putUser(String mobile, UserDto userDto, String mobileLogged) {
         User userLogged = this.userRepository.findByMobile(mobileLogged); 
-        System.out.println(">>>>>>>>> userLogged.getRoles() "+ userLogged.getRoles());
         return this.putUser(mobile, userDto, userLogged.getRoles());
     }
 
