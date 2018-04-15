@@ -65,6 +65,37 @@ public class OrderController {
         return Optional.of(new OrderDto(order));
     }
 
+    public Optional<String> update(String id, OrderDto orderDto) {
+        Order order = this.orderRepository.findOne(id);
+        if (order == null) {
+            return Optional.of("Order not found. " + id);
+        }
+        List<OrderLine> orderLineList = new ArrayList<>();
+        for (OrderLineDto orderLineDto : orderDto.getOrdersLine()) {
+            Article article = this.articleRepository.findOne(orderLineDto.getArticleId());
+            if (article == null) {
+                return Optional.of("Article not found. " + orderLineDto.getArticleId());
+            }
+            orderLineList.add(new OrderLine(article, orderLineDto.getRequiredAmount(), orderLineDto.getRequiredAmount()));
+        }
+        order.setDescription(orderDto.getDescription());
+        order.setOrderLine(orderLineList.toArray(new OrderLine[0]));
+        this.orderRepository.save(order);
+        return Optional.empty();
+    }
+
+    public Optional<String> delete(String id) {
+        Order order = this.orderRepository.findOne(id);
+        if (order == null) {
+            return Optional.empty();
+        }
+        if (order.getClosingDate() != null) {
+            return Optional.of("order already closed. Cannot be deleted. " + id);
+        }
+        this.orderRepository.delete(order);
+        return Optional.empty();
+    }
+
     public Optional<String> orderEntry(String id, OrderDto orderDto) {
         Order order = this.orderRepository.findOne(id);
         if (order == null) {

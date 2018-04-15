@@ -7,6 +7,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -29,6 +30,8 @@ public class OrderResource {
 
     public static final String ID_ID = "/{id}";
 
+    public static final String CLOSING_DATE = "/closingDate";
+
     @Autowired
     private OrderController orderController;
 
@@ -50,7 +53,23 @@ public class OrderResource {
         return this.orderController.readOne(id).orElseThrow(() -> new OrderException("Id not found. " + id));
     }
 
+    @DeleteMapping(value = ID_ID)
+    public void delete(@PathVariable String id) throws OrderException {
+        Optional<String> error = this.orderController.delete(id);
+        if (error.isPresent()) {
+            throw new OrderException(error.get());
+        }
+    }
+
     @PutMapping(value = ID_ID)
+    public void update(@PathVariable String id, @Valid @RequestBody OrderDto OrderDto) throws OrderException {
+        Optional<String> error = this.orderController.update(id, OrderDto);
+        if (error.isPresent()) {
+            throw new OrderException(error.get());
+        }
+    }
+
+    @PostMapping(value = ID_ID + CLOSING_DATE)
     public void orderEntry(@PathVariable String id, @Valid @RequestBody OrderDto OrderDto) throws OrderException {
         Optional<String> error = this.orderController.orderEntry(id, OrderDto);
         if (error.isPresent()) {

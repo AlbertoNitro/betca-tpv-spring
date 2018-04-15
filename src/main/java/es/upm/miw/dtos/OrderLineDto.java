@@ -9,6 +9,8 @@ public class OrderLineDto {
     @NotNull
     private String articleId;
     
+    private String articleDescription;
+    
     private Integer stock;
 
     @NotNull
@@ -21,6 +23,7 @@ public class OrderLineDto {
 
     public OrderLineDto(OrderLine orderLine) {
         this.articleId = orderLine.getArticle().getCode();
+        this.articleDescription=orderLine.getArticle().getDescription();
         this.stock = orderLine.getArticle().getStock();
         this.requiredAmount = orderLine.getRequiredAmount();
         this.finalAmount = orderLine.getFinalAmount();
@@ -32,6 +35,14 @@ public class OrderLineDto {
 
     public void setArticleId(String articleId) {
         this.articleId = articleId;
+    }
+
+    public String getArticleDescription() {
+        return articleDescription;
+    }
+
+    public void setArticleDescription(String articleDescription) {
+        this.articleDescription = articleDescription;
     }
 
     public Integer getStock() {
@@ -60,8 +71,8 @@ public class OrderLineDto {
 
     @Override
     public String toString() {
-        return "OrderLineDto [articleId=" + articleId + ", stock=" + stock + ", requiredAmount=" + requiredAmount + ", finalAmount="
-                + finalAmount + "]";
+        return "OrderLineDto [articleId=" + articleId + ", articleDescription=" + articleDescription + ", stock=" + stock
+                + ", requiredAmount=" + requiredAmount + ", finalAmount=" + finalAmount + "]";
     }
 
 }
