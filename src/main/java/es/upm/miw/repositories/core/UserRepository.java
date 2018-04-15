@@ -21,4 +21,9 @@ public interface UserRepository extends MongoRepository<User, String> {
 
     @Query(value = "{'roles' : 'CUSTOMER'}", fields = "{ '_id' : 0, 'mobile' : 1, 'username' : 1}")
     public List<UserMinimumDto> findCustomerAll();
+
+    //@Query(value = "{'roles' : 'CUSTOMER', 'mobile' : /?0/}")
+    List<UserMinimumDto> findByMobileLikeAndUsernameLikeIgnoreCaseAndDniLikeIgnoreCaseAndAddressLikeIgnoreCase(String mobile,
+            String username, String dni, String address);
+
 }

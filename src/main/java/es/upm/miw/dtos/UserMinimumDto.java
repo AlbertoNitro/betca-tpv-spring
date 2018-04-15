@@ -38,6 +38,6 @@ public class UserMinimumDto {
 
     @Override
     public String toString() {
-        return "mobile=" + mobile + ", username=" + username;
+        return "UserMinimumDto [mobile=" + mobile + ", username=" + username + "]";
     }
 }

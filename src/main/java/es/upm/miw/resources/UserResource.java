@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import es.upm.miw.controllers.UserController;
@@ -33,6 +34,8 @@ public class UserResource {
     public static final String USERS = "/users";
 
     public static final String MOBILE_ID = "/{mobile}";
+
+    public static final String SEARCH = "/search";
 
     @Autowired
     private UserController userController;
@@ -89,6 +92,12 @@ public class UserResource {
     @GetMapping
     public List<UserMinimumDto> readCustomerAll() {
         return this.userController.readCustomerAll();
+    }
+
+    @GetMapping(value = SEARCH)
+    public List<UserMinimumDto> readFilterUser(@RequestParam(defaultValue = "") String mobile, @RequestParam(defaultValue = "") String username,
+            @RequestParam(defaultValue = "") String dni, @RequestParam(defaultValue = "") String address) {
+        return this.userController.find(mobile, username, dni, address);
     }
 
 }

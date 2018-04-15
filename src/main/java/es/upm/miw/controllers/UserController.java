@@ -140,13 +140,18 @@ public class UserController {
     }
 
     public Optional<UserDto> readUser(String mobile, String mobileLogged) {
-        User userLogged = this.userRepository.findByMobile(mobileLogged); 
+        User userLogged = this.userRepository.findByMobile(mobileLogged);
         return this.readUser(mobile, userLogged.getRoles());
     }
 
     public boolean putUser(String mobile, UserDto userDto, String mobileLogged) {
-        User userLogged = this.userRepository.findByMobile(mobileLogged); 
+        User userLogged = this.userRepository.findByMobile(mobileLogged);
         return this.putUser(mobile, userDto, userLogged.getRoles());
+    }
+
+    public List<UserMinimumDto> find(String mobile, String username, String dni, String address) {
+        return this.userRepository.findCustomerAll();
+        
     }
 
 }
