@@ -95,8 +95,9 @@ public class UserResource {
     }
 
     @GetMapping(value = SEARCH)
-    public List<UserMinimumDto> readFilterUser(@RequestParam(defaultValue = "") String mobile, @RequestParam(defaultValue = "") String username,
-            @RequestParam(defaultValue = "") String dni, @RequestParam(defaultValue = "") String address) {
+    public List<UserMinimumDto> readFilterUser(@RequestParam(required = false) String mobile,
+            @RequestParam(required = false) String username, @RequestParam(required = false) String dni,
+            @RequestParam(required = false) String address) {
         return this.userController.find(mobile, username, dni, address);
     }
 

@@ -22,8 +22,13 @@ public interface UserRepository extends MongoRepository<User, String> {
     @Query(value = "{'roles' : 'CUSTOMER'}", fields = "{ '_id' : 0, 'mobile' : 1, 'username' : 1}")
     public List<UserMinimumDto> findCustomerAll();
 
-    //@Query(value = "{'roles' : 'CUSTOMER', 'mobile' : /?0/}")
-    List<UserMinimumDto> findByMobileLikeAndUsernameLikeIgnoreCaseAndDniLikeIgnoreCaseAndAddressLikeIgnoreCase(String mobile,
-            String username, String dni, String address);
+    @Query(value = "{$and:["
+            + "{'roles' : 'CUSTOMER'},"
+            + "?#{ [0] == null ? { $where : 'true'} : { 'mobile' :   {$regex:[0]} } },"
+            + "?#{ [1] == null ? { $where : 'true'} : { 'username' : {$regex:[1], $options: 'i'} } },"
+            + "?#{ [2] == null ? { $where : 'true'} : { 'dni' :      {$regex:[2], $options: 'i'} } },"
+            + "?#{ [3] == null ? { $where : 'true'} : { 'address' :  {$regex:[3], $options: 'i'} } }" 
+            + "]}", fields = "{ '_id' : 0, 'mobile' : 1, 'username' : 1}")
+    List<UserMinimumDto> findCustomersByMobileLikeAndUsernameLikeAndDniLikeAndAddressLike(String mobile, String username, String dni, String address);
 
 }
