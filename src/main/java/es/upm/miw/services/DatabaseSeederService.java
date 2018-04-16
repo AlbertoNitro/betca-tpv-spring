@@ -213,6 +213,7 @@ public class DatabaseSeederService {
                 }
             } else {
                 article.setCode(this.createEan13());
+                article.setStock(0);
                 this.articleRepository.save(article);
                 FamilyArticle familyArticle = new FamilyArticle(article);
                 this.articlesFamilyRepository.save(familyArticle);
@@ -235,7 +236,7 @@ public class DatabaseSeederService {
     }
 
     protected List<Article> expandArticlewithSizes(Article article) {
-        List<String> sizesSML = Arrays.asList("XXS", "XS", "S", "M", "L", "XL", "XXL");
+        List<String> sizesSML = Arrays.asList("XXS", "XS", "S", "M", "L", "XL", "XXL", "XXXL","Especial");
         List<Article> articlesExpanded = new ArrayList<>();
         String articleReferenceBase = this.extractBaseWithoutSizes(article.getReference());
         String articleDescriptionBase = this.extractBaseWithoutSizes(article.getDescription());
@@ -261,6 +262,7 @@ public class DatabaseSeederService {
                 numeric = true;
             }
             for (int size = start; size <= end; size += incremento) {
+                System.out.println(">>>>>>>>>>>>"+articleReferenceBase);
                 Article articleExpanded = new Article();
                 articleExpanded.setCode(this.createEan13());
                 if (numeric) {
@@ -271,7 +273,7 @@ public class DatabaseSeederService {
                     articleExpanded.setDescription(articleDescriptionBase + " T" + sizesSML.get(size));
                 }
                 articleExpanded.setRetailPrice(new BigDecimal(pricesInString[i]));
-                articleExpanded.setStock(10);
+                articleExpanded.setStock(0);
                 articleExpanded.setProvider(article.getProvider());
                 articlesExpanded.add(articleExpanded);
             }

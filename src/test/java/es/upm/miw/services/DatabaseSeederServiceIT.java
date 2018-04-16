@@ -54,7 +54,7 @@ public class DatabaseSeederServiceIT {
         //System.out.println(this.databaseSeederService.createEan13());
     }
 
-    // @Test
+    //@Test
     public void testSeedDatabase() throws IOException {
         this.databaseSeederService.reset();
         this.databaseSeederService.seedDatabase("ranur.yml");
