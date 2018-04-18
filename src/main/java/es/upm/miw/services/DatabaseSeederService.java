@@ -262,7 +262,6 @@ public class DatabaseSeederService {
                 numeric = true;
             }
             for (int size = start; size <= end; size += incremento) {
-                System.out.println(">>>>>>>>>>>>"+articleReferenceBase);
                 Article articleExpanded = new Article();
                 articleExpanded.setCode(this.createEan13());
                 if (numeric) {

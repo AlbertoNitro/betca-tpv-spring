@@ -21,7 +21,7 @@ import es.upm.miw.dtos.OrderBaseOutputDto;
 import es.upm.miw.dtos.OrderDto;
 import es.upm.miw.resources.exceptions.OrderException;
 
-@PreAuthorize("hasRole('ADMIN') or hasRole('MANAGER')")
+@PreAuthorize("hasRole('ADMIN') or hasRole('MANAGER') or hasRole('OPERATOR')")
 @RestController
 @RequestMapping(OrderResource.ORDER)
 public class OrderResource {
