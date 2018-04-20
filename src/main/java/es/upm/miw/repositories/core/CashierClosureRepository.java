@@ -17,6 +17,6 @@ public interface CashierClosureRepository extends MongoRepository<CashierClosure
 	@Query(value = "{'closureDate': { $gte : ?0, $lt : ?1}}", fields = "{'salesCash' :1,'salesCard' :1, 'closureDate' :1}")
 	List<CashierClosure> findSalesCashierClosureByDateBetween(Date dateStart, Date dateFinish);
 
-    List<CashierClosure> findByOpeningDateBetweenAndClosureDateNotNull(Date start, Date end);
+    List<CashierClosure> findByOpeningDateBetweenAndClosureDateNotNullOrderByClosureDateDesc(Date start, Date end);
 
 }

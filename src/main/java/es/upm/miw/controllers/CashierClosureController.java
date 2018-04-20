@@ -88,7 +88,7 @@ public class CashierClosureController {
 
         if (lastCashierClosure != null && !lastCashierClosure.isClosed()) {
             Date cashierOpenedDate = cashierClosureRepository.findFirstByOrderByOpeningDateDesc().getOpeningDate();
-            lastCashierClosure.close(cashierClosureDto.getFinalCash(), this.salesCash(cashierOpenedDate), cashierClosureDto.getSalesCard(),
+            lastCashierClosure.close(cashierClosureDto.getFinalCash(), this.cashDeposited(cashierOpenedDate), cashierClosureDto.getSalesCard(),
                     this.usedVouchers(cashierOpenedDate), cashierClosureDto.getComment());
             lastCashierClosure.setDeposit(BigDecimal.ZERO);
             lastCashierClosure.setWithdrawal(BigDecimal.ZERO);
@@ -163,9 +163,13 @@ public class CashierClosureController {
     }
 
     private BigDecimal totalVouchers(Date cashierOpenedDate) {
-        List<Voucher> voucherList = voucherRepository.findByCreationDateGreaterThan(cashierOpenedDate);
-        BigDecimal total = new BigDecimal("0");
-        for (Voucher voucher : voucherList) {
+        BigDecimal total = new BigDecimal("0"); 
+        List<Voucher> voucherCreatedList = voucherRepository.findByCreationDateGreaterThan(cashierOpenedDate);
+        for (Voucher voucher : voucherCreatedList) {
+            total = total.subtract(voucher.getValue());
+        }
+        List<Voucher> voucherConsumedList = voucherRepository.findByDateOfUseGreaterThan(cashierOpenedDate);
+        for (Voucher voucher : voucherConsumedList) {
             total = total.add(voucher.getValue());
         }
         return total;
@@ -181,7 +185,7 @@ public class CashierClosureController {
     }
 
     public List<ClosedCashierOutputDto> findBetweenDate(Date start, Date end) {
-        List<CashierClosure> cashierClosureList = this.cashierClosureRepository.findByOpeningDateBetweenAndClosureDateNotNull(start, end);
+        List<CashierClosure> cashierClosureList = this.cashierClosureRepository.findByOpeningDateBetweenAndClosureDateNotNullOrderByClosureDateDesc(start, end);
         List<ClosedCashierOutputDto> cashierClosureClosedOutputDto = new ArrayList<ClosedCashierOutputDto>();
         for (CashierClosure ticket : cashierClosureList) {
             cashierClosureClosedOutputDto.add(new ClosedCashierOutputDto(ticket));

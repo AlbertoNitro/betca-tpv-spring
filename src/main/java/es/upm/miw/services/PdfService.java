@@ -101,7 +101,7 @@ public class PdfService {
         int notCommitted = 0;
         PdfTicketBuilder pdf = this.addCompanyDetails(path, INCREMENTAL_HEIGHT + ticket.getShoppingList().length).line();
 
-        if (ticket.getDebt().signum() == 0) {
+        if (ticket.getDebt().signum() != 1) {
             pdf.paragraphEmphasized("TICKET");
         } else {
             BigDecimal pendiente = ticket.getTotal().subtract(ticket.getTotalCommited()).setScale(2, RoundingMode.HALF_UP);
@@ -117,7 +117,7 @@ public class PdfService {
         for (int i = 0; i < ticket.getShoppingList().length; i++) {
             Shopping shopping = ticket.getShoppingList()[i];
             String state = "";
-            if (shopping.getShoppingState() != ShoppingState.COMMITTED) {
+            if (shopping.getShoppingState() != ShoppingState.COMMITTED && shopping.getAmount() > 0) {
                 state = "N";
                 notCommitted++;
             }
@@ -210,7 +210,7 @@ public class PdfService {
 
         PdfTicketBuilder pdf = new PdfTicketBuilder(path, INCREMENTAL_INVOICE_HEIGHT);
         pdf.addImage(this.logo).paragraphEmphasized(this.name).paragraphEmphasized("Tfn: " + this.phone);
-        pdf.paragraph("NIF: " + this.nif + "   -   Nuria Ocaña Pérez");
+        pdf.paragraph("NIF: " + this.nif);
         pdf.paragraph(this.address);
         pdf.paragraph("Email: " + this.email);
         if (!this.web.isEmpty()) {

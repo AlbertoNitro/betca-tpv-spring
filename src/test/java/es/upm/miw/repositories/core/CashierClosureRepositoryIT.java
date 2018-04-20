@@ -56,7 +56,7 @@ public class CashierClosureRepositoryIT {
     @Test
     public void testFindByOpeningDateBetweenAndClosureDateNotNull() {
         Date start = new Date(0);
-        List<CashierClosure> cashierClosureList = cashierClosureRepository.findByOpeningDateBetweenAndClosureDateNotNull(start, new Date());
+        List<CashierClosure> cashierClosureList = cashierClosureRepository.findByOpeningDateBetweenAndClosureDateNotNullOrderByClosureDateDesc(start, new Date());
         assertTrue(cashierClosureList.size() > 0);
     }
 
