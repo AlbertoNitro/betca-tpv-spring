@@ -39,7 +39,7 @@ public class TicketRepositoryIT {
     @Test
     public void testFindByCreationDateGreaterThan() throws ParseException {
         Date date = new SimpleDateFormat("yyyy-mm-dd").parse("2018-01-06");
-        List<Ticket> ticketList = ticketRepository.findByCreationDateGreaterThan(date);
+        List<Ticket> ticketList = ticketRepository.findByCreationDateGreaterThanOrderByCreationDateDesc(date);
         assertTrue(ticketList.contains(ticketRepository.findByReference("t2j_u9M9CisFmYGRFs1Uulgn7hI")));
         assertTrue(ticketList.contains(ticketRepository.findByReference("6P0ISee_twnGEzf8qd1Bd5sGQqE")));
     }
@@ -51,7 +51,7 @@ public class TicketRepositoryIT {
     @Test
     public void findByCreationDateBetween() throws ParseException {
         Date initialDate = new SimpleDateFormat("yyyy-mm-dd").parse("2017-01-11");
-        List<Ticket> ticketListByRangeDates = this.ticketRepository.findByCreationDateBetween(initialDate, new Date());
+        List<Ticket> ticketListByRangeDates = this.ticketRepository.findByCreationDateBetweenOrderByCreationDateDesc(initialDate, new Date());
         List<Ticket> ticketAllList = this.ticketRepository.findAll();
         assertTrue(ticketListByRangeDates.size() >= ticketAllList.size());
     }

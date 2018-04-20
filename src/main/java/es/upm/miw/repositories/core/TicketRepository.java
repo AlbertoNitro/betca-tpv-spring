@@ -15,11 +15,11 @@ public interface TicketRepository extends MongoRepository<Ticket, String> {
 
     List<Ticket> findByUserOrderByCreationDateDesc(User user);
 
-    List<Ticket> findByCreationDateGreaterThan(Date date);
+    List<Ticket> findByCreationDateGreaterThanOrderByCreationDateDesc(Date date);
 
     Ticket findFirstByOrderByCreationDateDescIdDesc();
 
-    List<Ticket> findByCreationDateBetween(Date initialDate, Date finalDate);
+    List<Ticket> findByCreationDateBetweenOrderByCreationDateDesc(Date initialDate, Date finalDate);
 
     Ticket findFirstByUserOrderByCreationDateDesc(User user);
 

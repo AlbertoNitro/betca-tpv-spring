@@ -1,5 +1,6 @@
 package es.upm.miw.controllers;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
@@ -79,6 +80,9 @@ public class TicketController {
         Ticket ticket = new Ticket(this.nextId(), ticketCreationDto.getCash(), shoppingList.toArray(new Shopping[0]), user);
         ticket.setDebt(ticket.getTotal().subtract(ticketCreationDto.getCash()).subtract(ticketCreationDto.getCard())
                 .subtract(ticketCreationDto.getVoucher()));
+        if(ticket.getDebt().signum()==-1) {
+            ticket.setDebt(BigDecimal.ZERO);
+        }
         ticket.setNote(ticketCreationDto.getNote());
         this.ticketRepository.save(ticket);
         return Optional.of(ticket);
@@ -99,7 +103,7 @@ public class TicketController {
     }
 
     public List<TicketDto> findBetweenDates(Date start, Date end) {
-        List<Ticket> ticketList = this.ticketRepository.findByCreationDateBetween(start, end);
+        List<Ticket> ticketList = this.ticketRepository.findByCreationDateBetweenOrderByCreationDateDesc(start, end);
         List<TicketDto> ticketListDto = new ArrayList<TicketDto>();
         for (Ticket ticket : ticketList) {
             TicketDto ticketOutputDto = new TicketDto();

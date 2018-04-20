@@ -136,7 +136,7 @@ public class CashierClosureController {
     }
 
     private BigDecimal salesCash(Date cashierOpenedDate) {
-        List<Ticket> ticketList = ticketRepository.findByCreationDateGreaterThan(cashierOpenedDate);
+        List<Ticket> ticketList = ticketRepository.findByCreationDateGreaterThanOrderByCreationDateDesc(cashierOpenedDate);
         BigDecimal total = new BigDecimal("0");
         for (Ticket ticket : ticketList) {
             total = total.add(ticket.getTotal());
@@ -145,7 +145,7 @@ public class CashierClosureController {
     }
 
     private BigDecimal cashDeposited(Date cashierOpenedDate) {
-        List<Ticket> ticketList = ticketRepository.findByCreationDateGreaterThan(cashierOpenedDate);
+        List<Ticket> ticketList = ticketRepository.findByCreationDateGreaterThanOrderByCreationDateDesc(cashierOpenedDate);
         BigDecimal total = new BigDecimal("0");
         for (Ticket ticket : ticketList) {
             total = total.add(ticket.getCashDeposited());

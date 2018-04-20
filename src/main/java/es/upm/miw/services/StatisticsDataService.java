@@ -29,7 +29,7 @@ public class StatisticsDataService {
 
 		List<HistoricalProductOutPutDto> result = new ArrayList<HistoricalProductOutPutDto>();
 
-		List<Ticket> tickectsCollection = ticketRepository.findByCreationDateBetween(initDate, endDate);
+		List<Ticket> tickectsCollection = ticketRepository.findByCreationDateBetweenOrderByCreationDateDesc(initDate, endDate);
 
 		Calendar initCalendar = Calendar.getInstance();
 		initCalendar.setTime(initDate);
@@ -97,7 +97,7 @@ public class StatisticsDataService {
 	public List<NumProductsSoldDto> GetNumProductsSold(Date initDate, Date endDate) {
 		List<NumProductsSoldDto> result = new ArrayList<NumProductsSoldDto>();
 
-		List<Ticket> tickectsCollection = ticketRepository.findByCreationDateBetween(initDate, endDate);
+		List<Ticket> tickectsCollection = ticketRepository.findByCreationDateBetweenOrderByCreationDateDesc(initDate, endDate);
 
 		HashMap<String, Integer> mapAux = new HashMap<String, Integer>();
 		for (Ticket ticket : tickectsCollection) {
@@ -128,7 +128,7 @@ public class StatisticsDataService {
 
 		List<IncomeComparision> result = new ArrayList<IncomeComparision>();
 
-		List<Ticket> tickectsCollection = ticketRepository.findByCreationDateBetween(initDate, endDate);
+		List<Ticket> tickectsCollection = ticketRepository.findByCreationDateBetweenOrderByCreationDateDesc(initDate, endDate);
 
 		HashMap<String, Float> mapAuxProductPrice = new HashMap<String, Float>();
 		HashMap<String, Float> mapAuxIncome = new HashMap<String, Float>();
