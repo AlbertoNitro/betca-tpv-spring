@@ -5,13 +5,17 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
 import es.upm.miw.documents.core.Article;
+import es.upm.miw.documents.core.Order;
+import es.upm.miw.documents.core.OrderLine;
 import es.upm.miw.documents.core.Shopping;
 import es.upm.miw.documents.core.ShoppingState;
 import es.upm.miw.documents.core.Ticket;
@@ -23,7 +27,9 @@ import es.upm.miw.dtos.ShoppingDto;
 import es.upm.miw.dtos.TicketCreationInputDto;
 import es.upm.miw.dtos.TicketDto;
 import es.upm.miw.dtos.TicketSearchOutputDto;
+import es.upm.miw.dtos.UserNotCommitedOutputDto;
 import es.upm.miw.repositories.core.ArticleRepository;
+import es.upm.miw.repositories.core.OrderRepository;
 import es.upm.miw.repositories.core.TicketRepository;
 import es.upm.miw.repositories.core.UserRepository;
 import es.upm.miw.services.PdfService;
@@ -40,6 +46,9 @@ public class TicketController {
 
     @Autowired
     private ArticleRepository articleRepository;
+
+    @Autowired
+    private OrderRepository orderRepository;
 
     @Autowired
     private PdfService pdfService;
@@ -80,7 +89,7 @@ public class TicketController {
         Ticket ticket = new Ticket(this.nextId(), ticketCreationDto.getCash(), shoppingList.toArray(new Shopping[0]), user);
         ticket.setDebt(ticket.getTotal().subtract(ticketCreationDto.getCash()).subtract(ticketCreationDto.getCard())
                 .subtract(ticketCreationDto.getVoucher()));
-        if(ticket.getDebt().signum()==-1) {
+        if (ticket.getDebt().signum() == -1) {
             ticket.setDebt(BigDecimal.ZERO);
         }
         ticket.setNote(ticketCreationDto.getNote());
@@ -199,4 +208,43 @@ public class TicketController {
 
         return this.statisticsDataService.GetIncomeComparisionData(initDate, endDate);
     }
+
+    public Optional<List<UserNotCommitedOutputDto>> findByOrderArticleNotCommited(String orderId) {
+        Order order = this.orderRepository.findOne(orderId);
+        if (order == null) {
+            return Optional.empty();
+        }
+        Map<String, Integer> entry = new HashMap<>();
+        List<UserNotCommitedOutputDto> userNotCommitedList = new ArrayList<>();
+        for (OrderLine line : order.getOrderLine()) {
+            entry.put(line.getArticle().getCode(), line.getFinalAmount());
+        }
+        List<Ticket> ticketList = this.ticketRepository.findByShoopingListArticleIdNotCommited(entry.keySet().toArray(new String[0]));
+        for (Ticket ticket : ticketList) {
+            UserNotCommitedOutputDto userNotCommited = new UserNotCommitedOutputDto();
+            userNotCommited.setTicketId(ticket.getId());
+            if (ticket.getUser() != null) {
+                userNotCommited.setMobile(ticket.getUser().getMobile());
+                userNotCommited.setUsername(ticket.getUser().getUsername());
+            }
+            userNotCommited.setAllEntry(true);
+            for (Shopping shopping : ticket.getShoppingList()) {
+                if (ShoppingState.NOT_COMMITTED.equals(shopping.getShoppingState())) {
+                    if (entry.containsKey(shopping.getArticle().getCode())) {
+                        if (shopping.getAmount() <= entry.get(shopping.getArticle().getCode())) {
+                            entry.put(shopping.getArticle().getCode(), entry.get(shopping.getArticle().getCode()) - shopping.getAmount());
+                            userNotCommited.addArticle(shopping.getArticle().getDescription());
+                        } else {
+                            userNotCommited.setAllEntry(false);
+                        }
+                    } else {
+                        userNotCommited.setAllEntry(false);
+                    }
+                }
+            }
+            userNotCommitedList.add(userNotCommited);
+        }
+        return Optional.of(userNotCommitedList);
+    }
+
 }

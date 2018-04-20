@@ -51,7 +51,8 @@ public class TicketRepositoryIT {
     @Test
     public void findByCreationDateBetween() throws ParseException {
         Date initialDate = new SimpleDateFormat("yyyy-mm-dd").parse("2017-01-11");
-        List<Ticket> ticketListByRangeDates = this.ticketRepository.findByCreationDateBetweenOrderByCreationDateDesc(initialDate, new Date());
+        List<Ticket> ticketListByRangeDates = this.ticketRepository.findByCreationDateBetweenOrderByCreationDateDesc(initialDate,
+                new Date());
         List<Ticket> ticketAllList = this.ticketRepository.findAll();
         assertTrue(ticketListByRangeDates.size() >= ticketAllList.size());
     }
@@ -69,6 +70,12 @@ public class TicketRepositoryIT {
         User user = this.userRepository.findByMobile("666666004");
         List<Ticket> ticketList = this.ticketRepository.findByUserOrderByCreationDateDesc(user);
         assertTrue(ticketList.size() >= 2);
+    }
+
+    @Test
+    public void testFindByShoopingListShoppingArticle() {
+        List<Ticket> ticketList = this.ticketRepository.findByShoopingListArticleIdNotCommited(new String[] {"article2"});
+        assertTrue(ticketList.size() >= 1);
     }
 
 }

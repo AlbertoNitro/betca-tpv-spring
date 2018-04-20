@@ -219,7 +219,7 @@ shoppingList:
     retailPrice: 30
     discount: 50.00
     article: *ar2
-    shoppingState: COMMITTED
+    shoppingState: NOT_COMMITTED
     description: "various"
   - &sh3
     amount: 1
