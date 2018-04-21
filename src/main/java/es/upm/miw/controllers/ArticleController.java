@@ -14,6 +14,7 @@ import es.upm.miw.documents.core.Provider;
 import es.upm.miw.dtos.ArticleDto;
 import es.upm.miw.repositories.core.ArticleRepository;
 import es.upm.miw.repositories.core.ProviderRepository;
+import es.upm.miw.services.DatabaseSeederService;
 
 @Controller
 public class ArticleController {
@@ -29,6 +30,9 @@ public class ArticleController {
 
     @Autowired
     private ProviderRepository providerRepository;
+
+    @Autowired
+    private DatabaseSeederService databaseSeederService;
 
     public Optional<ArticleDto> readArticle(String code) {
         Article article = this.articleRepository.findOne(code);
@@ -47,10 +51,11 @@ public class ArticleController {
 
     public ArticleDto createArticle(ArticleDto articleOuputDto) {
         Provider provider = null;
+        String code = (articleOuputDto.getCode() == null) ? this.databaseSeederService.createEan13() : articleOuputDto.getCode();
         if (articleOuputDto.getProvider() != null) {
             provider = this.providerRepository.findOne(articleOuputDto.getProvider());
         }
-        Article articulo = new Article(articleOuputDto.getCode(), articleOuputDto.getDescription(), articleOuputDto.getRetailPrice(),
+        Article articulo = new Article(code, articleOuputDto.getDescription(), articleOuputDto.getRetailPrice(),
                 articleOuputDto.getReference(), articleOuputDto.getStock(), provider, articleOuputDto.getDiscontinued());
         this.articleRepository.save(articulo);
         return articleOuputDto;

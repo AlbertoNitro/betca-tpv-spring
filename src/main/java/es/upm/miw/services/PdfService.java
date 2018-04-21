@@ -90,7 +90,8 @@ public class PdfService {
         final String path = "/labels/label24-" + new SimpleDateFormat("yyyyMMdd-HH-mm").format(new Date().getTime());
         PdfTag24Builder pdf = new PdfTag24Builder(path);
         for (Article article : articles) {
-            pdf.addTag24(article.getDescription(), article.getCode());
+            String reference= (article.getReference().length()>24)?article.getReference().substring(0, 24):article.getReference();
+            pdf.addTag24(reference, article.getCode());
         }
         return pdf.build();
     }

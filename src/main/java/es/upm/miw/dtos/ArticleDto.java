@@ -15,7 +15,6 @@ import es.upm.miw.dtos.validations.BigDecimalPositive;
 @JsonInclude(Include.NON_NULL)
 public class ArticleDto {
 
-    @NotNull
     private String code;
 
     private String reference;
