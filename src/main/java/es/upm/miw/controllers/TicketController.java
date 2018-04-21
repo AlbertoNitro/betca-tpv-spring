@@ -237,12 +237,12 @@ public class TicketController {
                     if (entry.containsKey(shopping.getArticle().getCode())) {
                         if (shopping.getAmount() <= entry.get(shopping.getArticle().getCode())) {
                             entry.put(shopping.getArticle().getCode(), entry.get(shopping.getArticle().getCode()) - shopping.getAmount());
-                            userNotCommited.addArticleEntry(shopping.getArticle().getDescription());
+                            userNotCommited.addArticleEntry(shopping.getArticle().getReference());
                         } else {
-                            userNotCommited.addArticleNotEntry(shopping.getArticle().getDescription());
+                            userNotCommited.addArticleNotEntry(shopping.getArticle().getReference());
                         }
                     } else {
-                        userNotCommited.addArticleNotEntry(shopping.getArticle().getDescription());
+                        userNotCommited.addArticleNotEntry(shopping.getArticle().getReference());
                     }
                 }
             }
@@ -266,9 +266,9 @@ public class TicketController {
             }
             for (Shopping shopping : ticket.getShoppingList()) {
                 if (ShoppingState.NOT_COMMITTED.equals(shopping.getShoppingState())) {
-                    userNotCommited.addArticleNotEntry(shopping.getArticle().getDescription());
+                    userNotCommited.addArticleNotEntry(shopping.getArticle().getReference());
                 } else {
-                    userNotCommited.addArticleEntry(shopping.getArticle().getDescription());
+                    userNotCommited.addArticleEntry(shopping.getArticle().getReference());
                 }
             }
             userNotCommitedList.add(userNotCommited);
