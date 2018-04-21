@@ -47,6 +47,8 @@ public abstract class ArticlesFamily {
     public abstract void remove(ArticlesFamily articlesFamily);
 
     public abstract List<ArticlesFamily> getArticlesFamilyList();
+    
+    public abstract List<String> getArticleIdList();
 
     
     @Override

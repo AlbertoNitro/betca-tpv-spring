@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
 import es.upm.miw.documents.core.Article;
+import es.upm.miw.documents.core.FamilyComposite;
 import es.upm.miw.documents.core.Order;
 import es.upm.miw.documents.core.OrderLine;
 import es.upm.miw.documents.core.Shopping;
@@ -29,6 +30,7 @@ import es.upm.miw.dtos.TicketDto;
 import es.upm.miw.dtos.TicketSearchOutputDto;
 import es.upm.miw.dtos.UserNotCommitedOutputDto;
 import es.upm.miw.repositories.core.ArticleRepository;
+import es.upm.miw.repositories.core.FamilyCompositeRepository;
 import es.upm.miw.repositories.core.OrderRepository;
 import es.upm.miw.repositories.core.TicketRepository;
 import es.upm.miw.repositories.core.UserRepository;
@@ -49,6 +51,9 @@ public class TicketController {
 
     @Autowired
     private OrderRepository orderRepository;
+
+    @Autowired
+    private FamilyCompositeRepository familyCompositeRepository;
 
     @Autowired
     private PdfService pdfService;
@@ -227,24 +232,58 @@ public class TicketController {
                 userNotCommited.setMobile(ticket.getUser().getMobile());
                 userNotCommited.setUsername(ticket.getUser().getUsername());
             }
-            userNotCommited.setAllEntry(true);
             for (Shopping shopping : ticket.getShoppingList()) {
                 if (ShoppingState.NOT_COMMITTED.equals(shopping.getShoppingState())) {
                     if (entry.containsKey(shopping.getArticle().getCode())) {
                         if (shopping.getAmount() <= entry.get(shopping.getArticle().getCode())) {
                             entry.put(shopping.getArticle().getCode(), entry.get(shopping.getArticle().getCode()) - shopping.getAmount());
-                            userNotCommited.addArticle(shopping.getArticle().getDescription());
+                            userNotCommited.addArticleEntry(shopping.getArticle().getDescription());
                         } else {
-                            userNotCommited.setAllEntry(false);
+                            userNotCommited.addArticleNotEntry(shopping.getArticle().getDescription());
                         }
                     } else {
-                        userNotCommited.setAllEntry(false);
+                        userNotCommited.addArticleNotEntry(shopping.getArticle().getDescription());
                     }
                 }
             }
             userNotCommitedList.add(userNotCommited);
         }
         return Optional.of(userNotCommitedList);
+    }
+
+    public List<UserNotCommitedOutputDto> findByTicketsNotCommited() {
+        return generateUserNotCommitedOutputDto(this.ticketRepository.findByTicketsNotCommited());
+    }
+
+    private List<UserNotCommitedOutputDto> generateUserNotCommitedOutputDto(List<Ticket> ticketList) {
+        List<UserNotCommitedOutputDto> userNotCommitedList = new ArrayList<>();
+        for (Ticket ticket : ticketList) {
+            UserNotCommitedOutputDto userNotCommited = new UserNotCommitedOutputDto();
+            userNotCommited.setTicketId(ticket.getId());
+            if (ticket.getUser() != null) {
+                userNotCommited.setMobile(ticket.getUser().getMobile());
+                userNotCommited.setUsername(ticket.getUser().getUsername());
+            }
+            for (Shopping shopping : ticket.getShoppingList()) {
+                if (ShoppingState.NOT_COMMITTED.equals(shopping.getShoppingState())) {
+                    userNotCommited.addArticleNotEntry(shopping.getArticle().getDescription());
+                } else {
+                    userNotCommited.addArticleEntry(shopping.getArticle().getDescription());
+                }
+            }
+            userNotCommitedList.add(userNotCommited);
+        }
+        return userNotCommitedList;
+    }
+
+    public Optional<List<UserNotCommitedOutputDto>> findByFamilyIdNotCommited(String familyId) {
+        FamilyComposite familyComposite = this.familyCompositeRepository.findOne(familyId);
+        if (familyComposite == null) {
+            return Optional.empty();
+        }
+        List<String> articlesIdList = familyComposite.getArticleIdList();
+        return Optional.of(generateUserNotCommitedOutputDto(
+                this.ticketRepository.findByShoopingListArticleIdNotCommited(articlesIdList.toArray(new String[0]))));
     }
 
 }

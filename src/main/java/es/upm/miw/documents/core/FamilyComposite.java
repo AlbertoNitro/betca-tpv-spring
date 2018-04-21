@@ -86,4 +86,13 @@ public class FamilyComposite extends ArticlesFamily {
                 + list + "]";
     }
 
+    @Override
+    public List<String> getArticleIdList() {
+        List<String> articleIdList= new ArrayList<>();
+        for (ArticlesFamily articlesFamily : this.familyCompositeList) {
+            articleIdList.addAll(articlesFamily.getArticleIdList());
+        }
+        return articleIdList;
+    }
+
 }

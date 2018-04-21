@@ -44,6 +44,10 @@ public class TicketResource {
     public static final String SEARCH_MOBILE_LAST = "/search/mobile/last";
 
     public static final String SEARCH_ORDER_ID = "/search/order-id";
+    
+    public static final String SEARCH_FAMILY_ID = "/search/family-id";
+
+    public static final String SEARCH_TICKETS_NOT_COMMITED = "/search/tickets-not-commited";
 
     public static final String SEARCH_BY_ID_AND_DATES = "/searchByIdAndDates";
 
@@ -88,6 +92,19 @@ public class TicketResource {
     public List<UserNotCommitedOutputDto> findByOrderArticleNotCommited(@RequestParam String orderId) throws TicketIdNotFoundException {
         return this.ticketController.findByOrderArticleNotCommited(orderId).orElseThrow(() -> new TicketIdNotFoundException("orderId: " + orderId));
     }
+    
+    @GetMapping(value = SEARCH_FAMILY_ID)
+    public List<UserNotCommitedOutputDto> findByFamilyId(@RequestParam String familyId) throws TicketIdNotFoundException {
+        return this.ticketController.findByFamilyIdNotCommited(familyId).orElseThrow(() -> new TicketIdNotFoundException("familyId: " + familyId));
+    }
+    
+    @GetMapping(value = SEARCH_TICKETS_NOT_COMMITED)
+    public List<UserNotCommitedOutputDto> findByTicketsNotCommited() {
+        return this.ticketController.findByTicketsNotCommited();
+    }
+    
+    
+    
 
     @PutMapping(value = ID_ID, produces = {"application/pdf", "application/json"})
     public byte[] updateTicket(@PathVariable String id, @RequestBody TicketDto ticketDto)

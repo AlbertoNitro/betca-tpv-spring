@@ -3,29 +3,30 @@ package es.upm.miw.dtos;
 public class UserNotCommitedOutputDto extends UserMinimumDto {
 
     private String TicketId;
-    
-    private String articles;
 
-    private Boolean allEntry;
+    private String articlesEntry;
+
+    private String articlesNotEntry;
 
     public UserNotCommitedOutputDto() {
-        this.articles = "";
+        this.articlesEntry = "";
+        this.articlesNotEntry = "";
     }
 
-    public String getArticles() {
-        return articles;
+    public String getArticlesEntry() {
+        return articlesEntry;
     }
 
-    public void setArticles(String articles) {
-        this.articles = articles;
+    public void setArticlesEntry(String articlesEntry) {
+        this.articlesEntry = articlesEntry;
     }
 
-    public Boolean getAllEntry() {
-        return allEntry;
+    public String getArticlesNotEntry() {
+        return articlesNotEntry;
     }
 
-    public void setAllEntry(Boolean allEntry) {
-        this.allEntry = allEntry;
+    public void setArticlesNotEntry(String articlesNotEntry) {
+        this.articlesNotEntry = articlesNotEntry;
     }
 
     public String getTicketId() {
@@ -36,14 +37,19 @@ public class UserNotCommitedOutputDto extends UserMinimumDto {
         TicketId = ticketId;
     }
 
-    public void addArticle(String description) {
-        this.articles += description + ". ";
+    public void addArticleEntry(String description) {
+        this.articlesEntry += description + ".  ";
 
+    }
+
+    public void addArticleNotEntry(String description) {
+        this.articlesNotEntry += description + ".  ";
     }
 
     @Override
     public String toString() {
-        return "UserNotCommited [TicketId=" + TicketId + ", articles=" + articles + ", allEntry=" + allEntry + "]";
+        return "UserNotCommitedOutputDto [TicketId=" + TicketId + ", articlesEntry=" + articlesEntry + ", articlesNotEntry="
+                + articlesNotEntry + "]";
     }
 
 }

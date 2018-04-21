@@ -1,5 +1,6 @@
 package es.upm.miw.documents.core;
 
+import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.data.mongodb.core.mapping.DBRef;
@@ -59,6 +60,11 @@ public class FamilyArticle extends ArticlesFamily {
     @Override
     public String toString() {
         return "FamilyArticle ["+super.toString() + "article=" + article + "]";
+    }
+
+    @Override
+    public List<String> getArticleIdList() {
+        return Arrays.asList(this.article.getCode());
     }
 
 }
