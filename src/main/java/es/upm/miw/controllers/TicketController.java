@@ -56,7 +56,7 @@ public class TicketController {
 
     @Autowired
     private FamilyCompositeRepository familyCompositeRepository;
-    
+
     @Autowired
     private CashierClosureRepository cashierClosureRepository;
 
@@ -104,7 +104,7 @@ public class TicketController {
         }
         ticket.setNote(ticketCreationDto.getNote());
         this.ticketRepository.save(ticket);
-        //----------------------------------------------
+        // ----------------------------------------------
         CashierClosure cashierClosure = this.cashierClosureRepository.findFirstByOrderByOpeningDateDesc();
         cashierClosure.addCash(ticketCreationDto.getCash());
         cashierClosure.addCard(ticketCreationDto.getCard());
@@ -148,12 +148,13 @@ public class TicketController {
         for (int i = 0; i < ticket.getShoppingList().length; i++) {
             int amountDifference = ticket.getShoppingList()[i].getAmount() - ticketCreationInputDto.getShoppingCart().get(i).getAmount();
             if (amountDifference > 0) {
+                ticket.setDebt(ticket.getDebt().subtract(ticket.getShoppingList()[i].getShoppingTotal())
+                        .add(ticketCreationInputDto.getShoppingCart().get(i).getTotal()));
                 ticket.getShoppingList()[i].setAmount(ticketCreationInputDto.getShoppingCart().get(i).getAmount());
                 Article article = ticket.getShoppingList()[i].getArticle();
                 article.setStock(article.getStock() + amountDifference);
                 this.articleRepository.save(article);
-            }
-
+             }
             if (ticketCreationInputDto.getShoppingCart().get(i).isCommitted()) {
                 ticket.getShoppingList()[i].setShoppingState(ShoppingState.COMMITTED);
             }

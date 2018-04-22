@@ -103,7 +103,11 @@ public class Ticket {
     }
 
     public void setDebt(BigDecimal debt) {
-        this.debt = debt;
+        if (debt.signum() == -1) {
+            this.debt = BigDecimal.ZERO;
+        } else {
+            this.debt = debt;
+        }
     }
 
     public String getNote() {
