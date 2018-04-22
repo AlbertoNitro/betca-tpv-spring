@@ -37,6 +37,7 @@ import es.upm.miw.repositories.core.OfferRepository;
 import es.upm.miw.repositories.core.OrderRepository;
 import es.upm.miw.repositories.core.ProviderRepository;
 import es.upm.miw.repositories.core.SchedulerRepository;
+import es.upm.miw.repositories.core.TagRepository;
 import es.upm.miw.repositories.core.TicketRepository;
 import es.upm.miw.repositories.core.UserRepository;
 import es.upm.miw.repositories.core.VoucherRepository;
@@ -101,6 +102,9 @@ public class DatabaseSeederService {
 
     @Autowired
     private OrderRepository orderRepository;
+    
+    @Autowired
+    private TagRepository tagRepository;
 
     private long ean13;
 
@@ -285,6 +289,7 @@ public class DatabaseSeederService {
         // Delete Repositories -----------------------------------------------------
         this.familyCompositeRepository.deleteAll();
         this.invoiceRepository.deleteAll();
+        this.tagRepository.deleteAll();
 
         this.ticketRepository.deleteAll();
         this.orderRepository.deleteAll();
@@ -309,10 +314,14 @@ public class DatabaseSeederService {
     public void reset() {
         this.familyCompositeRepository.deleteAll();
         this.invoiceRepository.deleteAll();
+        this.tagRepository.deleteAll();
+        
         this.ticketRepository.deleteAll();
         this.orderRepository.deleteAll();
         this.familyArticleRepository.deleteAll();
+        
         this.cashMovementRepository.deleteAll();
+        
         this.schedulerRepository.deleteAll();
         this.voucherRepository.deleteAll();
         this.offerRepository.deleteAll();
