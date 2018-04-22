@@ -95,17 +95,14 @@ public class InvoiceController {
 
     private int nextInvoiceId() {
         int nextId = 1;
-        Invoice invoice = invoiceRepository.findFirstByOrderByCreationDateDescIdDesc();
+        Invoice invoice = invoiceRepository.findFirstOrderByCreationDateDesc();
         if (invoice == null) {
             Property property = this.propertyRepository.findOne("miw.invoice.initial");
             if (property != null) {
                 nextId = Integer.parseInt(property.getValue());
             }
         } else {
-            Date startOfDay = Date.from(LocalDate.now().atStartOfDay(ZoneId.systemDefault()).toInstant());
-            if (invoice.getCreationDated().compareTo(startOfDay) >= 0) {
-                nextId = invoice.simpleId() + 1;
-            }
+            nextId = invoice.simpleId() + 1;
         }
         return nextId;
     }
