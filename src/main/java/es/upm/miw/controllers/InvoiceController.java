@@ -95,7 +95,7 @@ public class InvoiceController {
 
     private int nextInvoiceId() {
         int nextId = 1;
-        Invoice invoice = invoiceRepository.findFirstOrderByCreationDateDesc();
+        Invoice invoice = invoiceRepository.findFirstByOrderByCreationDateDesc();
         if (invoice == null) {
             Property property = this.propertyRepository.findOne("miw.invoice.initial");
             if (property != null) {
