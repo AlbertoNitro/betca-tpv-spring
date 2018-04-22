@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
 import es.upm.miw.documents.core.Article;
+import es.upm.miw.documents.core.CashierClosure;
 import es.upm.miw.documents.core.FamilyComposite;
 import es.upm.miw.documents.core.Order;
 import es.upm.miw.documents.core.OrderLine;
@@ -30,6 +31,7 @@ import es.upm.miw.dtos.TicketDto;
 import es.upm.miw.dtos.TicketSearchOutputDto;
 import es.upm.miw.dtos.UserNotCommitedOutputDto;
 import es.upm.miw.repositories.core.ArticleRepository;
+import es.upm.miw.repositories.core.CashierClosureRepository;
 import es.upm.miw.repositories.core.FamilyCompositeRepository;
 import es.upm.miw.repositories.core.OrderRepository;
 import es.upm.miw.repositories.core.TicketRepository;
@@ -54,6 +56,9 @@ public class TicketController {
 
     @Autowired
     private FamilyCompositeRepository familyCompositeRepository;
+    
+    @Autowired
+    private CashierClosureRepository cashierClosureRepository;
 
     @Autowired
     private PdfService pdfService;
@@ -99,6 +104,12 @@ public class TicketController {
         }
         ticket.setNote(ticketCreationDto.getNote());
         this.ticketRepository.save(ticket);
+        //----------------------------------------------
+        CashierClosure cashierClosure = this.cashierClosureRepository.findFirstByOrderByOpeningDateDesc();
+        cashierClosure.addCash(ticketCreationDto.getCash());
+        cashierClosure.addCard(ticketCreationDto.getCard());
+        this.cashierClosureRepository.save(cashierClosure);
+
         return Optional.of(ticket);
     }
 
@@ -127,30 +138,36 @@ public class TicketController {
         return ticketListDto;
     }
 
-    public Optional<byte[]> updateTicket(String id, TicketDto ticketDto) {
+    public Optional<byte[]> updateTicket(String id, TicketCreationInputDto ticketCreationInputDto) {
         Ticket ticket = this.ticketRepository.findOne(id);
         assert ticket != null;
-        ticket.setDebt(ticketDto.getDebt());
-        ticket.setNote(ticketDto.getNote());
+        ticket.setDebt(ticket.getDebt().subtract(ticketCreationInputDto.getCash()).subtract(ticketCreationInputDto.getCard())
+                .subtract(ticketCreationInputDto.getVoucher()));
+        ticket.setCashDeposited(ticket.getCashDeposited().add(ticketCreationInputDto.getCash()));
+        ticket.setNote(ticketCreationInputDto.getNote());
         for (int i = 0; i < ticket.getShoppingList().length; i++) {
-            int amountDifference = ticket.getShoppingList()[i].getAmount() - ticketDto.getShoppingList().get(i).getAmount();
+            int amountDifference = ticket.getShoppingList()[i].getAmount() - ticketCreationInputDto.getShoppingCart().get(i).getAmount();
             if (amountDifference > 0) {
-                ticket.getShoppingList()[i].setAmount(ticketDto.getShoppingList().get(i).getAmount());
+                ticket.getShoppingList()[i].setAmount(ticketCreationInputDto.getShoppingCart().get(i).getAmount());
                 Article article = ticket.getShoppingList()[i].getArticle();
                 article.setStock(article.getStock() + amountDifference);
                 this.articleRepository.save(article);
             }
 
-            if (ticketDto.getShoppingList().get(i).isCommitted()) {
+            if (ticketCreationInputDto.getShoppingCart().get(i).isCommitted()) {
                 ticket.getShoppingList()[i].setShoppingState(ShoppingState.COMMITTED);
             }
         }
         User user = null;
-        if (ticketDto.getUser() != null) {
-            user = this.userRepository.findByMobile(ticketDto.getUser().getMobile());
+        if (ticketCreationInputDto.getUserMobile() != null) {
+            user = this.userRepository.findByMobile(ticketCreationInputDto.getUserMobile());
         }
         ticket.setUser(user);
         this.ticketRepository.save(ticket);
+        CashierClosure cashierClosure = this.cashierClosureRepository.findFirstByOrderByOpeningDateDesc();
+        cashierClosure.addCash(ticketCreationInputDto.getCash());
+        cashierClosure.addCard(ticketCreationInputDto.getCard());
+        this.cashierClosureRepository.save(cashierClosure);
         return pdfService.generateTicket(ticket);
     }
 

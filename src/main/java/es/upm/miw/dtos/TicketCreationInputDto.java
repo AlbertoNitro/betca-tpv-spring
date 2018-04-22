@@ -7,6 +7,7 @@ import es.upm.miw.dtos.validations.BigDecimalPositive;
 import es.upm.miw.dtos.validations.ListNotEmpty;
 
 public class TicketCreationInputDto {
+    
     private String userMobile;
 
     @BigDecimalPositive

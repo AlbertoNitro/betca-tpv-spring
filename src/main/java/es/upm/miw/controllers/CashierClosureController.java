@@ -12,7 +12,6 @@ import org.springframework.stereotype.Controller;
 
 import es.upm.miw.documents.core.CashMovement;
 import es.upm.miw.documents.core.CashierClosure;
-import es.upm.miw.documents.core.Ticket;
 import es.upm.miw.documents.core.User;
 import es.upm.miw.documents.core.Voucher;
 import es.upm.miw.dtos.CashierClosureInputDto;
@@ -22,7 +21,6 @@ import es.upm.miw.dtos.CashierClosingOutputDto;
 import es.upm.miw.dtos.CashierMovementInputDto;
 import es.upm.miw.repositories.core.CashMovementRepository;
 import es.upm.miw.repositories.core.CashierClosureRepository;
-import es.upm.miw.repositories.core.TicketRepository;
 import es.upm.miw.repositories.core.UserRepository;
 import es.upm.miw.repositories.core.VoucherRepository;
 
@@ -34,9 +32,6 @@ public class CashierClosureController {
 
     @Autowired
     private VoucherRepository voucherRepository;
-
-    @Autowired
-    private TicketRepository ticketRepository;
 
     @Autowired
     private CashMovementRepository cashMovementRepository;
@@ -63,8 +58,8 @@ public class CashierClosureController {
         if (cashierClosure != null) {
             return new CashierLastOutputDto(cashierClosure);
         } else { // Sólo ocurre una sola vez en el despliegue con bd vacias
-            cashierClosure = new CashierClosure(new BigDecimal("0"));
-            cashierClosure.close(new BigDecimal("0"), new BigDecimal("0"), new BigDecimal("0"), new BigDecimal("0"), "Initial");
+            cashierClosure = new CashierClosure(BigDecimal.ZERO);
+            cashierClosure.close(BigDecimal.ZERO, BigDecimal.ZERO, "Initial");
             this.cashierClosureRepository.save(cashierClosure);
             return new CashierLastOutputDto(cashierClosure);
         }
@@ -88,8 +83,8 @@ public class CashierClosureController {
 
         if (lastCashierClosure != null && !lastCashierClosure.isClosed()) {
             Date cashierOpenedDate = cashierClosureRepository.findFirstByOrderByOpeningDateDesc().getOpeningDate();
-            lastCashierClosure.close(cashierClosureDto.getFinalCash(), this.cashDeposited(cashierOpenedDate), cashierClosureDto.getSalesCard(),
-                    this.usedVouchers(cashierOpenedDate), cashierClosureDto.getComment());
+            lastCashierClosure.close(cashierClosureDto.getFinalCash(), this.usedVouchers(cashierOpenedDate),
+                    cashierClosureDto.getComment());
             lastCashierClosure.setDeposit(BigDecimal.ZERO);
             lastCashierClosure.setWithdrawal(BigDecimal.ZERO);
             List<CashMovement> cashMovementList = cashMovementRepository.findByCreationDateGreaterThan(cashierOpenedDate);
@@ -118,11 +113,10 @@ public class CashierClosureController {
         Date cashierOpenedDate = lastCashierClosure.getOpeningDate();
         CashierClosingOutputDto cashierClosureDto = new CashierClosingOutputDto();
 
-        cashierClosureDto.setTotalCash(lastCashierClosure.getInitialCash().add(this.cashDeposited(cashierOpenedDate))
+        cashierClosureDto.setTotalCash(lastCashierClosure.getInitialCash().add(lastCashierClosure.getSalesCash())
                 .add(this.cashMovements(cashierOpenedDate)).setScale(2, RoundingMode.HALF_UP));
         cashierClosureDto.setTotalVoucher(this.totalVouchers(cashierOpenedDate).setScale(2, RoundingMode.HALF_UP));
-        cashierClosureDto.setTotalCard(this.salesCash(cashierOpenedDate).subtract(cashierClosureDto.getTotalVoucher())
-                .subtract(this.cashDeposited(cashierOpenedDate)).setScale(2, RoundingMode.HALF_UP));
+        cashierClosureDto.setTotalCard(lastCashierClosure.getSalesCard().setScale(2, RoundingMode.HALF_UP));
         return Optional.of(cashierClosureDto);
     }
 
@@ -131,24 +125,6 @@ public class CashierClosureController {
         BigDecimal total = new BigDecimal("0");
         for (Voucher voucher : usedVoucherlist) {
             total = total.add(voucher.getValue());
-        }
-        return total;
-    }
-
-    private BigDecimal salesCash(Date cashierOpenedDate) {
-        List<Ticket> ticketList = ticketRepository.findByCreationDateGreaterThanOrderByCreationDateDesc(cashierOpenedDate);
-        BigDecimal total = new BigDecimal("0");
-        for (Ticket ticket : ticketList) {
-            total = total.add(ticket.getTotal());
-        }
-        return total;
-    }
-
-    private BigDecimal cashDeposited(Date cashierOpenedDate) {
-        List<Ticket> ticketList = ticketRepository.findByCreationDateGreaterThanOrderByCreationDateDesc(cashierOpenedDate);
-        BigDecimal total = new BigDecimal("0");
-        for (Ticket ticket : ticketList) {
-            total = total.add(ticket.getCashDeposited());
         }
         return total;
     }
@@ -163,7 +139,7 @@ public class CashierClosureController {
     }
 
     private BigDecimal totalVouchers(Date cashierOpenedDate) {
-        BigDecimal total = new BigDecimal("0"); 
+        BigDecimal total = new BigDecimal("0");
         List<Voucher> voucherCreatedList = voucherRepository.findByCreationDateGreaterThan(cashierOpenedDate);
         for (Voucher voucher : voucherCreatedList) {
             total = total.subtract(voucher.getValue());
@@ -185,7 +161,8 @@ public class CashierClosureController {
     }
 
     public List<ClosedCashierOutputDto> findBetweenDate(Date start, Date end) {
-        List<CashierClosure> cashierClosureList = this.cashierClosureRepository.findByOpeningDateBetweenAndClosureDateNotNullOrderByClosureDateDesc(start, end);
+        List<CashierClosure> cashierClosureList = this.cashierClosureRepository
+                .findByOpeningDateBetweenAndClosureDateNotNullOrderByClosureDateDesc(start, end);
         List<ClosedCashierOutputDto> cashierClosureClosedOutputDto = new ArrayList<ClosedCashierOutputDto>();
         for (CashierClosure ticket : cashierClosureList) {
             cashierClosureClosedOutputDto.add(new ClosedCashierOutputDto(ticket));

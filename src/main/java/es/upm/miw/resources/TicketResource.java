@@ -107,12 +107,12 @@ public class TicketResource {
     
 
     @PutMapping(value = ID_ID, produces = {"application/pdf", "application/json"})
-    public byte[] updateTicket(@PathVariable String id, @RequestBody TicketDto ticketDto)
+    public byte[] updateTicket(@PathVariable String id, @RequestBody TicketCreationInputDto ticketCreationInputDto)
             throws TicketIdNotFoundException, FieldInvalidException {
         if (!this.ticketController.existTicket(id)) {
             throw new TicketIdNotFoundException(id);
         }
-        return this.ticketController.updateTicket(id, ticketDto).orElseThrow(() -> new FieldInvalidException("Ticket Update Exception"));
+        return this.ticketController.updateTicket(id, ticketCreationInputDto).orElseThrow(() -> new FieldInvalidException("Ticket Update Exception"));
     }
 
     @RequestMapping(value = SEARCH_BY_ID_AND_DATES, method = RequestMethod.GET)

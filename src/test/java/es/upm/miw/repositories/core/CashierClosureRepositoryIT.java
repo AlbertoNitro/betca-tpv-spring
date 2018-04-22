@@ -36,7 +36,7 @@ public class CashierClosureRepositoryIT {
     @Before
     public void before() {
         cashierClosure1 = new CashierClosure();
-        cashierClosure1.close(new BigDecimal("100"), new BigDecimal("200"), new BigDecimal("100"), new BigDecimal("0"), "");
+        cashierClosure1.close(new BigDecimal("100"), new BigDecimal("0"), "");
         cashierClosureRepository.save(cashierClosure1);
         cashierClosure2 = new CashierClosure();
         cashierClosureRepository.save(cashierClosure2);

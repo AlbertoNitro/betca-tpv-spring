@@ -36,16 +36,19 @@ public class CashierClosure {
         this.openingDate = new Date();
         this.closureDate = null;
         this.comment = "";
-        this.deposit = new BigDecimal("0");
-        this.withdrawal = new BigDecimal("0");
-        this.initialCash = new BigDecimal("0");
+        this.deposit = BigDecimal.ZERO;
+        this.withdrawal = BigDecimal.ZERO;
+        this.initialCash = BigDecimal.ZERO;
+        this.salesCash = BigDecimal.ZERO;
+        this.salesCard = BigDecimal.ZERO;
+        this.usedVouchers = BigDecimal.ZERO;
     }
 
     public CashierClosure(BigDecimal initialCash) {
         this();
         this.initialCash = initialCash;
     }
-    
+
     public CashierClosure(Date openingDate) {
         this();
         this.openingDate = openingDate;
@@ -61,10 +64,20 @@ public class CashierClosure {
         this.comment += "Withdrawal (" + cash.setScale(2).toString() + "): " + comment + ". ";
     }
 
-    public void close(BigDecimal finalCash, BigDecimal salesCash, BigDecimal salesCard, BigDecimal usedVouchers, String comment) {
+    public void addCash(BigDecimal salesCash) {
+        this.salesCash = this.salesCash.add(salesCash);
+    }
+
+    public void addCard(BigDecimal salesCard) {
+        this.salesCard = this.salesCard.add(salesCard);
+    }
+
+    public void addVoucher(BigDecimal voucher) {
+        this.usedVouchers = this.usedVouchers.add(voucher);
+    }
+
+    public void close(BigDecimal finalCash, BigDecimal usedVouchers, String comment) {
         this.finalCash = finalCash;
-        this.salesCash = salesCash;
-        this.salesCard = salesCard;
         this.usedVouchers = usedVouchers;
         this.comment += comment + ". ";
         this.closureDate = new Date();
@@ -125,7 +138,7 @@ public class CashierClosure {
     public void setComment(String comment) {
         this.comment = comment;
     }
-    
+
     public void setOpeningDate(Date openingDate) {
         this.openingDate = openingDate;
     }
