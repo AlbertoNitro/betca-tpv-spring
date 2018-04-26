@@ -111,6 +111,10 @@ public class CashierClosure {
         return initialCash;
     }
 
+    public BigDecimal getUsedVouchers() {
+        return usedVouchers;
+    }
+
     public BigDecimal getSalesCash() {
         return salesCash;
     }

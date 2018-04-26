@@ -13,15 +13,19 @@ public class ClosedCashierOutputDto {
 
     private BigDecimal initialCash;
 
-    private BigDecimal salesCash;
+    private BigDecimal usedVouchers;
 
     private BigDecimal salesCard;
+
+    private BigDecimal salesCash;
 
     private BigDecimal deposit;
 
     private BigDecimal withdrawal;
 
     private String comment;
+
+    private BigDecimal finalCash;
 
     private Date closureDate;
 
@@ -32,10 +36,12 @@ public class ClosedCashierOutputDto {
         this.id = cashierClosure.getId();
         this.openingDate = cashierClosure.getOpeningDate();
         this.initialCash = cashierClosure.getInitialCash();
-        this.salesCash = cashierClosure.getSalesCash();
+        this.usedVouchers = cashierClosure.getUsedVouchers();
         this.salesCard = cashierClosure.getSalesCard();
+        this.salesCash = cashierClosure.getSalesCash();
         this.deposit = cashierClosure.getDeposit();
         this.withdrawal = cashierClosure.getWithdrawal();
+        this.finalCash = cashierClosure.getFinalCash();
         this.comment = cashierClosure.getComment();
         this.closureDate = cashierClosure.getClosureDate();
     }
@@ -112,11 +118,27 @@ public class ClosedCashierOutputDto {
         this.closureDate = closureDate;
     }
 
+    public BigDecimal getUsedVouchers() {
+        return usedVouchers;
+    }
+
+    public void setUsedVouchers(BigDecimal usedVouchers) {
+        this.usedVouchers = usedVouchers;
+    }
+
+    public BigDecimal getFinalCash() {
+        return finalCash;
+    }
+
+    public void setFinalCash(BigDecimal finalCash) {
+        this.finalCash = finalCash;
+    }
+
     @Override
     public String toString() {
-        return "CashierClosureClosedOutputDto [id=" + id + ", openingDate=" + openingDate + ", initialCash=" + initialCash + ", salesCash="
-                + salesCash + ", salesCard=" + salesCard + ", deposit=" + deposit + ", withdrawal=" + withdrawal + ", comment=" + comment
-                + ", closureDate=" + closureDate + "]";
+        return "ClosedCashierOutputDto [id=" + id + ", openingDate=" + openingDate + ", initialCash=" + initialCash + ", usedVouchers="
+                + usedVouchers + ", salesCard=" + salesCard + ", salesCash=" + salesCash + ", deposit=" + deposit + ", withdrawal="
+                + withdrawal + ", comment=" + comment + ", finalCash=" + finalCash + ", closureDate=" + closureDate + "]";
     }
 
 }

@@ -126,6 +126,10 @@ public class CashierClosureController {
         for (Voucher voucher : usedVoucherlist) {
             total = total.add(voucher.getValue());
         }
+        List<Voucher> createdVoucherlist = voucherRepository.findByCreationDateGreaterThan(cashierOpenedDate);
+        for (Voucher voucher : createdVoucherlist) {
+            total = total.subtract(voucher.getValue());
+        }
         return total;
     }
 
@@ -164,8 +168,8 @@ public class CashierClosureController {
         List<CashierClosure> cashierClosureList = this.cashierClosureRepository
                 .findByOpeningDateBetweenAndClosureDateNotNullOrderByClosureDateDesc(start, end);
         List<ClosedCashierOutputDto> cashierClosureClosedOutputDto = new ArrayList<ClosedCashierOutputDto>();
-        for (CashierClosure ticket : cashierClosureList) {
-            cashierClosureClosedOutputDto.add(new ClosedCashierOutputDto(ticket));
+        for (CashierClosure cashierClosure : cashierClosureList) {
+            cashierClosureClosedOutputDto.add(new ClosedCashierOutputDto(cashierClosure));
         }
         return cashierClosureClosedOutputDto;
     }
