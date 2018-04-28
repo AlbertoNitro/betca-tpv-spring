@@ -209,7 +209,7 @@ public class PdfService {
         final int INCREMENTAL_INVOICE_HEIGHT = 16;
         final String path = "/invoices/invoice-" + invoice.getId();
 
-        PdfTicketBuilder pdf = new PdfTicketBuilder(path, INCREMENTAL_INVOICE_HEIGHT);
+        PdfTicketBuilder pdf = new PdfTicketBuilder(path, INCREMENTAL_INVOICE_HEIGHT  + invoice.getTicket().getShoppingList().length);
         pdf.addImage(this.logo).paragraphEmphasized(this.name).paragraphEmphasized("Tfn: " + this.phone);
         pdf.paragraph("NIF: " + this.nif);
         pdf.paragraph(this.address);
