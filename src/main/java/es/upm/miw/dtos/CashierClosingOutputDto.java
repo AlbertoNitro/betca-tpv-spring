@@ -9,69 +9,70 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 @JsonInclude(Include.NON_NULL)
 public class CashierClosingOutputDto {
 
-	private BigDecimal salesCard;
+    private BigDecimal salesCard;
 
-	private BigDecimal finalCash;
+    private BigDecimal finalCash;
 
-	private Date closureDate;
-	
-	private BigDecimal totalCash;	
-	
-	private BigDecimal totalCard;
-	
+    private Date closureDate;
+
+    private BigDecimal totalCash;
+
+    private BigDecimal totalCard;
+
     private BigDecimal totalVoucher;
-	
-	
-	public CashierClosingOutputDto() {
-		// Empty for framework
-	}
 
-	public CashierClosingOutputDto(BigDecimal salesCard, BigDecimal finalCash, Date closureDate) {
-		this.salesCard = salesCard;
-		this.finalCash = finalCash;
-		this.closureDate = closureDate;
-	}
-	
+    private BigDecimal salesTotal;
 
-	public CashierClosingOutputDto(BigDecimal totalCash, BigDecimal totalCard, BigDecimal totalVoucher) {
+    public CashierClosingOutputDto() {
+        // Empty for framework
+    }
+
+    public CashierClosingOutputDto(BigDecimal salesCard, BigDecimal finalCash, Date closureDate) {
+        this.salesCard = salesCard;
+        this.finalCash = finalCash;
+        this.closureDate = closureDate;
+    }
+
+    public CashierClosingOutputDto(BigDecimal totalCash, BigDecimal totalCard, BigDecimal totalVoucher, BigDecimal salesTotal) {
         this.totalCash = totalCash;
         this.totalCard = totalCard;
         this.totalVoucher = totalVoucher;
+        this.salesTotal = salesTotal;
     }
 
     public BigDecimal getSalesCard() {
-		return salesCard;
-	}
+        return salesCard;
+    }
 
-	public void setSalesCard(BigDecimal salesCard) {
-		this.salesCard = salesCard;
-	}
+    public void setSalesCard(BigDecimal salesCard) {
+        this.salesCard = salesCard;
+    }
 
-	public BigDecimal getFinalCash() {
-		return finalCash;
-	}
+    public BigDecimal getFinalCash() {
+        return finalCash;
+    }
 
-	public void setFinalCash(BigDecimal salesCash) {
-		this.finalCash = salesCash;
-	}
-	
-	public BigDecimal getTotalCard() {
-		return totalCard;
-	}
+    public void setFinalCash(BigDecimal salesCash) {
+        this.finalCash = salesCash;
+    }
 
-	public void setTotalCard(BigDecimal totalCard) {
-		this.totalCard = totalCard;
-	}
-	
-	public BigDecimal getTotalCash() {
-		return totalCash;
-	}
+    public BigDecimal getTotalCard() {
+        return totalCard;
+    }
 
-	public void setTotalCash(BigDecimal totalCash) {
-		this.totalCash = totalCash;
-	}
+    public void setTotalCard(BigDecimal totalCard) {
+        this.totalCard = totalCard;
+    }
 
-	public BigDecimal getTotalVoucher() {
+    public BigDecimal getTotalCash() {
+        return totalCash;
+    }
+
+    public void setTotalCash(BigDecimal totalCash) {
+        this.totalCash = totalCash;
+    }
+
+    public BigDecimal getTotalVoucher() {
         return totalVoucher;
     }
 
@@ -80,17 +81,26 @@ public class CashierClosingOutputDto {
     }
 
     public Date getClosureDate() {
-		return closureDate;
-	}
+        return closureDate;
+    }
 
-	public void setClosureDate(Date closureDate) {
-		this.closureDate = closureDate;
-	}
+    public void setClosureDate(Date closureDate) {
+        this.closureDate = closureDate;
+    }
 
-	@Override
+    public BigDecimal getSalesTotal() {
+        return salesTotal;
+    }
+
+    public void setSalesTotal(BigDecimal salesTotal) {
+        this.salesTotal = salesTotal;
+    }
+
+    @Override
     public String toString() {
-        return "CashierClosureSearchOutputDto [salesCard=" + salesCard + ", finalCash=" + finalCash + ", closureDate=" + closureDate
-                + ", totalCash=" + totalCash + ", totalCard=" + totalCard + ", totalVoucher=" + totalVoucher + "]";
+        return "CashierClosingOutputDto [salesCard=" + salesCard + ", finalCash=" + finalCash + ", closureDate=" + closureDate
+                + ", totalCash=" + totalCash + ", totalCard=" + totalCard + ", totalVoucher=" + totalVoucher + ", salesTotal=" + salesTotal
+                + "]";
     }
 
 }

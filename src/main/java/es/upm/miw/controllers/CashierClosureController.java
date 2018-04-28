@@ -110,13 +110,14 @@ public class CashierClosureController {
             return Optional.empty();
         }
 
-        Date cashierOpenedDate = lastCashierClosure.getOpeningDate();
         CashierClosingOutputDto cashierClosureDto = new CashierClosingOutputDto();
-
+        BigDecimal totalVoucher = this.totalVouchers(lastCashierClosure.getOpeningDate());
+        
         cashierClosureDto.setTotalCash(lastCashierClosure.getInitialCash().add(lastCashierClosure.getSalesCash())
-                .add(this.cashMovements(cashierOpenedDate)).setScale(2, RoundingMode.HALF_UP));
-        cashierClosureDto.setTotalVoucher(this.totalVouchers(cashierOpenedDate).setScale(2, RoundingMode.HALF_UP));
+                .add(this.cashMovements(lastCashierClosure.getOpeningDate())).setScale(2, RoundingMode.HALF_UP));
+        cashierClosureDto.setTotalVoucher(totalVoucher.setScale(2, RoundingMode.HALF_UP));
         cashierClosureDto.setTotalCard(lastCashierClosure.getSalesCard().setScale(2, RoundingMode.HALF_UP));
+        cashierClosureDto.setSalesTotal(lastCashierClosure.getSalesCash().add(lastCashierClosure.getSalesCard().add(totalVoucher)).setScale(2, RoundingMode.HALF_UP));
         return Optional.of(cashierClosureDto);
     }
 
