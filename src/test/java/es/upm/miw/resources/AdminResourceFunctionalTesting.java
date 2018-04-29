@@ -42,7 +42,7 @@ public class AdminResourceFunctionalTesting {
         restService.loginAdmin().restBuilder().path(AdminResource.ADMINS).path(AdminResource.DB).body(TPV_DB_TEST_YML).post().build();
     }
 
-    @Test
+    // @Test
     public void testDeleteAndSeedDbProduction() {
         restService.loginAdmin().restBuilder().path(AdminResource.ADMINS).path(AdminResource.DB).delete().build();
         restService.loginAdmin().restBuilder().path(AdminResource.ADMINS).path(AdminResource.DB).body(TPV_DB_YML).post().build();

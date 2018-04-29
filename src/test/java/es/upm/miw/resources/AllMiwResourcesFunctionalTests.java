@@ -11,7 +11,6 @@ import org.junit.runners.Suite.SuiteClasses;
     BudgetResourceFunctionalTesting.class,
     CashierClosureResourceFunctionalTesting.class,
     InvoiceResourceFunctionalTesting.class,
-    OfferResourceFunctionalTesting.class,
     OrderResourceFunctionalTesting.class,
     ProviderResourceFunctionalTesting.class,
     TicketResourceFunctionalTesting.class,

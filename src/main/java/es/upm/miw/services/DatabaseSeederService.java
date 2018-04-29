@@ -33,10 +33,8 @@ import es.upm.miw.repositories.core.CashierClosureRepository;
 import es.upm.miw.repositories.core.FamilyArticleRepository;
 import es.upm.miw.repositories.core.FamilyCompositeRepository;
 import es.upm.miw.repositories.core.InvoiceRepository;
-import es.upm.miw.repositories.core.OfferRepository;
 import es.upm.miw.repositories.core.OrderRepository;
 import es.upm.miw.repositories.core.ProviderRepository;
-import es.upm.miw.repositories.core.SchedulerRepository;
 import es.upm.miw.repositories.core.TagRepository;
 import es.upm.miw.repositories.core.TicketRepository;
 import es.upm.miw.repositories.core.UserRepository;
@@ -83,9 +81,6 @@ public class DatabaseSeederService {
     public CashierClosureRepository cashierClosureRepository;
 
     @Autowired
-    public OfferRepository offerRepository;
-
-    @Autowired
     private BudgetRepository budgetRepository;
 
     @Autowired
@@ -96,9 +91,6 @@ public class DatabaseSeederService {
 
     @Autowired
     private FamilyCompositeRepository familyCompositeRepository;
-
-    @Autowired
-    private SchedulerRepository schedulerRepository;
 
     @Autowired
     private OrderRepository orderRepository;
@@ -166,8 +158,6 @@ public class DatabaseSeederService {
         }
         this.ticketRepository.save(tpvGraph.getTicketList());
         this.invoiceRepository.save(tpvGraph.getInvoiceList());
-        this.offerRepository.save(tpvGraph.getOfferList());
-        this.schedulerRepository.save(tpvGraph.getSchedulerList());
         // -----------------------------------------------------------------------
 
         Logger.getLogger(this.getClass()).warn("------------------------- Seed: " + ymlFileName + "-----------");
@@ -298,9 +288,7 @@ public class DatabaseSeederService {
         this.cashMovementRepository.deleteAll();
         this.articleRepository.deleteAll();
 
-        this.schedulerRepository.deleteAll();
         this.voucherRepository.deleteAll();
-        this.offerRepository.deleteAll();
         this.cashierClosureRepository.deleteAll();
         this.budgetRepository.deleteAll();
         this.providerRepository.deleteAll();
@@ -322,9 +310,7 @@ public class DatabaseSeederService {
         
         this.cashMovementRepository.deleteAll();
         
-        this.schedulerRepository.deleteAll();
         this.voucherRepository.deleteAll();
-        this.offerRepository.deleteAll();
         this.cashierClosureRepository.deleteAll();
         this.budgetRepository.deleteAll();
         this.articleRepository.deleteByCodeStartingWith("84000000");

@@ -9,9 +9,7 @@ import es.upm.miw.documents.core.CashierClosure;
 import es.upm.miw.documents.core.FamilyArticle;
 import es.upm.miw.documents.core.FamilyComposite;
 import es.upm.miw.documents.core.Invoice;
-import es.upm.miw.documents.core.Offer;
 import es.upm.miw.documents.core.Provider;
-import es.upm.miw.documents.core.Scheduler;
 import es.upm.miw.documents.core.Shopping;
 import es.upm.miw.documents.core.Ticket;
 import es.upm.miw.documents.core.Token;
@@ -26,15 +24,11 @@ public class DatabaseGraph {
 
     private List<CashierClosure> cashierClosureList;
 
-    private List<Scheduler> schedulerList;
-
     private List<FamilyArticle> familyArticleList;
 
     private List<FamilyComposite> familyCompositeList;
 
     private List<Invoice> invoiceList;
-
-    private List<Offer> offerList;
 
     private List<Provider> providerList;
 
@@ -55,9 +49,7 @@ public class DatabaseGraph {
         this.familyArticleList = new ArrayList<>();
         this.familyCompositeList = new ArrayList<>();
         this.invoiceList = new ArrayList<>();
-        this.offerList = new ArrayList<>();
         this.providerList = new ArrayList<>();
-        this.schedulerList = new ArrayList<>();
         this.shoppingList = new ArrayList<>();
         this.ticketList = new ArrayList<>();
         this.tokenList = new ArrayList<>();
@@ -89,14 +81,6 @@ public class DatabaseGraph {
         this.cashierClosureList = cashierClosureList;
     }
 
-    public List<Scheduler> getSchedulerList() {
-        return schedulerList;
-    }
-
-    public void setSchedulerList(List<Scheduler> schedulerList) {
-        this.schedulerList = schedulerList;
-    }
-
     public List<FamilyArticle> getFamilyArticleList() {
         return familyArticleList;
     }
@@ -119,14 +103,6 @@ public class DatabaseGraph {
 
     public void setInvoiceList(List<Invoice> invoiceList) {
         this.invoiceList = invoiceList;
-    }
-
-    public List<Offer> getOfferList() {
-        return offerList;
-    }
-
-    public void setOfferList(List<Offer> offerList) {
-        this.offerList = offerList;
     }
 
     public List<Provider> getProviderList() {
