@@ -1,7 +1,6 @@
 package es.upm.miw.controllers;
 
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -110,15 +109,15 @@ public class CashierClosureController {
             return Optional.empty();
         }
 
-        CashierClosingOutputDto cashierClosureDto = new CashierClosingOutputDto();
+        CashierClosingOutputDto cashierClosingOutputDto = new CashierClosingOutputDto();
         BigDecimal totalVoucher = this.totalVouchers(lastCashierClosure.getOpeningDate());
-        
-        cashierClosureDto.setTotalCash(lastCashierClosure.getInitialCash().add(lastCashierClosure.getSalesCash())
-                .add(this.cashMovements(lastCashierClosure.getOpeningDate())).setScale(2, RoundingMode.HALF_UP));
-        cashierClosureDto.setTotalVoucher(totalVoucher.setScale(2, RoundingMode.HALF_UP));
-        cashierClosureDto.setTotalCard(lastCashierClosure.getSalesCard().setScale(2, RoundingMode.HALF_UP));
-        cashierClosureDto.setSalesTotal(lastCashierClosure.getSalesCash().add(lastCashierClosure.getSalesCard().add(totalVoucher)).setScale(2, RoundingMode.HALF_UP));
-        return Optional.of(cashierClosureDto);
+
+        cashierClosingOutputDto.setTotalVoucher(totalVoucher);
+        cashierClosingOutputDto.setTotalCard(lastCashierClosure.getSalesCard());
+        cashierClosingOutputDto.setTotalCash(lastCashierClosure.getInitialCash().add(lastCashierClosure.getSalesCash())
+                .add(this.cashMovements(lastCashierClosure.getOpeningDate())));
+        cashierClosingOutputDto.setSalesTotal(lastCashierClosure.getSalesCash().add(lastCashierClosure.getSalesCard().add(totalVoucher)));
+        return Optional.of(cashierClosingOutputDto);
     }
 
     private BigDecimal usedVouchers(Date cashierOpenedDate) {
@@ -156,15 +155,6 @@ public class CashierClosureController {
         return total;
     }
 
-    public List<CashierClosingOutputDto> findSalesByDateBetween(Date startDate, Date dateFinish) {
-        List<CashierClosure> salesList = this.cashierClosureRepository.findSalesCashierClosureByDateBetween(startDate, dateFinish);
-        List<CashierClosingOutputDto> salesListDto = new ArrayList<CashierClosingOutputDto>();
-        for (CashierClosure sales : salesList) {
-            salesListDto.add(new CashierClosingOutputDto(sales.getSalesCash(), sales.getSalesCard(), sales.getClosureDate()));
-        }
-        return salesListDto;
-    }
-
     public List<ClosedCashierOutputDto> findBetweenDate(Date start, Date end) {
         List<CashierClosure> cashierClosureList = this.cashierClosureRepository
                 .findByOpeningDateBetweenAndClosureDateNotNullOrderByClosureDateDesc(start, end);
@@ -174,5 +164,17 @@ public class CashierClosureController {
         }
         return cashierClosureClosedOutputDto;
     }
+    
+    //TODO Refactoring... esta mal que devuelva un CashierClosingOutputDto
+    public List<CashierClosingOutputDto> findSalesByDateBetween(Date startDate, Date dateFinish) {
+        List<CashierClosure> salesList = this.cashierClosureRepository.findSalesCashierClosureByDateBetween(startDate, dateFinish);
+        List<CashierClosingOutputDto> salesListDto = new ArrayList<CashierClosingOutputDto>();
+        for (CashierClosure sales : salesList) {
+            salesListDto.add(new CashierClosingOutputDto(sales.getSalesCash(), sales.getSalesCard(), sales.getClosureDate()));
+        }
+        return salesListDto;
+    }
+
+
 
 }

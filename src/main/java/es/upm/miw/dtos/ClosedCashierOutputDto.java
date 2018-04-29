@@ -1,6 +1,7 @@
 package es.upm.miw.dtos;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Date;
 
 import es.upm.miw.documents.core.CashierClosure;
@@ -63,31 +64,47 @@ public class ClosedCashierOutputDto {
     }
 
     public BigDecimal getInitialCash() {
-        return initialCash;
+        return initialCash.setScale(2, RoundingMode.HALF_UP);
     }
 
     public void setInitialCash(BigDecimal initialCash) {
         this.initialCash = initialCash;
     }
 
-    public BigDecimal getSalesCash() {
-        return salesCash;
+    public BigDecimal getUsedVouchers() {
+        return usedVouchers.setScale(2, RoundingMode.HALF_UP);
     }
 
-    public void setSalesCash(BigDecimal salesCash) {
-        this.salesCash = salesCash;
+    public void setUsedVouchers(BigDecimal usedVouchers) {
+        this.usedVouchers = usedVouchers;
     }
 
     public BigDecimal getSalesCard() {
-        return salesCard;
+        return salesCard.setScale(2, RoundingMode.HALF_UP);
     }
 
     public void setSalesCard(BigDecimal salesCard) {
         this.salesCard = salesCard;
     }
 
+    public BigDecimal getSalesCash() {
+        return salesCash.setScale(2, RoundingMode.HALF_UP);
+    }
+
+    public void setSalesCash(BigDecimal salesCash) {
+        this.salesCash = salesCash;
+    }
+
+    public BigDecimal getFinalCash() {
+        return finalCash.setScale(2, RoundingMode.HALF_UP);
+    }
+
+    public void setFinalCash(BigDecimal finalCash) {
+        this.finalCash = finalCash;
+    }
+
     public BigDecimal getDeposit() {
-        return deposit;
+        return deposit.setScale(2, RoundingMode.HALF_UP);
     }
 
     public void setDeposit(BigDecimal deposit) {
@@ -95,7 +112,7 @@ public class ClosedCashierOutputDto {
     }
 
     public BigDecimal getWithdrawal() {
-        return withdrawal;
+        return withdrawal.setScale(2, RoundingMode.HALF_UP);
     }
 
     public void setWithdrawal(BigDecimal withdrawal) {
@@ -118,27 +135,12 @@ public class ClosedCashierOutputDto {
         this.closureDate = closureDate;
     }
 
-    public BigDecimal getUsedVouchers() {
-        return usedVouchers;
-    }
-
-    public void setUsedVouchers(BigDecimal usedVouchers) {
-        this.usedVouchers = usedVouchers;
-    }
-
-    public BigDecimal getFinalCash() {
-        return finalCash;
-    }
-
-    public void setFinalCash(BigDecimal finalCash) {
-        this.finalCash = finalCash;
-    }
-
     @Override
     public String toString() {
-        return "ClosedCashierOutputDto [id=" + id + ", openingDate=" + openingDate + ", initialCash=" + initialCash + ", usedVouchers="
-                + usedVouchers + ", salesCard=" + salesCard + ", salesCash=" + salesCash + ", deposit=" + deposit + ", withdrawal="
-                + withdrawal + ", comment=" + comment + ", finalCash=" + finalCash + ", closureDate=" + closureDate + "]";
+        return "ClosedCashierOutputDto [getId()=" + getId() + ", getOpeningDate()=" + getOpeningDate() + ", getInitialCash()="
+                + getInitialCash() + ", getUsedVouchers()=" + getUsedVouchers() + ", getSalesCard()=" + getSalesCard() + ", getSalesCash()="
+                + getSalesCash() + ", getFinalCash()=" + getFinalCash() + ", getDeposit()=" + getDeposit() + ", getWithdrawal()="
+                + getWithdrawal() + ", getComment()=" + getComment() + ", getClosureDate()=" + getClosureDate() + "]";
     }
 
 }

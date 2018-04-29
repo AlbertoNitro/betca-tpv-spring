@@ -86,6 +86,7 @@ public class CashierClosureResource {
         }
     }
 
+    //TODO Refactoring
     @RequestMapping(value = SEARCH, method = RequestMethod.GET)
     public List<CashierClosingOutputDto> findSalesByDateBetween(
             @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) @RequestParam("dateStart") Date dateStart,
