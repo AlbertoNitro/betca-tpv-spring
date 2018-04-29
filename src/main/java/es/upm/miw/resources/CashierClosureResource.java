@@ -7,14 +7,12 @@ import java.util.Optional;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import es.upm.miw.controllers.CashierClosureController;
@@ -84,14 +82,6 @@ public class CashierClosureResource {
         if (error.isPresent()) {
             throw new CashierCreateException(error.get());
         }
-    }
-
-    //TODO Refactoring
-    @RequestMapping(value = SEARCH, method = RequestMethod.GET)
-    public List<CashierClosingOutputDto> findSalesByDateBetween(
-            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) @RequestParam("dateStart") Date dateStart,
-            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) @RequestParam(value = "dateFinish") Date dateFinish) {
-        return this.cashierClosureController.findSalesByDateBetween(dateStart, dateFinish);
     }
 
 }

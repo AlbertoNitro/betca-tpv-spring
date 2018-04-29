@@ -16,11 +16,11 @@ public class CashierClosure {
 
     private BigDecimal initialCash;
 
-    private BigDecimal salesCash;
+    private BigDecimal usedVouchers;
 
     private BigDecimal salesCard;
 
-    private BigDecimal usedVouchers;
+    private BigDecimal salesCash;
 
     private BigDecimal finalCash;
 
@@ -34,14 +34,14 @@ public class CashierClosure {
 
     public CashierClosure() {
         this.openingDate = new Date();
-        this.closureDate = null;
-        this.comment = "";
+        this.initialCash = BigDecimal.ZERO;
+        this.usedVouchers = BigDecimal.ZERO;
+        this.salesCard = BigDecimal.ZERO;
+        this.salesCash = BigDecimal.ZERO;
         this.deposit = BigDecimal.ZERO;
         this.withdrawal = BigDecimal.ZERO;
-        this.initialCash = BigDecimal.ZERO;
-        this.salesCash = BigDecimal.ZERO;
-        this.salesCard = BigDecimal.ZERO;
-        this.usedVouchers = BigDecimal.ZERO;
+        this.closureDate = null;
+        this.comment = "";
     }
 
     public CashierClosure(BigDecimal initialCash) {
@@ -76,7 +76,8 @@ public class CashierClosure {
         this.usedVouchers = this.usedVouchers.add(voucher);
     }
 
-    public void close(BigDecimal finalCash, BigDecimal usedVouchers, String comment) {
+    public void close(BigDecimal finalCard, BigDecimal finalCash, BigDecimal usedVouchers, String comment) {
+        this.salesCard = finalCard;
         this.finalCash = finalCash;
         this.usedVouchers = usedVouchers;
         this.comment += comment + ". ";

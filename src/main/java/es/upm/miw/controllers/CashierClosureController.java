@@ -58,7 +58,7 @@ public class CashierClosureController {
             return new CashierLastOutputDto(cashierClosure);
         } else { // Sólo ocurre una sola vez en el despliegue con bd vacias
             cashierClosure = new CashierClosure(BigDecimal.ZERO);
-            cashierClosure.close(BigDecimal.ZERO, BigDecimal.ZERO, "Initial");
+            cashierClosure.close(BigDecimal.ZERO,BigDecimal.ZERO, BigDecimal.ZERO, "Initial");
             this.cashierClosureRepository.save(cashierClosure);
             return new CashierLastOutputDto(cashierClosure);
         }
@@ -67,7 +67,7 @@ public class CashierClosureController {
     public Optional<String> openCashierClosure() {
         CashierClosure lastCashierClosure = this.cashierClosureRepository.findFirstByOrderByOpeningDateDesc();
         if (lastCashierClosure == null) {
-            this.cashierClosureRepository.save(new CashierClosure(new BigDecimal(0)));
+            this.cashierClosureRepository.save(new CashierClosure(BigDecimal.ZERO));
             return Optional.empty();
         } else if (lastCashierClosure.isClosed()) {
             this.cashierClosureRepository.save(new CashierClosure(lastCashierClosure.getFinalCash()));
@@ -82,8 +82,8 @@ public class CashierClosureController {
 
         if (lastCashierClosure != null && !lastCashierClosure.isClosed()) {
             Date cashierOpenedDate = cashierClosureRepository.findFirstByOrderByOpeningDateDesc().getOpeningDate();
-            lastCashierClosure.close(cashierClosureDto.getFinalCash(), this.usedVouchers(cashierOpenedDate),
-                    cashierClosureDto.getComment());
+            lastCashierClosure.close(cashierClosureDto.getSalesCard(), cashierClosureDto.getFinalCash(),
+                    this.usedVouchers(cashierOpenedDate), cashierClosureDto.getComment());
             lastCashierClosure.setDeposit(BigDecimal.ZERO);
             lastCashierClosure.setWithdrawal(BigDecimal.ZERO);
             List<CashMovement> cashMovementList = cashMovementRepository.findByCreationDateGreaterThan(cashierOpenedDate);
@@ -122,7 +122,7 @@ public class CashierClosureController {
 
     private BigDecimal usedVouchers(Date cashierOpenedDate) {
         List<Voucher> usedVoucherlist = voucherRepository.findByDateOfUseGreaterThan(cashierOpenedDate);
-        BigDecimal total = new BigDecimal("0");
+        BigDecimal total = BigDecimal.ZERO;
         for (Voucher voucher : usedVoucherlist) {
             total = total.add(voucher.getValue());
         }
@@ -135,7 +135,7 @@ public class CashierClosureController {
 
     private BigDecimal cashMovements(Date cashierOpenedDate) {
         List<CashMovement> cashMovementList = cashMovementRepository.findByCreationDateGreaterThan(cashierOpenedDate);
-        BigDecimal total = new BigDecimal("0");
+        BigDecimal total = BigDecimal.ZERO;
         for (CashMovement cashMovement : cashMovementList) {
             total = total.add(cashMovement.getValue());
         }
@@ -143,7 +143,7 @@ public class CashierClosureController {
     }
 
     private BigDecimal totalVouchers(Date cashierOpenedDate) {
-        BigDecimal total = new BigDecimal("0");
+        BigDecimal total = BigDecimal.ZERO;
         List<Voucher> voucherCreatedList = voucherRepository.findByCreationDateGreaterThan(cashierOpenedDate);
         for (Voucher voucher : voucherCreatedList) {
             total = total.subtract(voucher.getValue());
@@ -164,17 +164,5 @@ public class CashierClosureController {
         }
         return cashierClosureClosedOutputDto;
     }
-    
-    //TODO Refactoring... esta mal que devuelva un CashierClosingOutputDto
-    public List<CashierClosingOutputDto> findSalesByDateBetween(Date startDate, Date dateFinish) {
-        List<CashierClosure> salesList = this.cashierClosureRepository.findSalesCashierClosureByDateBetween(startDate, dateFinish);
-        List<CashierClosingOutputDto> salesListDto = new ArrayList<CashierClosingOutputDto>();
-        for (CashierClosure sales : salesList) {
-            salesListDto.add(new CashierClosingOutputDto(sales.getSalesCash(), sales.getSalesCard(), sales.getClosureDate()));
-        }
-        return salesListDto;
-    }
-
-
 
 }

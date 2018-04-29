@@ -6,7 +6,6 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.util.Date;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -48,11 +47,6 @@ public class CashierClosureControllerIT {
         CashierClosureInputDto cashierClosureDto = new CashierClosureInputDto(new BigDecimal("100"), new BigDecimal("50"), "testClose");
         cashierClosureController.close(cashierClosureDto);
         this.databaseSeederService.seedDatabase();
-    }
-
-    @Test
-    public void testFindSalesByDateBetween() {
-        assertNotNull(this.cashierClosureController.findSalesByDateBetween(new Date(), new Date()));
     }
 
     @Test
