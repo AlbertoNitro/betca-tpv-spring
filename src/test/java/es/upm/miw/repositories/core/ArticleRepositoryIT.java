@@ -23,17 +23,16 @@ public class ArticleRepositoryIT {
 
     @Test
     public void testFindOne() {
-        assertEquals("article1", articleRepository.findOne("article1").getCode());
+        assertEquals("8400000000017", articleRepository.findOne("8400000000017").getCode());
     }
 
     @Test
     public void testFindMinimumByCode() {
-        ArticleDto articleOutputDto = articleRepository.findMinimumByCode("article1");
-        assertEquals("article1", articleOutputDto.getCode());
+        ArticleDto articleOutputDto = articleRepository.findMinimumByCode("8400000000017");
+        assertEquals("8400000000017", articleOutputDto.getCode());
         assertEquals("ref-a1", articleOutputDto.getReference());
         assertEquals("descrip-a1", articleOutputDto.getDescription());
         assertEquals(new BigDecimal("20"), articleOutputDto.getRetailPrice());
-        assertEquals(new Integer(0), articleOutputDto.getStock());
     }
 
     @Test

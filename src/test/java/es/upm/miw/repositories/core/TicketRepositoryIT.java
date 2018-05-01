@@ -33,7 +33,7 @@ public class TicketRepositoryIT {
     @Test
     public void testFindByReference() {
         assertEquals("666666004", ticketRepository.findByReference("t2j_u9M9CisFmYGRFs1Uulgn7hI").getUser().getMobile());
-        assertEquals(151, ticketRepository.findByReference("t2j_u9M9CisFmYGRFs1Uulgn7hI").getTotal().doubleValue(), 10E-5);
+        assertEquals(61.7, ticketRepository.findByReference("t2j_u9M9CisFmYGRFs1Uulgn7hI").getTotal().doubleValue(), 10E-5);
     }
 
     @Test
@@ -73,9 +73,15 @@ public class TicketRepositoryIT {
     }
 
     @Test
-    public void testFindByShoopingListShoppingArticle() {
-        List<Ticket> ticketList = this.ticketRepository.findByShoopingListArticleIdNotCommited(new String[] {"article2"});
+    public void testFindByShoopingListShoppingArticleNotCommited() {
+        List<Ticket> ticketList = this.ticketRepository.findByShoopingListArticleIdNotCommited(new String[] {"8400000000024"});
         assertTrue(ticketList.size() >= 1);
+    }
+    
+    @Test
+    public void testFindByShoopingListShoppingArticle() {
+        List<Ticket> ticketList = this.ticketRepository.findByShoopingListArticleIdNotCommited(new String[] {"8400000000017"});
+        assertTrue(ticketList.size() == 0);
     }
 
 }

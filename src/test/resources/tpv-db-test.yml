@@ -9,10 +9,6 @@ tokenList:
     value: 3vZy-CGx0SZ86DjbwqvRfx45hHU
   - &to2
     value: 9wPhJxoFQvq4SND5ugNETxKwNKY
-  - &to3
-    value: 64jcnKajqit2bP_npC5-ddMfh6Y
-  - &to4
-    value: otRnEQ7DSaBGnS7C5T8zgs4d06g
     
 # Users
 # mobiles: 666666000 a 666666666 RESERVADOS AQUI
@@ -73,18 +69,14 @@ userList:
       
 # Vouchers
 voucherList:
-  - value: 666.666
-  - value: 0.666
-    dateOfUse: 2018-01-01
+  - value: 10.11
+  - value: 5.23
   - value: 30.3
-    dateOfUse: 2018-01-06 12:00:23  
-  - value: 50.6
-    dateOfUse: 2018-01-06 18:00:23 
      
 # Providers
 providerList:
   - &pr0
-    id: varios
+    id: Various
   - &pr1
     id: provider1
     company: company-p1
@@ -110,7 +102,6 @@ providerList:
     active: true
     
 # Articles
-# ar11 , ar12 y ar13 RESERVADOS
 articleList:
   - &ar0
     code: 1
@@ -121,7 +112,7 @@ articleList:
     tax: GENERAL
     provider: *pr0
   - &ar1
-    code: article1
+    code: 8400000000017
     reference: ref-a1
     description: descrip-a1
     retailPrice: 20
@@ -129,7 +120,7 @@ articleList:
     tax: GENERAL
     provider: *pr1
   - &ar2
-    code: article2
+    code: 8400000000024
     reference: ref-a2
     description: descrip-a2
     retailPrice: 27.8
@@ -137,142 +128,82 @@ articleList:
     tax: FREE
     provider: *pr1
   - &ar3
-    code: 13245
-    description: Various
-    retailPrice: 100
+    code: 8400000000031
+    reference: ref-a3
+    description: descrip-a3
+    retailPrice: 10.12
     stock: 0
     tax: GENERAL
-    provider: *pr0
+    provider: *pr2
   - &ar4
-    code: 13247
-    description: Various
-    retailPrice: 100
+    code: 8400000000048
+    reference: ref-a4
+    description: descrip-a4
+    retailPrice: 0.23
     tax: GENERAL
-    provider: *pr0
+    provider: *pr2
   - &ar5
-    code: 13248
-    description: Artic
-    retailPrice: 100
+    code: 8400000000055
+    reference: ref-a5
+    description: descrip-a5
+    retailPrice: 2
     stock: 0    
     tax: GENERAL
-    provider: *pr0
+    provider: *pr3
   - &ar6
-    code: 13249
-    description: Artic
-    retailPrice: 100
+    code: 8400000000062
+    reference: ref-a6
+    description: descrip-a6
+    retailPrice: 8
     stock: 0    
     tax: GENERAL
-    provider: *pr0
+    provider: *pr3
   - &ar7
-    code: 13249
-    description: Artic
-    retailPrice: 100
+    code: 8400000000079
+    reference: ref-a7
+    description: descrip-a7
+    retailPrice: 7.99
     tax: GENERAL
-    provider: *pr0
-  - &ar8
-    code: 13250
-    description: Artic
-    retailPrice: 100
-    stock: 0    
-    tax: GENERAL
-    provider: *pr0
-  - &ar9
-    code: 13251
-    description: Artic
-    retailPrice: 100
-    stock: 0  
-    tax: GENERAL
-    provider: *pr0
-  - &ar10
-    code: 13252
-    description: Artic
-    retailPrice: 100
-    stock: 0
-    tax: GENERAL
-    provider: *pr0  
-  - &ar11
-    code: 13253
-    reference: ar11
-    description: Artic
-    retailPrice: 50
-    stock: 0
-    tax: GENERAL
-    provider: *pr0  
-  - &ar12
-    code: 13254
-    reference: ar12
-    description: Artic
-    retailPrice: 50
-    stock: 0
-    tax: GENERAL
-    provider: *pr0 
-  - &ar13
-    code: 13255
-    reference: ar13
-    description: Artic
-    retailPrice: 50
-    stock: 0
-    tax: GENERAL
-    provider: *pr0  
+    provider: *pr3
 
 # Shopping
 shoppingList:
   - &sh1
-    amount: 10
-    retailPrice: 0.1
+    amount: 1
+    retailPrice: 20
     discount: 0
     article: *ar1
     shoppingState: COMMITTED
-    description: "various"
+    description: "descrip-a1"
   - &sh2
-    amount: 10
-    retailPrice: 30
+    amount: 3
+    retailPrice: 27.8
     discount: 50.00
     article: *ar2
     shoppingState: NOT_COMMITTED
-    description: "various"
+    description: "descrip-a2"
   - &sh3
     amount: 1
-    retailPrice: 2.2
-    discount: 0
+    retailPrice: 20
+    discount: 10
     article: *ar1
     shoppingState: COMMITTED
-    description: "various"
+    description: "descrip-a1"
   - &sh4
     amount: 1
-    retailPrice: 2.2
+    retailPrice: 10.12
     discount: 0
-    article: *ar4
+    article: *ar3
     shoppingState: COMMITTED
-    description: "various"
+    description: "descrip-a3"
   - &sh5
     amount: 3
-    retailPrice: 1.2
+    retailPrice: 2
     discount: 0
-    article: *ar2
+    article: *ar5
     shoppingState: COMMITTED
-    description: "various"
-  - &sh6
-    amount: 3
-    retailPrice: 100
-    discount: 0
-    article: *ar11
-    shoppingState: COMMITTED
-    description: "various"
-  - &sh7
-    amount: 3
-    retailPrice: 50
-    discount: 0
-    article: *ar12
-    shoppingState: COMMITTED
-    description: "various"
-  - &sh8
-    amount: 3
-    retailPrice: 50
-    discount: 20
-    article: *ar13
-    shoppingState: COMMITTED
-    description: "various"
+    description: "descrip-a5"
+
 
 # Ticket
 ticketList:
@@ -287,47 +218,17 @@ ticketList:
   - &ti2
     id: 201801122
     reference: 6P0ISee_twnGEzf8qd1Bd5sGQqE
-    cashDeposited: 20.0
+    cashDeposited: 18.0
     shoppingList: 
       - *sh3
     user: *us4
   - &ti3
     id: 201801123
     reference: 6P0ISee_twnGEzf8qA1BdAsGQqE
-    cashDeposited: 30.0
+    cashDeposited: 16.12
     shoppingList: 
       - *sh4
       - *sh5
-    user: *us4
-  - &ti4
-    id: 201701121
-    reference: 6P0ISee_twnGEzf8qA1BdAsGQqE
-    cashDeposited: 0
-    shoppingList: 
-      - *sh6
-      - *sh7
-    user: *us4
-  - &ti5
-    id: 201702122
-    reference: 6P0ISee_twnGEzf8qA1BdAsGQqE
-    cashDeposited: 0
-    shoppingList: 
-      - *sh6
-    user: *us4
-  - &ti6
-    id: 201703122
-    reference: 6P0ISee_twnGEzf8qA1BdAsGQqE
-    cashDeposited: 0
-    shoppingList: 
-      - *sh7
-    user: *us4
-  - &ti6
-    id: 201704042
-    reference: 6P0ISee_twnGEzf8qA1BdAsGQqE
-    cashDeposited: 0
-    shoppingList: 
-      - *sh8
-    user: *us4
     
 # Invoice
 invoiceList:
@@ -338,15 +239,10 @@ invoiceList:
     
 # CashMovement
 cashMovementList:
-  - value: 666.666
+  - value: 10
     comment: "test A"
     user: *us0
-  - value: 0.666
+  - value: 5
     comment: "test B"
     user: *us0
-  - value: 30.3
-    comment: "test C"
-    user: *us0
-  - value: 50.6
-    comment: "test D" 
-    user: *us0
+
