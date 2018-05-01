@@ -45,8 +45,8 @@ public class ArticleController {
         if (articleDto.getProvider() != null) {
             provider = this.providerRepository.findOne(articleDto.getProvider());
         }
-        Article articulo = new Article(code, articleDto.getDescription(), articleDto.getRetailPrice(), articleDto.getReference(), stock,
-                provider);
+        Article articulo = Article.builder().code(code).description(articleDto.getDescription()).retailPrice(articleDto.getRetailPrice())
+                .reference(articleDto.getReference()).stock(stock).provider(provider).build();
         this.articleRepository.save(articulo);
         return Optional.of(articleDto);
     }
@@ -84,7 +84,7 @@ public class ArticleController {
                 .findByReferenceIsNullOrEmptyOrDescriptionIsNullOrEmptyOrRetailPriceIsNullOrZeroOrStockIsNullOrProviderIsNull();
     }
 
-    public List<ArticleDto> findBy(String reference, String description, String provider) {
+    public List<ArticleDto> findByFieldsWithAnd(String reference, String description, String provider) {
         List<Article> articleList;
         List<ArticleDto> articleListDto = new ArrayList<ArticleDto>();
 

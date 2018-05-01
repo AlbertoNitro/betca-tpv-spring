@@ -2,7 +2,6 @@ package es.upm.miw.services;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -43,9 +42,9 @@ import es.upm.miw.utils.Barcode;
 
 @Service
 public class DatabaseSeederService {
-    
+
     private static final String VARIOUS_CODE = "1";
-    
+
     private static final String VARIOUS_NAME = "Varios";
 
     @Value("${miw.admin.mobile}")
@@ -98,7 +97,7 @@ public class DatabaseSeederService {
 
     @Autowired
     private OrderRepository orderRepository;
-    
+
     @Autowired
     private TagRepository tagRepository;
 
@@ -125,7 +124,7 @@ public class DatabaseSeederService {
         this.createArticleVariousIfNotExist();
     }
 
-     public String createEan13() {
+    public String createEan13() {
         this.ean13++;
         return new Barcode().generateEan13code(this.ean13);
     }
@@ -235,7 +234,7 @@ public class DatabaseSeederService {
     }
 
     protected List<Article> expandArticlewithSizes(Article article) {
-        List<String> sizesSML = Arrays.asList("XXS", "XS", "S", "M", "L", "XL", "XXL", "XXXL","Especial");
+        List<String> sizesSML = Arrays.asList("XXS", "XS", "S", "M", "L", "XL", "XXL", "XXXL", "Especial");
         List<Article> articlesExpanded = new ArrayList<>();
         String articleReferenceBase = this.extractBaseWithoutSizes(article.getReference());
         String articleDescriptionBase = this.extractBaseWithoutSizes(article.getDescription());
@@ -261,17 +260,17 @@ public class DatabaseSeederService {
                 numeric = true;
             }
             for (int size = start; size <= end; size += incremento) {
-                Article articleExpanded = new Article(this.createEan13());
+                String reference;
+                String description;
                 if (numeric) {
-                    articleExpanded.setReference(articleReferenceBase + "~T" + size);
-                    articleExpanded.setDescription(articleDescriptionBase + " T" + size);
+                    reference = articleReferenceBase + "~T" + size;
+                    description = articleDescriptionBase + " T" + size;
                 } else {
-                    articleExpanded.setReference(articleReferenceBase + "~T" + sizesSML.get(size));
-                    articleExpanded.setDescription(articleDescriptionBase + " T" + sizesSML.get(size));
+                    reference = articleReferenceBase + "~T" + sizesSML.get(size);
+                    description = articleDescriptionBase + " T" + sizesSML.get(size);
                 }
-                articleExpanded.setRetailPrice(new BigDecimal(pricesInString[i]));
-                articleExpanded.setStock(0);
-                articleExpanded.setProvider(article.getProvider());
+                Article articleExpanded = Article.builder().code(this.createEan13()).reference(reference).description(description)
+                        .retailPrice(pricesInString[i]).provider(article.getProvider()).build();
                 articlesExpanded.add(articleExpanded);
             }
         }
@@ -303,18 +302,18 @@ public class DatabaseSeederService {
         this.ean13 = 840000000000L;
         // -----------------------------------------------------------------------
     }
-    
+
     public void reset() {
         this.familyCompositeRepository.deleteAll();
         this.invoiceRepository.deleteAll();
         this.tagRepository.deleteAll();
-        
+
         this.ticketRepository.deleteAll();
         this.orderRepository.deleteAll();
         this.familyArticleRepository.deleteAll();
-        
+
         this.cashMovementRepository.deleteAll();
-        
+
         this.voucherRepository.deleteAll();
         this.cashierClosureRepository.deleteAll();
         this.budgetRepository.deleteAll();
@@ -329,12 +328,13 @@ public class DatabaseSeederService {
             this.userRepository.save(user);
         }
     }
-    
+
     private void createArticleVariousIfNotExist() {
-        if (this.articleRepository.findOne(VARIOUS_CODE) == null ) {
+        if (this.articleRepository.findOne(VARIOUS_CODE) == null) {
             Provider provider = new Provider(VARIOUS_NAME, null, null, null, null, null);
             this.providerRepository.save(provider);
-            this.articleRepository.save(new Article(VARIOUS_CODE, VARIOUS_NAME, new BigDecimal("100.00"), VARIOUS_NAME, 1000, provider));
+            this.articleRepository.save(Article.builder().code(VARIOUS_CODE).reference(VARIOUS_NAME).description(VARIOUS_NAME)
+                    .retailPrice("100.00").stock(1000).provider(provider).build());
         }
     }
 

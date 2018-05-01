@@ -30,14 +30,15 @@ public class PdfServiceIT {
     public void testGenerateLabels48() {
         List<Article> articles = new ArrayList<>();
         for (long i = 0; i < 48; i++) {
-            articles.add(new Article(new Barcode().generateEan13code(840000005000L + i), " ", null, " ", null, null));
+            articles.add(Article.builder().code(new Barcode().generateEan13code(840000005000L + i)).description("d" + i).reference("r" + i)
+                    .build());
         }
         pdfService.generateLabels24(articles);
     }
 
     @Test
     public void testGenerateTicket() {
-        Article article = new Article("23581", "Descripción articulo", null);
+        Article article = Article.builder().code("8400000000017").description("Descripción articulo").build();
         article.setRetailPrice(new BigDecimal("100.10"));
         Shopping[] shoppingList = new Shopping[6];
         shoppingList[0] = new Shopping(2, new BigDecimal("20"), article);
@@ -52,7 +53,7 @@ public class PdfServiceIT {
 
     @Test
     public void testGenerateBudget() {
-        Article article = new Article("23581", "Descripción articulo", null);
+        Article article = Article.builder().code("8400000000017").description("Descripción articulo").build();
         article.setRetailPrice(new BigDecimal("100.10"));
         Shopping[] shoppingList = new Shopping[6];
         shoppingList[0] = new Shopping(2, new BigDecimal("20"), article);

@@ -42,9 +42,9 @@ public class ArticleResource {
     }
 
     @PostMapping
-    public ArticleDto createArticle(@Valid @RequestBody ArticleDto articleOuputDto) throws ArticleException {
-        return this.articleController.createArticle(articleOuputDto)
-                .orElseThrow(() -> new ArticleException("Code (" + articleOuputDto.getCode() + ") already exist"));
+    public ArticleDto createArticle(@Valid @RequestBody ArticleDto articleDto) throws ArticleException {
+        return this.articleController.createArticle(articleDto)
+                .orElseThrow(() -> new ArticleException("Code (" + articleDto.getCode() + ") already exist"));
     }
 
     @PutMapping(value = CODE_ID)
@@ -69,9 +69,9 @@ public class ArticleResource {
     }
 
     @GetMapping(value = SEARCH)
-    public List<ArticleDto> findByReferenceAndDescriptionAndProvider(@RequestParam(required = false) String reference,
+    public List<ArticleDto> findByFieldsWithAnd(@RequestParam(required = false) String reference,
             @RequestParam(required = false) String description, @RequestParam(required = false) String provider) {
-        return this.articleController.findBy(reference, description, provider);
+        return this.articleController.findByFieldsWithAnd(reference, description, provider);
     }
 
 }

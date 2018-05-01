@@ -33,30 +33,60 @@ public class Article {
     public Article() {
     }
 
-    public void init() {
-        this.registrationDate = new Date();
-        this.discontinued = false;
-        this.stock = 0;
-        this.tax = Tax.GENERAL;
+    public static Builder builder() {
+        return new Builder();
     }
 
-    public Article(String code) {
-        this.init();
-        this.code = code;
-    }
+    public static class Builder {
+        private Article article;
 
-    public Article(String code, String description, BigDecimal retailPrice) {
-        this(code);
-        this.description = description;
-        this.retailPrice = retailPrice;
-    }
+        private Builder() {
+            this.article = new Article();
+            this.article.registrationDate = new Date();
+            this.article.discontinued = false;
+            this.article.stock = 0;
+            this.article.tax = Tax.GENERAL;
+        }
+        
+        public Builder code(String code) {
+            this.article.code = code;
+            return this;
+        }
 
-    public Article(String code, String description, BigDecimal retailPrice, String reference, Integer stock, Provider provider) {
-        this(code, description, retailPrice);
-        this.reference = reference;
-        this.stock = stock;
-        this.provider = provider;
-        this.discontinued = false;
+        public Builder reference(String reference) {
+            this.article.reference = reference;
+            return this;
+        }
+
+        public Builder description(String description) {
+            this.article.description = description;
+            return this;
+
+        }
+
+        public Builder retailPrice(String retailPrice) {
+            this.article.retailPrice = new BigDecimal(retailPrice);
+            return this;
+        }
+        
+        public Builder retailPrice(BigDecimal retailPrice) {
+            this.article.retailPrice = retailPrice;
+            return this;
+        }
+
+        public Builder stock(Integer stock) {
+            this.article.stock = stock;
+            return this;
+        }
+
+        public Builder provider(Provider provider) {
+            this.article.provider = provider;
+            return this;
+        }
+
+        public Article build() {
+            return this.article;
+        }
     }
 
     public String getCode() {

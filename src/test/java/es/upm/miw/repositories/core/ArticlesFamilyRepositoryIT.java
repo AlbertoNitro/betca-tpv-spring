@@ -2,8 +2,6 @@ package es.upm.miw.repositories.core;
 
 import static org.junit.Assert.assertNotNull;
 
-import java.math.BigDecimal;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +27,7 @@ public class ArticlesFamilyRepositoryIT {
 
     @Test
     public void testSaveAndFindOne() {
-        Article article = new Article("test1", "description1", BigDecimal.ZERO, "reference1", 10, null);
+        Article article = Article.builder().code("8400000000017").reference("reference1").description("description1").retailPrice("10").build();
         this.articleRepository.save(article);
         
         FamilyArticle familyArticle = new FamilyArticle(article);

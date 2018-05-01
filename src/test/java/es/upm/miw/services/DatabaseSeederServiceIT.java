@@ -5,7 +5,6 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
-import java.math.BigDecimal;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -43,9 +42,8 @@ public class DatabaseSeederServiceIT {
 
     @Test
     public void testExpandArticle() {
-        Article article = new Article("1", "Pantalón Gris[15.99,17.99,19,99]", BigDecimal.TEN, "Pant.Gris[2:16:2,18:26:2,28:40:2]", 5, null);
+        Article article = Article.builder().description("Pantalón Gris[15.99,17.99,19,99]").reference("Pant.Gris[2:16:2,18:26:2,28:40:2]").build();
         this.databaseSeederService.expandArticlewithSizes(article);
-
     }
 
     //@Test
