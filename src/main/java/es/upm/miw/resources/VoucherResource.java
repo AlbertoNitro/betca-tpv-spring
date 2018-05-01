@@ -56,12 +56,12 @@ public class VoucherResource {
     public List<VoucherDto> readVoucherAll() {
         return this.voucherController.readVoucherAll();
     }
-    
+
     @GetMapping(value = VALID)
     public List<VoucherDto> readVoucherAllValid() {
         return this.voucherController.readVoucherAllValid();
     }
-    
+
     @GetMapping(value = ID_ID)
     public VoucherDto readVoucher(@PathVariable String id) throws VoucherReferenceNotFoundException {
         return this.voucherController.readVoucher(id).orElseThrow(() -> new VoucherReferenceNotFoundException(id));

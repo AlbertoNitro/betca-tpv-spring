@@ -61,20 +61,10 @@ public class ArticleResourceFunctionalTesting {
     }
 
     @Test
-    public void testReadAll() {
-        List<ArticleDto> articleOutputDto = Arrays.asList(restService.loginAdmin().restBuilder(new RestBuilder<ArticleDto[]>())
-                .clazz(ArticleDto[].class).path(ArticleResource.ARTICLES).get().build());
-        List<ArticleDto> articleOutputDto_ = articleController.readMinimumAll();
-
-        assertEquals(articleOutputDto_.size(), articleOutputDto.size());
-
-    }
-
-    @Test
     public void testReadAllIncompletes() {
         List<ArticleDto> articleOutputDto = Arrays.asList(restService.loginAdmin().restBuilder(new RestBuilder<ArticleDto[]>())
                 .clazz(ArticleDto[].class).path(ArticleResource.ARTICLES).path(ArticleResource.INCOMPLETES).get().build());
-        List<ArticleDto> articleOutputDto_ = articleController.readMinimumAllIncompletes();
+        List<ArticleDto> articleOutputDto_ = articleController.findIncompletes();
         assertEquals(articleOutputDto_.size(), articleOutputDto.size());
 
     }
@@ -92,7 +82,7 @@ public class ArticleResourceFunctionalTesting {
         articulo.setDescription("blibli");
         restService.loginAdmin().restBuilder().path(ArticleResource.ARTICLES).path(ArticleResource.CODE_ID).expand("45346").body(articulo)
                 .put().build();
-        assertEquals("blibli", this.articleRepository.findArticleByCode("45346").getDescription());
+        assertEquals("blibli", this.articleRepository.findOne("45346").getDescription());
 
     }
 

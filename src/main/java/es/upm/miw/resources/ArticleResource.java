@@ -1,6 +1,7 @@
 package es.upm.miw.resources;
 
 import java.util.List;
+import java.util.Optional;
 
 import javax.validation.Valid;
 
@@ -18,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import es.upm.miw.controllers.ArticleController;
 import es.upm.miw.dtos.ArticleDto;
-import es.upm.miw.resources.exceptions.ArticleCodeNotFoundException;
+import es.upm.miw.resources.exceptions.ArticleException;
 
 @PreAuthorize("hasRole('ADMIN') or hasRole('MANAGER') or hasRole('OPERATOR')")
 @RestController
@@ -36,39 +37,41 @@ public class ArticleResource {
     private ArticleController articleController;
 
     @GetMapping(value = CODE_ID)
-    public ArticleDto readArticle(@PathVariable String code) throws ArticleCodeNotFoundException {
-        return this.articleController.readArticle(code).orElseThrow(() -> new ArticleCodeNotFoundException(code));
+    public ArticleDto readArticle(@PathVariable String code) throws ArticleException {
+        return this.articleController.readArticle(code).orElseThrow(() -> new ArticleException("Code (" + code + ") not found"));
     }
 
     @PostMapping
-    public ArticleDto createArticle(@RequestBody ArticleDto articleOuputDto) {
-        return this.articleController.createArticle(articleOuputDto);
-    }
-
-    @GetMapping
-    public List<ArticleDto> readAllArticles() {
-        return this.articleController.readMinimumAll();
-    }
-
-    @GetMapping(value = INCOMPLETES)
-    public List<ArticleDto> readAllArticlesIncompletes() {
-        return this.articleController.readMinimumAllIncompletes();
+    public ArticleDto createArticle(@Valid @RequestBody ArticleDto articleOuputDto) throws ArticleException {
+        return this.articleController.createArticle(articleOuputDto)
+                .orElseThrow(() -> new ArticleException("Code (" + articleOuputDto.getCode() + ") already exist"));
     }
 
     @PutMapping(value = CODE_ID)
-    public void putArticle(@PathVariable String code, @Valid @RequestBody ArticleDto articleDto) {
-        this.articleController.putArticle(code, articleDto);
+    public void putArticle(@PathVariable String code, @Valid @RequestBody ArticleDto articleDto) throws ArticleException {
+        Optional<String> error = this.articleController.updateArticle(code, articleDto);
+        if (error.isPresent()) {
+            throw new ArticleException(error.get());
+        }
+    }
+
+    @PatchMapping(value = CODE_ID)
+    public void patchArticleStock(@PathVariable String code, @RequestBody ArticleDto articleDto) throws ArticleException {
+        Optional<String> error = this.articleController.updateArticleStock(code, articleDto.getStock());
+        if (error.isPresent()) {
+            throw new ArticleException(error.get());
+        }
+    }
+
+    @GetMapping(value = INCOMPLETES)
+    public List<ArticleDto> findIncompletes() {
+        return this.articleController.findIncompletes();
     }
 
     @GetMapping(value = SEARCH)
-    public List<ArticleDto> readFilterArticle(@RequestParam(defaultValue = "") String reference,
-            @RequestParam(defaultValue = "") String description, @RequestParam(required = false) String provider) {
-        return this.articleController.find(reference,description,provider);
-    }
-    
-    @PatchMapping(value = CODE_ID)
-    public void patchArticleStock(@PathVariable String code, @RequestBody ArticleDto articleDto) {
-        this.articleController.updateArticle(code, articleDto.getStock());
+    public List<ArticleDto> findByReferenceAndDescriptionAndProvider(@RequestParam(required = false) String reference,
+            @RequestParam(required = false) String description, @RequestParam(required = false) String provider) {
+        return this.articleController.findBy(reference, description, provider);
     }
 
 }

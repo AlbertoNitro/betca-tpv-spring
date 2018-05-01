@@ -22,15 +22,14 @@ public class TokenResource {
     public static final String TOKENS = "/tokens";
 
     public static final String AUTHENTICATED = "/authenticated";
-    
+
     public static final String USERNAME = "/username";
 
     @Autowired
     private TokenController tokenController;
-    
+
     @Autowired
     private UserController userController;
-
 
     @PreAuthorize("authenticated")
     @PostMapping
@@ -42,6 +41,5 @@ public class TokenResource {
     public UserMinimumDto username(@AuthenticationPrincipal User activeUser) {
         return this.userController.username(activeUser.getUsername());
     }
-    
 
 }

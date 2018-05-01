@@ -37,11 +37,6 @@ public class ArticleRepositoryIT {
     }
 
     @Test
-    public void testFindByReferenceLikeIgnoreCaseAndDescriptionLikeIgnoreCase() {
-        this.articleRepository.findByReferenceLikeIgnoreCaseAndDescriptionLikeIgnoreCase("F", "");
-    }
-
-    @Test
     public void testFindByReferenceLikeIgnoreCaseAndDescriptionLikeIgnoreCaseAndProvider() {
         this.articleRepository.findByReferenceLikeIgnoreCaseAndDescriptionLikeIgnoreCaseAndProvider("", "", "provider1");
     }

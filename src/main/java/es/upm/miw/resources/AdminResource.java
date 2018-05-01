@@ -34,7 +34,7 @@ public class AdminResource {
     public static final String STATE = "/state";
 
     public static final String DB = "/db";
-    
+
     public static final String ARTICLES_WITHOUT_CODE = "/articles-without-code";
 
     public static final String USERS = "/users";
@@ -73,7 +73,7 @@ public class AdminResource {
             throw new FileException(error.get());
         }
     }
-    
+
     @PreAuthorize("hasRole('ADMIN') or hasRole('MANAGER') or hasRole('OPERATOR')")
     @GetMapping(value = USERS + MOBILE_ID)
     public UserDto readUser(@PathVariable String mobile, @AuthenticationPrincipal User activeUser) throws UserIdNotFoundException {

@@ -30,7 +30,7 @@ public class PdfServiceIT {
     public void testGenerateLabels48() {
         List<Article> articles = new ArrayList<>();
         for (long i = 0; i < 48; i++) {
-            articles.add(new Article(new Barcode().generateEan13code(840000005000L + i), " ", null, " ", null, null, null));
+            articles.add(new Article(new Barcode().generateEan13code(840000005000L + i), " ", null, " ", null, null));
         }
         pdfService.generateLabels24(articles);
     }

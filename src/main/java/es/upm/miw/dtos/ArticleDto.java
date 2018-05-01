@@ -4,46 +4,39 @@ import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import javax.validation.constraints.NotNull;
-
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 import es.upm.miw.documents.core.Article;
+import es.upm.miw.documents.core.Provider;
 import es.upm.miw.dtos.validations.BigDecimalPositive;
 
-@JsonInclude(Include.NON_NULL)
-public class ArticleDto {
+public class ArticleDto extends ArticleMinimumDto {
 
-    private String code;
-
+    @JsonInclude(Include.NON_NULL)
     private String reference;
 
-    @NotNull
-    private String description;
-
     @BigDecimalPositive
+    @JsonInclude(Include.NON_NULL)
     private BigDecimal retailPrice;
 
     private Integer stock;
 
+    @JsonInclude(Include.NON_NULL)
     private String provider;
 
+    @JsonInclude(Include.NON_NULL)
     private Boolean discontinued;
 
+    @JsonInclude(Include.NON_NULL)
     private Date registrationDate;
 
     public ArticleDto() {
         // Empty for framework
     }
 
-    public ArticleDto(String code, String description) {
-        this.code = code;
-        this.description = description;
-    }
-
     public ArticleDto(String code, String description, String reference, BigDecimal retailPrice, Integer stock) {
-        this(code, description);
+        super(code, description);
         this.reference = reference;
         this.retailPrice = retailPrice;
         this.stock = stock;
@@ -52,66 +45,60 @@ public class ArticleDto {
     public ArticleDto(Article article) {
         this(article.getCode(), article.getDescription(), article.getReference(), article.getRetailPrice(), article.getStock());
         this.setDiscontinued(article.getDiscontinued());
-        this.setRegistrationDate(article.getRegistrationDate());
+        this.registrationDate = article.getRegistrationDate();
         if (article.getProvider() != null) {
             this.setProvider(article.getProvider().getId());
         }
-    }
-
-    public String getCode() {
-        return code;
-    }
-
-    public void setCode(String code) {
-        this.code = code;
     }
 
     public String getReference() {
         return reference;
     }
 
-    public void setReference(String reference) {
+    public ArticleDto setReference(String reference) {
         this.reference = reference;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
+        return this;
     }
 
     public BigDecimal getRetailPrice() {
         return retailPrice;
     }
 
-    public void setRetailPrice(BigDecimal retailPrice) {
+    public ArticleDto setRetailPrice(BigDecimal retailPrice) {
         this.retailPrice = retailPrice;
+        return this;
     }
 
     public Integer getStock() {
         return stock;
     }
 
-    public void setStock(Integer stock) {
+    public ArticleDto setStock(Integer stock) {
         this.stock = stock;
+        return this;
     }
 
     public String getProvider() {
         return provider;
     }
 
-    public void setProvider(String provider) {
+    public ArticleDto setProvider(String provider) {
         this.provider = provider;
+        return this;
+    }
+
+    public ArticleDto setProvider(Provider provider) {
+        this.provider = provider.getId();
+        return this;
     }
 
     public Boolean getDiscontinued() {
         return discontinued;
     }
 
-    public void setDiscontinued(Boolean discontinued) {
+    public ArticleDto setDiscontinued(Boolean discontinued) {
         this.discontinued = discontinued;
+        return this;
     }
 
     public Date getRegistrationDate() {
@@ -128,8 +115,9 @@ public class ArticleDto {
         if (registrationDate != null) {
             date = new SimpleDateFormat("dd-MMM-yyyy").format(registrationDate.getTime());
         }
-        return "ArticleDto [code=" + code + ", reference=" + reference + ", description=" + description + ", retailPrice=" + retailPrice
-                + ", stock=" + stock + ", provider=" + provider + ", discontinued=" + discontinued + ", registrationDate=" + date + "]";
+        return "ArticleDto [code=" + this.getCode() + ", reference=" + reference + ", description=" + this.getDescription()
+                + ", retailPrice=" + retailPrice + ", stock=" + stock + ", provider=" + provider + ", discontinued=" + discontinued
+                + ", registrationDate=" + date + "]";
     }
 
 }

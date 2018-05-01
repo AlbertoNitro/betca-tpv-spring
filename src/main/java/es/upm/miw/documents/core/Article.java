@@ -31,26 +31,32 @@ public class Article {
     private Provider provider;
 
     public Article() {
+    }
+
+    public void init() {
         this.registrationDate = new Date();
         this.discontinued = false;
         this.stock = 0;
         this.tax = Tax.GENERAL;
     }
 
-    public Article(String code, String description, BigDecimal retailPrice) {
-        this();
+    public Article(String code) {
+        this.init();
         this.code = code;
+    }
+
+    public Article(String code, String description, BigDecimal retailPrice) {
+        this(code);
         this.description = description;
         this.retailPrice = retailPrice;
     }
 
-    public Article(String code, String description, BigDecimal retailPrice, String reference, Integer stock, Provider provider,
-            Boolean discontinued) {
+    public Article(String code, String description, BigDecimal retailPrice, String reference, Integer stock, Provider provider) {
         this(code, description, retailPrice);
         this.reference = reference;
         this.stock = stock;
         this.provider = provider;
-        this.discontinued = discontinued;
+        this.discontinued = false;
     }
 
     public String getCode() {

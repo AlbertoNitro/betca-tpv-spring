@@ -10,7 +10,10 @@ import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
-@Profile("dev") 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+@Profile("dev")
 @Component
 @Aspect
 public class ApiLogs {
@@ -32,7 +35,14 @@ public class ApiLogs {
 
     @AfterReturning(pointcut = "allResources()", returning = "result")
     public void apiResponseLog(JoinPoint jp, Object result) {
-        String log = "<<< Return << " + jp.getSignature().getName() + ": " + result;
+        ObjectMapper mapper = new ObjectMapper();
+        String resultAsString;
+        try {
+            resultAsString = mapper.writeValueAsString(result);
+        } catch (JsonProcessingException e) {
+            resultAsString = result.toString();
+        }
+        String log = "<<< Return << " + jp.getSignature().getName() + ": " + resultAsString;
         LogManager.getLogger(jp.getSignature().getDeclaringTypeName()).info(log);
     }
 

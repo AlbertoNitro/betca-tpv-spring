@@ -43,6 +43,10 @@ import es.upm.miw.utils.Barcode;
 
 @Service
 public class DatabaseSeederService {
+    
+    private static final String VARIOUS_CODE = "1";
+    
+    private static final String VARIOUS_NAME = "Varios";
 
     @Value("${miw.admin.mobile}")
     private String mobile;
@@ -118,9 +122,10 @@ public class DatabaseSeederService {
         } else {
             this.ean13 = Long.parseLong(article.getCode().substring(0, 12));
         }
+        this.createArticleVariousIfNotExist();
     }
 
-    public String createEan13() {
+     public String createEan13() {
         this.ean13++;
         return new Barcode().generateEan13code(this.ean13);
     }
@@ -256,8 +261,7 @@ public class DatabaseSeederService {
                 numeric = true;
             }
             for (int size = start; size <= end; size += incremento) {
-                Article articleExpanded = new Article();
-                articleExpanded.setCode(this.createEan13());
+                Article articleExpanded = new Article(this.createEan13());
                 if (numeric) {
                     articleExpanded.setReference(articleReferenceBase + "~T" + size);
                     articleExpanded.setDescription(articleDescriptionBase + " T" + size);
@@ -295,6 +299,7 @@ public class DatabaseSeederService {
         this.userRepository.deleteAll();
 
         this.createAdminIfNotExist();
+        this.createArticleVariousIfNotExist();
         this.ean13 = 840000000000L;
         // -----------------------------------------------------------------------
     }
@@ -322,6 +327,14 @@ public class DatabaseSeederService {
             User user = new User(this.mobile, this.username, this.password);
             user.setRoles(new Role[] {Role.ADMIN});
             this.userRepository.save(user);
+        }
+    }
+    
+    private void createArticleVariousIfNotExist() {
+        if (this.articleRepository.findOne(VARIOUS_CODE) == null ) {
+            Provider provider = new Provider(VARIOUS_NAME, null, null, null, null, null);
+            this.providerRepository.save(provider);
+            this.articleRepository.save(new Article(VARIOUS_CODE, VARIOUS_NAME, new BigDecimal("100.00"), VARIOUS_NAME, 1000, provider));
         }
     }
 

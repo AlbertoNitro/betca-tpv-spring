@@ -15,8 +15,6 @@ public interface ArticleRepository extends MongoRepository<Article, String> {
     @Query(value = "{}", fields = "{'description' : 1}")
     List<Article> findAllMinimum();
 
-    Article findArticleByCode(String string);
-  
     @Query(value = "{$or:["
             + "{reference : {$in : [null, ''] }},"
             + "{description : {$in : [null, ''] }},"
@@ -24,11 +22,14 @@ public interface ArticleRepository extends MongoRepository<Article, String> {
             + "{stock : null },"
             + "{provider : null }"
             + "]}", 
-            fields = "{description : 1}")
+            fields = "{description : 1, 'stock' : 1}")
     List<ArticleDto> findByReferenceIsNullOrEmptyOrDescriptionIsNullOrEmptyOrRetailPriceIsNullOrZeroOrStockIsNullOrProviderIsNull();
 
-    List<Article> findByReferenceLikeIgnoreCaseAndDescriptionLikeIgnoreCase(String reference, String description);
-
+    @Query(value = "{$and:["
+            + "?#{ [0] == null ? { $where : 'true'} : { 'reference' : {$regex:[0], $options: 'i'} } }," 
+            + "?#{ [1] == null ? { $where : 'true'} : { 'description' : {$regex:[1], $options: 'i'} } }," 
+            + "?#{ [2] == null ? { $where : 'true'} : { 'provider' :  [2] } }" 
+            + "]}", fields = "{reference : 1, description : 1, 'provider' : 1, stock : 1}" )
     List<Article> findByReferenceLikeIgnoreCaseAndDescriptionLikeIgnoreCaseAndProvider(String reference, String description,
             String provider);
     

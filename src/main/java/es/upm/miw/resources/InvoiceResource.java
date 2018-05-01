@@ -27,20 +27,25 @@ import es.upm.miw.resources.exceptions.InvoiceIdNotFoundException;
 @RequestMapping(InvoiceResource.INVOICES)
 public class InvoiceResource {
     public static final String INVOICES = "/invoices";
-    
+
     public static final String ID_ID = "/{id}";
+
     public static final String SEARCH_DATE = "/search/date";
+
     public static final String SEARCH_MOBILE = "/search/mobile";
-    public static  final String SEARCH_TICKET = "/search/ticket";
+
+    public static final String SEARCH_TICKET = "/search/ticket";
 
     @Autowired
     private InvoiceController invoiceController;
 
     @PostMapping(produces = {"application/pdf", "application/json"})
-    public @ResponseBody byte[] createInvoice(@Valid @RequestBody InvoiceCreationInputDto invoiceCreationInputDto) throws FieldInvalidException {
-        return this.invoiceController.createInvoice(invoiceCreationInputDto).orElseThrow(() -> new FieldInvalidException("Article exception"));
+    public @ResponseBody byte[] createInvoice(@Valid @RequestBody InvoiceCreationInputDto invoiceCreationInputDto)
+            throws FieldInvalidException {
+        return this.invoiceController.createInvoice(invoiceCreationInputDto)
+                .orElseThrow(() -> new FieldInvalidException("Article exception"));
     }
-    
+
     @GetMapping(value = ID_ID)
     public InvoiceOutputDto readInvoice(@PathVariable String id) throws InvoiceIdNotFoundException {
         return this.invoiceController.read(id).orElseThrow(() -> new InvoiceIdNotFoundException(id));
@@ -50,16 +55,15 @@ public class InvoiceResource {
     public List<InvoiceOutputDto> findBetweenDates(@RequestParam long start, @RequestParam long end) {
         return this.invoiceController.findBetweenDates(new Date(start), new Date(end));
     }
-    
+
     @GetMapping(value = SEARCH_MOBILE)
     public List<InvoiceOutputDto> findByMobile(@RequestParam String mobile) {
         return this.invoiceController.findByMobile(mobile);
     }
-    
+
     @GetMapping(value = SEARCH_TICKET)
     public InvoiceOutputDto findByTicket(@RequestParam String ticketId) {
         return this.invoiceController.findByTicket(ticketId);
     }
-
 
 }

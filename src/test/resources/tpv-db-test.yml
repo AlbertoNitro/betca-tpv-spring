@@ -117,6 +117,7 @@ articleList:
     reference: various
     description: Various
     retailPrice: 100
+    stock: 100
     tax: GENERAL
     provider: *pr0
   - &ar1
@@ -124,21 +125,22 @@ articleList:
     reference: ref-a1
     description: descrip-a1
     retailPrice: 20
-    tax: GENERAL
     stock: 0
+    tax: GENERAL
     provider: *pr1
   - &ar2
     code: article2
     reference: ref-a2
     description: descrip-a2
     retailPrice: 27.8
-    tax: FREE
     stock: 0
+    tax: FREE
     provider: *pr1
   - &ar3
     code: 13245
     description: Various
     retailPrice: 100
+    stock: 0
     tax: GENERAL
     provider: *pr0
   - &ar4
@@ -151,12 +153,14 @@ articleList:
     code: 13248
     description: Artic
     retailPrice: 100
+    stock: 0    
     tax: GENERAL
     provider: *pr0
   - &ar6
     code: 13249
     description: Artic
     retailPrice: 100
+    stock: 0    
     tax: GENERAL
     provider: *pr0
   - &ar7
@@ -169,18 +173,21 @@ articleList:
     code: 13250
     description: Artic
     retailPrice: 100
+    stock: 0    
     tax: GENERAL
     provider: *pr0
   - &ar9
     code: 13251
     description: Artic
     retailPrice: 100
+    stock: 0  
     tax: GENERAL
     provider: *pr0
   - &ar10
     code: 13252
     description: Artic
     retailPrice: 100
+    stock: 0
     tax: GENERAL
     provider: *pr0  
   - &ar11
@@ -188,6 +195,7 @@ articleList:
     reference: ar11
     description: Artic
     retailPrice: 50
+    stock: 0
     tax: GENERAL
     provider: *pr0  
   - &ar12
@@ -195,6 +203,7 @@ articleList:
     reference: ar12
     description: Artic
     retailPrice: 50
+    stock: 0
     tax: GENERAL
     provider: *pr0 
   - &ar13
@@ -202,6 +211,7 @@ articleList:
     reference: ar13
     description: Artic
     retailPrice: 50
+    stock: 0
     tax: GENERAL
     provider: *pr0  
 

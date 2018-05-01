@@ -1,12 +1,10 @@
 package es.upm.miw.controllers;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 
 import es.upm.miw.documents.core.Article;
@@ -19,12 +17,6 @@ import es.upm.miw.services.DatabaseSeederService;
 @Controller
 public class ArticleController {
 
-    private static final String VARIOUS_CODE = "1";
-
-    private static final String VARIOUS_NAME = "Varios";
-
-    private static final BigDecimal VARIOUS_STOCK = new BigDecimal("100.00");
-
     @Autowired
     private ArticleRepository articleRepository;
 
@@ -36,12 +28,6 @@ public class ArticleController {
 
     public Optional<ArticleDto> readArticle(String code) {
         Article article = this.articleRepository.findOne(code);
-        if (article == null && VARIOUS_CODE.equals(code)) { // SOLO ocurre una vez, después de vaciar la BD
-            Provider provider = new Provider(VARIOUS_NAME, null, null, null, null, null);
-            this.providerRepository.save(provider);
-            this.articleRepository.save(new Article(VARIOUS_CODE, VARIOUS_NAME, VARIOUS_STOCK, VARIOUS_NAME, 1000, provider, true));
-            article = this.articleRepository.findOne(VARIOUS_CODE);
-        }
         if (article != null) {
             return Optional.of(new ArticleDto(article));
         } else {
@@ -49,35 +35,27 @@ public class ArticleController {
         }
     }
 
-    public ArticleDto createArticle(ArticleDto articleOuputDto) {
+    public Optional<ArticleDto> createArticle(ArticleDto articleDto) {
         Provider provider = null;
-        String code = (articleOuputDto.getCode() == null) ? this.databaseSeederService.createEan13() : articleOuputDto.getCode();
-        if (articleOuputDto.getProvider() != null) {
-            provider = this.providerRepository.findOne(articleOuputDto.getProvider());
+        String code = (articleDto.getCode() == null) ? this.databaseSeederService.createEan13() : articleDto.getCode();
+        int stock = (articleDto.getStock() == null) ? 0 : articleDto.getStock();
+        if (this.articleRepository.findOne(code) != null) {
+            return Optional.empty();
         }
-        Article articulo = new Article(code, articleOuputDto.getDescription(), articleOuputDto.getRetailPrice(),
-                articleOuputDto.getReference(), articleOuputDto.getStock(), provider, articleOuputDto.getDiscontinued());
+        if (articleDto.getProvider() != null) {
+            provider = this.providerRepository.findOne(articleDto.getProvider());
+        }
+        Article articulo = new Article(code, articleDto.getDescription(), articleDto.getRetailPrice(), articleDto.getReference(), stock,
+                provider);
         this.articleRepository.save(articulo);
-        return articleOuputDto;
+        return Optional.of(articleDto);
     }
 
-    public List<ArticleDto> readMinimumAll() {
-        List<Article> articleList = this.articleRepository.findAll(new Sort(Sort.Direction.DESC, "registrationDate"));
-        List<ArticleDto> articleListDto = new ArrayList<ArticleDto>();
-        for (Article articulo : articleList) {
-            articleListDto.add(new ArticleDto(articulo.getCode(), articulo.getDescription()));
-        }
-        return articleListDto;
-    }
-
-    public List<ArticleDto> readMinimumAllIncompletes() {
-        return this.articleRepository
-                .findByReferenceIsNullOrEmptyOrDescriptionIsNullOrEmptyOrRetailPriceIsNullOrZeroOrStockIsNullOrProviderIsNull();
-    }
-
-    public void putArticle(String code, ArticleDto articleDto) {
+    public Optional<String> updateArticle(String code, ArticleDto articleDto) {
         Article article = this.articleRepository.findOne(code);
-        assert article != null;
+        if (article == null) {
+            return Optional.of("code (" + code + ") not found");
+        }
         article.setDescription(articleDto.getDescription());
         article.setReference(articleDto.getReference());
         article.setRetailPrice(articleDto.getRetailPrice());
@@ -88,28 +66,37 @@ public class ArticleController {
         }
         article.setProvider(provider);
         this.articleRepository.save(article);
+        return Optional.empty();
     }
 
-    public List<ArticleDto> find(String reference, String description, String provider) {
+    public Optional<String> updateArticleStock(String code, Integer stock) {
+        Article article = this.articleRepository.findOne(code);
+        if (article == null) {
+            return Optional.of("code (" + code + ") not found");
+        }
+        article.setStock(stock);
+        this.articleRepository.save(article);
+        return Optional.empty();
+    }
+
+    public List<ArticleDto> findIncompletes() {
+        return this.articleRepository
+                .findByReferenceIsNullOrEmptyOrDescriptionIsNullOrEmptyOrRetailPriceIsNullOrZeroOrStockIsNullOrProviderIsNull();
+    }
+
+    public List<ArticleDto> findBy(String reference, String description, String provider) {
         List<Article> articleList;
         List<ArticleDto> articleListDto = new ArrayList<ArticleDto>();
-        if (provider == null) {
-            articleList = this.articleRepository.findByReferenceLikeIgnoreCaseAndDescriptionLikeIgnoreCase(reference, description);
-        } else {
-            articleList = this.articleRepository.findByReferenceLikeIgnoreCaseAndDescriptionLikeIgnoreCaseAndProvider(reference,
-                    description, provider);
-        }
+
+        articleList = this.articleRepository.findByReferenceLikeIgnoreCaseAndDescriptionLikeIgnoreCaseAndProvider(reference, description,
+                provider);
+
         for (Article article : articleList) {
             articleListDto.add(new ArticleDto(article));
         }
-        return articleListDto;
-    }
 
-    public void updateArticle(String code, Integer stock) {
-        Article article = this.articleRepository.findOne(code);
-        assert article != null;
-        article.setStock(stock);
-        this.articleRepository.save(article);
+        return articleListDto;
+
     }
 
 }

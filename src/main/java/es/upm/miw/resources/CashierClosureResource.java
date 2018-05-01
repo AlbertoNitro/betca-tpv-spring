@@ -57,7 +57,7 @@ public class CashierClosureResource {
             throw new CashierClosedException(error.get());
         }
     }
-    
+
     @PostMapping(value = LAST + MOVEMENTS)
     public void createCashMovement(@Valid @RequestBody CashierMovementInputDto cashierMovementDto) throws CashierMovementException {
         Optional<String> error = this.cashierClosureController.createCashierMovement(cashierMovementDto);

@@ -29,7 +29,7 @@ public class ArticlesFamilyRepositoryIT {
 
     @Test
     public void testSaveAndFindOne() {
-        Article article = new Article("test1", "description1", BigDecimal.ZERO, "reference1", 10, null, false);
+        Article article = new Article("test1", "description1", BigDecimal.ZERO, "reference1", 10, null);
         this.articleRepository.save(article);
         
         FamilyArticle familyArticle = new FamilyArticle(article);

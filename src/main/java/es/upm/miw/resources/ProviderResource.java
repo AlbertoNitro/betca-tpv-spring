@@ -30,7 +30,7 @@ public class ProviderResource {
     public static final String PROVIDERS = "/providers";
 
     public static final String ID_ID = "/{id}";
-    
+
     public static final String ACTIVES = "/actives";
 
     @Autowired
@@ -65,7 +65,7 @@ public class ProviderResource {
     public List<ProviderMinimumDto> readAll() {
         return this.providerController.readAll();
     }
-    
+
     @GetMapping(value = ACTIVES)
     public List<ProviderMinimumDto> readAllActives() {
         return this.providerController.readAllActives();

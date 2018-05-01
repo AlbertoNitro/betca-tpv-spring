@@ -43,8 +43,7 @@ public class DatabaseSeederServiceIT {
 
     @Test
     public void testExpandArticle() {
-        Article article = new Article("1", "Pantalón Gris[15.99,17.99,19,99]", BigDecimal.TEN, "Pant.Gris[2:16:2,18:26:2,28:40:2]", 5, null,
-                false);
+        Article article = new Article("1", "Pantalón Gris[15.99,17.99,19,99]", BigDecimal.TEN, "Pant.Gris[2:16:2,18:26:2,28:40:2]", 5, null);
         this.databaseSeederService.expandArticlewithSizes(article);
 
     }

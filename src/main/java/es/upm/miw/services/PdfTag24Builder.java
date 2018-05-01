@@ -48,7 +48,7 @@ public class PdfTag24Builder extends PdfBuilder {
         cell.setBorder(Border.NO_BORDER);
         cell.setTextAlignment(TextAlignment.CENTER);
         cell.add(description);
-        if (!code.isEmpty()) {
+        if (code.length() == 13) {
             BarcodeEAN barcode = new BarcodeEAN(this.getDocument().getPdfDocument());
             barcode.setCodeType(BarcodeEAN.EAN13);
             barcode.setCode(code.trim());
