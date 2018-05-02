@@ -137,9 +137,9 @@ articleList:
     provider: *pr2
   - &ar4
     code: 8400000000048
-    reference: ref-a4
     description: descrip-a4
     retailPrice: 0.23
+    stock: 0
     tax: GENERAL
     provider: *pr2
   - &ar5
@@ -163,6 +163,7 @@ articleList:
     reference: ref-a7
     description: descrip-a7
     retailPrice: 7.99
+    stock: 0    
     tax: GENERAL
     provider: *pr3
 

@@ -11,7 +11,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-import es.upm.miw.resources.exceptions.ArticleException;
+import es.upm.miw.resources.exceptions.ArticleBadRequestException;
+import es.upm.miw.resources.exceptions.ArticleNotFoundException;
 import es.upm.miw.resources.exceptions.ArticlesFamilyCreationException;
 import es.upm.miw.resources.exceptions.ArticlesFamilyNotFoudException;
 import es.upm.miw.resources.exceptions.BudgetIdNotFoundException;
@@ -22,9 +23,6 @@ import es.upm.miw.resources.exceptions.ErrorMessage;
 import es.upm.miw.resources.exceptions.FileException;
 import es.upm.miw.resources.exceptions.ForbiddenException;
 import es.upm.miw.resources.exceptions.InvoiceIdNotFoundException;
-import es.upm.miw.resources.exceptions.OfferCodeNotFoundException;
-import es.upm.miw.resources.exceptions.OfferCodeRepeatedException;
-import es.upm.miw.resources.exceptions.OfferInvalidExpirationDateException;
 import es.upm.miw.resources.exceptions.OrderAlreadyExistException;
 import es.upm.miw.resources.exceptions.OrderException;
 import es.upm.miw.resources.exceptions.OrderIdNotFoundException;
@@ -41,8 +39,8 @@ import es.upm.miw.resources.exceptions.FieldInvalidException;
 public class ApiExceptionHandler {
 
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    @ExceptionHandler({ArticleException.class, ArticlesFamilyNotFoudException.class, BudgetIdNotFoundException.class, FileException.class,
-            InvoiceIdNotFoundException.class, OfferCodeNotFoundException.class, OrderException.class, OrderIdNotFoundException.class,
+    @ExceptionHandler({ArticleNotFoundException.class, ArticlesFamilyNotFoudException.class, BudgetIdNotFoundException.class, FileException.class,
+            InvoiceIdNotFoundException.class, OrderException.class, OrderIdNotFoundException.class,
             ProviderIdNotFoundException.class, TicketIdNotFoundException.class, UserIdNotFoundException.class,
             VoucherReferenceNotFoundException.class})
     @ResponseBody
@@ -52,12 +50,21 @@ public class ApiExceptionHandler {
 
     // Exception
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ExceptionHandler({MethodArgumentNotValidException.class, HttpMessageNotReadableException.class,
-
-            ArticlesFamilyCreationException.class, CashierClosedException.class, CashierCreateException.class,
-            CashierMovementException.class, FieldInvalidException.class, OfferCodeRepeatedException.class,
-            OfferInvalidExpirationDateException.class, OrderAlreadyExistException.class, ProviderFieldAlreadyExistException.class,
-            UserFieldAlreadyExistException.class, VoucherConsumedException.class})
+    @ExceptionHandler({
+            MethodArgumentNotValidException.class,
+            HttpMessageNotReadableException.class,
+            
+            ArticleBadRequestException.class,
+            ArticlesFamilyCreationException.class,
+            CashierClosedException.class,
+            CashierCreateException.class,
+            CashierMovementException.class,
+            FieldInvalidException.class,
+            OrderAlreadyExistException.class,
+            ProviderFieldAlreadyExistException.class,
+            UserFieldAlreadyExistException.class,
+            VoucherConsumedException.class
+    })
     @ResponseBody
     public ErrorMessage badRequest(Exception exception) {
         return new ErrorMessage(exception, exception.getStackTrace().toString());
