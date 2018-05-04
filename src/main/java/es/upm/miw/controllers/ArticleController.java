@@ -45,10 +45,10 @@ public class ArticleController {
         if (articleDto.getProvider() != null) {
             provider = this.providerRepository.findOne(articleDto.getProvider());
         }
-        Article articulo = Article.builder().code(code).description(articleDto.getDescription()).retailPrice(articleDto.getRetailPrice())
+        Article articule = Article.builder().code(code).description(articleDto.getDescription()).retailPrice(articleDto.getRetailPrice())
                 .reference(articleDto.getReference()).stock(stock).provider(provider).build();
-        this.articleRepository.save(articulo);
-        return Optional.of(articleDto);
+        this.articleRepository.save(articule);
+        return Optional.of(new ArticleDto(articule));
     }
 
     public Optional<String> updateArticle(String code, ArticleDto articleDto) {

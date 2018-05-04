@@ -1,8 +1,11 @@
 package es.upm.miw.repositories.core;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.math.BigDecimal;
+import java.util.Arrays;
+import java.util.List;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -11,6 +14,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import es.upm.miw.documents.core.Article;
 import es.upm.miw.dtos.ArticleDto;
 
 @RunWith(SpringRunner.class)
@@ -37,13 +41,19 @@ public class ArticleRepositoryIT {
 
     @Test
     public void testFindByReferenceLikeIgnoreCaseAndDescriptionLikeIgnoreCaseAndProvider() {
-        this.articleRepository.findByReferenceLikeIgnoreCaseAndDescriptionLikeIgnoreCaseAndProvider("", "", "provider1");
+        List<Article> articles = this.articleRepository.findByReferenceLikeIgnoreCaseAndDescriptionLikeIgnoreCaseAndProvider("", "",
+                "provider1");
+        assertTrue(articles.size() >= 2);
+        assertTrue(Arrays.asList("8400000000017","8400000000024").contains(articles.get(0).getCode()));
+        assertTrue(Arrays.asList("8400000000017","8400000000024").contains(articles.get(1).getCode()));
     }
 
     @Test
     public void testFindByReferenceIsNullOrEmptyOrDescriptionIsNullOrEmptyOrRetailPriceIsNullOrZeroOrStockIsNullOrProviderIsNull() {
-        this.articleRepository
+        List<ArticleDto> articleDtos = this.articleRepository
                 .findByReferenceIsNullOrEmptyOrDescriptionIsNullOrEmptyOrRetailPriceIsNullOrZeroOrStockIsNullOrProviderIsNull();
+        assertTrue(Arrays.asList("8400000000048").contains(articleDtos.get(0).getCode()));
+
     }
 
 }
