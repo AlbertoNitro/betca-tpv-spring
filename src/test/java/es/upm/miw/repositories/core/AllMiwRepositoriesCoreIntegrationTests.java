@@ -9,6 +9,7 @@ import org.junit.runners.Suite.SuiteClasses;
     ArticleRepositoryIT.class,
     ArticlesFamilyRepositoryIT.class,
     CashierClosureRepositoryIT.class,
+    CashMovementRepositoryIT.class,
     InvoiceRepositoryIT.class,
     ProviderRepositoryIT.class,
     TicketRepositoryIT.class,

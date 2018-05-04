@@ -72,32 +72,33 @@ public class ArticleControllerIT {
         this.articleDto.setReference("new");
         this.articleDto.setRetailPrice(BigDecimal.TEN);
         this.articleDto.setStock(10);
+        this.articleDto.setProvider("provider2");
         Optional<String> result = this.articleController.updateArticle(this.articleDto.getCode(), this.articleDto);
         assertEquals("new", this.articleRepository.findOne(this.articleDto.getCode()).getDescription());
         assertEquals("new", this.articleRepository.findOne(this.articleDto.getCode()).getReference());
         assertEquals(BigDecimal.TEN, this.articleRepository.findOne(this.articleDto.getCode()).getRetailPrice());
         assertEquals(new Integer(10), this.articleRepository.findOne(this.articleDto.getCode()).getStock());
+        assertEquals("provider2", this.articleRepository.findOne(this.articleDto.getCode()).getProvider().getId());
         assertFalse(result.isPresent());
     }
-    
+
     @Test
     public void testUpdateArticleNotFound() {
         assertTrue(this.articleController.updateArticle("666", this.articleDto).isPresent());
     }
-    
+
     @Test
     public void testUpdateArticleStock() {
         Optional<String> result = this.articleController.updateArticleStock(this.articleDto.getCode(), 10);
         assertEquals(new Integer(10), this.articleRepository.findOne(this.articleDto.getCode()).getStock());
         assertFalse(result.isPresent());
     }
-    
+
     @Test
     public void testUpdateArticleStockNotFound() {
         assertTrue(this.articleController.updateArticleStock("666", 10).isPresent());
     }
-    
- 
+
     @After
     public void delete() {
         this.articleRepository.delete(this.articleDto.getCode());
