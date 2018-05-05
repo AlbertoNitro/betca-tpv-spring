@@ -27,7 +27,7 @@ public class ArticlesFamilyRepositoryIT {
 
     @Test
     public void testSaveAndFindOne() {
-        Article article = Article.builder().code("8400000000017").reference("reference1").description("description1").retailPrice("10").build();
+        Article article = Article.builder().code("8000000000001").reference("reference1").description("description1").retailPrice("10").build();
         this.articleRepository.save(article);
         
         FamilyArticle familyArticle = new FamilyArticle(article);
