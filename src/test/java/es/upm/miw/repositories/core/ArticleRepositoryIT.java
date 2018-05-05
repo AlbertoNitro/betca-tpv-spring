@@ -41,7 +41,7 @@ public class ArticleRepositoryIT {
 
     @Test
     public void testFindByReferenceLikeIgnoreCaseAndDescriptionLikeIgnoreCaseAndProvider() {
-        List<Article> articles = this.articleRepository.findByReferenceLikeIgnoreCaseAndDescriptionLikeIgnoreCaseAndProvider("", "",
+        List<Article> articles = this.articleRepository.findByReferenceLikeIgnoreCaseAndDescriptionLikeIgnoreCaseAndProvider(null, null,
                 "provider1");
         assertTrue(articles.size() >= 2);
         assertTrue(Arrays.asList("8400000000017","8400000000024").contains(articles.get(0).getCode()));

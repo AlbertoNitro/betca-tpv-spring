@@ -75,8 +75,6 @@ voucherList:
      
 # Providers
 providerList:
-  - &pr0
-    id: Various
   - &pr1
     id: provider1
     company: company-p1
@@ -103,14 +101,6 @@ providerList:
     
 # Articles
 articleList:
-  - &ar0
-    code: 1
-    reference: various
-    description: Various
-    retailPrice: 100
-    stock: 100
-    tax: GENERAL
-    provider: *pr0
   - &ar1
     code: 8400000000017
     reference: ref-a1
@@ -118,6 +108,8 @@ articleList:
     retailPrice: 20
     stock: 0
     tax: GENERAL
+    registrationDate: 2018-01-01
+    discontinued: false
     provider: *pr1
   - &ar2
     code: 8400000000024
@@ -126,6 +118,8 @@ articleList:
     retailPrice: 27.8
     stock: 0
     tax: FREE
+    registrationDate: 2018-01-01
+    discontinued: false
     provider: *pr1
   - &ar3
     code: 8400000000031
@@ -134,6 +128,8 @@ articleList:
     retailPrice: 10.12
     stock: 0
     tax: GENERAL
+    registrationDate: 2018-01-01
+    discontinued: false
     provider: *pr2
   - &ar4
     code: 8400000000048
@@ -141,6 +137,8 @@ articleList:
     retailPrice: 0.23
     stock: 0
     tax: GENERAL
+    registrationDate: 2018-01-01
+    discontinued: false
     provider: *pr2
   - &ar5
     code: 8400000000055
@@ -149,6 +147,8 @@ articleList:
     retailPrice: 2
     stock: 0    
     tax: GENERAL
+    registrationDate: 2018-01-01
+    discontinued: false
     provider: *pr3
   - &ar6
     code: 8400000000062
@@ -157,6 +157,8 @@ articleList:
     retailPrice: 8
     stock: 0    
     tax: GENERAL
+    registrationDate: 2018-01-01
+    discontinued: false
     provider: *pr3
   - &ar7
     code: 8400000000079
@@ -165,6 +167,8 @@ articleList:
     retailPrice: 7.99
     stock: 0    
     tax: GENERAL
+    discontinued: false
+    registrationDate: 2018-01-01
     provider: *pr3
 
 # Shopping

@@ -210,8 +210,8 @@ public class DatabaseSeederService {
                     actualFamily.add(familyCompositeSizes);
                 }
             } else {
-                article.setCode(this.createEan13());
-                article.setStock(0);
+                article = Article.builder().code(this.createEan13()).reference(article.getReference()).description(article.getDescription())
+                        .retailPrice(article.getRetailPrice()).provider(article.getProvider()).build();
                 this.articleRepository.save(article);
                 FamilyArticle familyArticle = new FamilyArticle(article);
                 this.articlesFamilyRepository.save(familyArticle);

@@ -129,10 +129,6 @@ public class Article {
         this.stock = stock;
     }
 
-    public boolean isDiscontinued() {
-        return discontinued;
-    }
-
     public void setDiscontinued(Boolean discontinued) {
         this.discontinued = discontinued;
     }
@@ -159,6 +155,10 @@ public class Article {
 
     public Date getRegistrationDate() {
         return registrationDate;
+    }
+
+    public void setRegistrationDate(Date registrationDate) {
+        this.registrationDate = registrationDate;
     }
 
     @Override
