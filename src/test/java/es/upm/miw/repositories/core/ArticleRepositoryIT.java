@@ -41,7 +41,6 @@ public class ArticleRepositoryIT {
 
     @Test
     public void testFindByReferenceLikeIgnoreCaseAndDescriptionLikeIgnoreCaseAndProvider() {
-        System.out.println(">>>> findAll(): " + this.articleRepository.findAll());
         List<Article> articles = this.articleRepository.findByReferenceLikeIgnoreCaseAndDescriptionLikeIgnoreCaseAndProvider(null, null,
                 "provider1");
         assertTrue(articles.size() >= 2);
