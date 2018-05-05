@@ -41,11 +41,12 @@ public class ArticleRepositoryIT {
 
     @Test
     public void testFindByReferenceLikeIgnoreCaseAndDescriptionLikeIgnoreCaseAndProvider() {
+        System.out.println(">>>> findAll(): " + this.articleRepository.findAll());
         List<Article> articles = this.articleRepository.findByReferenceLikeIgnoreCaseAndDescriptionLikeIgnoreCaseAndProvider(null, null,
                 "provider1");
         assertTrue(articles.size() >= 2);
-        assertTrue(Arrays.asList("8400000000017","8400000000024").contains(articles.get(0).getCode()));
-        assertTrue(Arrays.asList("8400000000017","8400000000024").contains(articles.get(1).getCode()));
+        assertTrue(Arrays.asList("8400000000017", "8400000000024").contains(articles.get(0).getCode()));
+        assertTrue(Arrays.asList("8400000000017", "8400000000024").contains(articles.get(1).getCode()));
     }
 
     @Test
