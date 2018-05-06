@@ -25,18 +25,52 @@ public class Provider {
 
     private Boolean active;
 
-    public Provider() {
-        this.active = true;
+    public static Builder builder() {
+        return new Builder();
     }
 
-    public Provider(String company, String nif, String address, String phone, String email, String note) {
-        this();
-        this.company = company;
-        this.nif = nif;
-        this.address = address;
-        this.phone = phone;
-        this.email = email;
-        this.note = note;
+    public static class Builder {
+        private Provider provider;
+
+        private Builder() {
+            this.provider = new Provider();
+            this.provider.setActive(true);
+        }
+
+        public Builder company(String company) {
+            this.provider.company = company;
+            return this;
+        }
+
+        public Builder nif(String nif) {
+            this.provider.nif = nif;
+            return this;
+        }
+
+        public Builder address(String address) {
+            this.provider.address = address;
+            return this;
+        }
+
+        public Builder phone(String phone) {
+            this.provider.phone = phone;
+            return this;
+        }
+
+        public Builder email(String email) {
+            this.provider.email = email;
+            return this;
+        }
+
+        public Builder note(String note) {
+            this.provider.note = note;
+            return this;
+        }
+
+        public Provider build() {
+            return this.provider;
+        }
+
     }
 
     public String getId() {

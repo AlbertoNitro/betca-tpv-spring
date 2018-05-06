@@ -1,9 +1,5 @@
 package es.upm.miw.controllers;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +8,8 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import es.upm.miw.dtos.ProviderDto;
+import es.upm.miw.resources.exceptions.FieldAlreadyExistException;
+import es.upm.miw.resources.exceptions.NotFoundException;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -20,24 +18,14 @@ public class ProviderControllerIT {
 
     @Autowired
     private ProviderController providerController;
+    
+   
+    @Test(expected = NotFoundException.class)
+    public void testPutProviderNotFoundException() throws NotFoundException, FieldAlreadyExistException {
+        ProviderDto providerDto= new ProviderDto();
+        providerDto.setCompany("");
+        this.providerController.putProvider("0", providerDto);
+    }
 
-    private ProviderDto providerDto;
-    
-    @Before
-    public void before() {
-        this.providerDto = new ProviderDto();
-    }
-    
-    @Test
-    public void testCompanyRepeatedTrue() {
-        this.providerDto.setCompany("company-p1");
-        assertTrue(providerController.companyRepeated(this.providerDto));
-    }
-    
-    @Test
-    public void testCompanyRepeatedFalse() {
-        this.providerDto.setCompany("non exist");
-        assertFalse(providerController.companyRepeated(this.providerDto));
-    }
         
 }

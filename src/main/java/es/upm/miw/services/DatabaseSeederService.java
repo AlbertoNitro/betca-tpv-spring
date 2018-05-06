@@ -331,7 +331,7 @@ public class DatabaseSeederService {
 
     private void createArticleVariousIfNotExist() {
         if (this.articleRepository.findOne(VARIOUS_CODE) == null) {
-            Provider provider = new Provider(VARIOUS_NAME, null, null, null, null, null);
+            Provider provider = Provider.builder().company(VARIOUS_NAME).build();
             this.providerRepository.save(provider);
             this.articleRepository.save(Article.builder().code(VARIOUS_CODE).reference(VARIOUS_NAME).description(VARIOUS_NAME)
                     .retailPrice("100.00").stock(1000).provider(provider).build());

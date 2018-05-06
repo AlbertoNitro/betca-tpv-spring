@@ -6,8 +6,11 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
+
+import es.upm.miw.documents.core.Provider;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -26,6 +29,11 @@ public class ProviderRepositoryIT {
     public void testFindMinimumProviderById() {
         assertEquals("provider1", this.providerRepository.findMinimumProviderById("provider1").getId());
         assertEquals("company-p1", this.providerRepository.findMinimumProviderById("provider1").getCompany());
+    }
+
+    @Test(expected = DuplicateKeyException.class)
+    public void testRepeatcompany() {
+        this.providerRepository.save(Provider.builder().company("company-p1").build());
     }
 
 }

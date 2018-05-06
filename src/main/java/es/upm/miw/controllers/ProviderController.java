@@ -10,6 +10,8 @@ import es.upm.miw.documents.core.Provider;
 import es.upm.miw.dtos.ProviderDto;
 import es.upm.miw.dtos.ProviderMinimumDto;
 import es.upm.miw.repositories.core.ProviderRepository;
+import es.upm.miw.resources.exceptions.FieldAlreadyExistException;
+import es.upm.miw.resources.exceptions.NotFoundException;
 
 @Controller
 public class ProviderController {
@@ -18,27 +20,33 @@ public class ProviderController {
     private ProviderRepository providerRepository;
 
     public void createProvider(ProviderDto provierDto) {
-        Provider provider = new Provider(provierDto.getCompany(),provierDto.getNif(),provierDto.getAddress(), provierDto.getPhone(), provierDto.getEmail(),
-                provierDto.getNote());
+        Provider provider = Provider.builder().company(provierDto.getCompany()).nif(provierDto.getNif()).address(provierDto.getAddress())
+                .phone(provierDto.getPhone()).email(provierDto.getEmail()).note(provierDto.getNote()).build();
         this.providerRepository.save(provider);
     }
 
-    public boolean companyRepeated(ProviderDto providerDto) {
-        return null != this.providerRepository.findByCompany(providerDto.getCompany());
+    public Optional<ProviderDto> readProvider(String id) {
+        Provider providerBd = this.providerRepository.findOne(id);
+        if (providerBd == null) {
+            return Optional.empty();
+        } else {
+            return Optional.of(new ProviderDto(providerBd));
+        }
     }
 
-    public boolean companyRepeated(String id, ProviderDto providerDto) {
+    private void assertCompanyUnique(String id, ProviderDto providerDto) throws FieldAlreadyExistException {
         Provider provider = this.providerRepository.findByCompany(providerDto.getCompany());
-        return null != provider && !provider.getId().equals(id);
+        if (null != provider && !provider.getId().equals(id)) {
+            throw new FieldAlreadyExistException("Provider company (" + providerDto.getCompany() + ")");
+        }
     }
 
-    public boolean existsId(String id) {
-        return null != this.providerRepository.findById(id);
-    }
-
-    public void putProvider(String id, ProviderDto providerDto) {
-        Provider provider = this.providerRepository.findById(id);
-        assert provider != null;
+    public void putProvider(String id, ProviderDto providerDto) throws NotFoundException, FieldAlreadyExistException {
+        Provider provider = this.providerRepository.findOne(id);
+        if (provider == null) {
+            throw new NotFoundException("Provider id (" + id + ")");
+        }
+        this.assertCompanyUnique(id, providerDto);
         provider.setCompany(providerDto.getCompany());
         provider.setNif(providerDto.getNif());
         provider.setAddress(providerDto.getAddress());
@@ -49,19 +57,10 @@ public class ProviderController {
         this.providerRepository.save(provider);
     }
 
-    public Optional<ProviderDto> readProvider(String id) {
-        Provider providerBd = this.providerRepository.findById(id);
-        if (providerBd == null) {
-            return Optional.empty();
-        } else {
-            return Optional.of(new ProviderDto(providerBd));
-        }
-    }
-
     public List<ProviderMinimumDto> readAll() {
         return this.providerRepository.findMinimumAll();
     }
-    
+
     public List<ProviderMinimumDto> readAllActives() {
         return this.providerRepository.findMinimumAllActives();
     }

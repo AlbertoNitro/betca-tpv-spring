@@ -2,6 +2,7 @@ package es.upm.miw.resources;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.security.access.AccessDeniedException;
@@ -20,14 +21,14 @@ import es.upm.miw.resources.exceptions.CashierClosedException;
 import es.upm.miw.resources.exceptions.CashierCreateException;
 import es.upm.miw.resources.exceptions.CashierMovementException;
 import es.upm.miw.resources.exceptions.ErrorMessage;
+import es.upm.miw.resources.exceptions.FieldAlreadyExistException;
 import es.upm.miw.resources.exceptions.FileException;
 import es.upm.miw.resources.exceptions.ForbiddenException;
 import es.upm.miw.resources.exceptions.InvoiceIdNotFoundException;
+import es.upm.miw.resources.exceptions.NotFoundException;
 import es.upm.miw.resources.exceptions.OrderAlreadyExistException;
 import es.upm.miw.resources.exceptions.OrderException;
 import es.upm.miw.resources.exceptions.OrderIdNotFoundException;
-import es.upm.miw.resources.exceptions.ProviderFieldAlreadyExistException;
-import es.upm.miw.resources.exceptions.ProviderIdNotFoundException;
 import es.upm.miw.resources.exceptions.TicketIdNotFoundException;
 import es.upm.miw.resources.exceptions.UserIdNotFoundException;
 import es.upm.miw.resources.exceptions.VoucherConsumedException;
@@ -39,10 +40,20 @@ import es.upm.miw.resources.exceptions.FieldInvalidException;
 public class ApiExceptionHandler {
 
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    @ExceptionHandler({ArticleNotFoundException.class, ArticlesFamilyNotFoudException.class, BudgetIdNotFoundException.class, FileException.class,
-            InvoiceIdNotFoundException.class, OrderException.class, OrderIdNotFoundException.class,
-            ProviderIdNotFoundException.class, TicketIdNotFoundException.class, UserIdNotFoundException.class,
-            VoucherReferenceNotFoundException.class})
+    @ExceptionHandler({
+            NotFoundException.class,
+            
+            ArticleNotFoundException.class,
+            ArticlesFamilyNotFoudException.class,
+            BudgetIdNotFoundException.class,
+            FileException.class,
+            InvoiceIdNotFoundException.class,
+            OrderException.class,
+            OrderIdNotFoundException.class,
+            TicketIdNotFoundException.class,
+            UserIdNotFoundException.class,
+            VoucherReferenceNotFoundException.class
+    })
     @ResponseBody
     public ErrorMessage notFoundRequest(HttpServletRequest request, Exception exception) {
         return new ErrorMessage(exception, request.getRequestURI());
@@ -51,27 +62,32 @@ public class ApiExceptionHandler {
     // Exception
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler({
-            MethodArgumentNotValidException.class,
-            HttpMessageNotReadableException.class,
+        DuplicateKeyException.class,
+        MethodArgumentNotValidException.class,
+        HttpMessageNotReadableException.class,
             
-            ArticleBadRequestException.class,
-            ArticlesFamilyCreationException.class,
-            CashierClosedException.class,
-            CashierCreateException.class,
-            CashierMovementException.class,
-            FieldInvalidException.class,
-            OrderAlreadyExistException.class,
-            ProviderFieldAlreadyExistException.class,
-            UserFieldAlreadyExistException.class,
-            VoucherConsumedException.class
+        FieldAlreadyExistException.class,
+            
+        ArticleBadRequestException.class,
+        ArticlesFamilyCreationException.class,
+        CashierClosedException.class,
+        CashierCreateException.class,
+        CashierMovementException.class,
+        FieldInvalidException.class,
+        OrderAlreadyExistException.class,
+        UserFieldAlreadyExistException.class,
+        VoucherConsumedException.class
     })
     @ResponseBody
     public ErrorMessage badRequest(Exception exception) {
-        return new ErrorMessage(exception, exception.getStackTrace().toString());
+        return new ErrorMessage(exception, exception.getMessage());
     }
 
     @ResponseStatus(HttpStatus.FORBIDDEN)
-    @ExceptionHandler({AccessDeniedException.class, ForbiddenException.class,})
+    @ExceptionHandler({
+        AccessDeniedException.class,
+        ForbiddenException.class
+    })
     @ResponseBody
     public ErrorMessage forbiddenRequest(Exception exception) {
         return new ErrorMessage(exception, "");

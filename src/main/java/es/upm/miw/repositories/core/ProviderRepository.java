@@ -10,8 +10,6 @@ import es.upm.miw.dtos.ProviderMinimumDto;
 
 public interface ProviderRepository extends MongoRepository<Provider, String> {
     
-    public Provider findById(String id);
-    
     public Provider findByCompany(String company);
     
     @Query(value = "{}", fields = "{ '_id' : 1, 'company' : 1}")
