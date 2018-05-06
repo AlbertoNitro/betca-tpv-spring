@@ -9,8 +9,6 @@ public class Token {
     private String value;
 
     private Date creationDate;
-    
-    private long lifetime = 86400000; //By default, token lifetime is set to 24H
 
     public Token() {
         this.setValue(new Encrypting().encryptInBase64UrlSafe());
@@ -27,14 +25,6 @@ public class Token {
     public void setValue(String value) {
         this.value = value;
         this.creationDate = new Date();
-    }
-    
-    public void setLifetime(long lifetime) {
-    		this.lifetime = lifetime;
-    }
-    
-    public long getLifetime() {
-		return lifetime;
     }
 
     @Override
