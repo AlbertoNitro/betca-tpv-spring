@@ -14,6 +14,7 @@ import es.upm.miw.dtos.BudgetDto;
 import es.upm.miw.dtos.ShoppingDto;
 import es.upm.miw.repositories.core.ArticleRepository;
 import es.upm.miw.repositories.core.BudgetRepository;
+import es.upm.miw.resources.exceptions.NotFoundException;
 import es.upm.miw.services.PdfService;
 import es.upm.miw.utils.Encrypting;
 
@@ -29,12 +30,12 @@ public class BudgetController {
     @Autowired
     private PdfService pdfService;
 
-    public Optional<byte[]> createBudget(BudgetDto budgetCreationDto) {
+    public Optional<byte[]> createBudget(BudgetDto budgetCreationDto) throws NotFoundException {
         List<Shopping> shoppingList = new ArrayList<>();
         for (ShoppingDto shoppingDto : budgetCreationDto.getShoppingCart()) {
             Article article = this.articleRepository.findOne(shoppingDto.getCode());
             if (article == null) {
-                return Optional.empty();
+                throw new NotFoundException("Article code (" + shoppingDto.getCode() + ")");
             }
             Shopping shopping = new Shopping(shoppingDto.getAmount(), shoppingDto.getDiscount(), article);
             shoppingList.add(shopping);
@@ -49,6 +50,14 @@ public class BudgetController {
         return pdfService.generateBudget(budget);
     }
 
+    public Optional<byte[]> read(String id) throws NotFoundException {
+        Budget budget = this.budgetRepository.findOne(id);
+        if (budget == null) {
+            throw new NotFoundException("Budget id (" + id + ")");
+        }
+        return pdfService.generateBudget(budget);
+    }
+
     public List<BudgetDto> readBudgetAll() {
         List<Budget> budgetList = this.budgetRepository.findAll();
         List<BudgetDto> budgetDtoList = new ArrayList<>();
@@ -59,12 +68,4 @@ public class BudgetController {
         return budgetDtoList;
     }
 
-    public Optional<byte[]> read(String id) {
-        Budget budget = this.budgetRepository.findOne(id);
-        if (budget != null) {
-            return pdfService.generateBudget(budget);
-        } else {
-            return Optional.empty();
-        }
-    }
 }

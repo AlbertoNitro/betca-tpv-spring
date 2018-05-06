@@ -15,8 +15,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import es.upm.miw.controllers.BudgetController;
 import es.upm.miw.dtos.BudgetDto;
-import es.upm.miw.resources.exceptions.BudgetIdNotFoundException;
-import es.upm.miw.resources.exceptions.FieldInvalidException;
+import es.upm.miw.resources.exceptions.FileException;
+import es.upm.miw.resources.exceptions.NotFoundException;
 
 @PreAuthorize("hasRole('ADMIN') or hasRole('MANAGER') or hasRole('OPERATOR')")
 @RestController
@@ -31,17 +31,18 @@ public class BudgetResource {
     private BudgetController budgetController;
 
     @PostMapping(produces = {"application/pdf", "application/json"})
-    public byte[] createBudget(@Valid @RequestBody BudgetDto budgetCreationDto) throws FieldInvalidException {
-        return this.budgetController.createBudget(budgetCreationDto).orElseThrow(() -> new FieldInvalidException("Article exception"));
+    public byte[] createBudget(@Valid @RequestBody BudgetDto budgetCreationDto) throws NotFoundException, FileException {
+        return this.budgetController.createBudget(budgetCreationDto).orElseThrow(() -> new FileException("Budget PDF exception"));
     }
 
+    @GetMapping(value = ID_ID, produces = {"application/pdf", "application/json"})
+    public byte[] read(@PathVariable String id) throws NotFoundException, FileException {
+        return this.budgetController.read(id).orElseThrow(() -> new FileException("Budget PDF exception"));
+    }
+    
     @GetMapping
     public List<BudgetDto> readBudgetAll() {
         return this.budgetController.readBudgetAll();
     }
 
-    @GetMapping(value = ID_ID, produces = {"application/pdf", "application/json"})
-    public byte[] read(@PathVariable String id) throws BudgetIdNotFoundException {
-        return this.budgetController.read(id).orElseThrow(() -> new BudgetIdNotFoundException(id));
-    }
 }

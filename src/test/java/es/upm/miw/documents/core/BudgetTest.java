@@ -25,8 +25,7 @@ public class BudgetTest {
         Shopping[] shoppingList = new Shopping[2];
         shoppingList[0] = new Shopping(2, new BigDecimal("20"), article);
         shoppingList[1] = new Shopping(3, new BigDecimal("40"), article);
-        Budget budget = new Budget();
-        budget.setShoppingList(shoppingList);
+        Budget budget = new Budget(shoppingList);
         assertEquals(340.34, budget.getBudgetTotal().doubleValue(), 10 - 10);
     }
 }

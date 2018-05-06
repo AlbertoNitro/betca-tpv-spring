@@ -18,11 +18,11 @@ public class Budget {
     private Shopping[] shoppingList;
 
     public Budget() {
-        this.creationDate = new Date();
+        // For framework
     }
 
     public Budget(Shopping[] shoppingList) {
-        this();
+        this.creationDate = new Date();
         this.shoppingList = shoppingList;
     }
 

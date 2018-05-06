@@ -37,15 +37,11 @@ public class ArticleController {
         }
     }
     
-    private void assertCodeNonExist(String code) throws FieldAlreadyExistException {
+    public ArticleDto createArticle(ArticleDto articleDto) throws FieldAlreadyExistException {
+        String code = (articleDto.getCode() == null) ? this.databaseSeederService.createEan13() : articleDto.getCode();
         if (this.articleRepository.findOne(code) != null) {
             throw new FieldAlreadyExistException("Article code (" + code + ")");
         }
-    }
-
-    public ArticleDto createArticle(ArticleDto articleDto) throws FieldAlreadyExistException {
-        String code = (articleDto.getCode() == null) ? this.databaseSeederService.createEan13() : articleDto.getCode();
-        this.assertCodeNonExist(code); 
         int stock = (articleDto.getStock() == null) ? 0 : articleDto.getStock();
         Provider provider = null;
         if (articleDto.getProvider() != null) {

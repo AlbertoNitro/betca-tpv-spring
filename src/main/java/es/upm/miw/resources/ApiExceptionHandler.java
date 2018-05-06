@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 import es.upm.miw.resources.exceptions.ArticlesFamilyCreationException;
 import es.upm.miw.resources.exceptions.ArticlesFamilyNotFoudException;
-import es.upm.miw.resources.exceptions.BudgetIdNotFoundException;
 import es.upm.miw.resources.exceptions.CashierClosedException;
 import es.upm.miw.resources.exceptions.CashierCreateException;
 import es.upm.miw.resources.exceptions.CashierMovementException;
@@ -41,7 +40,6 @@ public class ApiExceptionHandler {
             NotFoundException.class,
             
             ArticlesFamilyNotFoudException.class,
-            BudgetIdNotFoundException.class,
             FileException.class,
             InvoiceIdNotFoundException.class,
             OrderException.class,
