@@ -17,16 +17,6 @@ public class Tag {
     @DBRef
     private List<Article> articleList;
 
-    public Tag() {
-    }
-
-    public Tag(String description, List<Article> articleList) {
-        super();
-        this.description = description;
-        this.articleList = articleList;
-    }
-
-
     public List<Article> getArticleList() {
         return articleList;
     }

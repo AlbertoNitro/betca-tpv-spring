@@ -1,7 +1,6 @@
 package es.upm.miw.resources;
 
 import java.util.List;
-import java.util.Optional;
 
 import javax.validation.Valid;
 
@@ -18,8 +17,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import es.upm.miw.controllers.TagController;
 import es.upm.miw.dtos.TagDto;
-import es.upm.miw.resources.exceptions.OrderException;
-import es.upm.miw.resources.exceptions.TagException;
+import es.upm.miw.resources.exceptions.FileException;
+import es.upm.miw.resources.exceptions.NotFoundException;
 
 @PreAuthorize("hasRole('ADMIN') or hasRole('MANAGER') or hasRole('OPERATOR')")
 @RestController
@@ -36,38 +35,32 @@ public class TagResource {
     private TagController tagController;
 
     @PostMapping
-    public void create(@Valid @RequestBody TagDto tagDto) throws TagException {
-        Optional<String> error = this.tagController.create(tagDto);
-        if (error.isPresent()) {
-            throw new TagException(error.get());
-        }
-    }
-
-    @GetMapping
-    public List<TagDto> readAll() {
-        return this.tagController.readAll();
+    public void create(@Valid @RequestBody TagDto tagDto) throws NotFoundException {
+        this.tagController.create(tagDto);
     }
 
     @GetMapping(value = ID_ID)
-    public TagDto readOne(@PathVariable String id) throws TagException {
-        return this.tagController.readOne(id).orElseThrow(() -> new TagException("Id not found. " + id));
+    public TagDto read(@PathVariable String id) throws NotFoundException {
+        return this.tagController.read(id).orElseThrow(() -> new NotFoundException("Tag id (" + id + ")"));
     }
 
     @GetMapping(value = ID_ID + STICKER)
-    public byte[] tag24(@PathVariable String id) throws TagException {
-        return this.tagController.tag24(id).orElseThrow(() -> new TagException("Id not found. " + id));
+    public byte[] tag24(@PathVariable String id) throws NotFoundException, FileException {
+        return this.tagController.tag24(id).orElseThrow(() -> new FileException("Tag pdf exception"));
     }
 
     @PutMapping(value = ID_ID)
-    public void update(@PathVariable String id, @Valid @RequestBody TagDto tagDto) throws OrderException {
-        Optional<String> error = this.tagController.update(id, tagDto);
-        if (error.isPresent()) {
-            throw new OrderException(error.get());
-        }
+    public void update(@PathVariable String id, @Valid @RequestBody TagDto tagDto) throws NotFoundException {
+        this.tagController.update(id, tagDto);
+    }
+
+    @GetMapping
+    public List<TagDto> findAll() {
+        return this.tagController.findAll();
     }
 
     @DeleteMapping(value = ID_ID)
-    public void delete(@PathVariable String id) throws TagException {
+    public void delete(@PathVariable String id) {
         this.tagController.delete(id);
     }
 
