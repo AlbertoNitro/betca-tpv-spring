@@ -1,7 +1,6 @@
 package es.upm.miw.controllers;
 
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -14,6 +13,8 @@ import org.springframework.stereotype.Controller;
 import es.upm.miw.documents.core.Voucher;
 import es.upm.miw.dtos.VoucherDto;
 import es.upm.miw.repositories.core.VoucherRepository;
+import es.upm.miw.resources.exceptions.NotFoundException;
+import es.upm.miw.resources.exceptions.VoucherException;
 import es.upm.miw.services.PdfService;
 import es.upm.miw.utils.Encrypting;
 
@@ -27,7 +28,7 @@ public class VoucherController {
     private PdfService pdfService;
 
     public Optional<byte[]> createVoucher(BigDecimal value) {
-        Voucher voucher = new Voucher(value.setScale(2, RoundingMode.HALF_UP));
+        Voucher voucher = new Voucher(value);
         String id;
         do {
             id = new Encrypting().shortId64UrlSafe();
@@ -37,6 +38,28 @@ public class VoucherController {
         return pdfService.generateVoucher(voucher);
     }
 
+    public Optional<VoucherDto> readVoucher(String id) {
+        Voucher voucher = this.voucherRepository.findOne(id);
+        if (voucher != null) {
+            return Optional.of(new VoucherDto(voucher));
+        } else {
+            return Optional.empty();
+        }
+    }
+    
+    public BigDecimal consumeVoucher(String id) throws NotFoundException, VoucherException {
+        Voucher voucher = this.voucherRepository.findOne(id);
+        if (voucher == null) {
+            throw new NotFoundException("Voucher id (" + id + ")");
+        }
+        if (voucher.isUsed()) {
+            throw new VoucherException("Voucher is already consumed (" + id + ")");
+        }
+        voucher.setDateOfUse(new Date());
+        this.voucherRepository.save(voucher);
+        return voucher.getValue();
+    }
+  
     public List<VoucherDto> readVoucherAll() {
         List<Voucher> voucherList = this.voucherRepository.findAll(new Sort(Sort.Direction.DESC, "creationDate"));
         List<VoucherDto> voucherDtoList = new ArrayList<VoucherDto>();
@@ -55,34 +78,6 @@ public class VoucherController {
             }
         }
         return voucherDtoList;
-    }
-
-    public BigDecimal consumeVoucher(String id) {
-        Voucher voucher = this.voucherRepository.findOne(id);
-        assert voucher != null;
-        assert !voucher.isUsed();
-        voucher.setDateOfUse(new Date());
-        this.voucherRepository.save(voucher);
-        return voucher.getValue();
-    }
-
-    public boolean existsVoucher(String id) {
-        return this.voucherRepository.findOne(id) != null;
-    }
-
-    public boolean consumedVoucher(String id) {
-        Voucher voucher = this.voucherRepository.findOne(id);
-        assert voucher != null;
-        return voucher.isUsed();
-    }
-
-    public Optional<VoucherDto> readVoucher(String id) {
-        Voucher voucher = this.voucherRepository.findOne(id);
-        if (voucher != null) {
-            return Optional.of(new VoucherDto(voucher));
-        } else {
-            return Optional.empty();
-        }
     }
 
 }

@@ -1,10 +1,6 @@
 package es.upm.miw.controllers;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-
 import java.math.BigDecimal;
-import java.util.Date;
 
 import org.junit.After;
 import org.junit.Before;
@@ -17,6 +13,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import es.upm.miw.documents.core.Voucher;
 import es.upm.miw.repositories.core.VoucherRepository;
+import es.upm.miw.resources.exceptions.NotFoundException;
+import es.upm.miw.resources.exceptions.VoucherException;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -36,32 +34,15 @@ public class VoucherControllerIT {
         this.voucher = new Voucher(new BigDecimal(32));
         this.voucherRepository.save(this.voucher);
     }
+    
+    @Test
+    public void testConsumedVoucherTrue() throws NotFoundException, VoucherException {
+        this.voucherController.consumeVoucher(this.voucher.getId());
+    }
 
     @After
     public void delete() {
         this.voucherRepository.delete(this.voucher);
     }
 
-    @Test
-    public void testExistsVoucherFalse() {
-        assertFalse(this.voucherController.existsVoucher("0"));
-    }
-
-    @Test
-    public void testExistsVoucherTrue() {
-        assertTrue(this.voucherController.existsVoucher(this.voucher.getId()));
-    }
-
-    @Test
-    public void testConsumedVoucherFalse() {
-        assertFalse(this.voucherController.consumedVoucher(this.voucher.getId()));
-    }
-
-    @Test
-    public void testConsumedVoucherTrue() {
-        assertFalse(this.voucherController.consumedVoucher(this.voucher.getId()));
-        this.voucher.setDateOfUse(new Date());
-        this.voucherRepository.save(this.voucher);
-        assertTrue(this.voucherController.consumedVoucher(this.voucher.getId()));
-    }
 }

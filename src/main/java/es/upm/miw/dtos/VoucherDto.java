@@ -1,6 +1,7 @@
 package es.upm.miw.dtos;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -27,7 +28,7 @@ public class VoucherDto {
     }
 
     public VoucherDto(BigDecimal value) {
-        this.value = value;
+        this.setValue(value);
     }
 
     public VoucherDto(Voucher voucher) {
@@ -48,7 +49,7 @@ public class VoucherDto {
     }
 
     public void setValue(BigDecimal value) {
-        this.value = value;
+        this.value = value.setScale(2, RoundingMode.HALF_UP);
     }
 
     public Date getCreationDate() {

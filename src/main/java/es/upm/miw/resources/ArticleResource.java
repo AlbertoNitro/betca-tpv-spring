@@ -28,19 +28,14 @@ import es.upm.miw.resources.exceptions.NotFoundException;
 public class ArticleResource {
     public static final String ARTICLES = "/articles";
 
-    public static final String INCOMPLETES = "/incompletes";
-
     public static final String CODE_ID = "/{code}";
+
+    public static final String INCOMPLETES = "/incompletes";
 
     public static final String SEARCH = "/search";
 
     @Autowired
     private ArticleController articleController;
-
-    @GetMapping(value = CODE_ID)
-    public ArticleDto readArticle(@PathVariable String code) throws NotFoundException {
-        return this.articleController.readArticle(code).orElseThrow(() -> new NotFoundException("Article code (" + code + ") not found"));
-    }
 
     @PostMapping
     public ArticleDto createArticle(@Valid @RequestBody ArticleDto articleDto)
@@ -48,13 +43,18 @@ public class ArticleResource {
         return this.articleController.createArticle(articleDto);
     }
 
+    @GetMapping(value = CODE_ID)
+    public ArticleDto readArticle(@PathVariable String code) throws NotFoundException {
+        return this.articleController.readArticle(code).orElseThrow(() -> new NotFoundException("Article code (" + code + ") not found"));
+    }
+
     @PutMapping(value = CODE_ID)
-    public void putArticle(@PathVariable String code, @Valid @RequestBody ArticleDto articleDto) throws NotFoundException   {
-       this.articleController.updateArticle(code, articleDto);
+    public void putArticle(@PathVariable String code, @Valid @RequestBody ArticleDto articleDto) throws NotFoundException {
+        this.articleController.updateArticle(code, articleDto);
     }
 
     @PatchMapping(value = CODE_ID)
-    public void patchArticleStock(@PathVariable String code, @RequestBody ArticleDto articleDto) throws NotFoundException  {
+    public void patchArticleStock(@PathVariable String code, @RequestBody ArticleDto articleDto) throws NotFoundException {
         this.articleController.updateArticleStock(code, articleDto.getStock());
     }
 

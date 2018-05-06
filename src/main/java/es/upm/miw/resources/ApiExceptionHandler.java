@@ -29,8 +29,7 @@ import es.upm.miw.resources.exceptions.OrderException;
 import es.upm.miw.resources.exceptions.OrderIdNotFoundException;
 import es.upm.miw.resources.exceptions.TicketIdNotFoundException;
 import es.upm.miw.resources.exceptions.UserIdNotFoundException;
-import es.upm.miw.resources.exceptions.VoucherConsumedException;
-import es.upm.miw.resources.exceptions.VoucherReferenceNotFoundException;
+import es.upm.miw.resources.exceptions.VoucherException;
 import es.upm.miw.resources.exceptions.UserFieldAlreadyExistException;
 import es.upm.miw.resources.exceptions.FieldInvalidException;
 
@@ -48,8 +47,7 @@ public class ApiExceptionHandler {
             OrderException.class,
             OrderIdNotFoundException.class,
             TicketIdNotFoundException.class,
-            UserIdNotFoundException.class,
-            VoucherReferenceNotFoundException.class
+            UserIdNotFoundException.class
     })
     @ResponseBody
     public ErrorMessage notFoundRequest(HttpServletRequest request, Exception exception) {
@@ -72,7 +70,7 @@ public class ApiExceptionHandler {
         FieldInvalidException.class,
         OrderAlreadyExistException.class,
         UserFieldAlreadyExistException.class,
-        VoucherConsumedException.class
+        VoucherException.class
     })
     @ResponseBody
     public ErrorMessage badRequest(Exception exception) {

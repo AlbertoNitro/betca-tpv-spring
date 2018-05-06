@@ -13,14 +13,13 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import es.upm.miw.controllers.VoucherController;
 import es.upm.miw.dtos.VoucherDto;
 import es.upm.miw.resources.exceptions.FileException;
-import es.upm.miw.resources.exceptions.VoucherConsumedException;
-import es.upm.miw.resources.exceptions.VoucherReferenceNotFoundException;
+import es.upm.miw.resources.exceptions.NotFoundException;
+import es.upm.miw.resources.exceptions.VoucherException;
 
 @PreAuthorize("hasRole('ADMIN') or hasRole('MANAGER') or hasRole('OPERATOR')")
 @RestController
@@ -37,18 +36,17 @@ public class VoucherResource {
     private VoucherController voucherController;
 
     @PostMapping(produces = {"application/pdf", "application/json"})
-    public @ResponseBody byte[] createVoucher(@Valid @RequestBody VoucherDto voucherDto) throws FileException {
+    public byte[] createVoucher(@Valid @RequestBody VoucherDto voucherDto) throws FileException {
         return this.voucherController.createVoucher(voucherDto.getValue()).orElseThrow(() -> new FileException("Voucher PDF exception"));
     }
 
+    @GetMapping(value = ID_ID)
+    public VoucherDto readVoucher(@PathVariable String id) throws NotFoundException {
+        return this.voucherController.readVoucher(id).orElseThrow(() -> new NotFoundException("Voucher id(" + id + ")"));
+    }
+
     @PatchMapping(value = ID_ID)
-    public BigDecimal consumeVoucher(@PathVariable String id) throws VoucherReferenceNotFoundException, VoucherConsumedException {
-        if (!this.voucherController.existsVoucher(id)) {
-            throw new VoucherReferenceNotFoundException();
-        }
-        if (this.voucherController.consumedVoucher(id)) {
-            throw new VoucherConsumedException();
-        }
+    public BigDecimal consumeVoucher(@PathVariable String id) throws NotFoundException, VoucherException {
         return this.voucherController.consumeVoucher(id);
     }
 
@@ -60,11 +58,6 @@ public class VoucherResource {
     @GetMapping(value = VALID)
     public List<VoucherDto> readVoucherAllValid() {
         return this.voucherController.readVoucherAllValid();
-    }
-
-    @GetMapping(value = ID_ID)
-    public VoucherDto readVoucher(@PathVariable String id) throws VoucherReferenceNotFoundException {
-        return this.voucherController.readVoucher(id).orElseThrow(() -> new VoucherReferenceNotFoundException(id));
     }
 
 }
