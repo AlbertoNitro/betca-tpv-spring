@@ -1,12 +1,12 @@
 package es.upm.miw.resources;
 
 import java.util.List;
-import java.util.Optional;
 
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,8 +19,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import es.upm.miw.controllers.ArticleController;
 import es.upm.miw.dtos.ArticleDto;
-import es.upm.miw.resources.exceptions.ArticleBadRequestException;
-import es.upm.miw.resources.exceptions.ArticleNotFoundException;
+import es.upm.miw.resources.exceptions.FieldAlreadyExistException;
+import es.upm.miw.resources.exceptions.NotFoundException;
 
 @PreAuthorize("hasRole('ADMIN') or hasRole('MANAGER') or hasRole('OPERATOR')")
 @RestController
@@ -38,30 +38,24 @@ public class ArticleResource {
     private ArticleController articleController;
 
     @GetMapping(value = CODE_ID)
-    public ArticleDto readArticle(@PathVariable String code) throws ArticleNotFoundException {
-        return this.articleController.readArticle(code).orElseThrow(() -> new ArticleNotFoundException("Code (" + code + ") not found"));
+    public ArticleDto readArticle(@PathVariable String code) throws NotFoundException {
+        return this.articleController.readArticle(code).orElseThrow(() -> new NotFoundException("Article code (" + code + ") not found"));
     }
 
     @PostMapping
-    public ArticleDto createArticle(@Valid @RequestBody ArticleDto articleDto) throws ArticleBadRequestException {
-        return this.articleController.createArticle(articleDto)
-                .orElseThrow(() -> new ArticleBadRequestException("Code (" + articleDto.getCode() + ") already exist"));
+    public ArticleDto createArticle(@Valid @RequestBody ArticleDto articleDto)
+            throws MethodArgumentNotValidException, FieldAlreadyExistException {
+        return this.articleController.createArticle(articleDto);
     }
 
     @PutMapping(value = CODE_ID)
-    public void putArticle(@PathVariable String code, @Valid @RequestBody ArticleDto articleDto) throws ArticleNotFoundException {
-        Optional<String> error = this.articleController.updateArticle(code, articleDto);
-        if (error.isPresent()) {
-            throw new ArticleNotFoundException(error.get());
-        }
+    public void putArticle(@PathVariable String code, @Valid @RequestBody ArticleDto articleDto) throws NotFoundException   {
+       this.articleController.updateArticle(code, articleDto);
     }
 
     @PatchMapping(value = CODE_ID)
-    public void patchArticleStock(@PathVariable String code, @RequestBody ArticleDto articleDto) throws ArticleNotFoundException {
-        Optional<String> error = this.articleController.updateArticleStock(code, articleDto.getStock());
-        if (error.isPresent()) {
-            throw new ArticleNotFoundException(error.get());
-        }
+    public void patchArticleStock(@PathVariable String code, @RequestBody ArticleDto articleDto) throws NotFoundException  {
+        this.articleController.updateArticleStock(code, articleDto.getStock());
     }
 
     @GetMapping(value = INCOMPLETES)

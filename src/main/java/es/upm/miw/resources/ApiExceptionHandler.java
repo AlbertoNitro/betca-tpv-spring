@@ -12,8 +12,6 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-import es.upm.miw.resources.exceptions.ArticleBadRequestException;
-import es.upm.miw.resources.exceptions.ArticleNotFoundException;
 import es.upm.miw.resources.exceptions.ArticlesFamilyCreationException;
 import es.upm.miw.resources.exceptions.ArticlesFamilyNotFoudException;
 import es.upm.miw.resources.exceptions.BudgetIdNotFoundException;
@@ -43,7 +41,6 @@ public class ApiExceptionHandler {
     @ExceptionHandler({
             NotFoundException.class,
             
-            ArticleNotFoundException.class,
             ArticlesFamilyNotFoudException.class,
             BudgetIdNotFoundException.class,
             FileException.class,
@@ -68,7 +65,6 @@ public class ApiExceptionHandler {
             
         FieldAlreadyExistException.class,
             
-        ArticleBadRequestException.class,
         ArticlesFamilyCreationException.class,
         CashierClosedException.class,
         CashierCreateException.class,

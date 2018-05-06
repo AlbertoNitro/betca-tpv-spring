@@ -12,6 +12,8 @@ import es.upm.miw.documents.core.Provider;
 import es.upm.miw.dtos.ArticleDto;
 import es.upm.miw.repositories.core.ArticleRepository;
 import es.upm.miw.repositories.core.ProviderRepository;
+import es.upm.miw.resources.exceptions.FieldAlreadyExistException;
+import es.upm.miw.resources.exceptions.NotFoundException;
 import es.upm.miw.services.DatabaseSeederService;
 
 @Controller
@@ -34,27 +36,31 @@ public class ArticleController {
             return Optional.empty();
         }
     }
-
-    public Optional<ArticleDto> createArticle(ArticleDto articleDto) {
-        Provider provider = null;
-        String code = (articleDto.getCode() == null) ? this.databaseSeederService.createEan13() : articleDto.getCode();
-        int stock = (articleDto.getStock() == null) ? 0 : articleDto.getStock();
+    
+    private void assertCodeNonExist(String code) throws FieldAlreadyExistException {
         if (this.articleRepository.findOne(code) != null) {
-            return Optional.empty();
+            throw new FieldAlreadyExistException("Article code (" + code + ")");
         }
+    }
+
+    public ArticleDto createArticle(ArticleDto articleDto) throws FieldAlreadyExistException {
+        String code = (articleDto.getCode() == null) ? this.databaseSeederService.createEan13() : articleDto.getCode();
+        this.assertCodeNonExist(code); 
+        int stock = (articleDto.getStock() == null) ? 0 : articleDto.getStock();
+        Provider provider = null;
         if (articleDto.getProvider() != null) {
             provider = this.providerRepository.findOne(articleDto.getProvider());
         }
         Article articule = Article.builder().code(code).description(articleDto.getDescription()).retailPrice(articleDto.getRetailPrice())
                 .reference(articleDto.getReference()).stock(stock).provider(provider).build();
         this.articleRepository.save(articule);
-        return Optional.of(new ArticleDto(articule));
+        return new ArticleDto(articule);
     }
 
-    public Optional<String> updateArticle(String code, ArticleDto articleDto) {
+    public void updateArticle(String code, ArticleDto articleDto) throws NotFoundException {
         Article article = this.articleRepository.findOne(code);
         if (article == null) {
-            return Optional.of("code (" + code + ") not found");
+            throw new NotFoundException("Article code (" + code + ")");
         }
         article.setDescription(articleDto.getDescription());
         article.setReference(articleDto.getReference());
@@ -66,17 +72,15 @@ public class ArticleController {
         }
         article.setProvider(provider);
         this.articleRepository.save(article);
-        return Optional.empty();
     }
 
-    public Optional<String> updateArticleStock(String code, Integer stock) {
+    public void updateArticleStock(String code, Integer stock) throws NotFoundException {
         Article article = this.articleRepository.findOne(code);
         if (article == null) {
-            return Optional.of("code (" + code + ") not found");
+            throw new NotFoundException("Article code (" + code + ")");
         }
         article.setStock(stock);
         this.articleRepository.save(article);
-        return Optional.empty();
     }
 
     public List<ArticleDto> findIncompletes() {

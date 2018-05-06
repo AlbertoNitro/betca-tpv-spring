@@ -1,12 +1,9 @@
 package es.upm.miw.controllers;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
 
 import java.math.BigDecimal;
-import java.util.Optional;
 
 import org.junit.After;
 import org.junit.Before;
@@ -19,6 +16,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import es.upm.miw.dtos.ArticleDto;
 import es.upm.miw.repositories.core.ArticleRepository;
+import es.upm.miw.resources.exceptions.FieldAlreadyExistException;
+import es.upm.miw.resources.exceptions.NotFoundException;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -34,8 +33,8 @@ public class ArticleControllerIT {
     private ArticleDto articleDto;
 
     @Before
-    public void before() {
-        this.articleDto = this.articleController.createArticle(new ArticleDto("7000000000001", "desc", "ref", BigDecimal.TEN, 5)).get();
+    public void before() throws FieldAlreadyExistException {
+        this.articleDto = this.articleController.createArticle(new ArticleDto("7000000000001", "desc", "ref", BigDecimal.TEN, 5));
     }
 
     @Test
@@ -51,52 +50,50 @@ public class ArticleControllerIT {
     }
 
     @Test
-    public void testCreateArticleWithoutCode() {
+    public void testCreateArticleWithoutCode() throws FieldAlreadyExistException {
         ArticleDto articleDto = new ArticleDto(null, "without code", "ref", BigDecimal.TEN, 5);
-        articleDto = this.articleController.createArticle(articleDto).get();
+        articleDto = this.articleController.createArticle(articleDto);
         assertNotNull(articleDto.getCode());
         this.articleRepository.delete(articleDto.getCode());
     }
 
     @Test
-    public void testCreateArticleWithoutStock() {
+    public void testCreateArticleWithoutStock() throws FieldAlreadyExistException {
         ArticleDto articleDto = new ArticleDto(null, "without code", "ref", BigDecimal.TEN, null);
-        articleDto = this.articleController.createArticle(articleDto).get();
+        articleDto = this.articleController.createArticle(articleDto);
         assertEquals(new Integer(0), articleDto.getStock());
         this.articleRepository.delete(articleDto.getCode());
     }
 
     @Test
-    public void testUpdateArticle() {
+    public void testUpdateArticle() throws NotFoundException {
         this.articleDto.setDescription("new");
         this.articleDto.setReference("new");
         this.articleDto.setRetailPrice(BigDecimal.TEN);
         this.articleDto.setStock(10);
         this.articleDto.setProvider("provider2");
-        Optional<String> result = this.articleController.updateArticle(this.articleDto.getCode(), this.articleDto);
+        this.articleController.updateArticle(this.articleDto.getCode(), this.articleDto);
         assertEquals("new", this.articleRepository.findOne(this.articleDto.getCode()).getDescription());
         assertEquals("new", this.articleRepository.findOne(this.articleDto.getCode()).getReference());
         assertEquals(BigDecimal.TEN, this.articleRepository.findOne(this.articleDto.getCode()).getRetailPrice());
         assertEquals(new Integer(10), this.articleRepository.findOne(this.articleDto.getCode()).getStock());
         assertEquals("provider2", this.articleRepository.findOne(this.articleDto.getCode()).getProvider().getId());
-        assertFalse(result.isPresent());
+    }
+
+    @Test(expected = NotFoundException.class)
+    public void testUpdateArticleNotFound() throws NotFoundException {
+        this.articleController.updateArticle("666", this.articleDto);
     }
 
     @Test
-    public void testUpdateArticleNotFound() {
-        assertTrue(this.articleController.updateArticle("666", this.articleDto).isPresent());
-    }
-
-    @Test
-    public void testUpdateArticleStock() {
-        Optional<String> result = this.articleController.updateArticleStock(this.articleDto.getCode(), 10);
+    public void testUpdateArticleStock() throws NotFoundException {
+        this.articleController.updateArticleStock(this.articleDto.getCode(), 10);
         assertEquals(new Integer(10), this.articleRepository.findOne(this.articleDto.getCode()).getStock());
-        assertFalse(result.isPresent());
     }
 
-    @Test
-    public void testUpdateArticleStockNotFound() {
-        assertTrue(this.articleController.updateArticleStock("666", 10).isPresent());
+    @Test(expected = NotFoundException.class)
+    public void testUpdateArticleStockNotFound() throws NotFoundException {
+       this.articleController.updateArticleStock("666", 10);
     }
 
     @After
