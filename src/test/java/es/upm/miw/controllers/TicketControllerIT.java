@@ -40,7 +40,7 @@ public class TicketControllerIT {
     
     @Before
     public void before() {
-        this.cashierClosureController.getCashierClosureLast();
+        this.cashierClosureController.readCashierClosureLast();
     }
 
     @Test

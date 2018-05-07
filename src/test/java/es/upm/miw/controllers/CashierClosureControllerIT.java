@@ -4,7 +4,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
-import java.io.IOException;
 import java.math.BigDecimal;
 
 import org.junit.Before;
@@ -18,6 +17,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 import es.upm.miw.dtos.CashierClosureInputDto;
 import es.upm.miw.dtos.CashierMovementInputDto;
 import es.upm.miw.repositories.core.CashMovementRepository;
+import es.upm.miw.resources.exceptions.CashierException;
+import es.upm.miw.resources.exceptions.NotFoundException;
 import es.upm.miw.services.DatabaseSeederService;
 
 @RunWith(SpringRunner.class)
@@ -42,23 +43,23 @@ public class CashierClosureControllerIT {
     }
 
     @Test
-    public void testClose() throws IOException {
-        cashierClosureController.openCashierClosure();
+    public void testClose() throws CashierException {
+        cashierClosureController.createCashierClosure();
         CashierClosureInputDto cashierClosureDto = new CashierClosureInputDto(new BigDecimal("100"), new BigDecimal("50"), "testClose");
         cashierClosureController.close(cashierClosureDto);
         this.databaseSeederService.seedDatabase();
     }
 
     @Test
-    public void testGetTotalCardAndCashCashierClosure() throws IOException {
-        cashierClosureController.openCashierClosure();
+    public void testGetTotalCardAndCashCashierClosure() throws CashierException {
+        cashierClosureController.createCashierClosure();
         assertNotNull(this.cashierClosureController.readTotalsFromLast());
         this.databaseSeederService.seedDatabase();
     }
 
     @Test
-    public void create() throws IOException {
-        cashierClosureController.openCashierClosure();
+    public void create() throws CashierException, NotFoundException {
+        cashierClosureController.createCashierClosure();
         this.cashierClosureController.createCashierMovement(cashMovementDto);
         int size = this.cashMovementRepository.findAll().size();
         assertTrue(size > 0);

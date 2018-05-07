@@ -2,6 +2,7 @@ package es.upm.miw.services;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -18,6 +19,7 @@ import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.Constructor;
 
 import es.upm.miw.documents.core.Article;
+import es.upm.miw.documents.core.CashierClosure;
 import es.upm.miw.documents.core.FamilyArticle;
 import es.upm.miw.documents.core.FamilyComposite;
 import es.upm.miw.documents.core.FamilyType;
@@ -122,6 +124,7 @@ public class DatabaseSeederService {
             this.ean13 = Long.parseLong(article.getCode().substring(0, 12));
         }
         this.createArticleVariousIfNotExist();
+        this.createCashierClosureIfNotExist();
     }
 
     public String createEan13() {
@@ -299,6 +302,7 @@ public class DatabaseSeederService {
 
         this.createAdminIfNotExist();
         this.createArticleVariousIfNotExist();
+        this.createCashierClosureIfNotExist();
         this.ean13 = 840000000000L;
         // -----------------------------------------------------------------------
     }
@@ -318,6 +322,7 @@ public class DatabaseSeederService {
         this.cashierClosureRepository.deleteAll();
         this.budgetRepository.deleteAll();
         this.articleRepository.deleteByCodeStartingWith("84000000");
+        this.createCashierClosureIfNotExist();
         this.ean13 = 840000000000L;
     }
 
@@ -336,6 +341,16 @@ public class DatabaseSeederService {
             this.articleRepository.save(Article.builder().code(VARIOUS_CODE).reference(VARIOUS_NAME).description(VARIOUS_NAME)
                     .retailPrice("100.00").stock(1000).provider(provider).build());
         }
+    }
+    
+    private void createCashierClosureIfNotExist() {
+        CashierClosure cashierClosure = this.cashierClosureRepository.findFirstByOrderByOpeningDateDesc();
+        if (cashierClosure == null) {
+            cashierClosure = new CashierClosure(BigDecimal.ZERO);
+            cashierClosure.close(BigDecimal.ZERO,BigDecimal.ZERO, BigDecimal.ZERO, "Initial");
+            this.cashierClosureRepository.save(cashierClosure);
+        }
+
     }
 
 }

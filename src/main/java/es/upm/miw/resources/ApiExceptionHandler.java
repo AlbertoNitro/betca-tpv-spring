@@ -14,9 +14,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 import es.upm.miw.resources.exceptions.ArticlesFamilyCreationException;
 import es.upm.miw.resources.exceptions.ArticlesFamilyNotFoudException;
-import es.upm.miw.resources.exceptions.CashierClosedException;
-import es.upm.miw.resources.exceptions.CashierCreateException;
-import es.upm.miw.resources.exceptions.CashierMovementException;
+import es.upm.miw.resources.exceptions.CashierException;
 import es.upm.miw.resources.exceptions.ErrorMessage;
 import es.upm.miw.resources.exceptions.FieldAlreadyExistException;
 import es.upm.miw.resources.exceptions.FileException;
@@ -62,9 +60,7 @@ public class ApiExceptionHandler {
         FieldAlreadyExistException.class,
             
         ArticlesFamilyCreationException.class,
-        CashierClosedException.class,
-        CashierCreateException.class,
-        CashierMovementException.class,
+        CashierException.class,
         FieldInvalidException.class,
         OrderAlreadyExistException.class,
         UserFieldAlreadyExistException.class,

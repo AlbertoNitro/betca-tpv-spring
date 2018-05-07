@@ -4,7 +4,6 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -22,6 +21,8 @@ import es.upm.miw.repositories.core.CashMovementRepository;
 import es.upm.miw.repositories.core.CashierClosureRepository;
 import es.upm.miw.repositories.core.UserRepository;
 import es.upm.miw.repositories.core.VoucherRepository;
+import es.upm.miw.resources.exceptions.CashierException;
+import es.upm.miw.resources.exceptions.NotFoundException;
 
 @Controller
 public class CashierClosureController {
@@ -38,86 +39,70 @@ public class CashierClosureController {
     @Autowired
     private UserRepository userRepository;
 
-    public Optional<String> createCashierMovement(CashierMovementInputDto cashierMovementInputDto) {
-        if (this.getCashierClosureLast().isClosed()) {
-            return Optional.of("Cashier closed");
+    public void createCashierClosure() throws CashierException {
+        CashierClosure lastCashierClosure = this.cashierClosureRepository.findFirstByOrderByOpeningDateDesc();
+        assert lastCashierClosure != null;
+        if (!lastCashierClosure.isClosed()) {
+            throw new CashierException("Already opened: " + lastCashierClosure.getId());
+        }
+        this.cashierClosureRepository.save(new CashierClosure(lastCashierClosure.getFinalCash()));
+    }
+
+    public void createCashierMovement(CashierMovementInputDto cashierMovementInputDto) throws CashierException, NotFoundException {
+        if (this.readCashierClosureLast().isClosed()) {
+            throw new CashierException("Cashier closed");
         }
         User user = this.userRepository.findByMobile(cashierMovementInputDto.getAuthorMobile());
         if (user == null) {
-            return Optional.of("Mobile not found: " + cashierMovementInputDto.getAuthorMobile());
+            throw new NotFoundException("Mobile (" + cashierMovementInputDto.getAuthorMobile() + ")");
         }
 
         CashMovement cashMovement = new CashMovement(cashierMovementInputDto.getValue(), cashierMovementInputDto.getComment(), user);
         this.cashMovementRepository.save(cashMovement);
-        return Optional.empty();
     }
 
-    public CashierLastOutputDto getCashierClosureLast() {
-        CashierClosure cashierClosure = this.cashierClosureRepository.findFirstByOrderByOpeningDateDesc();
-        if (cashierClosure != null) {
-            return new CashierLastOutputDto(cashierClosure);
-        } else { // Sólo ocurre una sola vez en el despliegue con bd vacias
-            cashierClosure = new CashierClosure(BigDecimal.ZERO);
-            cashierClosure.close(BigDecimal.ZERO,BigDecimal.ZERO, BigDecimal.ZERO, "Initial");
-            this.cashierClosureRepository.save(cashierClosure);
-            return new CashierLastOutputDto(cashierClosure);
-        }
-    }
-
-    public Optional<String> openCashierClosure() {
+    public CashierLastOutputDto readCashierClosureLast() {
         CashierClosure lastCashierClosure = this.cashierClosureRepository.findFirstByOrderByOpeningDateDesc();
-        if (lastCashierClosure == null) {
-            this.cashierClosureRepository.save(new CashierClosure(BigDecimal.ZERO));
-            return Optional.empty();
-        } else if (lastCashierClosure.isClosed()) {
-            this.cashierClosureRepository.save(new CashierClosure(lastCashierClosure.getFinalCash()));
-            return Optional.empty();
-        } else {
-            return Optional.of("Already opened: " + lastCashierClosure.getId());
-        }
+        assert lastCashierClosure != null;
+        return new CashierLastOutputDto(lastCashierClosure);
     }
 
-    public Optional<String> close(CashierClosureInputDto cashierClosureDto) {
+    public CashierClosingOutputDto readTotalsFromLast() throws CashierException {
         CashierClosure lastCashierClosure = this.cashierClosureRepository.findFirstByOrderByOpeningDateDesc();
-
-        if (lastCashierClosure != null && !lastCashierClosure.isClosed()) {
-            Date cashierOpenedDate = cashierClosureRepository.findFirstByOrderByOpeningDateDesc().getOpeningDate();
-            lastCashierClosure.close(cashierClosureDto.getSalesCard(), cashierClosureDto.getFinalCash(),
-                    this.usedVouchers(cashierOpenedDate), cashierClosureDto.getComment());
-            lastCashierClosure.setDeposit(BigDecimal.ZERO);
-            lastCashierClosure.setWithdrawal(BigDecimal.ZERO);
-            List<CashMovement> cashMovementList = cashMovementRepository.findByCreationDateGreaterThan(cashierOpenedDate);
-            for (CashMovement cashMovement : cashMovementList) {
-                if (cashMovement.getValue().signum() == 1) {
-                    lastCashierClosure.setDeposit(lastCashierClosure.getDeposit().add(cashMovement.getValue()));
-                } else {
-                    lastCashierClosure.setWithdrawal(lastCashierClosure.getWithdrawal().add(cashMovement.getValue().negate()));
-                }
-            }
-            this.cashierClosureRepository.save(lastCashierClosure);
-            return Optional.empty();
-
-        } else {
-            return Optional.of("Already closed");
-        }
-    }
-
-    public Optional<CashierClosingOutputDto> readTotalsFromLast() {
-        CashierClosure lastCashierClosure = this.cashierClosureRepository.findFirstByOrderByOpeningDateDesc();
-
+        assert lastCashierClosure != null;
         if (lastCashierClosure.isClosed()) {
-            return Optional.empty();
+            throw new CashierException("Cashier already closed: " + lastCashierClosure.getId());
         }
-
         CashierClosingOutputDto cashierClosingOutputDto = new CashierClosingOutputDto();
         BigDecimal totalVoucher = this.totalVouchers(lastCashierClosure.getOpeningDate());
-
         cashierClosingOutputDto.setTotalVoucher(totalVoucher);
         cashierClosingOutputDto.setTotalCard(lastCashierClosure.getSalesCard());
         cashierClosingOutputDto.setTotalCash(lastCashierClosure.getInitialCash().add(lastCashierClosure.getSalesCash())
                 .add(this.cashMovements(lastCashierClosure.getOpeningDate())));
         cashierClosingOutputDto.setSalesTotal(lastCashierClosure.getSalesCash().add(lastCashierClosure.getSalesCard().add(totalVoucher)));
-        return Optional.of(cashierClosingOutputDto);
+        return cashierClosingOutputDto;
+    }
+
+    public void close(CashierClosureInputDto cashierClosureDto) throws CashierException {
+        CashierClosure lastCashierClosure = this.cashierClosureRepository.findFirstByOrderByOpeningDateDesc();
+        assert lastCashierClosure != null;
+        if (lastCashierClosure.isClosed()) {
+            throw new CashierException("Cashier already closed: " + lastCashierClosure.getId());
+        }
+        Date cashierOpenedDate = cashierClosureRepository.findFirstByOrderByOpeningDateDesc().getOpeningDate();
+        lastCashierClosure.close(cashierClosureDto.getSalesCard(), cashierClosureDto.getFinalCash(), this.usedVouchers(cashierOpenedDate),
+                cashierClosureDto.getComment());
+        lastCashierClosure.setDeposit(BigDecimal.ZERO);
+        lastCashierClosure.setWithdrawal(BigDecimal.ZERO);
+        List<CashMovement> cashMovementList = cashMovementRepository.findByCreationDateGreaterThan(cashierOpenedDate);
+        for (CashMovement cashMovement : cashMovementList) {
+            if (cashMovement.getValue().signum() == 1) {
+                lastCashierClosure.setDeposit(lastCashierClosure.getDeposit().add(cashMovement.getValue()));
+            } else {
+                lastCashierClosure.setWithdrawal(lastCashierClosure.getWithdrawal().add(cashMovement.getValue().negate()));
+            }
+        }
+        this.cashierClosureRepository.save(lastCashierClosure);
     }
 
     private BigDecimal usedVouchers(Date cashierOpenedDate) {
