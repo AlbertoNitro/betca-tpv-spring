@@ -38,8 +38,8 @@ public class ArticleControllerIT {
     }
 
     @Test
-    public void testReadArticleVarious() {
-        assertEquals("1", this.articleController.readArticle("1").get().getCode());
+    public void testReadArticleVarious() throws NotFoundException {
+        assertEquals("1", this.articleController.readArticle("1").getCode());
     }
 
     @Test

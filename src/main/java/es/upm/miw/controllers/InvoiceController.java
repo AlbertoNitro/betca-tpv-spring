@@ -106,13 +106,12 @@ public class InvoiceController {
         return nextId;
     }
 
-    public Optional<InvoiceOutputDto> read(String id) {
+    public InvoiceOutputDto read(String id) throws NotFoundException {
         Invoice invoice = this.invoiceRepository.findOne(id);
-        if (invoice != null) {
-            return Optional.of(new InvoiceOutputDto(invoice));
-        } else {
-            return Optional.empty();
+        if (invoice == null) {
+            throw new NotFoundException("Invoice (" + id + ")");
         }
+        return new InvoiceOutputDto(invoice);
     }
 
     public List<InvoiceOutputDto> findBetweenDates(Date start, Date end) {

@@ -41,7 +41,7 @@ public class TagResource {
 
     @GetMapping(value = ID_ID)
     public TagDto read(@PathVariable String id) throws NotFoundException {
-        return this.tagController.read(id).orElseThrow(() -> new NotFoundException("Tag id (" + id + ")"));
+        return this.tagController.read(id);
     }
 
     @GetMapping(value = ID_ID + STICKER)

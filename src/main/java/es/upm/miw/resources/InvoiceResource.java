@@ -46,7 +46,7 @@ public class InvoiceResource {
 
     @GetMapping(value = ID_ID)
     public InvoiceOutputDto readInvoice(@PathVariable String id) throws NotFoundException {
-        return this.invoiceController.read(id).orElseThrow(() -> new NotFoundException("Invoice (" + id + ")"));
+        return this.invoiceController.read(id);
     }
 
     @GetMapping(value = SEARCH_DATE)

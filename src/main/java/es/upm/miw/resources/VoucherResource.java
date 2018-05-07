@@ -42,7 +42,7 @@ public class VoucherResource {
 
     @GetMapping(value = ID_ID)
     public VoucherDto readVoucher(@PathVariable String id) throws NotFoundException {
-        return this.voucherController.readVoucher(id).orElseThrow(() -> new NotFoundException("Voucher id(" + id + ")"));
+        return this.voucherController.readVoucher(id);
     }
 
     @PatchMapping(value = ID_ID)

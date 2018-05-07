@@ -38,15 +38,14 @@ public class VoucherController {
         return pdfService.generateVoucher(voucher);
     }
 
-    public Optional<VoucherDto> readVoucher(String id) {
+    public VoucherDto readVoucher(String id) throws NotFoundException {
         Voucher voucher = this.voucherRepository.findOne(id);
-        if (voucher != null) {
-            return Optional.of(new VoucherDto(voucher));
-        } else {
-            return Optional.empty();
+        if (voucher == null) {
+            throw new NotFoundException("Voucher id (" + id + ")");
         }
+        return new VoucherDto(voucher);
     }
-    
+
     public BigDecimal consumeVoucher(String id) throws NotFoundException, VoucherException {
         Voucher voucher = this.voucherRepository.findOne(id);
         if (voucher == null) {
@@ -59,7 +58,7 @@ public class VoucherController {
         this.voucherRepository.save(voucher);
         return voucher.getValue();
     }
-  
+
     public List<VoucherDto> readVoucherAll() {
         List<Voucher> voucherList = this.voucherRepository.findAll(new Sort(Sort.Direction.DESC, "creationDate"));
         List<VoucherDto> voucherDtoList = new ArrayList<VoucherDto>();

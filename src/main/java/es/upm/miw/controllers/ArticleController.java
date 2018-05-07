@@ -2,7 +2,6 @@ package es.upm.miw.controllers;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -28,15 +27,18 @@ public class ArticleController {
     @Autowired
     private DatabaseSeederService databaseSeederService;
 
-    public Optional<ArticleDto> readArticle(String code) {
-        Article article = this.articleRepository.findOne(code);
-        if (article != null) {
-            return Optional.of(new ArticleDto(article));
-        } else {
-            return Optional.empty();
-        }
+    public ArticleDto readArticle(String code) throws NotFoundException {
+        return new ArticleDto(this.readOne(code));
     }
-    
+
+    private Article readOne(String code) throws NotFoundException {
+        Article article = this.articleRepository.findOne(code);
+        if (article == null) {
+            throw new NotFoundException("Article code (" + code + ")");
+        }
+        return article;
+    }
+
     public ArticleDto createArticle(ArticleDto articleDto) throws FieldAlreadyExistException {
         String code = (articleDto.getCode() == null) ? this.databaseSeederService.createEan13() : articleDto.getCode();
         if (this.articleRepository.findOne(code) != null) {
@@ -54,10 +56,7 @@ public class ArticleController {
     }
 
     public void updateArticle(String code, ArticleDto articleDto) throws NotFoundException {
-        Article article = this.articleRepository.findOne(code);
-        if (article == null) {
-            throw new NotFoundException("Article code (" + code + ")");
-        }
+        Article article = readOne(code);
         article.setDescription(articleDto.getDescription());
         article.setReference(articleDto.getReference());
         article.setRetailPrice(articleDto.getRetailPrice());
@@ -71,10 +70,7 @@ public class ArticleController {
     }
 
     public void updateArticleStock(String code, Integer stock) throws NotFoundException {
-        Article article = this.articleRepository.findOne(code);
-        if (article == null) {
-            throw new NotFoundException("Article code (" + code + ")");
-        }
+        Article article = readOne(code);
         article.setStock(stock);
         this.articleRepository.save(article);
     }

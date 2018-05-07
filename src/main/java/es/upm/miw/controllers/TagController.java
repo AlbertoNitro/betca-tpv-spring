@@ -47,27 +47,25 @@ public class TagController {
         this.tagRepository.save(tag);
     }
 
-    public Optional<TagDto> read(String id) {
-        Tag tag = this.tagRepository.findOne(id);
-        if (tag == null) {
-            return Optional.empty();
-        }
-        return Optional.of(new TagDto(tag));
+    public TagDto read(String id) throws NotFoundException {
+        return new TagDto(readOne(id));
     }
-    
-    public Optional<byte[]> tag24(String id) throws NotFoundException {
+
+    private Tag readOne(String id) throws NotFoundException {
         Tag tag = this.tagRepository.findOne(id);
         if (tag == null) {
             throw new NotFoundException("Tag id (" + id + ")");
         }
+        return tag;
+    }
+    
+    public Optional<byte[]> tag24(String id) throws NotFoundException {
+        Tag tag = readOne(id);
         return this.pdfService.generateLabels24(tag.getArticleList());
     }
 
     public void update(String id, TagDto tagDto) throws NotFoundException {
-        Tag tag = this.tagRepository.findOne(id);
-        if (tag == null) {
-            throw new NotFoundException("Tag id (" + id + ")");
-        }
+        Tag tag = readOne(id);
         this.save(tagDto, tag);
     }
 

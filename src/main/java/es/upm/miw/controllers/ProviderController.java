@@ -1,7 +1,6 @@
 package es.upm.miw.controllers;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -25,13 +24,16 @@ public class ProviderController {
         this.providerRepository.save(provider);
     }
 
-    public Optional<ProviderDto> readProvider(String id) {
-        Provider providerBd = this.providerRepository.findOne(id);
-        if (providerBd == null) {
-            return Optional.empty();
-        } else {
-            return Optional.of(new ProviderDto(providerBd));
+    public ProviderDto readProvider(String id) throws NotFoundException {
+        return new ProviderDto(readOne(id));
+    }
+
+    private Provider readOne(String id) throws NotFoundException {
+        Provider provider = this.providerRepository.findOne(id);
+        if (provider == null) {
+            throw new NotFoundException("Provider id (" + id + ")");
         }
+        return provider;
     }
 
     private void assertCompanyUnique(String id, ProviderDto providerDto) throws FieldAlreadyExistException {
@@ -42,10 +44,7 @@ public class ProviderController {
     }
 
     public void putProvider(String id, ProviderDto providerDto) throws NotFoundException, FieldAlreadyExistException {
-        Provider provider = this.providerRepository.findOne(id);
-        if (provider == null) {
-            throw new NotFoundException("Provider id (" + id + ")");
-        }
+        Provider provider = readOne(id);
         this.assertCompanyUnique(id, providerDto);
         provider.setCompany(providerDto.getCompany());
         provider.setNif(providerDto.getNif());

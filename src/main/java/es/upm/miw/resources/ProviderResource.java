@@ -44,7 +44,7 @@ public class ProviderResource {
 
     @RequestMapping(value = ID_ID, method = RequestMethod.GET)
     public ProviderDto readProvider(@PathVariable String id) throws NotFoundException {
-        return this.providerController.readProvider(id).orElseThrow(() -> new NotFoundException("Provider id (" + id + ")"));
+        return this.providerController.readProvider(id);
     }
 
     @PutMapping(value = ID_ID)

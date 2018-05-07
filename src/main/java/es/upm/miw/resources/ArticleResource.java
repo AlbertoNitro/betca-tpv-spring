@@ -45,7 +45,7 @@ public class ArticleResource {
 
     @GetMapping(value = CODE_ID)
     public ArticleDto readArticle(@PathVariable String code) throws NotFoundException {
-        return this.articleController.readArticle(code).orElseThrow(() -> new NotFoundException("Article code (" + code + ") not found"));
+        return this.articleController.readArticle(code);
     }
 
     @PutMapping(value = CODE_ID)
