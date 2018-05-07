@@ -2,7 +2,6 @@ package es.upm.miw.controllers;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
@@ -18,6 +17,8 @@ import es.upm.miw.dtos.OrderLineDto;
 import es.upm.miw.repositories.core.ArticleRepository;
 import es.upm.miw.repositories.core.OrderRepository;
 import es.upm.miw.repositories.core.ProviderRepository;
+import es.upm.miw.resources.exceptions.NotFoundException;
+import es.upm.miw.resources.exceptions.OrderException;
 
 @Controller
 public class OrderController {
@@ -31,78 +32,54 @@ public class OrderController {
     @Autowired
     private ArticleRepository articleRepository;
 
-    public List<OrderBaseOutputDto> readAll() {
-        List<Order> orderList = this.orderRepository.findAll(new Sort(Sort.Direction.DESC, "openingDate"));
-        List<OrderBaseOutputDto> orderDtoOutputList = new ArrayList<>();
-        for (Order order : orderList) {
-            orderDtoOutputList.add(new OrderBaseOutputDto(order));
-        }
-        return orderDtoOutputList;
-    }
-
-    public Optional<String> create(OrderDto orderDto) {
+    public void create(OrderDto orderDto) throws NotFoundException {
         Provider provider = this.providerRepository.findOne(orderDto.getProviderId());
         if (provider == null) {
-            return Optional.of("Provider not found. " + orderDto.getProviderId());
+            throw new NotFoundException("Provider (" + orderDto.getProviderId() + ")");
         }
+        Order order = new Order(orderDto.getDescription(), provider,
+                this.createOrderLineList(orderDto.getOrdersLine()).toArray(new OrderLine[0]));
+        this.orderRepository.save(order);
+    }
+
+    private List<OrderLine> createOrderLineList(List<OrderLineDto> orderLineDtolist) throws NotFoundException {
         List<OrderLine> orderLineList = new ArrayList<>();
-        for (OrderLineDto orderLineDto : orderDto.getOrdersLine()) {
+        for (OrderLineDto orderLineDto : orderLineDtolist) {
             Article article = this.articleRepository.findOne(orderLineDto.getArticleId());
             if (article == null) {
-                return Optional.of("Article not found. " + orderLineDto.getArticleId());
+                throw new NotFoundException("Article (" + orderLineDto.getArticleId() + ")");
             }
             orderLineList.add(new OrderLine(article, orderLineDto.getRequiredAmount(), orderLineDto.getRequiredAmount()));
         }
-        Order order = new Order(orderDto.getDescription(), provider, orderLineList.toArray(new OrderLine[0]));
-        this.orderRepository.save(order);
-        return Optional.empty();
+        return orderLineList;
     }
 
-    public Optional<OrderDto> readOne(String id) {
-        Order order = this.orderRepository.findOne(id);
-        if (order == null) {
-            return Optional.empty();
-        }
-        return Optional.of(new OrderDto(order));
-    }
-
-    public Optional<String> update(String id, OrderDto orderDto) {
-        Order order = this.orderRepository.findOne(id);
-        if (order == null) {
-            return Optional.of("Order not found. " + id);
-        }
-        List<OrderLine> orderLineList = new ArrayList<>();
-        for (OrderLineDto orderLineDto : orderDto.getOrdersLine()) {
-            Article article = this.articleRepository.findOne(orderLineDto.getArticleId());
-            if (article == null) {
-                return Optional.of("Article not found. " + orderLineDto.getArticleId());
-            }
-            orderLineList.add(new OrderLine(article, orderLineDto.getRequiredAmount(), orderLineDto.getRequiredAmount()));
-        }
-        order.setDescription(orderDto.getDescription());
-        order.setOrderLine(orderLineList.toArray(new OrderLine[0]));
-        this.orderRepository.save(order);
-        return Optional.empty();
-    }
-
-    public Optional<String> delete(String id) {
-        Order order = this.orderRepository.findOne(id);
-        if (order == null) {
-            return Optional.empty();
-        }
+    public void update(String id, OrderDto orderDto) throws NotFoundException, OrderException {
+        Order order = readOne(id);
         if (order.getClosingDate() != null) {
-            return Optional.of("order already closed. Cannot be deleted. " + id);
-        }
-        this.orderRepository.delete(order);
-        return Optional.empty();
-    }
-
-    public Optional<String> orderEntry(String id, OrderDto orderDto) {
-        Order order = this.orderRepository.findOne(id);
-        if (order == null) {
-            return Optional.of("Order not found. " + id);
+            throw new OrderException("Already closed");
         }
         order.setDescription(orderDto.getDescription());
+        order.setOrderLine(this.createOrderLineList(orderDto.getOrdersLine()).toArray(new OrderLine[0]));
+        this.orderRepository.save(order);
+    }
+
+    private Order readOne(String id) throws NotFoundException {
+        Order order = this.orderRepository.findOne(id);
+        if (order == null) {
+            throw new NotFoundException("Order(" + id + ")");
+        }
+        return order;
+    }
+
+    public void orderEntry(String id, OrderDto orderDto) throws NotFoundException, OrderException {
+        Order order = readOne(id);
+        if (order.getClosingDate() != null) {
+            throw new OrderException("Already closed");
+        }
+        if (orderDto.getOrdersLine().size() != order.getOrderLine().length) {
+            throw new OrderException("Entry List is distinct order line list of BD");
+        }
         for (int i = 0; i < orderDto.getOrdersLine().size(); i++) {
             int finalAmount = orderDto.getOrdersLine().get(i).getFinalAmount();
             Article article = order.getOrderLine()[i].getArticle();
@@ -112,7 +89,27 @@ public class OrderController {
         }
         order.close();
         this.orderRepository.save(order);
-        return Optional.empty();
+    }
+
+    public OrderDto read(String id) throws NotFoundException {
+        return new OrderDto(readOne(id));
+    }
+
+    public void delete(String id) throws OrderException {
+        Order order = this.orderRepository.findOne(id);
+        if (order.getClosingDate() != null) {
+            throw new OrderException("Already closed. Cannot be deleted (" + id + ")");
+        }
+        this.orderRepository.delete(order);
+    }
+
+    public List<OrderBaseOutputDto> readAll() {
+        List<Order> orderList = this.orderRepository.findAll(new Sort(Sort.Direction.DESC, "openingDate"));
+        List<OrderBaseOutputDto> orderDtoOutputList = new ArrayList<>();
+        for (Order order : orderList) {
+            orderDtoOutputList.add(new OrderBaseOutputDto(order));
+        }
+        return orderDtoOutputList;
     }
 
 }

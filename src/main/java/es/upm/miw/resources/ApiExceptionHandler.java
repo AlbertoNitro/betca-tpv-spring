@@ -21,9 +21,7 @@ import es.upm.miw.resources.exceptions.FileException;
 import es.upm.miw.resources.exceptions.ForbiddenException;
 import es.upm.miw.resources.exceptions.InvoiceException;
 import es.upm.miw.resources.exceptions.NotFoundException;
-import es.upm.miw.resources.exceptions.OrderAlreadyExistException;
 import es.upm.miw.resources.exceptions.OrderException;
-import es.upm.miw.resources.exceptions.OrderIdNotFoundException;
 import es.upm.miw.resources.exceptions.TicketIdNotFoundException;
 import es.upm.miw.resources.exceptions.UserIdNotFoundException;
 import es.upm.miw.resources.exceptions.VoucherException;
@@ -41,7 +39,6 @@ public class ApiExceptionHandler {
             FileException.class,
 
             OrderException.class,
-            OrderIdNotFoundException.class,
             TicketIdNotFoundException.class,
             UserIdNotFoundException.class
     })
@@ -63,7 +60,6 @@ public class ApiExceptionHandler {
         ArticlesFamilyCreationException.class,
         CashierException.class,
         FieldInvalidException.class,
-        OrderAlreadyExistException.class,
         UserFieldAlreadyExistException.class,
         VoucherException.class
     })
