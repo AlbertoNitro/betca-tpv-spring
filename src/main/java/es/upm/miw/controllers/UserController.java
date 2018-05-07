@@ -151,7 +151,7 @@ public class UserController {
 
     public List<UserMinimumDto> find(String mobile, String username, String dni, String address) {
         return this.userRepository.findCustomersByMobileLikeAndUsernameLikeAndDniLikeAndAddressLike(mobile, username, dni, address);
-        
+
     }
 
 }

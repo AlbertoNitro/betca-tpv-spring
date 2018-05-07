@@ -20,7 +20,6 @@ public class ArticleMinimumDto {
         this.description = description;
     }
 
-
     public ArticleMinimumDto(Article article) {
         this.code = article.getCode();
         this.description = article.getDescription();

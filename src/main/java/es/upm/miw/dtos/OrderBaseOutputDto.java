@@ -16,20 +16,19 @@ public class OrderBaseOutputDto {
     private String providerCompany;
 
     private Date openingDate;
-    
+
     @JsonInclude(Include.NON_NULL)
     private Date closingDate;
-
 
     public OrderBaseOutputDto() {
     }
 
     public OrderBaseOutputDto(Order order) {
-        this.id= order.getId();
-        this.description= order.getDescription();
-        this.providerCompany= order.getProvider().getCompany();
-        this.openingDate= order.getOpeningDate();
-        this.closingDate=order.getClosingDate();
+        this.id = order.getId();
+        this.description = order.getDescription();
+        this.providerCompany = order.getProvider().getCompany();
+        this.openingDate = order.getOpeningDate();
+        this.closingDate = order.getClosingDate();
     }
 
     public String getId() {

@@ -7,7 +7,7 @@ import es.upm.miw.dtos.validations.BigDecimalPositive;
 import es.upm.miw.dtos.validations.ListNotEmpty;
 
 public class TicketCreationInputDto {
-    
+
     private String userMobile;
 
     @BigDecimalPositive
@@ -21,19 +21,19 @@ public class TicketCreationInputDto {
 
     @ListNotEmpty
     private List<ShoppingDto> shoppingCart;
-    
+
     private String note;
 
     public TicketCreationInputDto() {
         // Empty for framework
     }
 
-    public TicketCreationInputDto(BigDecimal cash, BigDecimal card, BigDecimal voucher, List<ShoppingDto> shoppingCart,String note) {
+    public TicketCreationInputDto(BigDecimal cash, BigDecimal card, BigDecimal voucher, List<ShoppingDto> shoppingCart, String note) {
         this.cash = cash;
         this.card = card;
         this.voucher = voucher;
         this.shoppingCart = shoppingCart;
-        this.note=note;
+        this.note = note;
     }
 
     public String getUserMobile() {

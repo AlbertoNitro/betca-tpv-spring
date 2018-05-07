@@ -17,7 +17,7 @@ public class ProviderDto extends ProviderMinimumDto {
     private String email;
 
     private String note;
-    
+
     private Boolean active;
 
     public ProviderDto() {
@@ -26,14 +26,14 @@ public class ProviderDto extends ProviderMinimumDto {
 
     public ProviderDto(Provider provider) {
         super(provider.getId(), provider.getCompany());
-        this.nif= provider.getNif();
+        this.nif = provider.getNif();
         this.address = provider.getAddress();
         this.phone = provider.getPhone();
-        this.email= provider.getEmail();
+        this.email = provider.getEmail();
         this.note = provider.getNote();
         this.active = provider.isActive();
     }
-    
+
     public String getNif() {
         return nif;
     }
@@ -50,7 +50,7 @@ public class ProviderDto extends ProviderMinimumDto {
         this.address = address;
     }
 
-     public String getPhone() {
+    public String getPhone() {
         return phone;
     }
 

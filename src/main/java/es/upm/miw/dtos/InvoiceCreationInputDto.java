@@ -3,10 +3,10 @@ package es.upm.miw.dtos;
 import javax.validation.constraints.NotNull;
 
 public class InvoiceCreationInputDto {
-    
+
     @NotNull
     private String mobile;
-    
+
     @NotNull
     private String ticketId;
 

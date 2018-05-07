@@ -8,9 +8,9 @@ public class OrderLineDto {
 
     @NotNull
     private String articleId;
-    
+
     private String articleDescription;
-    
+
     private Integer stock;
 
     @NotNull
@@ -23,7 +23,7 @@ public class OrderLineDto {
 
     public OrderLineDto(OrderLine orderLine) {
         this.articleId = orderLine.getArticle().getCode();
-        this.articleDescription=orderLine.getArticle().getDescription();
+        this.articleDescription = orderLine.getArticle().getDescription();
         this.stock = orderLine.getArticle().getStock();
         this.requiredAmount = orderLine.getRequiredAmount();
         this.finalAmount = orderLine.getFinalAmount();

@@ -9,11 +9,11 @@ import es.upm.miw.documents.core.Invoice;
 import es.upm.miw.documents.core.Ticket;
 
 public interface InvoiceRepository extends MongoRepository<Invoice, String> {
-    
+
     Invoice findFirstByOrderByCreationDateDesc();
 
     List<Invoice> findByCreationDateBetween(Date start, Date end);
-    
+
     List<Invoice> findByTicketIn(List<Ticket> tickets);
 
     Invoice findByTicket(Ticket ticket);

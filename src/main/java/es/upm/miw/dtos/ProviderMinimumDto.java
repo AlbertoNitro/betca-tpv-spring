@@ -3,7 +3,7 @@ package es.upm.miw.dtos;
 import javax.validation.constraints.NotNull;
 
 public class ProviderMinimumDto {
-    
+
     private String id;
 
     @NotNull
@@ -28,7 +28,7 @@ public class ProviderMinimumDto {
     public String getCompany() {
         return company;
     }
-    
+
     public void setCompany(String company) {
         this.company = company;
     }

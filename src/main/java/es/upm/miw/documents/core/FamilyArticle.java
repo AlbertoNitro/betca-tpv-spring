@@ -12,7 +12,6 @@ public class FamilyArticle extends ArticlesFamily {
     @DBRef
     private Article article;
 
-    
     public FamilyArticle() {
     }
 
@@ -59,7 +58,7 @@ public class FamilyArticle extends ArticlesFamily {
 
     @Override
     public String toString() {
-        return "FamilyArticle ["+super.toString() + "article=" + article + "]";
+        return "FamilyArticle [" + super.toString() + "article=" + article + "]";
     }
 
     @Override

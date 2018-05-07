@@ -2,45 +2,46 @@ package es.upm.miw.dtos;
 
 public class IncomeComparision {
 
-	private Float ProductPrice;
-	private Float Income;
-	private String ProductName;
+    private Float ProductPrice;
 
-	public IncomeComparision() {
-		super();
-		//Empty for Spring
-	}
+    private Float Income;
 
-	public IncomeComparision(Float productPrice, Float income, String productName) {
-		super();
-		ProductPrice = productPrice;
-		Income = income;
-		ProductName = productName;
-	}
+    private String ProductName;
 
-	public Float getProductPrice() {
-		return ProductPrice;
-	}
+    public IncomeComparision() {
+        super();
+        // Empty for Spring
+    }
 
-	public void setProductPrice(Float productPrice) {
-		ProductPrice = productPrice;
-	}
+    public IncomeComparision(Float productPrice, Float income, String productName) {
+        super();
+        ProductPrice = productPrice;
+        Income = income;
+        ProductName = productName;
+    }
 
-	public Float getIncome() {
-		return Income;
-	}
+    public Float getProductPrice() {
+        return ProductPrice;
+    }
 
-	public void setIncome(Float income) {
-		Income = income;
-	}
+    public void setProductPrice(Float productPrice) {
+        ProductPrice = productPrice;
+    }
 
-	public String getProductName() {
-		return ProductName;
-	}
+    public Float getIncome() {
+        return Income;
+    }
 
-	public void setProductName(String productName) {
-		ProductName = productName;
-	}
+    public void setIncome(Float income) {
+        Income = income;
+    }
 
+    public String getProductName() {
+        return ProductName;
+    }
+
+    public void setProductName(String productName) {
+        ProductName = productName;
+    }
 
 }

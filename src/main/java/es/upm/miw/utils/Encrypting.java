@@ -52,7 +52,7 @@ public class Encrypting {
         String code64Url = Base64.getUrlEncoder().encodeToString(this.encrypt(UUID.randomUUID().toString()));
         return this.removeEqualsCar(code64Url);
     }
-    
+
     public String shortId64UrlSafe() {
         return this.encryptInBase64UrlSafe().substring(0, 8);
     }
@@ -60,11 +60,11 @@ public class Encrypting {
     public String encodeHexInBase64UrlSafe(String hex) {
         return this.removeEqualsCar(Base64.getUrlEncoder().encodeToString(DatatypeConverter.parseHexBinary(hex)));
     }
-    
+
     public String decodeBase64InHex(String encode) {
         return DatatypeConverter.printHexBinary(Base64.getUrlDecoder().decode(encode)).toLowerCase();
     }
-    
+
     private String removeEqualsCar(String msg) {
         if (msg.indexOf('=') == -1) {
             return msg;

@@ -58,7 +58,7 @@ public class TagController {
         }
         return tag;
     }
-    
+
     public Optional<byte[]> tag24(String id) throws NotFoundException {
         Tag tag = readOne(id);
         return this.pdfService.generateLabels24(tag.getArticleList());

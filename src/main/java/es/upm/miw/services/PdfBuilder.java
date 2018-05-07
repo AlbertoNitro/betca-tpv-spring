@@ -51,7 +51,7 @@ public class PdfBuilder {
             file.getParentFile().mkdirs();
         }
         try {
-            PdfDocument pdf= new PdfDocument(new PdfWriter(fullPath));
+            PdfDocument pdf = new PdfDocument(new PdfWriter(fullPath));
             document = new Document(pdf, pageSize);
         } catch (FileNotFoundException fnfe) {
             Logger.getLogger(this.getClass()).error("File: " + fnfe);

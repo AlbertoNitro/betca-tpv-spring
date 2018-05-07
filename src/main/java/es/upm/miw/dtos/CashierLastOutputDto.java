@@ -29,7 +29,7 @@ public class CashierLastOutputDto {
     }
 
     public CashierLastOutputDto(CashierClosure cashierClosure) {
-        this(cashierClosure.isClosed(), cashierClosure.getClosureDate(),cashierClosure.getFinalCash());
+        this(cashierClosure.isClosed(), cashierClosure.getClosureDate(), cashierClosure.getFinalCash());
     }
 
     public Boolean isClosed() {

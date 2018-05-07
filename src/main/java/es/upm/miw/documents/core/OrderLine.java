@@ -6,9 +6,9 @@ public class OrderLine {
 
     @DBRef
     private Article article;
-    
+
     private int requiredAmount;
-    
+
     private int finalAmount;
 
     public OrderLine() {
@@ -41,5 +41,5 @@ public class OrderLine {
     public String toString() {
         return "OrderLine [article=" + article + ", requiredAmount=" + requiredAmount + ", finalAmount=" + finalAmount + "]";
     }
-    
+
 }

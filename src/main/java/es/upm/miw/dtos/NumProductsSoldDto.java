@@ -2,34 +2,35 @@ package es.upm.miw.dtos;
 
 public class NumProductsSoldDto {
 
-	private Integer Quantity;
-	private String ProductName;
+    private Integer Quantity;
 
-	public NumProductsSoldDto() {
-		super();
-		//Empty for Spring
-	}
+    private String ProductName;
 
-	public NumProductsSoldDto(Integer quantity, String productName) {
-		super();
-		Quantity = quantity;
-		ProductName = productName;
-	}
+    public NumProductsSoldDto() {
+        super();
+        // Empty for Spring
+    }
 
-	public Integer getQuantity() {
-		return Quantity;
-	}
+    public NumProductsSoldDto(Integer quantity, String productName) {
+        super();
+        Quantity = quantity;
+        ProductName = productName;
+    }
 
-	public void setQuantity(Integer quantity) {
-		Quantity = quantity;
-	}
+    public Integer getQuantity() {
+        return Quantity;
+    }
 
-	public String getProductName() {
-		return ProductName;
-	}
+    public void setQuantity(Integer quantity) {
+        Quantity = quantity;
+    }
 
-	public void setProductName(String productName) {
-		ProductName = productName;
-	}
+    public String getProductName() {
+        return ProductName;
+    }
+
+    public void setProductName(String productName) {
+        ProductName = productName;
+    }
 
 }

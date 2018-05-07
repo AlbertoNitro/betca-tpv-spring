@@ -10,10 +10,10 @@ public class TokenOutputDto {
     private String token;
 
     private Role[] roles;
-    
+
     private long creationDate;
 
-	public TokenOutputDto() {
+    public TokenOutputDto() {
         // Empty for framework
     }
 
@@ -22,11 +22,11 @@ public class TokenOutputDto {
         this.roles = user.getRoles();
         this.creationDate = user.getToken().getCreationDate().getTime();
     }
-    
+
     public String getToken() {
         return token;
     }
-    
+
     public void setToken(String token) {
         this.token = token;
     }
@@ -38,14 +38,14 @@ public class TokenOutputDto {
     public void setRoles(Role[] roles) {
         this.roles = roles;
     }
-    
-    public long getCreationDate() {
-		return creationDate;
-	}
 
-	public void setCreationDate(long creationDate) {
-		this.creationDate = creationDate;
-	}
+    public long getCreationDate() {
+        return creationDate;
+    }
+
+    public void setCreationDate(long creationDate) {
+        this.creationDate = creationDate;
+    }
 
     @Override
     public String toString() {

@@ -6,9 +6,9 @@ import org.springframework.data.annotation.Id;
 @Document
 public class Property {
 
-    @Id 
+    @Id
     private String id;
-    
+
     private String value;
 
     public Property() {
@@ -34,7 +34,7 @@ public class Property {
     public void setValue(String value) {
         this.value = value;
     }
-    
+
     @Override
     public int hashCode() {
         return id.hashCode();
@@ -53,5 +53,5 @@ public class Property {
         }
         return id.equals(((Property) obj).id);
     }
-    
+
 }

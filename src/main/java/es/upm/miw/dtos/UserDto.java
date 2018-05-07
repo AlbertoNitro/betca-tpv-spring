@@ -20,7 +20,7 @@ public class UserDto extends UserMinimumDto {
     private String address;
 
     private Boolean active;
-    
+
     private Role[] roles;
 
     private Date registrationDate;
@@ -29,7 +29,8 @@ public class UserDto extends UserMinimumDto {
         // Empty for framework
     }
 
-    public UserDto(String mobile, String username, String password, String email, String dni, String address, Boolean active, Role[] roles) {
+    public UserDto(String mobile, String username, String password, String email, String dni, String address, Boolean active,
+            Role[] roles) {
         super(mobile, username);
         this.password = password;
         this.email = email;
@@ -110,23 +111,22 @@ public class UserDto extends UserMinimumDto {
         this.registrationDate = registrationDate;
     }
 
-    
-	public Role[] getRoles() {
-		return roles;
-	}
+    public Role[] getRoles() {
+        return roles;
+    }
 
-	public void setRoles(Role[] roles) {
-		this.roles = roles;
-	}
-	
-	@Override
+    public void setRoles(Role[] roles) {
+        this.roles = roles;
+    }
+
+    @Override
     public String toString() {
         String date = "null";
         if (registrationDate != null) {
             date = new SimpleDateFormat("dd-MMM-yyyy").format(registrationDate.getTime());
-        }   
+        }
         return "[" + super.toString() + "UserDto [password=" + password + ", email=" + email + ", dni=" + dni + ", address=" + address
                 + ", active=" + active + ", registrationDate=" + date + ", roles=" + java.util.Arrays.toString(roles) + "] ]";
     }
-	
+
 }

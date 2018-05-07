@@ -342,12 +342,12 @@ public class DatabaseSeederService {
                     .retailPrice("100.00").stock(1000).provider(provider).build());
         }
     }
-    
+
     private void createCashierClosureIfNotExist() {
         CashierClosure cashierClosure = this.cashierClosureRepository.findFirstByOrderByOpeningDateDesc();
         if (cashierClosure == null) {
             cashierClosure = new CashierClosure(BigDecimal.ZERO);
-            cashierClosure.close(BigDecimal.ZERO,BigDecimal.ZERO, BigDecimal.ZERO, "Initial");
+            cashierClosure.close(BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, "Initial");
             this.cashierClosureRepository.save(cashierClosure);
         }
 

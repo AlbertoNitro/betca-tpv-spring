@@ -49,10 +49,11 @@ public class CashierClosureResource {
     }
 
     @PostMapping(value = LAST + MOVEMENTS)
-    public void createCashMovement(@Valid @RequestBody CashierMovementInputDto cashierMovementDto) throws CashierException, NotFoundException {
+    public void createCashMovement(@Valid @RequestBody CashierMovementInputDto cashierMovementDto)
+            throws CashierException, NotFoundException {
         this.cashierClosureController.createCashierMovement(cashierMovementDto);
     }
-    
+
     @GetMapping(value = LAST)
     public CashierLastOutputDto getCashierClosureLast() {
         return cashierClosureController.readCashierClosureLast();
@@ -62,7 +63,7 @@ public class CashierClosureResource {
     public CashierClosingOutputDto readTotalsFromLast() throws CashierException {
         return this.cashierClosureController.readTotalsFromLast();
     }
-    
+
     @PatchMapping(value = LAST)
     public void closeCashierClosure(@Valid @RequestBody CashierClosureInputDto cashierClosureDto) throws CashierException {
         cashierClosureController.close(cashierClosureDto);

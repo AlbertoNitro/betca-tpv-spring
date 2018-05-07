@@ -16,9 +16,9 @@ public class User {
 
     @Indexed(unique = true)
     private String mobile;
-    
+
     private Date registrationDate;
-    
+
     private String username;
 
     private String password;

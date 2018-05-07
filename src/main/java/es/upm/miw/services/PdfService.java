@@ -90,7 +90,7 @@ public class PdfService {
         final String path = "/labels/label24-" + new SimpleDateFormat("yyyyMMdd-HH-mm").format(new Date().getTime());
         PdfTag24Builder pdf = new PdfTag24Builder(path);
         for (Article article : articles) {
-            String reference= (article.getReference().length()>24)?article.getReference().substring(0, 24):article.getReference();
+            String reference = (article.getReference().length() > 24) ? article.getReference().substring(0, 24) : article.getReference();
             pdf.addTag24(reference, article.getCode());
         }
         return pdf.build();
@@ -209,7 +209,7 @@ public class PdfService {
         final int INCREMENTAL_INVOICE_HEIGHT = 16;
         final String path = "/invoices/invoice-" + invoice.getId();
 
-        PdfTicketBuilder pdf = new PdfTicketBuilder(path, INCREMENTAL_INVOICE_HEIGHT  + invoice.getTicket().getShoppingList().length);
+        PdfTicketBuilder pdf = new PdfTicketBuilder(path, INCREMENTAL_INVOICE_HEIGHT + invoice.getTicket().getShoppingList().length);
         pdf.addImage(this.logo).paragraphEmphasized(this.name).paragraphEmphasized("Tfn: " + this.phone);
         pdf.paragraph("NIF: " + this.nif);
         pdf.paragraph(this.address);

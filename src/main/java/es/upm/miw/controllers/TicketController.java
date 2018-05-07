@@ -154,7 +154,7 @@ public class TicketController {
                 Article article = ticket.getShoppingList()[i].getArticle();
                 article.setStock(article.getStock() + amountDifference);
                 this.articleRepository.save(article);
-             }
+            }
             if (ticketCreationInputDto.getShoppingCart().get(i).isCommitted()) {
                 ticket.getShoppingList()[i].setShoppingState(ShoppingState.COMMITTED);
             }

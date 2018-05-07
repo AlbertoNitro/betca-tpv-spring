@@ -4,7 +4,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
 public class UserMinimumDto {
-    
+
     @NotNull
     @Pattern(regexp = es.upm.miw.dtos.validations.Pattern.NINE_DIGITS)
     private String mobile;

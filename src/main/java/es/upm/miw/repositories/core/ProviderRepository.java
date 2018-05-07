@@ -9,12 +9,12 @@ import es.upm.miw.documents.core.Provider;
 import es.upm.miw.dtos.ProviderMinimumDto;
 
 public interface ProviderRepository extends MongoRepository<Provider, String> {
-    
+
     public Provider findByCompany(String company);
-    
+
     @Query(value = "{}", fields = "{ '_id' : 1, 'company' : 1}")
     public List<ProviderMinimumDto> findMinimumAll();
-    
+
     @Query(value = "{'active' : true}", fields = "{ '_id' : 1, 'company' : 1}")
     public List<ProviderMinimumDto> findMinimumAllActives();
 

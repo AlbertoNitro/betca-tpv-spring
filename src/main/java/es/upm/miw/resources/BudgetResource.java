@@ -39,7 +39,7 @@ public class BudgetResource {
     public byte[] read(@PathVariable String id) throws NotFoundException, FileException {
         return this.budgetController.read(id).orElseThrow(() -> new FileException("Budget PDF exception"));
     }
-    
+
     @GetMapping
     public List<BudgetDto> readBudgetAll() {
         return this.budgetController.readBudgetAll();

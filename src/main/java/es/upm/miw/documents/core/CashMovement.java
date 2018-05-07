@@ -57,7 +57,7 @@ public class CashMovement {
     public User getUser() {
         return user;
     }
-    
+
     @Override
     public String toString() {
         String creationTime = new SimpleDateFormat("HH:00 dd-MMM-yyyy ").format(creationDate.getTime());

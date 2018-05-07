@@ -38,9 +38,9 @@ public class PdfTicketBuilder extends PdfBuilder {
     private static final int TERMIC_FONT_SIZE_EMPHASIZEDD = 10;
 
     private static final int TERMIC_MARGIN_LEFT = 10;
-    
+
     private static final int TERMIC_MARGIN_RIGHT = 14;
-    
+
     private static final int TERMIC_MARGIN_TOP_BOTTOM = 12;
 
     private static final float TERMIC_PAGE_WIDHT = 227;
@@ -74,7 +74,7 @@ public class PdfTicketBuilder extends PdfBuilder {
     public PdfTicketBuilder barCode(String code) {
         Barcode128 code128 = new Barcode128(this.getDocument().getPdfDocument());
         code128.setCodeType(Barcode128.CODE128);
-        code128.setCode(code.trim().replace('-', '/').replace('_', '?'));  
+        code128.setCode(code.trim().replace('-', '/').replace('_', '?'));
         code128.setAltText(code.trim());
         Image code128Image = new Image(code128.createFormXObject(this.getDocument().getPdfDocument()));
         code128Image.setWidthPercent(code128Image.getImageWidth());

@@ -10,7 +10,7 @@ public class Shopping {
     private String description;
 
     private BigDecimal retailPrice;
-    
+
     private Integer amount;
 
     private BigDecimal discount;

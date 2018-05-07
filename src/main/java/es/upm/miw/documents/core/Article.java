@@ -47,7 +47,7 @@ public class Article {
             this.article.stock = 0;
             this.article.tax = Tax.GENERAL;
         }
-        
+
         public Builder code(String code) {
             this.article.code = code;
             return this;
@@ -68,7 +68,7 @@ public class Article {
             this.article.retailPrice = new BigDecimal(retailPrice);
             return this;
         }
-        
+
         public Builder retailPrice(BigDecimal retailPrice) {
             this.article.retailPrice = retailPrice;
             return this;
