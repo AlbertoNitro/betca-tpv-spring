@@ -19,7 +19,7 @@ import es.upm.miw.resources.exceptions.ErrorMessage;
 import es.upm.miw.resources.exceptions.FieldAlreadyExistException;
 import es.upm.miw.resources.exceptions.FileException;
 import es.upm.miw.resources.exceptions.ForbiddenException;
-import es.upm.miw.resources.exceptions.InvoiceIdNotFoundException;
+import es.upm.miw.resources.exceptions.InvoiceException;
 import es.upm.miw.resources.exceptions.NotFoundException;
 import es.upm.miw.resources.exceptions.OrderAlreadyExistException;
 import es.upm.miw.resources.exceptions.OrderException;
@@ -39,7 +39,7 @@ public class ApiExceptionHandler {
             
             ArticlesFamilyNotFoudException.class,
             FileException.class,
-            InvoiceIdNotFoundException.class,
+
             OrderException.class,
             OrderIdNotFoundException.class,
             TicketIdNotFoundException.class,
@@ -58,6 +58,7 @@ public class ApiExceptionHandler {
         HttpMessageNotReadableException.class,
             
         FieldAlreadyExistException.class,
+        InvoiceException.class,
             
         ArticlesFamilyCreationException.class,
         CashierException.class,

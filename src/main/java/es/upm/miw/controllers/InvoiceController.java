@@ -22,6 +22,7 @@ import es.upm.miw.repositories.core.InvoiceRepository;
 import es.upm.miw.repositories.core.PropertyRepository;
 import es.upm.miw.repositories.core.TicketRepository;
 import es.upm.miw.repositories.core.UserRepository;
+import es.upm.miw.resources.exceptions.NotFoundException;
 import es.upm.miw.services.PdfService;
 
 @Controller
@@ -54,41 +55,41 @@ public class InvoiceController {
     @Value("${miw.tax.free}")
     private BigDecimal ivaFree;
 
-    public Optional<byte[]> createInvoice(InvoiceCreationInputDto invoiceCreationInputDto) {
+    public Optional<byte[]> createInvoice(InvoiceCreationInputDto invoiceCreationInputDto) throws NotFoundException {
         User user = this.userRepository.findByMobile(invoiceCreationInputDto.getMobile());
         Ticket ticket = this.ticketRepository.findOne(invoiceCreationInputDto.getTicketId());
-
-        if (user != null && ticket != null) {
-            BigDecimal taxBaseTotal = BigDecimal.ZERO.setScale(4);
-            BigDecimal uno = new BigDecimal("1").setScale(4);
-            for (Shopping shopping : ticket.getShoppingList()) {
-                switch (shopping.getArticle().getTax()) {
-                case GENERAL:
-                    taxBaseTotal = taxBaseTotal.add(shopping.getShoppingTotal().divide(ivaGeneral.add(uno), 4, RoundingMode.HALF_UP))
-                            .setScale(2, RoundingMode.HALF_UP);
-                    break;
-                case REDUCED:
-                    taxBaseTotal = taxBaseTotal.add(shopping.getShoppingTotal().divide(ivaReduced.add(uno), 4, RoundingMode.HALF_UP))
-                            .setScale(2, RoundingMode.HALF_UP);
-                    break;
-                case SUPER_REDUCED:
-                    taxBaseTotal = taxBaseTotal.add(shopping.getShoppingTotal().divide(ivaSuperReduced.add(uno), 4, RoundingMode.HALF_UP))
-                            .setScale(2, RoundingMode.HALF_UP);
-                    break;
-                case FREE:
-                    break;
-                default:
-                    assert false;
-                }
-            }
-            Invoice invoice = new Invoice(this.nextInvoiceId(), taxBaseTotal,
-                    ticket.getTotal().subtract(taxBaseTotal).setScale(2, RoundingMode.HALF_UP), user, ticket);
-            this.invoiceRepository.save(invoice);
-
-            return pdfService.generateInvioce(invoice);
-        } else {
-            return Optional.empty();
+        if (user == null) {
+            throw new NotFoundException("Mobile (" + invoiceCreationInputDto.getMobile() + ")");
         }
+        if (ticket == null) {
+            throw new NotFoundException("Ticket (" + invoiceCreationInputDto.getTicketId() + ")");
+        }
+        BigDecimal taxBaseTotal = BigDecimal.ZERO.setScale(4);
+        BigDecimal uno = BigDecimal.ONE.setScale(4);
+        for (Shopping shopping : ticket.getShoppingList()) {
+            switch (shopping.getArticle().getTax()) {
+            case GENERAL:
+                taxBaseTotal = taxBaseTotal.add(shopping.getShoppingTotal().divide(ivaGeneral.add(uno), 4, RoundingMode.HALF_UP))
+                        .setScale(2, RoundingMode.HALF_UP);
+                break;
+            case REDUCED:
+                taxBaseTotal = taxBaseTotal.add(shopping.getShoppingTotal().divide(ivaReduced.add(uno), 4, RoundingMode.HALF_UP))
+                        .setScale(2, RoundingMode.HALF_UP);
+                break;
+            case SUPER_REDUCED:
+                taxBaseTotal = taxBaseTotal.add(shopping.getShoppingTotal().divide(ivaSuperReduced.add(uno), 4, RoundingMode.HALF_UP))
+                        .setScale(2, RoundingMode.HALF_UP);
+                break;
+            case FREE:
+                break;
+            default:
+                assert false;
+            }
+        }
+        Invoice invoice = new Invoice(this.nextInvoiceId(), taxBaseTotal,
+                ticket.getTotal().subtract(taxBaseTotal).setScale(2, RoundingMode.HALF_UP), user, ticket);
+        this.invoiceRepository.save(invoice);
+        return pdfService.generateInvioce(invoice);
     }
 
     private int nextInvoiceId() {
