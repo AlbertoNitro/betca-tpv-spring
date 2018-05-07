@@ -25,12 +25,6 @@ public class ProviderRepositoryIT {
         assertEquals("company-p1", this.providerRepository.findOne("provider1").getCompany());
     }
 
-    @Test
-    public void testFindMinimumProviderById() {
-        assertEquals("provider1", this.providerRepository.findMinimumProviderById("provider1").getId());
-        assertEquals("company-p1", this.providerRepository.findMinimumProviderById("provider1").getCompany());
-    }
-
     @Test(expected = DuplicateKeyException.class)
     public void testRepeatcompany() {
         this.providerRepository.save(Provider.builder().company("company-p1").build());

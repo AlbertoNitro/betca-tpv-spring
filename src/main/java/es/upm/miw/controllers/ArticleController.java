@@ -49,10 +49,10 @@ public class ArticleController {
         if (articleDto.getProvider() != null) {
             provider = this.providerRepository.findOne(articleDto.getProvider());
         }
-        Article articule = Article.builder().code(code).description(articleDto.getDescription()).retailPrice(articleDto.getRetailPrice())
+        Article article = Article.builder().code(code).description(articleDto.getDescription()).retailPrice(articleDto.getRetailPrice())
                 .reference(articleDto.getReference()).stock(stock).provider(provider).build();
-        this.articleRepository.save(articule);
-        return new ArticleDto(articule);
+        this.articleRepository.save(article);
+        return new ArticleDto(article);
     }
 
     public void updateArticle(String code, ArticleDto articleDto) throws NotFoundException {

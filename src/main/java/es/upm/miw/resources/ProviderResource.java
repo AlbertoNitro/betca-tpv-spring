@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import es.upm.miw.controllers.ProviderController;
@@ -42,7 +41,7 @@ public class ProviderResource {
         this.providerController.createProvider(providerDto);
     }
 
-    @RequestMapping(value = ID_ID, method = RequestMethod.GET)
+    @GetMapping(value = ID_ID)
     public ProviderDto readProvider(@PathVariable String id) throws NotFoundException {
         return this.providerController.readProvider(id);
     }

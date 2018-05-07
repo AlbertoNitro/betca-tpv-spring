@@ -150,6 +150,7 @@ public class DatabaseSeederService {
             for (Provider provider : tpvGraph.getProviderList()) {
                 Provider providerBd = this.providerRepository.findByCompany(provider.getCompany());
                 if (providerBd == null) {
+                    provider.setActive(true);
                     this.providerRepository.save(provider);
                 } else {
                     for (Article article : tpvGraph.getArticleList()) {
