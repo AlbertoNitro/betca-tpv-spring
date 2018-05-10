@@ -88,7 +88,7 @@ public class UserController {
         return maybeRole;
     }
 
-    public boolean putUser(String mobile, UserDto userDto, Role[] roles) {
+    public boolean updateUser(String mobile, UserDto userDto, Role[] roles) {
         User user = this.userRepository.findByMobile(mobile);
         assert user != null;
         if (Arrays.asList(roles).containsAll(Arrays.asList(user.getRoles()))) {
@@ -129,6 +129,11 @@ public class UserController {
             return Optional.empty();
         }
     }
+    
+    public Optional<UserDto> readUser(String mobile, String mobileLogged) {
+        User userLogged = this.userRepository.findByMobile(mobileLogged);
+        return this.readUser(mobile, userLogged.getRoles());
+    }
 
     public List<UserMinimumDto> readCustomerAll() {
         return this.userRepository.findCustomerAll();
@@ -139,14 +144,9 @@ public class UserController {
         return new UserMinimumDto(user.getMobile(), user.getUsername());
     }
 
-    public Optional<UserDto> readUser(String mobile, String mobileLogged) {
+    public boolean updateOwnUser(String mobile, UserDto userDto, String mobileLogged) {
         User userLogged = this.userRepository.findByMobile(mobileLogged);
-        return this.readUser(mobile, userLogged.getRoles());
-    }
-
-    public boolean putUser(String mobile, UserDto userDto, String mobileLogged) {
-        User userLogged = this.userRepository.findByMobile(mobileLogged);
-        return this.putUser(mobile, userDto, userLogged.getRoles());
+        return this.updateUser(mobile, userDto, userLogged.getRoles());
     }
 
     public List<UserMinimumDto> find(String mobile, String username, String dni, String address) {
