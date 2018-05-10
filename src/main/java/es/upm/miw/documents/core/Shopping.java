@@ -45,6 +45,9 @@ public class Shopping {
     }
 
     public void setDiscount(BigDecimal discount) {
+        if (discount == null) {
+            discount = BigDecimal.ZERO;
+        }
         this.discount = discount.setScale(2, RoundingMode.HALF_UP);
     }
 
