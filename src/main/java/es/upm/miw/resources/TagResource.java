@@ -54,14 +54,15 @@ public class TagResource {
         this.tagController.update(id, tagDto);
     }
 
+    @DeleteMapping(value = ID_ID)
+    public void delete(@PathVariable String id) {
+        this.tagController.delete(id);
+    }
+    
     @GetMapping
     public List<TagDto> findAll() {
         return this.tagController.findAll();
     }
 
-    @DeleteMapping(value = ID_ID)
-    public void delete(@PathVariable String id) {
-        this.tagController.delete(id);
-    }
 
 }

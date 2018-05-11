@@ -2,6 +2,7 @@ package es.upm.miw.dtos;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.UUID;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
@@ -32,7 +33,7 @@ public class UserDto extends UserMinimumDto {
     public UserDto(String mobile, String username, String password, String email, String dni, String address, Boolean active,
             Role[] roles) {
         super(mobile, username);
-        this.password = password;
+        this.setPassword(password);
         this.email = email;
         this.setDni(dni);
         this.address = address;
@@ -60,7 +61,11 @@ public class UserDto extends UserMinimumDto {
     }
 
     public void setPassword(String password) {
-        this.password = password;
+        if (password == null) {
+            password = UUID.randomUUID().toString();
+        } else {
+            this.password = password;
+        }
     }
 
     public String getEmail() {

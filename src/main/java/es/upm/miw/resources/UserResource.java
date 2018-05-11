@@ -1,7 +1,6 @@
 package es.upm.miw.resources;
 
 import java.util.List;
-import java.util.UUID;
 
 import javax.validation.Valid;
 
@@ -9,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.User;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -24,9 +24,9 @@ import es.upm.miw.controllers.UserController;
 import es.upm.miw.documents.core.Role;
 import es.upm.miw.dtos.UserDto;
 import es.upm.miw.dtos.UserMinimumDto;
+import es.upm.miw.resources.exceptions.FieldAlreadyExistException;
 import es.upm.miw.resources.exceptions.ForbiddenException;
-import es.upm.miw.resources.exceptions.UserFieldAlreadyExistException;
-import es.upm.miw.resources.exceptions.UserIdNotFoundException;
+import es.upm.miw.resources.exceptions.NotFoundException;
 
 @PreAuthorize("hasRole('ADMIN') or hasRole('MANAGER') or hasRole('OPERATOR')")
 @RestController
@@ -43,63 +43,35 @@ public class UserResource {
     private UserController userController;
 
     @PostMapping
-    public void createCustomer(@Valid @RequestBody UserDto userDto) throws UserFieldAlreadyExistException {
-        if (userDto.getPassword() == null) {
-            userDto.setPassword(UUID.randomUUID().toString());
-        }
-        if (this.userController.existsMobile(userDto.getMobile())) {
-            throw new UserFieldAlreadyExistException("Existing mobile");
-        }
-        if (this.userController.emailRepeated(userDto)) {
-            throw new UserFieldAlreadyExistException("Existing email");
-        }
-        if (this.userController.dniRepeated(userDto)) {
-            throw new UserFieldAlreadyExistException("Existing dni");
-        }
+    public void createCustomer(@Valid @RequestBody UserDto userDto) throws MethodArgumentNotValidException, FieldAlreadyExistException {
         this.userController.createUser(userDto, new Role[] {Role.CUSTOMER});
     }
 
     @GetMapping(value = MOBILE_ID)
-    public UserDto read(@PathVariable String mobile, @RequestParam(defaultValue = "true") boolean customer, @AuthenticationPrincipal User activeUser)
-            throws UserIdNotFoundException {
+    public UserDto read(@PathVariable String mobile, @RequestParam(defaultValue = "true") boolean customer,
+            @AuthenticationPrincipal User activeUser) throws NotFoundException, ForbiddenException {
         if (customer) {
-            return this.userController.readUser(mobile, new Role[] {Role.CUSTOMER}).orElseThrow(() -> new UserIdNotFoundException(mobile));
+            return this.userController.readUser(mobile, new Role[] {Role.CUSTOMER});
         } else {
-            return this.userController.readUser(mobile, activeUser.getUsername()).orElseThrow(() -> new UserIdNotFoundException(mobile));
+            return this.userController.readUser(mobile, activeUser.getUsername());
         }
     }
 
     @PutMapping(value = MOBILE_ID)
-    public void putCustomer(@PathVariable String mobile, @Valid @RequestBody UserDto userDto)
-            throws ForbiddenException, UserIdNotFoundException, UserFieldAlreadyExistException {
-        if (!this.userController.existsMobile(mobile)) {
-            throw new UserIdNotFoundException("Not existing mobile");
-        }
-        if (this.userController.mobileRepeated(mobile, userDto)) {
-            throw new UserFieldAlreadyExistException("Existing mobile");
-        }
-        if (this.userController.emailRepeated(mobile, userDto)) {
-            throw new UserFieldAlreadyExistException("Existing email");
-        }
-        if (this.userController.dniRepeated(mobile, userDto)) {
-            throw new UserFieldAlreadyExistException("Existing dni");
-        }
-        if (!this.userController.updateUser(mobile, userDto, new Role[] {Role.CUSTOMER})) {
-            throw new ForbiddenException();
-        }
+    public void putCustomer(@PathVariable String mobile, @Valid @RequestBody UserDto userDto) throws ForbiddenException,
+            NotFoundException, FieldAlreadyExistException {
+        this.userController.updateUser(mobile, userDto, new Role[] {Role.CUSTOMER});
     }
 
     @PatchMapping(value = MOBILE_ID)
     public void updateOwnUser(@PathVariable String mobile, @Valid @RequestBody UserDto userDto, @AuthenticationPrincipal User activeUser)
-            throws UserIdNotFoundException {
+            throws NotFoundException, FieldAlreadyExistException, ForbiddenException {
         this.userController.updateOwnUser(mobile, userDto, activeUser.getUsername());
     }
 
     @DeleteMapping(value = MOBILE_ID)
     public void deleteCustomer(@PathVariable String mobile) throws ForbiddenException {
-        if (!this.userController.deleteUser(mobile, new Role[] {Role.CUSTOMER})) {
-            throw new ForbiddenException();
-        }
+        this.userController.deleteUser(mobile, new Role[] {Role.CUSTOMER});
     }
 
     @GetMapping

@@ -23,9 +23,7 @@ import es.upm.miw.resources.exceptions.InvoiceException;
 import es.upm.miw.resources.exceptions.NotFoundException;
 import es.upm.miw.resources.exceptions.OrderException;
 import es.upm.miw.resources.exceptions.TicketIdNotFoundException;
-import es.upm.miw.resources.exceptions.UserIdNotFoundException;
 import es.upm.miw.resources.exceptions.VoucherException;
-import es.upm.miw.resources.exceptions.UserFieldAlreadyExistException;
 import es.upm.miw.resources.exceptions.FieldInvalidException;
 
 @ControllerAdvice
@@ -39,8 +37,7 @@ public class ApiExceptionHandler {
             FileException.class,
 
             OrderException.class,
-            TicketIdNotFoundException.class,
-            UserIdNotFoundException.class
+            TicketIdNotFoundException.class
     })
     @ResponseBody
     public ErrorMessage notFoundRequest(HttpServletRequest request, Exception exception) {
@@ -60,7 +57,6 @@ public class ApiExceptionHandler {
         ArticlesFamilyCreationException.class,
         CashierException.class,
         FieldInvalidException.class,
-        UserFieldAlreadyExistException.class,
         VoucherException.class
     })
     @ResponseBody
@@ -78,7 +74,6 @@ public class ApiExceptionHandler {
         return new ErrorMessage(exception, "");
     }
 
-    // Exception
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler({Exception.class,})
     @ResponseBody

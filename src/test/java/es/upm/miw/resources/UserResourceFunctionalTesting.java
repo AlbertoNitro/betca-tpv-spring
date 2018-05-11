@@ -175,7 +175,7 @@ public class UserResourceFunctionalTesting {
 
     @Test
     public void testReadUserNotRol() {
-        thrown.expect(new HttpMatcher(HttpStatus.NOT_FOUND));
+        thrown.expect(new HttpMatcher(HttpStatus.FORBIDDEN));
         restService.loginAdmin().restBuilder().path(UserResource.USERS).path(UserResource.MOBILE_ID).expand(666666001).get().build();
     }
 

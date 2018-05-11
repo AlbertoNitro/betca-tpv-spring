@@ -27,10 +27,6 @@ public class AdminResource {
 
     public static final String ARTICLES_WITHOUT_CODE = "/articles-without-code";
 
-    public static final String USERS = "/users";
-
-    public static final String MOBILE_ID = "/{mobile}";
-
     @Autowired
     private ConfigurableApplicationContext configurableApplicationContext;
 
