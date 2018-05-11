@@ -74,7 +74,7 @@ public class UserController {
         if (user == null) {
             throw new NotFoundException("User mobile (" + mobile + ")");
         }
-        if (mobile != userDto.getMobile() && this.userRepository.findByMobile(userDto.getMobile()) != null) {
+        if (!mobile.equals(userDto.getMobile()) && this.userRepository.findByMobile(userDto.getMobile()) != null) {
             throw new FieldAlreadyExistException("User mobile (" + userDto.getMobile() + ")");
         }
         this.assertEmailNotRepeated(mobile, userDto);

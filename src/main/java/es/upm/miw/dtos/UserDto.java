@@ -2,7 +2,6 @@ package es.upm.miw.dtos;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.UUID;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
@@ -61,11 +60,7 @@ public class UserDto extends UserMinimumDto {
     }
 
     public void setPassword(String password) {
-        if (password == null) {
-            password = UUID.randomUUID().toString();
-        } else {
-            this.password = password;
-        }
+           this.password = password;
     }
 
     public String getEmail() {

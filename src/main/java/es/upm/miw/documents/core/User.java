@@ -2,6 +2,7 @@ package es.upm.miw.documents.core;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.UUID;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
@@ -80,7 +81,11 @@ public class User {
     }
 
     public void setPassword(String password) {
-        this.password = new BCryptPasswordEncoder().encode(password);
+        if (password == null) {
+            this.password = UUID.randomUUID().toString();
+        } else {
+            this.password = new BCryptPasswordEncoder().encode(password);
+        }
     }
 
     public Boolean isActive() {

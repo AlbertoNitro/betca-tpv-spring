@@ -43,6 +43,9 @@ public class ApiLogs {
             resultAsString = result.toString();
         }
         String log = "<<< Return << " + jp.getSignature().getName() + ": " + resultAsString;
+        if (log.length() > 2000) {
+            log = log.substring(0, 2000) + ".... (+" + log.length() + " characters)";
+        }
         LogManager.getLogger(jp.getSignature().getDeclaringTypeName()).info(log);
     }
 
