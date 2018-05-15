@@ -60,8 +60,8 @@ public class ApiExceptionHandler {
         VoucherException.class
     })
     @ResponseBody
-    public ErrorMessage badRequest(Exception exception) {
-        return new ErrorMessage(exception, exception.getMessage());
+    public ErrorMessage badRequest(HttpServletRequest request, Exception exception) {
+        return new ErrorMessage(exception,request.getRequestURI());
     }
 
     @ResponseStatus(HttpStatus.FORBIDDEN)
@@ -71,7 +71,7 @@ public class ApiExceptionHandler {
     })
     @ResponseBody
     public ErrorMessage forbiddenRequest(Exception exception) {
-        return new ErrorMessage(exception, "");
+        return new ErrorMessage(exception,"");
     }
 
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -79,7 +79,7 @@ public class ApiExceptionHandler {
     @ResponseBody
     public ErrorMessage exception(Exception exception) {
         exception.printStackTrace();
-        return new ErrorMessage(exception, exception.getStackTrace().toString());
+        return new ErrorMessage("INTERNAL SERVER ERROR");
     }
 
 }

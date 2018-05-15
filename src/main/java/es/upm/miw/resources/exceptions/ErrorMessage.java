@@ -2,24 +2,26 @@ package es.upm.miw.resources.exceptions;
 
 public class ErrorMessage {
 
-    private String exception;
+    private String error;
 
     private String message;
 
     private String path;
 
     public ErrorMessage(Exception exception, String path) {
-        this(exception.getClass().getSimpleName(), exception.getMessage(), path);
-    }
-
-    public ErrorMessage(String exception, String message, String path) {
-        this.exception = exception;
-        this.message = message;
+        this.error = exception.getClass().getSimpleName();
+        this.message = exception.getMessage();
         this.path = path;
     }
 
-    public String getException() {
-        return exception;
+    public ErrorMessage(String error) {
+        this.error = error;
+        this.message = error;
+        this.path = "/";
+    }
+
+    public String getError() {
+        return error;
     }
 
     public String getMessage() {
@@ -32,7 +34,7 @@ public class ErrorMessage {
 
     @Override
     public String toString() {
-        return "ErrorMessage [exception=" + exception + ", message=" + message + ", path=" + path + "]";
+        return "ErrorMessage [error=" + error + ", message=" + message + ", path=" + path + "]";
     }
 
 }
