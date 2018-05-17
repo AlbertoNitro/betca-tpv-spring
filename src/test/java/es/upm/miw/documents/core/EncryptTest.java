@@ -4,7 +4,7 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
-import es.upm.miw.utils.Encrypting;
+import es.upm.miw.businessServices.Encrypting;
 
 public class EncryptTest {
 

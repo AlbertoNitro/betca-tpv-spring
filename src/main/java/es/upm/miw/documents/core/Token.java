@@ -2,7 +2,7 @@ package es.upm.miw.documents.core;
 
 import java.util.Date;
 
-import es.upm.miw.utils.Encrypting;
+import es.upm.miw.businessServices.Encrypting;
 
 public class Token {
 
