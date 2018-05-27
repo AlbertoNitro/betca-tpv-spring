@@ -35,6 +35,7 @@ public class ApiExceptionHandler {
         MethodArgumentNotValidException.class,
         HttpMessageNotReadableException.class,
         
+        ArticlesFamilyException.class,
         FieldAlreadyExistException.class,
         CashierException.class,
         InvoiceException.class,
@@ -42,7 +43,6 @@ public class ApiExceptionHandler {
         VoucherException.class,
         
         //TODO
-        ArticlesFamilyCreationException.class,
         FieldInvalidException.class,
 
     })
