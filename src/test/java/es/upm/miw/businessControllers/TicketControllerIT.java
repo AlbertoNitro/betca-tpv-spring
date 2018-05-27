@@ -1,14 +1,11 @@
 package es.upm.miw.businessControllers;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Optional;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -23,7 +20,7 @@ import es.upm.miw.businessControllers.TicketController;
 import es.upm.miw.documents.core.Ticket;
 import es.upm.miw.dtos.ShoppingDto;
 import es.upm.miw.dtos.TicketCreationInputDto;
-import es.upm.miw.dtos.TicketDto;
+import es.upm.miw.exceptions.NotFoundException;
 import es.upm.miw.repositories.core.TicketRepository;
 
 @RunWith(SpringRunner.class)
@@ -46,7 +43,7 @@ public class TicketControllerIT {
     }
 
     @Test
-    public void testCreateTicket() {
+    public void testCreateTicket() throws NotFoundException {
         TicketCreationInputDto ticketCreationInputDto = new TicketCreationInputDto(new BigDecimal("70"), BigDecimal.ZERO, BigDecimal.ZERO,
                 new ArrayList<ShoppingDto>(), "Nota asociada al ticket");
         ticketCreationInputDto.getShoppingCart()
@@ -63,19 +60,10 @@ public class TicketControllerIT {
     }
 
     @Test
-    public void testExistTicket() {
-        assertTrue(this.ticketController.existTicket("201801121"));
-        assertFalse(this.ticketController.existTicket("201801125"));
-    }
-
-    @Test
-    public void testGetTicket() {
-        Optional<TicketDto> pdf1 = this.ticketController.read("201801121");
-        assertTrue(pdf1.isPresent());
-        Optional<TicketDto> pdf2 = this.ticketController.read("201801122");
-        assertTrue(pdf2.isPresent());
-        Optional<TicketDto> pdf3 = this.ticketController.read("201801123");
-        assertTrue(pdf3.isPresent());
+    public void testGetTicket() throws NotFoundException {
+       this.ticketController.read("201801121");
+       this.ticketController.read("201801122");
+       this.ticketController.read("201801123");
     }
 
     @Test

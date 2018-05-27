@@ -21,8 +21,7 @@ public class ApiExceptionHandler {
         FileException.class,
         
         //TODO 
-        ArticlesFamilyNotFoudException.class,      
-        TicketIdNotFoundException.class
+        ArticlesFamilyNotFoudException.class     
     })
     @ResponseBody
     public ErrorMessage notFoundRequest(HttpServletRequest request, Exception exception) {

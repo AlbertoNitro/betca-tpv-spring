@@ -32,6 +32,7 @@ import es.upm.miw.dtos.TicketCreationInputDto;
 import es.upm.miw.dtos.TicketDto;
 import es.upm.miw.dtos.TicketSearchOutputDto;
 import es.upm.miw.dtos.UserNotCommitedOutputDto;
+import es.upm.miw.exceptions.NotFoundException;
 import es.upm.miw.repositories.core.ArticleRepository;
 import es.upm.miw.repositories.core.CashierClosureRepository;
 import es.upm.miw.repositories.core.FamilyCompositeRepository;
@@ -78,13 +79,13 @@ public class TicketController {
         return nextId;
     }
 
-    private Optional<Ticket> createTicket(TicketCreationInputDto ticketCreationDto) {
+    private Ticket createTicket(TicketCreationInputDto ticketCreationDto) throws NotFoundException {
         User user = this.userRepository.findByMobile(ticketCreationDto.getUserMobile());
         List<Shopping> shoppingList = new ArrayList<>();
         for (ShoppingDto shoppingDto : ticketCreationDto.getShoppingCart()) {
             Article article = this.articleRepository.findOne(shoppingDto.getCode());
             if (article == null) {
-                return Optional.empty();
+                throw new NotFoundException("Article (" + shoppingDto.getCode() + ")");
             }
             Shopping shopping = new Shopping(shoppingDto.getAmount(), shoppingDto.getDiscount(), article);
             if (shoppingDto.isCommitted()) {
@@ -108,38 +109,28 @@ public class TicketController {
         cashierClosure.addCash(ticketCreationDto.getCash());
         cashierClosure.addCard(ticketCreationDto.getCard());
         this.cashierClosureRepository.save(cashierClosure);
-
-        return Optional.of(ticket);
+        return ticket;
     }
 
-    public Optional<byte[]> createTicketAndPdf(TicketCreationInputDto ticketCreationDto) {
-        Optional<Ticket> ticket = this.createTicket(ticketCreationDto);
-        if (ticket.isPresent()) {
-            return pdfService.generateTicket(ticket.get());
-        } else {
-            return Optional.empty();
-        }
+    public Optional<byte[]> createTicketAndPdf(TicketCreationInputDto ticketCreationDto) throws NotFoundException {
+        return pdfService.generateTicket(this.createTicket(ticketCreationDto));
     }
 
-    public boolean existTicket(String id) {
+    public TicketDto read(String id) throws NotFoundException {
+        Ticket ticket = findById(id);
+        return new TicketDto(ticket);
+    }
+
+    private Ticket findById(String id) throws NotFoundException {
         Ticket ticket = this.ticketRepository.findOne(id);
-        return ticket != null;
-    }
-
-    public List<TicketDto> findBetweenDates(Date start, Date end) {
-        List<Ticket> ticketList = this.ticketRepository.findByCreationDateBetweenOrderByCreationDateDesc(start, end);
-        List<TicketDto> ticketListDto = new ArrayList<TicketDto>();
-        for (Ticket ticket : ticketList) {
-            TicketDto ticketOutputDto = new TicketDto();
-            ticketOutputDto.setId(ticket.getId());
-            ticketListDto.add(ticketOutputDto);
+        if (ticket == null) {
+            throw new NotFoundException("Ticket(" + id + ")");
         }
-        return ticketListDto;
+        return ticket;
     }
 
-    public Optional<byte[]> updateTicket(String id, TicketCreationInputDto ticketCreationInputDto) {
-        Ticket ticket = this.ticketRepository.findOne(id);
-        assert ticket != null;
+    public Optional<byte[]> updateTicket(String id, TicketCreationInputDto ticketCreationInputDto) throws NotFoundException {
+        Ticket ticket = this.findById(id);
         ticket.setDebt(ticket.getDebt().subtract(ticketCreationInputDto.getCash()).subtract(ticketCreationInputDto.getCard())
                 .subtract(ticketCreationInputDto.getVoucher()));
         ticket.setCashDeposited(ticket.getCashDeposited().add(ticketCreationInputDto.getCash()));
@@ -171,13 +162,15 @@ public class TicketController {
         return pdfService.generateTicket(ticket);
     }
 
-    public Optional<TicketDto> read(String id) {
-        Ticket ticket = this.ticketRepository.findOne(id);
-        if (ticket != null) {
-            return Optional.of(new TicketDto(ticket));
-        } else {
-            return Optional.empty();
+    public List<TicketDto> findBetweenDates(Date start, Date end) {
+        List<Ticket> ticketList = this.ticketRepository.findByCreationDateBetweenOrderByCreationDateDesc(start, end);
+        List<TicketDto> ticketListDto = new ArrayList<TicketDto>();
+        for (Ticket ticket : ticketList) {
+            TicketDto ticketOutputDto = new TicketDto();
+            ticketOutputDto.setId(ticket.getId());
+            ticketListDto.add(ticketOutputDto);
         }
+        return ticketListDto;
     }
 
     public List<TicketSearchOutputDto> findByIdArticleDatesBetween(String id, Date dateStart, Date dateFinish) {
@@ -205,15 +198,16 @@ public class TicketController {
         return ticketListDto;
     }
 
-    public Optional<TicketDto> findLastByMobile(String mobile) {
+    public TicketDto findLastByMobile(String mobile) throws NotFoundException {
         User user = this.userRepository.findByMobile(mobile);
-        if (user != null) {
-            Ticket ticket = this.ticketRepository.findFirstByUserOrderByCreationDateDesc(user);
-            if (ticket != null) {
-                return Optional.of(new TicketDto(ticket));
-            }
+        if (user == null) {
+            throw new NotFoundException("Mobile(" + mobile + ")");
         }
-        return Optional.empty();
+        Ticket ticket = this.ticketRepository.findFirstByUserOrderByCreationDateDesc(user);
+        if (ticket == null) {
+            throw new NotFoundException("Not Ticket");
+        }
+        return new TicketDto(ticket);
     }
 
     public List<HistoricalProductOutPutDto> getHistoricalProductsDataBetweenDates(Date initDate, Date endDate) {
@@ -231,10 +225,10 @@ public class TicketController {
         return this.statisticsDataService.GetIncomeComparisionData(initDate, endDate);
     }
 
-    public Optional<List<UserNotCommitedOutputDto>> findByOrderArticleNotCommited(String orderId) {
+    public List<UserNotCommitedOutputDto> findByOrderArticleNotCommited(String orderId) throws NotFoundException {
         Order order = this.orderRepository.findOne(orderId);
         if (order == null) {
-            return Optional.empty();
+            throw new NotFoundException("Order(" + orderId + ")");
         }
         Map<String, Integer> entry = new HashMap<>();
         List<UserNotCommitedOutputDto> userNotCommitedList = new ArrayList<>();
@@ -265,7 +259,7 @@ public class TicketController {
             }
             userNotCommitedList.add(userNotCommited);
         }
-        return Optional.of(userNotCommitedList);
+        return userNotCommitedList;
     }
 
     public List<UserNotCommitedOutputDto> findByTicketsNotCommited() {
@@ -293,14 +287,14 @@ public class TicketController {
         return userNotCommitedList;
     }
 
-    public Optional<List<UserNotCommitedOutputDto>> findByFamilyIdNotCommited(String familyId) {
+    public List<UserNotCommitedOutputDto> findByFamilyIdNotCommited(String familyId) throws NotFoundException {
         FamilyComposite familyComposite = this.familyCompositeRepository.findOne(familyId);
         if (familyComposite == null) {
-            return Optional.empty();
+            throw new NotFoundException("Family(" + familyId + ")");
         }
         List<String> articlesIdList = familyComposite.getArticleIdList();
-        return Optional.of(generateUserNotCommitedOutputDto(
-                this.ticketRepository.findByShoopingListArticleIdNotCommited(articlesIdList.toArray(new String[0]))));
+        return this.generateUserNotCommitedOutputDto(
+                this.ticketRepository.findByShoopingListArticleIdNotCommited(articlesIdList.toArray(new String[0])));
     }
 
 }
