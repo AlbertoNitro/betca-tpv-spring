@@ -48,7 +48,7 @@ public class ProviderResource {
 
     @PutMapping(value = ID_ID)
     public void putProvider(@PathVariable String id, @Valid @RequestBody ProviderDto providerDto)
-            throws NotFoundException, FieldAlreadyExistException {
+            throws MethodArgumentNotValidException, NotFoundException, FieldAlreadyExistException {
         this.providerController.putProvider(id, providerDto);
     }
 

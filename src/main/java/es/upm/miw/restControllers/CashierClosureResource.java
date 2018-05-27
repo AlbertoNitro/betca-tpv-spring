@@ -7,6 +7,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -51,7 +52,7 @@ public class CashierClosureResource {
 
     @PostMapping(value = LAST + MOVEMENTS)
     public void createCashMovement(@Valid @RequestBody CashierMovementInputDto cashierMovementDto)
-            throws CashierException, NotFoundException {
+            throws MethodArgumentNotValidException, CashierException, NotFoundException {
         this.cashierClosureController.createCashierMovement(cashierMovementDto);
     }
 
@@ -66,7 +67,8 @@ public class CashierClosureResource {
     }
 
     @PatchMapping(value = LAST)
-    public void closeCashierClosure(@Valid @RequestBody CashierClosureInputDto cashierClosureDto) throws CashierException {
+    public void closeCashierClosure(@Valid @RequestBody CashierClosureInputDto cashierClosureDto)
+            throws MethodArgumentNotValidException, CashierException {
         cashierClosureController.close(cashierClosureDto);
     }
 

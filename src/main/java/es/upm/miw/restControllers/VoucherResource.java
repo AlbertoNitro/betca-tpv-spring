@@ -7,6 +7,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -36,7 +37,7 @@ public class VoucherResource {
     private VoucherController voucherController;
 
     @PostMapping(produces = {"application/pdf", "application/json"})
-    public byte[] createVoucher(@Valid @RequestBody VoucherDto voucherDto) throws FileException {
+    public byte[] createVoucher(@Valid @RequestBody VoucherDto voucherDto) throws MethodArgumentNotValidException, FileException {
         return this.voucherController.createVoucher(voucherDto.getValue()).orElseThrow(() -> new FileException("Voucher PDF exception"));
     }
 

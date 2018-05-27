@@ -16,11 +16,14 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 public class ApiExceptionHandler {
 
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    @ExceptionHandler({NotFoundException.class,
-
-            ArticlesFamilyNotFoudException.class, FileException.class,
-
-            OrderException.class, TicketIdNotFoundException.class})
+    @ExceptionHandler({
+        NotFoundException.class,
+        FileException.class,
+        
+        //TODO 
+        ArticlesFamilyNotFoudException.class,      
+        TicketIdNotFoundException.class
+    })
     @ResponseBody
     public ErrorMessage notFoundRequest(HttpServletRequest request, Exception exception) {
         return new ErrorMessage(exception, request.getRequestURI());
@@ -28,18 +31,32 @@ public class ApiExceptionHandler {
 
     // Exception
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ExceptionHandler({DuplicateKeyException.class, MethodArgumentNotValidException.class, HttpMessageNotReadableException.class,
+    @ExceptionHandler({
+        DuplicateKeyException.class,
+        MethodArgumentNotValidException.class,
+        HttpMessageNotReadableException.class,
+        
+        FieldAlreadyExistException.class,
+        CashierException.class,
+        InvoiceException.class,
+        OrderException.class,
+        VoucherException.class,
+        
+        //TODO
+        ArticlesFamilyCreationException.class,
+        FieldInvalidException.class,
 
-            FieldAlreadyExistException.class, InvoiceException.class,
-
-            ArticlesFamilyCreationException.class, CashierException.class, FieldInvalidException.class, VoucherException.class})
+    })
     @ResponseBody
     public ErrorMessage badRequest(HttpServletRequest request, Exception exception) {
         return new ErrorMessage(exception, request.getRequestURI());
     }
 
     @ResponseStatus(HttpStatus.FORBIDDEN)
-    @ExceptionHandler({AccessDeniedException.class, ForbiddenException.class})
+    @ExceptionHandler({
+        AccessDeniedException.class,
+        ForbiddenException.class
+    })
     @ResponseBody
     public ErrorMessage forbiddenRequest(Exception exception) {
         return new ErrorMessage(exception, "");

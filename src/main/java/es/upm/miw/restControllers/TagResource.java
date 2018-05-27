@@ -6,6 +6,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -35,7 +36,7 @@ public class TagResource {
     private TagController tagController;
 
     @PostMapping
-    public void create(@Valid @RequestBody TagDto tagDto) throws NotFoundException {
+    public void create(@Valid @RequestBody TagDto tagDto) throws MethodArgumentNotValidException, NotFoundException {
         this.tagController.create(tagDto);
     }
 
@@ -50,7 +51,8 @@ public class TagResource {
     }
 
     @PutMapping(value = ID_ID)
-    public void update(@PathVariable String id, @Valid @RequestBody TagDto tagDto) throws NotFoundException {
+    public void update(@PathVariable String id, @Valid @RequestBody TagDto tagDto)
+            throws MethodArgumentNotValidException, NotFoundException {
         this.tagController.update(id, tagDto);
     }
 
@@ -58,11 +60,10 @@ public class TagResource {
     public void delete(@PathVariable String id) {
         this.tagController.delete(id);
     }
-    
+
     @GetMapping
     public List<TagDto> findAll() {
         return this.tagController.findAll();
     }
-
 
 }

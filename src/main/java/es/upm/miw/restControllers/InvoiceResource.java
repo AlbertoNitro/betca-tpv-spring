@@ -7,6 +7,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -40,7 +41,7 @@ public class InvoiceResource {
 
     @PostMapping(produces = {"application/pdf", "application/json"})
     public byte[] createInvoice(@Valid @RequestBody InvoiceCreationInputDto invoiceCreationInputDto)
-            throws NotFoundException, InvoiceException {
+            throws MethodArgumentNotValidException, NotFoundException, InvoiceException {
         return this.invoiceController.createInvoice(invoiceCreationInputDto).orElseThrow(() -> new InvoiceException("Pdf"));
     }
 

@@ -104,7 +104,6 @@ public class TicketController {
         }
         ticket.setNote(ticketCreationDto.getNote());
         this.ticketRepository.save(ticket);
-        // ----------------------------------------------
         CashierClosure cashierClosure = this.cashierClosureRepository.findFirstByOrderByOpeningDateDesc();
         cashierClosure.addCash(ticketCreationDto.getCash());
         cashierClosure.addCard(ticketCreationDto.getCard());

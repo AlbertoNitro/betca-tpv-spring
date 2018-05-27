@@ -8,6 +8,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -63,7 +64,8 @@ public class TicketResource {
     private TicketController ticketController;
 
     @PostMapping(produces = {"application/pdf", "application/json"})
-    public byte[] createTicket(@Valid @RequestBody TicketCreationInputDto ticketCreationDto) throws FieldInvalidException {
+    public byte[] createTicket(@Valid @RequestBody TicketCreationInputDto ticketCreationDto)
+            throws MethodArgumentNotValidException, FieldInvalidException {
         return this.ticketController.createTicketAndPdf(ticketCreationDto)
                 .orElseThrow(() -> new FieldInvalidException("Article exception"));
     }

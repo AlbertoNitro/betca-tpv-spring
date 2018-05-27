@@ -49,7 +49,8 @@ public class ArticleResource {
     }
 
     @PutMapping(value = CODE_ID)
-    public void putArticle(@PathVariable String code, @Valid @RequestBody ArticleDto articleDto) throws NotFoundException {
+    public void putArticle(@PathVariable String code, @Valid @RequestBody ArticleDto articleDto)
+            throws MethodArgumentNotValidException, NotFoundException {
         this.articleController.updateArticle(code, articleDto);
     }
 

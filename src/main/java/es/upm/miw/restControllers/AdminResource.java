@@ -1,7 +1,5 @@
 package es.upm.miw.restControllers;
 
-import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -51,10 +49,7 @@ public class AdminResource {
 
     @PostMapping(value = DB)
     public void seedDb(@RequestBody String ymlFileName) throws FileException {
-        Optional<String> error = this.adminController.seedDatabase(ymlFileName);
-        if (error.isPresent()) {
-            throw new FileException(error.get());
-        }
+        this.adminController.seedDatabase(ymlFileName);
     }
 
 }

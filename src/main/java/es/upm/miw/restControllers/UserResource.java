@@ -58,14 +58,14 @@ public class UserResource {
     }
 
     @PutMapping(value = MOBILE_ID)
-    public void putCustomer(@PathVariable String mobile, @Valid @RequestBody UserDto userDto) throws ForbiddenException,
-            NotFoundException, FieldAlreadyExistException {
+    public void putCustomer(@PathVariable String mobile, @Valid @RequestBody UserDto userDto)
+            throws MethodArgumentNotValidException, ForbiddenException, NotFoundException, FieldAlreadyExistException {
         this.userController.updateUser(mobile, userDto, new Role[] {Role.CUSTOMER});
     }
 
     @PatchMapping(value = MOBILE_ID)
     public void updateOwnUser(@PathVariable String mobile, @Valid @RequestBody UserDto userDto, @AuthenticationPrincipal User activeUser)
-            throws NotFoundException, FieldAlreadyExistException, ForbiddenException {
+            throws MethodArgumentNotValidException, NotFoundException, FieldAlreadyExistException, ForbiddenException {
         this.userController.updateOwnUser(mobile, userDto, activeUser.getUsername());
     }
 
