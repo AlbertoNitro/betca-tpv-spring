@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import es.upm.miw.businessControllers.BudgetController;
 import es.upm.miw.dtos.BudgetDto;
-import es.upm.miw.exceptions.FileException;
+import es.upm.miw.exceptions.PdfException;
 import es.upm.miw.exceptions.NotFoundException;
 
 @PreAuthorize("hasRole('ADMIN') or hasRole('MANAGER') or hasRole('OPERATOR')")
@@ -33,13 +33,13 @@ public class BudgetResource {
 
     @PostMapping(produces = {"application/pdf", "application/json"})
     public byte[] createBudget(@Valid @RequestBody BudgetDto budgetCreationDto)
-            throws MethodArgumentNotValidException, NotFoundException, FileException {
-        return this.budgetController.createBudget(budgetCreationDto).orElseThrow(() -> new FileException("Budget PDF exception"));
+            throws MethodArgumentNotValidException, NotFoundException, PdfException {
+        return this.budgetController.createBudget(budgetCreationDto);
     }
 
     @GetMapping(value = ID_ID, produces = {"application/pdf", "application/json"})
-    public byte[] read(@PathVariable String id) throws NotFoundException, FileException {
-        return this.budgetController.read(id).orElseThrow(() -> new FileException("Budget PDF exception"));
+    public byte[] read(@PathVariable String id) throws NotFoundException, PdfException {
+        return this.budgetController.read(id);
     }
 
     @GetMapping

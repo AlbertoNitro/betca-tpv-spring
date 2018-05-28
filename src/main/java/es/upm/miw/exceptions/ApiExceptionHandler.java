@@ -18,10 +18,6 @@ public class ApiExceptionHandler {
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler({
         NotFoundException.class,
-        FileException.class,
-        
-        //TODO 
-        ArticlesFamilyNotFoudException.class     
     })
     @ResponseBody
     public ErrorMessage notFoundRequest(HttpServletRequest request, Exception exception) {
@@ -40,11 +36,7 @@ public class ApiExceptionHandler {
         CashierException.class,
         InvoiceException.class,
         OrderException.class,
-        VoucherException.class,
-        
-        //TODO
-        FieldInvalidException.class,
-
+        VoucherException.class
     })
     @ResponseBody
     public ErrorMessage badRequest(HttpServletRequest request, Exception exception) {
@@ -62,7 +54,10 @@ public class ApiExceptionHandler {
     }
 
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    @ExceptionHandler({Exception.class,})
+    @ExceptionHandler({
+        Exception.class,
+        PdfException.class        
+    })
     @ResponseBody
     public ErrorMessage exception(Exception exception) {
         exception.printStackTrace();

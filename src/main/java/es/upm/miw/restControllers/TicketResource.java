@@ -21,7 +21,7 @@ import es.upm.miw.businessControllers.TicketController;
 import es.upm.miw.dtos.TicketCreationInputDto;
 import es.upm.miw.dtos.TicketDto;
 import es.upm.miw.dtos.UserNotCommitedOutputDto;
-import es.upm.miw.exceptions.FileException;
+import es.upm.miw.exceptions.PdfException;
 import es.upm.miw.exceptions.NotFoundException;
 
 @PreAuthorize("hasRole('ADMIN') or hasRole('MANAGER') or hasRole('OPERATOR')")
@@ -53,8 +53,8 @@ public class TicketResource {
 
     @PostMapping(produces = {"application/pdf", "application/json"})
     public byte[] createTicket(@Valid @RequestBody TicketCreationInputDto ticketCreationDto)
-            throws MethodArgumentNotValidException, NotFoundException, FileException {
-        return this.ticketController.createTicketAndPdf(ticketCreationDto).orElseThrow(() -> new FileException("Pdf error"));
+            throws MethodArgumentNotValidException, NotFoundException, PdfException {
+        return this.ticketController.createTicketAndPdf(ticketCreationDto);
     }
 
     @GetMapping(value = ID_ID)
@@ -64,8 +64,8 @@ public class TicketResource {
 
     @PutMapping(value = ID_ID, produces = {"application/pdf", "application/json"})
     public byte[] updateTicket(@PathVariable String id, @RequestBody TicketCreationInputDto ticketCreationInputDto)
-            throws NotFoundException, FileException {
-        return this.ticketController.updateTicket(id, ticketCreationInputDto).orElseThrow(() -> new FileException("Pdf error"));
+            throws NotFoundException, PdfException {
+        return this.ticketController.updateTicket(id, ticketCreationInputDto);
     }
 
     @GetMapping(value = SEARCH_DATE)

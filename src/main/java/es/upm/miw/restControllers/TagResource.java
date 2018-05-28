@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import es.upm.miw.businessControllers.TagController;
 import es.upm.miw.dtos.TagDto;
-import es.upm.miw.exceptions.FileException;
+import es.upm.miw.exceptions.PdfException;
 import es.upm.miw.exceptions.NotFoundException;
 
 @PreAuthorize("hasRole('ADMIN') or hasRole('MANAGER') or hasRole('OPERATOR')")
@@ -46,8 +46,8 @@ public class TagResource {
     }
 
     @GetMapping(value = ID_ID + STICKER)
-    public byte[] tag24(@PathVariable String id) throws NotFoundException, FileException {
-        return this.tagController.tag24(id).orElseThrow(() -> new FileException("Tag pdf exception"));
+    public byte[] tag24(@PathVariable String id) throws NotFoundException, PdfException {
+        return this.tagController.tag24(id);
     }
 
     @PutMapping(value = ID_ID)

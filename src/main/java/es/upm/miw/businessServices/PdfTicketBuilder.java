@@ -7,9 +7,8 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.Optional;
 
-import org.apache.log4j.Logger;
+import org.apache.log4j.LogManager;
 
 import com.itextpdf.barcodes.Barcode128;
 import com.itextpdf.barcodes.BarcodeQRCode;
@@ -26,6 +25,8 @@ import com.itextpdf.layout.element.Table;
 import com.itextpdf.layout.property.HorizontalAlignment;
 import com.itextpdf.layout.property.TextAlignment;
 import com.itextpdf.layout.property.VerticalAlignment;
+
+import es.upm.miw.exceptions.PdfException;
 
 public class PdfTicketBuilder extends PdfBuilder {
 
@@ -53,7 +54,7 @@ public class PdfTicketBuilder extends PdfBuilder {
 
     private static final int IMAGE_WIDTH = 80;
 
-    public PdfTicketBuilder(String path, int lines) {
+    public PdfTicketBuilder(String path, int lines) throws PdfException {
         super(path);
         this.prepareDocument(new PageSize(TERMIC_PAGE_WIDHT, TERMIC_PAGE_HEIGHT + lines * 15));
         this.getDocument().setMargins(TERMIC_MARGIN_TOP_BOTTOM, TERMIC_MARGIN_RIGHT, TERMIC_MARGIN_TOP_BOTTOM, TERMIC_MARGIN_LEFT);
@@ -104,24 +105,27 @@ public class PdfTicketBuilder extends PdfBuilder {
         return this;
     }
 
-    private String absolutePathOfResource(String resource) {
+    private String absolutePathOfResource(String resource) throws PdfException {
         URL resourceURL = getClass().getClassLoader().getResource(resource);
         try {
             return Paths.get(resourceURL.toURI()).toFile().getAbsolutePath();
         } catch (URISyntaxException use) {
-            Logger.getLogger(this.getClass()).error("URI: " + use);
+            LogManager.getLogger(this.getClass())
+                    .error("PdfTicketBuilder::absolutePathOfResource. Error when get resource URL(" + resource + "). " + use);
+            throw new PdfException("Can’t find image to PDF (" + resource + ")");
         }
-        return resource;
     }
 
-    public PdfTicketBuilder addImage(String fileName) {
+    public PdfTicketBuilder addImage(String fileName) throws PdfException {
         try {
             Image img = new Image(ImageDataFactory.create(this.absolutePathOfResource("img/" + fileName)));
             img.setWidth(IMAGE_WIDTH);
             img.setHorizontalAlignment(HorizontalAlignment.CENTER);
             this.getDocument().add(img);
         } catch (MalformedURLException mue) {
-            Logger.getLogger(this.getClass()).error("File: " + mue);
+            LogManager.getLogger(this.getClass())
+                    .error("PdfTicketBuilder::addImage. Error when add image to PDF (" + fileName + "). " + mue);
+            throw new PdfException("Can’t add image to PDF (" + fileName + ")");
         }
         return this;
     }
@@ -158,14 +162,14 @@ public class PdfTicketBuilder extends PdfBuilder {
         return this;
     }
 
-    public Optional<byte[]> build() {
+    public byte[] build() throws PdfException {
         this.getDocument().close();
         try {
-            return Optional.of(Files.readAllBytes(new File(this.getFullPath()).toPath()));
+            return Files.readAllBytes(new File(this.getFullPath()).toPath());
         } catch (IOException ioe) {
-            Logger.getLogger(this.getClass()).error("IO: " + ioe);
+            LogManager.getLogger(this.getClass()).error("PdfTicketBuilder::build. Error when read bytes to PDF. " + ioe);
+            throw new PdfException("Can’t read PDF (" + this.getFullPath() + ")");
         }
-        return Optional.empty();
     }
 
 }

@@ -19,7 +19,6 @@ import es.upm.miw.documents.core.FamilyType;
 import es.upm.miw.dtos.ArticleDto;
 import es.upm.miw.dtos.ArticlesFamilyDto;
 import es.upm.miw.exceptions.ArticlesFamilyException;
-import es.upm.miw.exceptions.ArticlesFamilyNotFoudException;
 import es.upm.miw.exceptions.NotFoundException;
 
 @PreAuthorize("hasRole('ADMIN') or hasRole('MANAGER') or hasRole('OPERATOR')")
@@ -86,7 +85,7 @@ public class ArticlesFamilyResource {
 
     @PatchMapping(value = ID_ID)
     public void updateReferenceAndDescription(@PathVariable String id, @RequestBody ArticlesFamilyDto articlesFamilyDto)
-            throws ArticlesFamilyNotFoudException, ArticlesFamilyException {
+            throws ArticlesFamilyException {
         if (articlesFamilyDto.getDescription() == null) {
             throw new ArticlesFamilyException("Description field must have value");
         }

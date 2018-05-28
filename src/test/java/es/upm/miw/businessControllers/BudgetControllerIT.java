@@ -17,6 +17,7 @@ import es.upm.miw.businessControllers.BudgetController;
 import es.upm.miw.documents.core.Budget;
 import es.upm.miw.dtos.BudgetDto;
 import es.upm.miw.dtos.ShoppingDto;
+import es.upm.miw.exceptions.PdfException;
 import es.upm.miw.exceptions.NotFoundException;
 import es.upm.miw.repositories.core.BudgetRepository;
 
@@ -32,7 +33,7 @@ public class BudgetControllerIT {
     private BudgetController budgetController;
 
     @Test
-    public void testCreateBudget() throws NotFoundException {
+    public void testCreateBudget() throws NotFoundException, PdfException {
         List<ShoppingDto> shoppingList = new ArrayList<ShoppingDto>();
         shoppingList.add(new ShoppingDto("1", "various", new BigDecimal("100"), 1, new BigDecimal("50.00"), new BigDecimal("50"), false));
         BudgetDto budgetCreationDto = new BudgetDto(shoppingList);

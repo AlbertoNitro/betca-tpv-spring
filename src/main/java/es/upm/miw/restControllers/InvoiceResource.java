@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import es.upm.miw.businessControllers.InvoiceController;
 import es.upm.miw.dtos.InvoiceCreationInputDto;
 import es.upm.miw.dtos.InvoiceOutputDto;
+import es.upm.miw.exceptions.PdfException;
 import es.upm.miw.exceptions.InvoiceException;
 import es.upm.miw.exceptions.NotFoundException;
 
@@ -41,8 +42,8 @@ public class InvoiceResource {
 
     @PostMapping(produces = {"application/pdf", "application/json"})
     public byte[] createInvoice(@Valid @RequestBody InvoiceCreationInputDto invoiceCreationInputDto)
-            throws MethodArgumentNotValidException, NotFoundException, InvoiceException {
-        return this.invoiceController.createInvoice(invoiceCreationInputDto).orElseThrow(() -> new InvoiceException("Pdf"));
+            throws MethodArgumentNotValidException, NotFoundException, InvoiceException, PdfException {
+        return this.invoiceController.createInvoice(invoiceCreationInputDto);
     }
 
     @GetMapping(value = ID_ID)

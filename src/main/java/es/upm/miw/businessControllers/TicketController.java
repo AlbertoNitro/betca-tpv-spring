@@ -8,7 +8,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -32,6 +31,7 @@ import es.upm.miw.dtos.TicketCreationInputDto;
 import es.upm.miw.dtos.TicketDto;
 import es.upm.miw.dtos.TicketSearchOutputDto;
 import es.upm.miw.dtos.UserNotCommitedOutputDto;
+import es.upm.miw.exceptions.PdfException;
 import es.upm.miw.exceptions.NotFoundException;
 import es.upm.miw.repositories.core.ArticleRepository;
 import es.upm.miw.repositories.core.CashierClosureRepository;
@@ -112,7 +112,7 @@ public class TicketController {
         return ticket;
     }
 
-    public Optional<byte[]> createTicketAndPdf(TicketCreationInputDto ticketCreationDto) throws NotFoundException {
+    public byte[] createTicketAndPdf(TicketCreationInputDto ticketCreationDto) throws NotFoundException, PdfException {
         return pdfService.generateTicket(this.createTicket(ticketCreationDto));
     }
 
@@ -129,7 +129,7 @@ public class TicketController {
         return ticket;
     }
 
-    public Optional<byte[]> updateTicket(String id, TicketCreationInputDto ticketCreationInputDto) throws NotFoundException {
+    public byte[] updateTicket(String id, TicketCreationInputDto ticketCreationInputDto) throws NotFoundException, PdfException {
         Ticket ticket = this.findById(id);
         ticket.setDebt(ticket.getDebt().subtract(ticketCreationInputDto.getCash()).subtract(ticketCreationInputDto.getCard())
                 .subtract(ticketCreationInputDto.getVoucher()));

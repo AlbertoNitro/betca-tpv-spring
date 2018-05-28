@@ -20,6 +20,7 @@ import es.upm.miw.businessControllers.TicketController;
 import es.upm.miw.documents.core.Ticket;
 import es.upm.miw.dtos.ShoppingDto;
 import es.upm.miw.dtos.TicketCreationInputDto;
+import es.upm.miw.exceptions.PdfException;
 import es.upm.miw.exceptions.NotFoundException;
 import es.upm.miw.repositories.core.TicketRepository;
 
@@ -43,7 +44,7 @@ public class TicketControllerIT {
     }
 
     @Test
-    public void testCreateTicket() throws NotFoundException {
+    public void testCreateTicket() throws NotFoundException, PdfException {
         TicketCreationInputDto ticketCreationInputDto = new TicketCreationInputDto(new BigDecimal("70"), BigDecimal.ZERO, BigDecimal.ZERO,
                 new ArrayList<ShoppingDto>(), "Nota asociada al ticket");
         ticketCreationInputDto.getShoppingCart()

@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import es.upm.miw.businessControllers.VoucherController;
 import es.upm.miw.dtos.VoucherDto;
-import es.upm.miw.exceptions.FileException;
+import es.upm.miw.exceptions.PdfException;
 import es.upm.miw.exceptions.NotFoundException;
 import es.upm.miw.exceptions.VoucherException;
 
@@ -37,8 +37,8 @@ public class VoucherResource {
     private VoucherController voucherController;
 
     @PostMapping(produces = {"application/pdf", "application/json"})
-    public byte[] createVoucher(@Valid @RequestBody VoucherDto voucherDto) throws MethodArgumentNotValidException, FileException {
-        return this.voucherController.createVoucher(voucherDto.getValue()).orElseThrow(() -> new FileException("Voucher PDF exception"));
+    public byte[] createVoucher(@Valid @RequestBody VoucherDto voucherDto) throws MethodArgumentNotValidException, PdfException {
+        return this.voucherController.createVoucher(voucherDto.getValue());
     }
 
     @GetMapping(value = ID_ID)

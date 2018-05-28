@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import es.upm.miw.businessControllers.AdminController;
-import es.upm.miw.exceptions.FileException;
+import es.upm.miw.exceptions.NotFoundException;
 
 @PreAuthorize("hasRole('ADMIN')")
 @RestController
@@ -48,7 +48,7 @@ public class AdminResource {
     }
 
     @PostMapping(value = DB)
-    public void seedDb(@RequestBody String ymlFileName) throws FileException {
+    public void seedDb(@RequestBody String ymlFileName) throws NotFoundException {
         this.adminController.seedDatabase(ymlFileName);
     }
 

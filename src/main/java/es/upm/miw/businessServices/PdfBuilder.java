@@ -3,13 +3,15 @@ package es.upm.miw.businessServices;
 import java.io.File;
 import java.io.FileNotFoundException;
 
-import org.apache.log4j.Logger;
+import org.apache.log4j.LogManager;
 
 import com.itextpdf.kernel.geom.PageSize;
 import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfWriter;
 import com.itextpdf.layout.Document;
 import com.itextpdf.layout.element.Table;
+
+import es.upm.miw.exceptions.PdfException;
 
 public class PdfBuilder {
 
@@ -19,18 +21,18 @@ public class PdfBuilder {
 
     public static final String PDF_FILE_EXT = ".pdf";
 
-    private String fullPath;
+    private String filename;
 
     private Document document;
 
     private Table table;
 
     public PdfBuilder(String path) {
-        fullPath = System.getProperty(USER_HOME) + ROOT_PDFS + path + PDF_FILE_EXT;
+        this.filename = System.getProperty(USER_HOME) + ROOT_PDFS + path + PDF_FILE_EXT;
     }
 
     public String getFullPath() {
-        return fullPath;
+        return filename;
     }
 
     public Document getDocument() {
@@ -45,16 +47,18 @@ public class PdfBuilder {
         this.table = table;
     }
 
-    public void prepareDocument(PageSize pageSize) {
-        File file = new File(fullPath);
+    public void prepareDocument(PageSize pageSize) throws PdfException {
+        File file = new File(this.filename);
         if (!file.exists()) {
             file.getParentFile().mkdirs();
         }
         try {
-            PdfDocument pdf = new PdfDocument(new PdfWriter(fullPath));
+            PdfDocument pdf = new PdfDocument(new PdfWriter(filename));
             document = new Document(pdf, pageSize);
         } catch (FileNotFoundException fnfe) {
-            Logger.getLogger(this.getClass()).error("File: " + fnfe);
+            LogManager.getLogger(this.getClass())
+                    .error("PdfBuilder::prepareDocuemnt. Error when creating the pdf document (" + this.filename + "). " + fnfe);
+            throw new PdfException("Can’t create PDF (" + this.filename + ")");
         }
     }
 

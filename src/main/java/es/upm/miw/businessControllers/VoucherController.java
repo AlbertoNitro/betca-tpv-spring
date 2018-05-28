@@ -4,7 +4,6 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
@@ -14,6 +13,7 @@ import es.upm.miw.businessServices.Encrypting;
 import es.upm.miw.businessServices.PdfService;
 import es.upm.miw.documents.core.Voucher;
 import es.upm.miw.dtos.VoucherDto;
+import es.upm.miw.exceptions.PdfException;
 import es.upm.miw.exceptions.NotFoundException;
 import es.upm.miw.exceptions.VoucherException;
 import es.upm.miw.repositories.core.VoucherRepository;
@@ -27,7 +27,7 @@ public class VoucherController {
     @Autowired
     private PdfService pdfService;
 
-    public Optional<byte[]> createVoucher(BigDecimal value) {
+    public byte[] createVoucher(BigDecimal value) throws PdfException {
         Voucher voucher = new Voucher(value);
         String id;
         do {

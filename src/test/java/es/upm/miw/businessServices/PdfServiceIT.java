@@ -18,6 +18,7 @@ import es.upm.miw.documents.core.Budget;
 import es.upm.miw.documents.core.Shopping;
 import es.upm.miw.documents.core.Ticket;
 import es.upm.miw.documents.core.Voucher;
+import es.upm.miw.exceptions.PdfException;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -28,7 +29,7 @@ public class PdfServiceIT {
     private PdfService pdfService;
 
     @Test
-    public void testGenerateLabels48() {
+    public void testGenerateLabels48() throws PdfException {
         List<Article> articles = new ArrayList<>();
         for (long i = 0; i < 48; i++) {
             articles.add(Article.builder().code(new Barcode().generateEan13code(840000005000L + i)).description("d" + i).reference("r" + i)
@@ -38,7 +39,7 @@ public class PdfServiceIT {
     }
 
     @Test
-    public void testGenerateTicket() {
+    public void testGenerateTicket() throws PdfException {
         Article article = Article.builder().code("8400000000017").description("Descripción articulo").build();
         article.setRetailPrice(new BigDecimal("100.10"));
         Shopping[] shoppingList = new Shopping[6];
@@ -53,7 +54,7 @@ public class PdfServiceIT {
     }
 
     @Test
-    public void testGenerateBudget() {
+    public void testGenerateBudget() throws PdfException {
         Article article = Article.builder().code("8400000000017").description("Descripción articulo").build();
         article.setRetailPrice(new BigDecimal("100.10"));
         Shopping[] shoppingList = new Shopping[6];
@@ -69,7 +70,7 @@ public class PdfServiceIT {
     }
 
     @Test
-    public void testGenerateVoucher() {
+    public void testGenerateVoucher() throws PdfException {
         Voucher voucher = new Voucher(new BigDecimal(55));
         voucher.setId("2jC7A_9B");
         pdfService.generateVoucher(voucher);
