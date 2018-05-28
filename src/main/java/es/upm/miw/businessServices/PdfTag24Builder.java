@@ -3,9 +3,8 @@ package es.upm.miw.businessServices;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.util.Optional;
 
-import org.apache.log4j.Logger;
+import org.apache.log4j.LogManager;
 
 import com.itextpdf.barcodes.BarcodeEAN;
 import com.itextpdf.kernel.geom.PageSize;
@@ -18,11 +17,13 @@ import com.itextpdf.layout.property.AreaBreakType;
 import com.itextpdf.layout.property.HorizontalAlignment;
 import com.itextpdf.layout.property.TextAlignment;
 
+import es.upm.miw.exceptions.PdfException;
+
 public class PdfTag24Builder extends PdfBuilder {
 
     private int tag24 = 0;
 
-    public PdfTag24Builder(String path) {
+    public PdfTag24Builder(String path) throws PdfException {
         super(path);
         this.prepareDocument(PageSize.A4);
     }
@@ -63,7 +64,7 @@ public class PdfTag24Builder extends PdfBuilder {
         return this;
     }
 
-    public Optional<byte[]> build() {
+    public byte[] build() throws PdfException {
         while (tag24 % 3 != 0) {
             Cell cell = new Cell();
             cell.setBorder(Border.NO_BORDER);
@@ -73,11 +74,12 @@ public class PdfTag24Builder extends PdfBuilder {
         }
         this.getDocument().close();
         try {
-            return Optional.of(Files.readAllBytes(new File(this.getFullPath()).toPath()));
+            return Files.readAllBytes(new File(this.getFullPath()).toPath());
         } catch (IOException ioe) {
-            Logger.getLogger(this.getClass()).error("IO: " + ioe);
+            LogManager.getLogger(this.getClass())
+            .error("PdfTicketBuilder::build. Error when read bytes to PDF. " + ioe);
+            throw new PdfException("Can’t read PDF (" + this.getFullPath() + ")");
         }
-        return Optional.empty();
     }
 
 }

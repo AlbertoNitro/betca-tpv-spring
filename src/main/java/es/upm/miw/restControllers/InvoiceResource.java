@@ -7,6 +7,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import es.upm.miw.businessControllers.InvoiceController;
 import es.upm.miw.dtos.InvoiceCreationInputDto;
 import es.upm.miw.dtos.InvoiceOutputDto;
-import es.upm.miw.exceptions.InvoiceException;
+import es.upm.miw.exceptions.PdfException;
 import es.upm.miw.exceptions.NotFoundException;
 
 @PreAuthorize("hasRole('ADMIN') or hasRole('MANAGER') or hasRole('OPERATOR')")
@@ -40,8 +41,8 @@ public class InvoiceResource {
 
     @PostMapping(produces = {"application/pdf", "application/json"})
     public byte[] createInvoice(@Valid @RequestBody InvoiceCreationInputDto invoiceCreationInputDto)
-            throws NotFoundException, InvoiceException {
-        return this.invoiceController.createInvoice(invoiceCreationInputDto).orElseThrow(() -> new InvoiceException("Pdf"));
+            throws MethodArgumentNotValidException, NotFoundException, PdfException {
+        return this.invoiceController.createInvoice(invoiceCreationInputDto);
     }
 
     @GetMapping(value = ID_ID)

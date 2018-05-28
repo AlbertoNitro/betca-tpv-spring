@@ -6,6 +6,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import es.upm.miw.businessControllers.TagController;
 import es.upm.miw.dtos.TagDto;
-import es.upm.miw.exceptions.FileException;
+import es.upm.miw.exceptions.PdfException;
 import es.upm.miw.exceptions.NotFoundException;
 
 @PreAuthorize("hasRole('ADMIN') or hasRole('MANAGER') or hasRole('OPERATOR')")
@@ -35,7 +36,7 @@ public class TagResource {
     private TagController tagController;
 
     @PostMapping
-    public void create(@Valid @RequestBody TagDto tagDto) throws NotFoundException {
+    public void create(@Valid @RequestBody TagDto tagDto) throws MethodArgumentNotValidException, NotFoundException {
         this.tagController.create(tagDto);
     }
 
@@ -45,12 +46,13 @@ public class TagResource {
     }
 
     @GetMapping(value = ID_ID + STICKER)
-    public byte[] tag24(@PathVariable String id) throws NotFoundException, FileException {
-        return this.tagController.tag24(id).orElseThrow(() -> new FileException("Tag pdf exception"));
+    public byte[] tag24(@PathVariable String id) throws NotFoundException, PdfException {
+        return this.tagController.tag24(id);
     }
 
     @PutMapping(value = ID_ID)
-    public void update(@PathVariable String id, @Valid @RequestBody TagDto tagDto) throws NotFoundException {
+    public void update(@PathVariable String id, @Valid @RequestBody TagDto tagDto)
+            throws MethodArgumentNotValidException, NotFoundException {
         this.tagController.update(id, tagDto);
     }
 
@@ -58,11 +60,10 @@ public class TagResource {
     public void delete(@PathVariable String id) {
         this.tagController.delete(id);
     }
-    
+
     @GetMapping
     public List<TagDto> findAll() {
         return this.tagController.findAll();
     }
-
 
 }

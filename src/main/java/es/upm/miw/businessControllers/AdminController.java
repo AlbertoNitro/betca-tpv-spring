@@ -1,12 +1,12 @@
 package es.upm.miw.businessControllers;
 
 import java.io.IOException;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
 import es.upm.miw.dataServices.DatabaseSeederService;
+import es.upm.miw.exceptions.NotFoundException;
 
 @Controller
 public class AdminController {
@@ -18,12 +18,11 @@ public class AdminController {
         this.databaseSeederService.deleteAllAndCreateAdmin();
     }
 
-    public Optional<String> seedDatabase(String ymlFileName) {
+    public void seedDatabase(String ymlFileName) throws NotFoundException {
         try {
             this.databaseSeederService.seedDatabase(ymlFileName);
-            return Optional.empty();
         } catch (IOException ioe) {
-            return Optional.of(ioe.getMessage());
+            throw new NotFoundException(ioe.getMessage());
         }
     }
 

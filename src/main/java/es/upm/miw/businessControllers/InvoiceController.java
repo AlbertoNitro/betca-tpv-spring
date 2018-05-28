@@ -5,7 +5,6 @@ import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -19,6 +18,7 @@ import es.upm.miw.documents.core.Ticket;
 import es.upm.miw.documents.core.User;
 import es.upm.miw.dtos.InvoiceCreationInputDto;
 import es.upm.miw.dtos.InvoiceOutputDto;
+import es.upm.miw.exceptions.PdfException;
 import es.upm.miw.exceptions.NotFoundException;
 import es.upm.miw.repositories.core.InvoiceRepository;
 import es.upm.miw.repositories.core.PropertyRepository;
@@ -55,7 +55,7 @@ public class InvoiceController {
     @Value("${miw.tax.free}")
     private BigDecimal ivaFree;
 
-    public Optional<byte[]> createInvoice(InvoiceCreationInputDto invoiceCreationInputDto) throws NotFoundException {
+    public byte[] createInvoice(InvoiceCreationInputDto invoiceCreationInputDto) throws NotFoundException, PdfException {
         User user = this.userRepository.findByMobile(invoiceCreationInputDto.getMobile());
         Ticket ticket = this.ticketRepository.findOne(invoiceCreationInputDto.getTicketId());
         if (user == null) {

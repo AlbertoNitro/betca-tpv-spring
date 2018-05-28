@@ -2,7 +2,6 @@ package es.upm.miw.businessControllers;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
@@ -13,6 +12,7 @@ import es.upm.miw.documents.core.Article;
 import es.upm.miw.documents.core.Tag;
 import es.upm.miw.dtos.ArticleMinimumDto;
 import es.upm.miw.dtos.TagDto;
+import es.upm.miw.exceptions.PdfException;
 import es.upm.miw.exceptions.NotFoundException;
 import es.upm.miw.repositories.core.ArticleRepository;
 import es.upm.miw.repositories.core.TagRepository;
@@ -59,7 +59,7 @@ public class TagController {
         return tag;
     }
 
-    public Optional<byte[]> tag24(String id) throws NotFoundException {
+    public byte[] tag24(String id) throws NotFoundException, PdfException {
         Tag tag = readOne(id);
         return this.pdfService.generateLabels24(tag.getArticleList());
     }

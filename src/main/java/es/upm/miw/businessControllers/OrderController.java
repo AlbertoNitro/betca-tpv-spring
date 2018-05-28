@@ -14,8 +14,8 @@ import es.upm.miw.documents.core.Provider;
 import es.upm.miw.dtos.OrderBaseOutputDto;
 import es.upm.miw.dtos.OrderDto;
 import es.upm.miw.dtos.OrderLineDto;
+import es.upm.miw.exceptions.BadRequestException;
 import es.upm.miw.exceptions.NotFoundException;
-import es.upm.miw.exceptions.OrderException;
 import es.upm.miw.repositories.core.ArticleRepository;
 import es.upm.miw.repositories.core.OrderRepository;
 import es.upm.miw.repositories.core.ProviderRepository;
@@ -54,10 +54,10 @@ public class OrderController {
         return orderLineList;
     }
 
-    public void update(String id, OrderDto orderDto) throws NotFoundException, OrderException {
+    public void update(String id, OrderDto orderDto) throws NotFoundException, BadRequestException {
         Order order = readOne(id);
         if (order.getClosingDate() != null) {
-            throw new OrderException("Already closed");
+            throw new BadRequestException("Already closed");
         }
         order.setDescription(orderDto.getDescription());
         order.setOrderLine(this.createOrderLineList(orderDto.getOrdersLine()).toArray(new OrderLine[0]));
@@ -72,13 +72,13 @@ public class OrderController {
         return order;
     }
 
-    public void orderEntry(String id, OrderDto orderDto) throws NotFoundException, OrderException {
+    public void orderEntry(String id, OrderDto orderDto) throws NotFoundException, BadRequestException {
         Order order = readOne(id);
         if (order.getClosingDate() != null) {
-            throw new OrderException("Already closed");
+            throw new BadRequestException("Already closed");
         }
         if (orderDto.getOrdersLine().size() != order.getOrderLine().length) {
-            throw new OrderException("Entry List is distinct order line list of BD");
+            throw new BadRequestException("Entry List is distinct order line list of BD");
         }
         for (int i = 0; i < orderDto.getOrdersLine().size(); i++) {
             int finalAmount = orderDto.getOrdersLine().get(i).getFinalAmount();
@@ -95,10 +95,10 @@ public class OrderController {
         return new OrderDto(readOne(id));
     }
 
-    public void delete(String id) throws OrderException {
+    public void delete(String id) throws BadRequestException {
         Order order = this.orderRepository.findOne(id);
         if (order.getClosingDate() != null) {
-            throw new OrderException("Already closed. Cannot be deleted (" + id + ")");
+            throw new BadRequestException("Already closed. Cannot be deleted (" + id + ")");
         }
         this.orderRepository.delete(order);
     }

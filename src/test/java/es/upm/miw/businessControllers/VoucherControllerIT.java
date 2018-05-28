@@ -13,8 +13,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import es.upm.miw.businessControllers.VoucherController;
 import es.upm.miw.documents.core.Voucher;
+import es.upm.miw.exceptions.BadRequestException;
 import es.upm.miw.exceptions.NotFoundException;
-import es.upm.miw.exceptions.VoucherException;
 import es.upm.miw.repositories.core.VoucherRepository;
 
 @RunWith(SpringRunner.class)
@@ -37,7 +37,7 @@ public class VoucherControllerIT {
     }
     
     @Test
-    public void testConsumedVoucherTrue() throws NotFoundException, VoucherException {
+    public void testConsumedVoucherTrue() throws NotFoundException, BadRequestException {
         this.voucherController.consumeVoucher(this.voucher.getId());
     }
 

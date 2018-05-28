@@ -15,7 +15,7 @@ import es.upm.miw.documents.core.Voucher;
 import es.upm.miw.dtos.CashierClosureInputDto;
 import es.upm.miw.dtos.CashierLastOutputDto;
 import es.upm.miw.dtos.ClosedCashierOutputDto;
-import es.upm.miw.exceptions.CashierException;
+import es.upm.miw.exceptions.BadRequestException;
 import es.upm.miw.exceptions.NotFoundException;
 import es.upm.miw.dtos.CashierClosingOutputDto;
 import es.upm.miw.dtos.CashierMovementInputDto;
@@ -39,18 +39,18 @@ public class CashierClosureController {
     @Autowired
     private UserRepository userRepository;
 
-    public void createCashierClosure() throws CashierException {
+    public void createCashierClosure() throws BadRequestException {
         CashierClosure lastCashierClosure = this.cashierClosureRepository.findFirstByOrderByOpeningDateDesc();
         assert lastCashierClosure != null;
         if (!lastCashierClosure.isClosed()) {
-            throw new CashierException("Already opened: " + lastCashierClosure.getId());
+            throw new BadRequestException("Already opened: " + lastCashierClosure.getId());
         }
         this.cashierClosureRepository.save(new CashierClosure(lastCashierClosure.getFinalCash()));
     }
 
-    public void createCashierMovement(CashierMovementInputDto cashierMovementInputDto) throws CashierException, NotFoundException {
+    public void createCashierMovement(CashierMovementInputDto cashierMovementInputDto) throws NotFoundException, BadRequestException {
         if (this.readCashierClosureLast().isClosed()) {
-            throw new CashierException("Cashier closed");
+            throw new BadRequestException("Cashier closed");
         }
         User user = this.userRepository.findByMobile(cashierMovementInputDto.getAuthorMobile());
         if (user == null) {
@@ -67,11 +67,11 @@ public class CashierClosureController {
         return new CashierLastOutputDto(lastCashierClosure);
     }
 
-    public CashierClosingOutputDto readTotalsFromLast() throws CashierException {
+    public CashierClosingOutputDto readTotalsFromLast() throws BadRequestException {
         CashierClosure lastCashierClosure = this.cashierClosureRepository.findFirstByOrderByOpeningDateDesc();
         assert lastCashierClosure != null;
         if (lastCashierClosure.isClosed()) {
-            throw new CashierException("Cashier already closed: " + lastCashierClosure.getId());
+            throw new BadRequestException("Cashier already closed: " + lastCashierClosure.getId());
         }
         CashierClosingOutputDto cashierClosingOutputDto = new CashierClosingOutputDto();
         BigDecimal totalVoucher = this.totalVouchers(lastCashierClosure.getOpeningDate());
@@ -83,11 +83,11 @@ public class CashierClosureController {
         return cashierClosingOutputDto;
     }
 
-    public void close(CashierClosureInputDto cashierClosureDto) throws CashierException {
+    public void close(CashierClosureInputDto cashierClosureDto) throws BadRequestException {
         CashierClosure lastCashierClosure = this.cashierClosureRepository.findFirstByOrderByOpeningDateDesc();
         assert lastCashierClosure != null;
         if (lastCashierClosure.isClosed()) {
-            throw new CashierException("Cashier already closed: " + lastCashierClosure.getId());
+            throw new BadRequestException("Cashier already closed: " + lastCashierClosure.getId());
         }
         Date cashierOpenedDate = cashierClosureRepository.findFirstByOrderByOpeningDateDesc().getOpeningDate();
         lastCashierClosure.close(cashierClosureDto.getSalesCard(), cashierClosureDto.getFinalCash(), this.usedVouchers(cashierOpenedDate),

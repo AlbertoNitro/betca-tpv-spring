@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -16,6 +15,8 @@ import es.upm.miw.documents.core.FamilyComposite;
 import es.upm.miw.documents.core.FamilyType;
 import es.upm.miw.dtos.ArticleDto;
 import es.upm.miw.dtos.ArticlesFamilyDto;
+import es.upm.miw.exceptions.BadRequestException;
+import es.upm.miw.exceptions.NotFoundException;
 import es.upm.miw.repositories.core.ArticleRepository;
 import es.upm.miw.repositories.core.ArticlesFamilyRepository;
 import es.upm.miw.repositories.core.FamilyArticleRepository;
@@ -36,13 +37,10 @@ public class ArticlesFamilyController {
     @Autowired
     private ArticleRepository articlesRepository;
 
-    public Optional<List<ArticlesFamilyDto>> readArticlesFamily(String id) {
+    public List<ArticlesFamilyDto> readArticlesFamily(String id) throws NotFoundException {
         List<ArticlesFamilyDto> articlesFamiliaOutputDtoList = new ArrayList<>();
 
-        ArticlesFamily articlesFamily = this.articlesFamilyRepository.findOne(id);
-        if (articlesFamily == null) {
-            return Optional.empty();
-        }
+        ArticlesFamily articlesFamily = findById(id);
         for (ArticlesFamily articlesFamilyIn : articlesFamily.getArticlesFamilyList()) {
             articlesFamiliaOutputDtoList.add(new ArticlesFamilyDto(articlesFamilyIn));
         }
@@ -54,7 +52,15 @@ public class ArticlesFamilyController {
                 }
             });
         }
-        return Optional.of(articlesFamiliaOutputDtoList);
+        return articlesFamiliaOutputDtoList;
+    }
+
+    private ArticlesFamily findById(String id) throws NotFoundException {
+        ArticlesFamily articlesFamily = this.articlesFamilyRepository.findOne(id);
+        if (articlesFamily == null) {
+            throw new NotFoundException("Articles Family (" + id + ")");
+        }
+        return articlesFamily;
     }
 
     public List<ArticlesFamilyDto> readAll() {
@@ -69,11 +75,11 @@ public class ArticlesFamilyController {
         return articlesFamiliaOutputDtoList;
     }
 
-    public Optional<String> create(ArticlesFamilyDto articlesFamilyDto) {
+    public void create(ArticlesFamilyDto articlesFamilyDto) throws NotFoundException {
         if (articlesFamilyDto.getFamilyType().equals(FamilyType.ARTICLE)) {
             Article article = this.articlesRepository.findOne(articlesFamilyDto.getArticleId());
             if (article == null) {
-                return Optional.of("Article id not found. " + articlesFamilyDto.getArticleId());
+                throw new NotFoundException("Articles Family (" + articlesFamilyDto.getArticleId() + ")");
             }
             this.articlesFamilyRepository.save(new FamilyArticle(article));
         } else if (articlesFamilyDto.getFamilyType().equals(FamilyType.ARTICLES)
@@ -81,68 +87,51 @@ public class ArticlesFamilyController {
             this.articlesFamilyRepository.save(new FamilyComposite(articlesFamilyDto.getFamilyType(), articlesFamilyDto.getReference(),
                     articlesFamilyDto.getDescription()));
         }
-        return Optional.empty();
     }
 
-    public Optional<String> addChild(String id, String childId) {
-        ArticlesFamily family = this.articlesFamilyRepository.findOne(id);
-        if (family == null) {
-            Optional.of("family Id not found. " + id);
-        }
+    public void addChild(String id, String childId) throws NotFoundException, BadRequestException {
+        ArticlesFamily family = this.findById(id);
         if (family.getFamilyType().equals(FamilyType.ARTICLE)) {
-            Optional.of("family Id does not allow to add. " + id);
+            throw new BadRequestException("family ARTICLE, does not allow to add. " + id);
         }
-        ArticlesFamily familyChild = this.articlesFamilyRepository.findOne(childId);
-        if (familyChild == null) {
-            Optional.of("family Id not found. " + familyChild);
-        }
+        ArticlesFamily familyChild = this.findById(childId);
         if (family.getFamilyType().equals(FamilyType.SIZES) && !familyChild.getFamilyType().equals(FamilyType.ARTICLE)) {
-            Optional.of("family Id does not allow to add another family. " + id + "->" + familyChild);
+            throw new BadRequestException("family SIZES, does not allow to add another family ARTICLES or SIZES. " + id + "->" + familyChild);
         }
-
         family.getArticlesFamilyList().add(familyChild);
         this.articlesFamilyRepository.save(family);
-        return Optional.empty();
     }
 
-    public Optional<String> deleteChild(String id, String childId) {
-        ArticlesFamily family = this.articlesFamilyRepository.findOne(id);
-        if (family == null) {
-            Optional.of("family Id not found. " + id);
-        }
+    public void deleteChild(String id, String childId) throws NotFoundException, BadRequestException {
+        ArticlesFamily family = this.findById(id);
         if (family.getFamilyType().equals(FamilyType.ARTICLE)) {
-            Optional.of("family Id does not allow to delete. " + id);
+            throw new BadRequestException("family ARTICLE does not allow to delete a child. " + id);
         }
-        ArticlesFamily familyChild = this.articlesFamilyRepository.findOne(childId);
-        if (familyChild == null) {
-            Optional.of("family Id not found. " + familyChild);
-        }
+        ArticlesFamily familyChild = this.findById(childId);
         if (family.getFamilyType().equals(FamilyType.SIZES) && !familyChild.getFamilyType().equals(FamilyType.ARTICLE)) {
-            Optional.of("family Id does not allow to delete another family. " + id + "->" + familyChild);
+            throw new BadRequestException("family SIZES does not allow to delete another family. " + id + "->" + familyChild);
         }
 
         family.getArticlesFamilyList().remove(familyChild);
         this.articlesFamilyRepository.save(family);
-        return Optional.empty();
     }
 
-    public Optional<ArticleDto> readIdArticle(String id) {
+    public ArticleDto readIdArticle(String id) throws NotFoundException {
         FamilyArticle familyArticle = this.familyArticleRepository.findOne(id);
         if (familyArticle == null || !familyArticle.getFamilyType().equals(FamilyType.ARTICLE)) {
-            Optional.empty();
+            throw new NotFoundException("Articles Family (" + id + ")");
         }
-        return Optional.of(new ArticleDto(familyArticle.getArticle()));
+        return new ArticleDto(familyArticle.getArticle());
     }
 
-    public Optional<String> updateReferenceAndDescription(String id, ArticlesFamilyDto articlesFamilyDto) {
+    public void updateReferenceAndDescription(String id, ArticlesFamilyDto articlesFamilyDto) throws NotFoundException {
         FamilyComposite family = this.familyCompositeRepository.findOne(id);
         if (family == null) {
-            Optional.of("family Id not found. " + id);
+            throw new NotFoundException("family ARTICLES or SIZES not found (" + id + ")");
         }
         family.setReference(articlesFamilyDto.getReference());
         family.setDescription(articlesFamilyDto.getDescription());
         this.familyCompositeRepository.save(family);
-        return Optional.empty();
     }
 
 }

@@ -5,7 +5,6 @@ import java.math.RoundingMode;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 
 import javax.annotation.PostConstruct;
 
@@ -19,6 +18,7 @@ import es.upm.miw.documents.core.Shopping;
 import es.upm.miw.documents.core.ShoppingState;
 import es.upm.miw.documents.core.Ticket;
 import es.upm.miw.documents.core.Voucher;
+import es.upm.miw.exceptions.PdfException;
 import es.upm.miw.repositories.core.PropertyRepository;
 
 @Service
@@ -86,7 +86,7 @@ public class PdfService {
         }
     }
 
-    public Optional<byte[]> generateLabels24(List<Article> articles) {
+    public byte[] generateLabels24(List<Article> articles) throws PdfException {
         final String path = "/labels/label24-" + new SimpleDateFormat("yyyyMMdd-HH-mm").format(new Date().getTime());
         PdfTag24Builder pdf = new PdfTag24Builder(path);
         for (Article article : articles) {
@@ -96,7 +96,7 @@ public class PdfService {
         return pdf.build();
     }
 
-    public Optional<byte[]> generateTicket(Ticket ticket) {
+    public byte[] generateTicket(Ticket ticket) throws PdfException {
         final String path = "/tickets/ticket-" + ticket.getId();
         final int INCREMENTAL_HEIGHT = 15;
         int notCommitted = 0;
@@ -145,7 +145,7 @@ public class PdfService {
         return pdf.build();
     }
 
-    public Optional<byte[]> generateBudget(Budget budget) {
+    public byte[] generateBudget(Budget budget) throws PdfException {
         final String path = "/budgets/budget-" + budget.getId();
         final int INCREMENTAL_HEIGHT = 10;
         PdfTicketBuilder pdf = this.addCompanyDetails(path, INCREMENTAL_HEIGHT + budget.getShoppingList().length);
@@ -173,7 +173,7 @@ public class PdfService {
         return pdf.build();
     }
 
-    public Optional<byte[]> generateVoucher(Voucher voucher) {
+    public byte[] generateVoucher(Voucher voucher) throws PdfException {
         final String path = "/vouchers/voucher-" + voucher.getId();
         PdfTicketBuilder pdf = this.addCompanyDetails(path, 6);
 
@@ -190,7 +190,7 @@ public class PdfService {
         return pdf.build();
     }
 
-    private PdfTicketBuilder addCompanyDetails(String path, int lines) {
+    private PdfTicketBuilder addCompanyDetails(String path, int lines) throws PdfException {
         PdfTicketBuilder pdf = new PdfTicketBuilder(path, lines);
         pdf.addImage(this.logo).paragraphEmphasized(this.name).paragraphEmphasized("Tfn: " + this.phone);
         pdf.paragraph("NIF: " + this.nif + "   -   " + this.address).paragraph("Email: " + this.email);
@@ -205,7 +205,7 @@ public class PdfService {
         return pdf;
     }
 
-    public Optional<byte[]> generateInvioce(Invoice invoice) {
+    public byte[] generateInvioce(Invoice invoice) throws PdfException {
         final int INCREMENTAL_INVOICE_HEIGHT = 16;
         final String path = "/invoices/invoice-" + invoice.getId();
 

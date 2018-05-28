@@ -2,7 +2,6 @@ package es.upm.miw.businessControllers;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -14,6 +13,7 @@ import es.upm.miw.documents.core.Budget;
 import es.upm.miw.documents.core.Shopping;
 import es.upm.miw.dtos.BudgetDto;
 import es.upm.miw.dtos.ShoppingDto;
+import es.upm.miw.exceptions.PdfException;
 import es.upm.miw.exceptions.NotFoundException;
 import es.upm.miw.repositories.core.ArticleRepository;
 import es.upm.miw.repositories.core.BudgetRepository;
@@ -30,7 +30,7 @@ public class BudgetController {
     @Autowired
     private PdfService pdfService;
 
-    public Optional<byte[]> createBudget(BudgetDto budgetCreationDto) throws NotFoundException {
+    public byte[] createBudget(BudgetDto budgetCreationDto) throws NotFoundException, PdfException {
         List<Shopping> shoppingList = new ArrayList<>();
         for (ShoppingDto shoppingDto : budgetCreationDto.getShoppingCart()) {
             Article article = this.articleRepository.findOne(shoppingDto.getCode());
@@ -50,7 +50,7 @@ public class BudgetController {
         return pdfService.generateBudget(budget);
     }
 
-    public Optional<byte[]> read(String id) throws NotFoundException {
+    public byte[] read(String id) throws NotFoundException, PdfException {
         Budget budget = this.budgetRepository.findOne(id);
         if (budget == null) {
             throw new NotFoundException("Budget id (" + id + ")");

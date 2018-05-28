@@ -11,8 +11,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import es.upm.miw.businessControllers.InvoiceController;
 import es.upm.miw.dtos.InvoiceCreationInputDto;
+import es.upm.miw.exceptions.PdfException;
 import es.upm.miw.exceptions.NotFoundException;
-
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -23,8 +23,8 @@ public class InvoiceControllerIT {
     private InvoiceController invoiceController;
 
     @Test
-    public void testCreateInvioce() throws NotFoundException {
-        assertTrue(this.invoiceController.createInvoice(new InvoiceCreationInputDto("666666004","201801121")).isPresent());
+    public void testCreateInvioce() throws NotFoundException, PdfException {
+        assertTrue(this.invoiceController.createInvoice(new InvoiceCreationInputDto("666666004", "201801121")).length > 0);
     }
 
 }

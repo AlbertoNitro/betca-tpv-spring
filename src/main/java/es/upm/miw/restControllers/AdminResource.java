@@ -1,7 +1,5 @@
 package es.upm.miw.restControllers;
 
-import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -12,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import es.upm.miw.businessControllers.AdminController;
-import es.upm.miw.exceptions.FileException;
+import es.upm.miw.exceptions.NotFoundException;
 
 @PreAuthorize("hasRole('ADMIN')")
 @RestController
@@ -50,11 +48,8 @@ public class AdminResource {
     }
 
     @PostMapping(value = DB)
-    public void seedDb(@RequestBody String ymlFileName) throws FileException {
-        Optional<String> error = this.adminController.seedDatabase(ymlFileName);
-        if (error.isPresent()) {
-            throw new FileException(error.get());
-        }
+    public void seedDb(@RequestBody String ymlFileName) throws NotFoundException {
+        this.adminController.seedDatabase(ymlFileName);
     }
 
 }
