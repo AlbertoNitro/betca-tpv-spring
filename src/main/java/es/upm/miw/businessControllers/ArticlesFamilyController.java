@@ -15,7 +15,7 @@ import es.upm.miw.documents.core.FamilyComposite;
 import es.upm.miw.documents.core.FamilyType;
 import es.upm.miw.dtos.ArticleDto;
 import es.upm.miw.dtos.ArticlesFamilyDto;
-import es.upm.miw.exceptions.ArticlesFamilyException;
+import es.upm.miw.exceptions.BadRequestException;
 import es.upm.miw.exceptions.NotFoundException;
 import es.upm.miw.repositories.core.ArticleRepository;
 import es.upm.miw.repositories.core.ArticlesFamilyRepository;
@@ -89,27 +89,27 @@ public class ArticlesFamilyController {
         }
     }
 
-    public void addChild(String id, String childId) throws NotFoundException, ArticlesFamilyException {
+    public void addChild(String id, String childId) throws NotFoundException, BadRequestException {
         ArticlesFamily family = this.findById(id);
         if (family.getFamilyType().equals(FamilyType.ARTICLE)) {
-            throw new ArticlesFamilyException("family Id does not allow to add. " + id);
+            throw new BadRequestException("family ARTICLE, does not allow to add. " + id);
         }
         ArticlesFamily familyChild = this.findById(childId);
         if (family.getFamilyType().equals(FamilyType.SIZES) && !familyChild.getFamilyType().equals(FamilyType.ARTICLE)) {
-            throw new ArticlesFamilyException("family Id does not allow to add another family. " + id + "->" + familyChild);
+            throw new BadRequestException("family SIZES, does not allow to add another family ARTICLES or SIZES. " + id + "->" + familyChild);
         }
         family.getArticlesFamilyList().add(familyChild);
         this.articlesFamilyRepository.save(family);
     }
 
-    public void deleteChild(String id, String childId) throws NotFoundException, ArticlesFamilyException {
+    public void deleteChild(String id, String childId) throws NotFoundException, BadRequestException {
         ArticlesFamily family = this.findById(id);
         if (family.getFamilyType().equals(FamilyType.ARTICLE)) {
-            throw new ArticlesFamilyException("family Id does not allow to delete. " + id);
+            throw new BadRequestException("family ARTICLE does not allow to delete a child. " + id);
         }
         ArticlesFamily familyChild = this.findById(childId);
         if (family.getFamilyType().equals(FamilyType.SIZES) && !familyChild.getFamilyType().equals(FamilyType.ARTICLE)) {
-            throw new ArticlesFamilyException("family Id does not allow to delete another family. " + id + "->" + familyChild);
+            throw new BadRequestException("family SIZES does not allow to delete another family. " + id + "->" + familyChild);
         }
 
         family.getArticlesFamilyList().remove(familyChild);
@@ -124,10 +124,10 @@ public class ArticlesFamilyController {
         return new ArticleDto(familyArticle.getArticle());
     }
 
-    public void updateReferenceAndDescription(String id, ArticlesFamilyDto articlesFamilyDto) throws ArticlesFamilyException {
+    public void updateReferenceAndDescription(String id, ArticlesFamilyDto articlesFamilyDto) throws NotFoundException {
         FamilyComposite family = this.familyCompositeRepository.findOne(id);
         if (family == null) {
-            throw new ArticlesFamilyException("family Id does not allow to add another family. " + id + "->" + id);
+            throw new NotFoundException("family ARTICLES or SIZES not found (" + id + ")");
         }
         family.setReference(articlesFamilyDto.getReference());
         family.setDescription(articlesFamilyDto.getDescription());

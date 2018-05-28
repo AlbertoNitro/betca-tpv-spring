@@ -71,7 +71,7 @@ public class ArticleResourceFunctionalTesting {
 
     @Test
     public void testCreateArticleAlreadyExist() {
-        thrown.expect(new HttpMatcher(HttpStatus.BAD_REQUEST));
+        thrown.expect(new HttpMatcher(HttpStatus.CONFLICT));
         ArticleDto articleDto = new ArticleDto("8400000000017", "desc", "ref", BigDecimal.TEN, 5);
         restService.loginOperator().restBuilder().path(ArticleResource.ARTICLES).body(articleDto).post().build();
     }

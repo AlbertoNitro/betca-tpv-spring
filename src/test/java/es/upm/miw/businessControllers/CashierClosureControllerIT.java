@@ -18,7 +18,7 @@ import es.upm.miw.businessControllers.CashierClosureController;
 import es.upm.miw.dataServices.DatabaseSeederService;
 import es.upm.miw.dtos.CashierClosureInputDto;
 import es.upm.miw.dtos.CashierMovementInputDto;
-import es.upm.miw.exceptions.CashierException;
+import es.upm.miw.exceptions.BadRequestException;
 import es.upm.miw.exceptions.NotFoundException;
 import es.upm.miw.repositories.core.CashMovementRepository;
 
@@ -44,7 +44,7 @@ public class CashierClosureControllerIT {
     }
 
     @Test
-    public void testClose() throws CashierException {
+    public void testClose() throws BadRequestException {
         cashierClosureController.createCashierClosure();
         CashierClosureInputDto cashierClosureDto = new CashierClosureInputDto(new BigDecimal("100"), new BigDecimal("50"), "testClose");
         cashierClosureController.close(cashierClosureDto);
@@ -52,14 +52,14 @@ public class CashierClosureControllerIT {
     }
 
     @Test
-    public void testGetTotalCardAndCashCashierClosure() throws CashierException {
+    public void testGetTotalCardAndCashCashierClosure() throws BadRequestException {
         cashierClosureController.createCashierClosure();
         assertNotNull(this.cashierClosureController.readTotalsFromLast());
         this.databaseSeederService.seedDatabase();
     }
 
     @Test
-    public void create() throws CashierException, NotFoundException {
+    public void create() throws BadRequestException, NotFoundException {
         cashierClosureController.createCashierClosure();
         this.cashierClosureController.createCashierMovement(cashMovementDto);
         int size = this.cashMovementRepository.findAll().size();

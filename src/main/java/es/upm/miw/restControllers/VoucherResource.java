@@ -19,8 +19,8 @@ import org.springframework.web.bind.annotation.RestController;
 import es.upm.miw.businessControllers.VoucherController;
 import es.upm.miw.dtos.VoucherDto;
 import es.upm.miw.exceptions.PdfException;
+import es.upm.miw.exceptions.BadRequestException;
 import es.upm.miw.exceptions.NotFoundException;
-import es.upm.miw.exceptions.VoucherException;
 
 @PreAuthorize("hasRole('ADMIN') or hasRole('MANAGER') or hasRole('OPERATOR')")
 @RestController
@@ -47,7 +47,7 @@ public class VoucherResource {
     }
 
     @PatchMapping(value = ID_ID)
-    public BigDecimal consumeVoucher(@PathVariable String id) throws NotFoundException, VoucherException {
+    public BigDecimal consumeVoucher(@PathVariable String id) throws NotFoundException, BadRequestException {
         return this.voucherController.consumeVoucher(id);
     }
 

@@ -19,8 +19,8 @@ import org.springframework.web.bind.annotation.RestController;
 import es.upm.miw.businessControllers.OrderController;
 import es.upm.miw.dtos.OrderBaseOutputDto;
 import es.upm.miw.dtos.OrderDto;
+import es.upm.miw.exceptions.BadRequestException;
 import es.upm.miw.exceptions.NotFoundException;
-import es.upm.miw.exceptions.OrderException;
 
 @PreAuthorize("hasRole('ADMIN') or hasRole('MANAGER') or hasRole('OPERATOR')")
 @RestController
@@ -43,13 +43,13 @@ public class OrderResource {
 
     @PutMapping(value = ID_ID)
     public void update(@PathVariable String id, @Valid @RequestBody OrderDto OrderDto)
-            throws MethodArgumentNotValidException, NotFoundException, OrderException {
+            throws MethodArgumentNotValidException, NotFoundException, BadRequestException {
         this.orderController.update(id, OrderDto);
     }
 
     @PostMapping(value = ID_ID + CLOSING_DATE)
     public void orderEntry(@PathVariable String id, @Valid @RequestBody OrderDto OrderDto)
-            throws MethodArgumentNotValidException, NotFoundException, OrderException {
+            throws MethodArgumentNotValidException, NotFoundException, BadRequestException {
         this.orderController.orderEntry(id, OrderDto);
     }
 
@@ -59,7 +59,7 @@ public class OrderResource {
     }
 
     @DeleteMapping(value = ID_ID)
-    public void delete(@PathVariable String id) throws OrderException {
+    public void delete(@PathVariable String id) throws BadRequestException {
         this.orderController.delete(id);
     }
 

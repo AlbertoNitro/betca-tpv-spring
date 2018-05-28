@@ -89,7 +89,7 @@ public class UserResourceFunctionalTesting {
 
     @Test
     public void testCreateCustomerMobileRepeatUserFieldAlreadyExistException() {
-        thrown.expect(new HttpMatcher(HttpStatus.BAD_REQUEST));
+        thrown.expect(new HttpMatcher(HttpStatus.CONFLICT));
         restService.loginAdmin().restBuilder().path(UserResource.USERS).body(userDto).post().build();
         restService.restBuilder().path(UserResource.USERS).body(userDto).post().build();
     }
@@ -138,7 +138,7 @@ public class UserResourceFunctionalTesting {
 
     @Test
     public void testPutCustomerMobileRepeatUserIdFieldAlreadyExistException() {
-        thrown.expect(new HttpMatcher(HttpStatus.BAD_REQUEST));
+        thrown.expect(new HttpMatcher(HttpStatus.CONFLICT));
         UserDto userDto2 = new UserDto("666666004");
         restService.loginAdmin().restBuilder().path(UserResource.USERS).path(UserResource.MOBILE_ID).expand("666666003").body(userDto2)
                 .put().build();
@@ -146,7 +146,7 @@ public class UserResourceFunctionalTesting {
 
     @Test
     public void testPutCustomerDniRepeatUserIdFieldAlreadyExistException() {
-        thrown.expect(new HttpMatcher(HttpStatus.BAD_REQUEST));
+        thrown.expect(new HttpMatcher(HttpStatus.CONFLICT));
         UserDto userDto2 = new UserDto("666666003");
         userDto2.setDni("66666604T");
         restService.loginAdmin().restBuilder().path(UserResource.USERS).path(UserResource.MOBILE_ID).expand("666666003").body(userDto2)
@@ -155,7 +155,7 @@ public class UserResourceFunctionalTesting {
 
     @Test
     public void testPutCustomerEmailRepeatUserIdFieldAlreadyExistException() {
-        thrown.expect(new HttpMatcher(HttpStatus.BAD_REQUEST));
+        thrown.expect(new HttpMatcher(HttpStatus.CONFLICT));
         UserDto userDto2 = new UserDto("666666003");
         userDto2.setEmail("u004@gmail.com");
         restService.loginAdmin().restBuilder().path(UserResource.USERS).path(UserResource.MOBILE_ID).expand("666666003").body(userDto2)

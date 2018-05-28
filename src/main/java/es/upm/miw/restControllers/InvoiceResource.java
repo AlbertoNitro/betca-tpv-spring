@@ -20,7 +20,6 @@ import es.upm.miw.businessControllers.InvoiceController;
 import es.upm.miw.dtos.InvoiceCreationInputDto;
 import es.upm.miw.dtos.InvoiceOutputDto;
 import es.upm.miw.exceptions.PdfException;
-import es.upm.miw.exceptions.InvoiceException;
 import es.upm.miw.exceptions.NotFoundException;
 
 @PreAuthorize("hasRole('ADMIN') or hasRole('MANAGER') or hasRole('OPERATOR')")
@@ -42,7 +41,7 @@ public class InvoiceResource {
 
     @PostMapping(produces = {"application/pdf", "application/json"})
     public byte[] createInvoice(@Valid @RequestBody InvoiceCreationInputDto invoiceCreationInputDto)
-            throws MethodArgumentNotValidException, NotFoundException, InvoiceException, PdfException {
+            throws MethodArgumentNotValidException, NotFoundException, PdfException {
         return this.invoiceController.createInvoice(invoiceCreationInputDto);
     }
 

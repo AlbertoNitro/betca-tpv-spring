@@ -14,8 +14,8 @@ import es.upm.miw.businessServices.PdfService;
 import es.upm.miw.documents.core.Voucher;
 import es.upm.miw.dtos.VoucherDto;
 import es.upm.miw.exceptions.PdfException;
+import es.upm.miw.exceptions.BadRequestException;
 import es.upm.miw.exceptions.NotFoundException;
-import es.upm.miw.exceptions.VoucherException;
 import es.upm.miw.repositories.core.VoucherRepository;
 
 @Controller
@@ -46,13 +46,13 @@ public class VoucherController {
         return new VoucherDto(voucher);
     }
 
-    public BigDecimal consumeVoucher(String id) throws NotFoundException, VoucherException {
+    public BigDecimal consumeVoucher(String id) throws NotFoundException, BadRequestException {
         Voucher voucher = this.voucherRepository.findOne(id);
         if (voucher == null) {
             throw new NotFoundException("Voucher id (" + id + ")");
         }
         if (voucher.isUsed()) {
-            throw new VoucherException("Voucher is already consumed (" + id + ")");
+            throw new BadRequestException("Voucher is already consumed (" + id + ")");
         }
         voucher.setDateOfUse(new Date());
         this.voucherRepository.save(voucher);

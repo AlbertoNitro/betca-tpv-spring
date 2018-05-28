@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import es.upm.miw.dtos.CashierClosureInputDto;
 import es.upm.miw.dtos.CashierLastOutputDto;
 import es.upm.miw.dtos.ClosedCashierOutputDto;
-import es.upm.miw.exceptions.CashierException;
+import es.upm.miw.exceptions.BadRequestException;
 import es.upm.miw.exceptions.NotFoundException;
 import es.upm.miw.businessControllers.CashierClosureController;
 import es.upm.miw.dtos.CashierClosingOutputDto;
@@ -46,13 +46,13 @@ public class CashierClosureResource {
     private CashierClosureController cashierClosureController;
 
     @PostMapping
-    public void openCashierClosure() throws CashierException {
+    public void openCashierClosure() throws BadRequestException {
         cashierClosureController.createCashierClosure();
     }
 
     @PostMapping(value = LAST + MOVEMENTS)
     public void createCashMovement(@Valid @RequestBody CashierMovementInputDto cashierMovementDto)
-            throws MethodArgumentNotValidException, CashierException, NotFoundException {
+            throws MethodArgumentNotValidException, BadRequestException, NotFoundException {
         this.cashierClosureController.createCashierMovement(cashierMovementDto);
     }
 
@@ -62,13 +62,13 @@ public class CashierClosureResource {
     }
 
     @GetMapping(value = LAST + TOTALS)
-    public CashierClosingOutputDto readTotalsFromLast() throws CashierException {
+    public CashierClosingOutputDto readTotalsFromLast() throws BadRequestException {
         return this.cashierClosureController.readTotalsFromLast();
     }
 
     @PatchMapping(value = LAST)
     public void closeCashierClosure(@Valid @RequestBody CashierClosureInputDto cashierClosureDto)
-            throws MethodArgumentNotValidException, CashierException {
+            throws MethodArgumentNotValidException, BadRequestException {
         cashierClosureController.close(cashierClosureDto);
     }
 

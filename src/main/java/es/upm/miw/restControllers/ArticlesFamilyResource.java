@@ -18,7 +18,8 @@ import es.upm.miw.businessControllers.ArticlesFamilyController;
 import es.upm.miw.documents.core.FamilyType;
 import es.upm.miw.dtos.ArticleDto;
 import es.upm.miw.dtos.ArticlesFamilyDto;
-import es.upm.miw.exceptions.ArticlesFamilyException;
+import es.upm.miw.exceptions.BadRequestException;
+import es.upm.miw.exceptions.FieldInvalidException;
 import es.upm.miw.exceptions.NotFoundException;
 
 @PreAuthorize("hasRole('ADMIN') or hasRole('MANAGER') or hasRole('OPERATOR')")
@@ -52,12 +53,12 @@ public class ArticlesFamilyResource {
     }
 
     @PostMapping(value = ID_ID + LIST)
-    public void addChild(@PathVariable String id, @RequestBody String childId) throws NotFoundException, ArticlesFamilyException {
+    public void addChild(@PathVariable String id, @RequestBody String childId) throws NotFoundException, BadRequestException {
         articlesFamilyController.addChild(id, childId);
     }
 
     @DeleteMapping(value = ID_ID + LIST + CHILD_ID)
-    public void deleteChild(@PathVariable String id, @PathVariable String childId) throws NotFoundException, ArticlesFamilyException {
+    public void deleteChild(@PathVariable String id, @PathVariable String childId) throws NotFoundException, BadRequestException {
         this.articlesFamilyController.deleteChild(id, childId);
     }
 
@@ -67,17 +68,17 @@ public class ArticlesFamilyResource {
     }
 
     @PostMapping
-    public void create(@RequestBody ArticlesFamilyDto articlesFamilyDto) throws ArticlesFamilyException, NotFoundException {
+    public void create(@RequestBody ArticlesFamilyDto articlesFamilyDto) throws FieldInvalidException, NotFoundException {
         if (articlesFamilyDto.getFamilyType().equals(FamilyType.ARTICLE)) {
             if (articlesFamilyDto.getArticleId() == null) {
-                throw new ArticlesFamilyException("Article id field must have value");
+                throw new FieldInvalidException("Article id field must have value");
             }
         } else {
             if (articlesFamilyDto.getDescription() == null) {
-                throw new ArticlesFamilyException("Description field must have value");
+                throw new FieldInvalidException("Description field must have value");
             }
             if (articlesFamilyDto.getReference() == null) {
-                throw new ArticlesFamilyException("Reference field must have value");
+                throw new FieldInvalidException("Reference field must have value");
             }
         }
         this.articlesFamilyController.create(articlesFamilyDto);
@@ -85,12 +86,12 @@ public class ArticlesFamilyResource {
 
     @PatchMapping(value = ID_ID)
     public void updateReferenceAndDescription(@PathVariable String id, @RequestBody ArticlesFamilyDto articlesFamilyDto)
-            throws ArticlesFamilyException {
+            throws NotFoundException, FieldInvalidException {
         if (articlesFamilyDto.getDescription() == null) {
-            throw new ArticlesFamilyException("Description field must have value");
+            throw new FieldInvalidException("Description field must have value");
         }
         if (articlesFamilyDto.getReference() == null) {
-            throw new ArticlesFamilyException("Reference field must have value");
+            throw new FieldInvalidException("Reference field must have value");
         }
         this.articlesFamilyController.updateReferenceAndDescription(id, articlesFamilyDto);
     }
