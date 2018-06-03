@@ -24,9 +24,6 @@ public class RestService {
     @Value("${miw.admin.password}")
     private String adminPassword;
     
-    @Value("${miw.databaseSeeder.ymlFileName}")
-    private String testFile;
-
     private TokenOutputDto tokenDto;
 
     private int port() {
@@ -82,7 +79,7 @@ public class RestService {
     
     public void reLoadTestDB() {
         this.loginAdmin().restBuilder().path(AdminResource.ADMINS).path(AdminResource.DB).delete().build();
-        this.loginAdmin().restBuilder().path(AdminResource.ADMINS).path(AdminResource.DB).body(testFile).post().build();        
+        this.loginAdmin().restBuilder().path(AdminResource.ADMINS).path(AdminResource.DB).file("test.yml").post().build();        
     }
 
     public TokenOutputDto getTokenDto() {

@@ -24,10 +24,6 @@ import org.springframework.http.HttpStatus;
 @TestPropertySource(locations = "classpath:test.properties")
 public class AdminResourceFunctionalTesting {
 
-    private static final String TPV_DB_TEST_YML = "tpv-db-test.yml";
-
-    private static final String TPV_DB_YML = "tpv-db.yml";
-
     @Rule
     public ExpectedException thrown = ExpectedException.none();
 
@@ -43,20 +39,7 @@ public class AdminResourceFunctionalTesting {
         } catch (HttpClientErrorException httpError) {
             assertEquals(HttpStatus.NOT_FOUND, httpError.getStatusCode());
         }
-        restService.loginAdmin().restBuilder().path(AdminResource.ADMINS).path(AdminResource.DB).body(TPV_DB_TEST_YML).post().build();
-    }
-
-    // @Test
-    public void testDeleteAndSeedDbProduction() {
-        restService.loginAdmin().restBuilder().path(AdminResource.ADMINS).path(AdminResource.DB).delete().build();
-        restService.loginAdmin().restBuilder().path(AdminResource.ADMINS).path(AdminResource.DB).body(TPV_DB_YML).post().build();
-        restService.reLoadTestDB();
-    }
-
-    @Test
-    public void testSeedBdFileNotFound() {
-        thrown.expect(new HttpMatcher(HttpStatus.NOT_FOUND));
-        restService.loginAdmin().restBuilder().path(AdminResource.ADMINS).path(AdminResource.DB).body("not-file").post().build();
+        restService.loginAdmin().restBuilder().path(AdminResource.ADMINS).path(AdminResource.DB).post().build();
     }
 
     @Test
@@ -74,13 +57,13 @@ public class AdminResourceFunctionalTesting {
     @Test
     public void testSeedBdManagerUnauthorized() {
         thrown.expect(new HttpMatcher(HttpStatus.FORBIDDEN));
-        restService.loginManager().restBuilder().path(AdminResource.ADMINS).path(AdminResource.DB).body(TPV_DB_TEST_YML).post().build();
+        restService.loginManager().restBuilder().path(AdminResource.ADMINS).path(AdminResource.DB).post().build();
     }
 
     @Test
     public void testSeedBdOperatorUnauthorized() {
         thrown.expect(new HttpMatcher(HttpStatus.FORBIDDEN));
-        restService.loginOperator().restBuilder().path(AdminResource.ADMINS).path(AdminResource.DB).body(TPV_DB_TEST_YML).post().build();
+        restService.loginOperator().restBuilder().path(AdminResource.ADMINS).path(AdminResource.DB).post().build();
     }
 
 }

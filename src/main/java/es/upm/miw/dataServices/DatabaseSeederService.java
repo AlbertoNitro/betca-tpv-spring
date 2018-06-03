@@ -17,6 +17,7 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.Constructor;
+import org.yaml.snakeyaml.scanner.ScannerException;
 
 import es.upm.miw.businessServices.Barcode;
 import es.upm.miw.documents.core.Article;
@@ -27,6 +28,7 @@ import es.upm.miw.documents.core.FamilyType;
 import es.upm.miw.documents.core.Provider;
 import es.upm.miw.documents.core.Role;
 import es.upm.miw.documents.core.User;
+import es.upm.miw.exceptions.SeederException;
 import es.upm.miw.repositories.core.ArticleRepository;
 import es.upm.miw.repositories.core.ArticlesFamilyRepository;
 import es.upm.miw.repositories.core.BudgetRepository;
@@ -132,21 +134,10 @@ public class DatabaseSeederService {
         return new Barcode().generateEan13code(this.ean13);
     }
 
-    public void seedDatabase(String ymlFileName) throws IOException {
-        assert ymlFileName != null && !ymlFileName.isEmpty();
-        Yaml yamlParser = new Yaml(new Constructor(DatabaseGraph.class));
-        InputStream input = new ClassPathResource(ymlFileName).getInputStream();
-        DatabaseGraph tpvGraph = (DatabaseGraph) yamlParser.load(input);
-
-        // Save Repositories -----------------------------------------------------
-        this.userRepository.save(tpvGraph.getUserList());
-        this.voucherRepository.save(tpvGraph.getVoucherList());
-        this.cashMovementRepository.save(tpvGraph.getCashMovementList());
-        this.cashierClosureRepository.save(tpvGraph.getCashierClosureList());
-        if (ymlFileName.indexOf("test") != -1) {
-            this.providerRepository.save(tpvGraph.getProviderList());
-            this.articleRepository.save(tpvGraph.getArticleList());
-        } else {
+    public void seedArticlesDatabase(InputStream inputStream) throws SeederException {
+        try {
+            Yaml yamlParser = new Yaml(new Constructor(DatabaseGraph.class));
+            DatabaseGraph tpvGraph = (DatabaseGraph) yamlParser.load(inputStream);
             for (Provider provider : tpvGraph.getProviderList()) {
                 Provider providerBd = this.providerRepository.findByCompany(provider.getCompany());
                 if (providerBd == null) {
@@ -163,7 +154,26 @@ public class DatabaseSeederService {
             if (!tpvGraph.getArticleList().isEmpty()) {
                 this.expandAllSizesAndCreateFamilyAndSaveAll(tpvGraph);
             }
+        } catch (ScannerException se) {
+            throw new SeederException("Yaml format error. " + se.getMessage());
+        } catch (Exception e) {
+            throw new SeederException("Yaml error. " + e.getMessage());
         }
+    }
+
+    private void seedDatabase(String ymlFileName) throws IOException {
+        assert ymlFileName != null && !ymlFileName.isEmpty();
+        Yaml yamlParser = new Yaml(new Constructor(DatabaseGraph.class));
+        InputStream input = new ClassPathResource(ymlFileName).getInputStream();
+        DatabaseGraph tpvGraph = (DatabaseGraph) yamlParser.load(input);
+
+        // Save Repositories -----------------------------------------------------
+        this.userRepository.save(tpvGraph.getUserList());
+        this.voucherRepository.save(tpvGraph.getVoucherList());
+        this.cashMovementRepository.save(tpvGraph.getCashMovementList());
+        this.cashierClosureRepository.save(tpvGraph.getCashierClosureList());
+        this.providerRepository.save(tpvGraph.getProviderList());
+        this.articleRepository.save(tpvGraph.getArticleList());
         this.ticketRepository.save(tpvGraph.getTicketList());
         this.invoiceRepository.save(tpvGraph.getInvoiceList());
         // -----------------------------------------------------------------------

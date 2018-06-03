@@ -1,5 +1,6 @@
 package es.upm.miw.businessControllers;
 
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -8,6 +9,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
+import es.upm.miw.dataServices.DatabaseSeederService;
 import es.upm.miw.documents.core.Article;
 import es.upm.miw.documents.core.ArticlesFamily;
 import es.upm.miw.documents.core.FamilyArticle;
@@ -17,6 +19,7 @@ import es.upm.miw.dtos.ArticleDto;
 import es.upm.miw.dtos.ArticlesFamilyDto;
 import es.upm.miw.exceptions.BadRequestException;
 import es.upm.miw.exceptions.NotFoundException;
+import es.upm.miw.exceptions.SeederException;
 import es.upm.miw.repositories.core.ArticleRepository;
 import es.upm.miw.repositories.core.ArticlesFamilyRepository;
 import es.upm.miw.repositories.core.FamilyArticleRepository;
@@ -36,6 +39,9 @@ public class ArticlesFamilyController {
 
     @Autowired
     private ArticleRepository articlesRepository;
+    
+    @Autowired
+    private DatabaseSeederService databaseSeederService;
 
     public List<ArticlesFamilyDto> readArticlesFamily(String id) throws NotFoundException {
         List<ArticlesFamilyDto> articlesFamiliaOutputDtoList = new ArrayList<>();
@@ -133,5 +139,10 @@ public class ArticlesFamilyController {
         family.setDescription(articlesFamilyDto.getDescription());
         this.familyCompositeRepository.save(family);
     }
+    
+    public void seedArticlesDatabase(InputStream inputStream) throws SeederException {
+        this.databaseSeederService.seedArticlesDatabase(inputStream);
+}
+
 
 }
