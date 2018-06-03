@@ -1,9 +1,11 @@
 package es.upm.miw.restControllers;
 
+import java.io.IOException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -11,7 +13,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import es.upm.miw.businessControllers.ArticleController;
 import es.upm.miw.businessControllers.ArticlesFamilyController;
@@ -21,6 +25,7 @@ import es.upm.miw.dtos.ArticlesFamilyDto;
 import es.upm.miw.exceptions.BadRequestException;
 import es.upm.miw.exceptions.FieldInvalidException;
 import es.upm.miw.exceptions.NotFoundException;
+import es.upm.miw.exceptions.SeederException;
 
 @PreAuthorize("hasRole('ADMIN') or hasRole('MANAGER') or hasRole('OPERATOR')")
 @RestController
@@ -35,6 +40,8 @@ public class ArticlesFamilyResource {
     public static final String LIST = "/list";
 
     public static final String ARTICLE = "/article";
+    
+    public static final String DB = "/db";
 
     @Autowired
     ArticlesFamilyController articlesFamilyController;
@@ -95,5 +102,19 @@ public class ArticlesFamilyResource {
         }
         this.articlesFamilyController.updateReferenceAndDescription(id, articlesFamilyDto);
     }
+    
+    @PostMapping(value = DB)
+    public void seedDb(@RequestParam("file") MultipartFile file) throws SeederException {
+        String filename = StringUtils.cleanPath(file.getOriginalFilename());
+        if (file.isEmpty()) {
+            throw new SeederException("Failed to load empty file (" + filename + ")");
+        }
+        try {
+            this.articlesFamilyController.seedArticlesDatabase(file.getInputStream());
+        } catch (IOException e) {
+            throw new SeederException("Failed to load file (" + filename + ")");
+        }
+    }
+
 
 }

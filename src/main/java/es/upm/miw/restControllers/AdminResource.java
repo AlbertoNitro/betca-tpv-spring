@@ -5,12 +5,11 @@ import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import es.upm.miw.businessControllers.AdminController;
-import es.upm.miw.exceptions.NotFoundException;
+import es.upm.miw.exceptions.SeederException;
 
 @PreAuthorize("hasRole('ADMIN')")
 @RestController
@@ -22,9 +21,7 @@ public class AdminResource {
     public static final String STATE = "/state";
 
     public static final String DB = "/db";
-
-    public static final String ARTICLES_WITHOUT_CODE = "/articles-without-code";
-
+    
     @Autowired
     private ConfigurableApplicationContext configurableApplicationContext;
 
@@ -42,14 +39,9 @@ public class AdminResource {
         this.adminController.deleteDb();
     }
 
-    @DeleteMapping(value = DB + ARTICLES_WITHOUT_CODE)
-    public void resetDb() {
-        this.adminController.resetDb();
-    }
-
     @PostMapping(value = DB)
-    public void seedDb(@RequestBody String ymlFileName) throws NotFoundException {
-        this.adminController.seedDatabase(ymlFileName);
+    public void seedDb() throws SeederException {
+            this.adminController.seedDatabase();
     }
 
 }

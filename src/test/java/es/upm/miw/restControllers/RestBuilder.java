@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -16,6 +17,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
+import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.DefaultResponseErrorHandler;
 import org.springframework.web.client.RestTemplate;
@@ -27,7 +29,7 @@ import es.upm.miw.dataServices.UserDetailsServiceImpl;
 public class RestBuilder<T> {
 
     private static final String SERVER_URI_DEFAULT = "http://localhost";
-    
+
     private static final int PORT_DEFAULT = 8080;
 
     private RestTemplate restTemplate = new RestTemplate();
@@ -64,7 +66,7 @@ public class RestBuilder<T> {
         this.expandList = new ArrayList<>();
         this.headerValues = new HashMap<>();
         this.mediaTytes = new ArrayList<>();
-        this.params = new HttpHeaders();
+        this.params = new LinkedMultiValueMap<>();
         this.log = false;
     }
 
@@ -124,8 +126,16 @@ public class RestBuilder<T> {
         return this;
     }
 
+    public RestBuilder<T> file(String filename) {
+        ClassPathResource resource = new ClassPathResource(filename);
+        MultiValueMap<String, Object> map = new LinkedMultiValueMap<String, Object>();
+        map.add("file", resource);
+        this.body = map;
+        return this;
+    }
+
     public RestBuilder<T> accept(MediaType mediaType) {
-        if(this.mediaTytes.isEmpty()) {
+        if (this.mediaTytes.isEmpty()) {
             this.mediaTytes.add(MediaType.APPLICATION_JSON);
         }
         this.mediaTytes.add(mediaType);

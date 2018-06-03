@@ -1,6 +1,7 @@
 package es.upm.miw.dataServices;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
@@ -10,12 +11,14 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import es.upm.miw.dataServices.DatabaseSeederService;
 import es.upm.miw.documents.core.Article;
 import es.upm.miw.documents.core.User;
+import es.upm.miw.exceptions.SeederException;
 import es.upm.miw.repositories.core.UserRepository;
 
 @RunWith(SpringRunner.class)
@@ -43,19 +46,21 @@ public class DatabaseSeederServiceIT {
 
     @Test
     public void testExpandArticle() {
-        Article article = Article.builder().description("Pantalón Gris[15.99,17.99,19,99]").reference("Pant.Gris[2:16:2,18:26:2,28:40:2]").build();
+        Article article = Article.builder().description("Pantalón Gris[15.99,17.99,19,99]").reference("Pant.Gris[2:16:2,18:26:2,28:40:2]")
+                .build();
         this.databaseSeederService.expandArticlewithSizes(article);
     }
 
-    //@Test
-    public void testCreateEan13() {
-        //System.out.println(this.databaseSeederService.createEan13());
+    @Test
+    public void testSeedArticlesDatabase() throws SeederException, IOException {
+        this.databaseSeederService.seedArticlesDatabase(new ClassPathResource("seeder-test.yml").getInputStream());
     }
 
-    //@Test
-    public void testSeedDatabase() throws IOException {
-        this.databaseSeederService.reset();
-        this.databaseSeederService.seedDatabase("ranur.yml");
+    @Test
+    public void testCreateEan13() {
+        String code = this.databaseSeederService.createEan13();
+        assertEquals("84", code.substring(0, 2));
+        assertNotEquals(code, this.databaseSeederService.createEan13());
     }
 
 }

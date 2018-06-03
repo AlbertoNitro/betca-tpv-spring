@@ -1,0 +1,20 @@
+# Proveedores
+providerList:
+  - &company
+    company: Company Test
+    address: 
+    phone: 
+    email: 
+    nif: 
+
+articleList:
+# Zapatos
+  - code: Zapato:1
+    reference: BB Zapato niño[25:40:1] 
+    description: Zapato niño[29.99]
+    provider: *company
+  - code: Zapato:2
+    reference: BB Zapato niña[24:37:1] 
+    description: Zapato niña[29.99]
+    provider: *company
+ 
