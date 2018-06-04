@@ -25,6 +25,7 @@ public class ApiExceptionHandler {
         BadRequestException.class,
         org.springframework.dao.DuplicateKeyException.class,
         FieldInvalidException.class,
+        org.springframework.web.HttpRequestMethodNotSupportedException.class,
         org.springframework.web.bind.MethodArgumentNotValidException.class,
         org.springframework.http.converter.HttpMessageNotReadableException.class,
         SeederException.class

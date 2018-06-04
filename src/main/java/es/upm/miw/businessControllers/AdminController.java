@@ -15,12 +15,4 @@ public class AdminController {
         this.databaseSeederService.deleteAllAndCreateAdmin();
     }
 
-    public void seedDatabase() {
-            this.databaseSeederService.seedDatabase();
-    }
-
-    public void resetDb() {
-        this.databaseSeederService.reset();
-    }
-
 }

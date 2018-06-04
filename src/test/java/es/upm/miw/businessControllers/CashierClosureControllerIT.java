@@ -48,14 +48,14 @@ public class CashierClosureControllerIT {
         cashierClosureController.createCashierClosure();
         CashierClosureInputDto cashierClosureDto = new CashierClosureInputDto(new BigDecimal("100"), new BigDecimal("50"), "testClose");
         cashierClosureController.close(cashierClosureDto);
-        this.databaseSeederService.seedDatabase();
+        this.databaseSeederService.initializeDB();
     }
 
     @Test
     public void testGetTotalCardAndCashCashierClosure() throws BadRequestException {
         cashierClosureController.createCashierClosure();
         assertNotNull(this.cashierClosureController.readTotalsFromLast());
-        this.databaseSeederService.seedDatabase();
+        this.databaseSeederService.initializeDB();
     }
 
     @Test
@@ -65,7 +65,7 @@ public class CashierClosureControllerIT {
         int size = this.cashMovementRepository.findAll().size();
         assertTrue(size > 0);
         assertEquals(this.cashMovementRepository.findAll().get(size - 1).getComment(), "testRandom");
-        this.databaseSeederService.seedDatabase();
+        this.databaseSeederService.initializeDB();
     }
 
 }

@@ -108,25 +108,37 @@ public class DatabaseSeederService {
     private long ean13;
 
     @PostConstruct
-    public void seedDatabase() {
+    public void constructor() {
+        this.initializeEan13();
+        if (this.userRepository.count() == 0) {
+            this.createAdminIfNotExist();
+        }
+    }
+
+    public void initializeDB() {
+        this.deleteAllAndCreateAdmin();
         if (ymlFileName.isPresent()) {
-            this.deleteAllAndCreateAdmin();
             try {
                 this.seedDatabase(ymlFileName.get());
             } catch (IOException e) {
                 Logger.getLogger(this.getClass()).error("File " + ymlFileName + " doesn't exist or can't be opened");
             }
         } else {
-            this.createAdminIfNotExist();
+            Logger.getLogger(this.getClass()).error("File " + ymlFileName + " doesn't configured");
         }
+        this.initializeEan13();
+        this.createArticleVariousIfNotExist();
+        this.createCashierClosureIfNotExist();
+    }
+    
+    public void initializeEan13() {
         Article article = this.articleRepository.findFirstByCodeStartingWithOrderByCodeDesc("84000000");
         if (article == null) {
             this.ean13 = 840000000000L;
+            Logger.getLogger(this.getClass()).warn("Code 84000000* doesn't exist... initialize");
         } else {
             this.ean13 = Long.parseLong(article.getCode().substring(0, 12));
-        }
-        this.createArticleVariousIfNotExist();
-        this.createCashierClosureIfNotExist();
+        }        
     }
 
     public String createEan13() {
@@ -316,25 +328,6 @@ public class DatabaseSeederService {
         this.createCashierClosureIfNotExist();
         this.ean13 = 840000000000L;
         // -----------------------------------------------------------------------
-    }
-
-    public void reset() {
-        this.familyCompositeRepository.deleteAll();
-        this.invoiceRepository.deleteAll();
-        this.tagRepository.deleteAll();
-
-        this.ticketRepository.deleteAll();
-        this.orderRepository.deleteAll();
-        this.familyArticleRepository.deleteAll();
-
-        this.cashMovementRepository.deleteAll();
-
-        this.voucherRepository.deleteAll();
-        this.cashierClosureRepository.deleteAll();
-        this.budgetRepository.deleteAll();
-        this.articleRepository.deleteByCodeStartingWith("84000000");
-        this.createCashierClosureIfNotExist();
-        this.ean13 = 840000000000L;
     }
 
     public void createAdminIfNotExist() {

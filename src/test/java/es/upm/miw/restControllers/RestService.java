@@ -1,12 +1,14 @@
 package es.upm.miw.restControllers;
 
+import javax.annotation.PostConstruct;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 
+import es.upm.miw.dataServices.DatabaseSeederService;
 import es.upm.miw.dtos.TokenOutputDto;
-import es.upm.miw.restControllers.AdminResource;
 import es.upm.miw.restControllers.TokenResource;
 
 @Service
@@ -14,6 +16,9 @@ public class RestService {
     
     @Autowired
     private Environment environment;
+    
+    @Autowired
+    private DatabaseSeederService databaseSeederService;
 
     @Value("${server.contextPath}")
     private String contextPath;
@@ -23,6 +28,11 @@ public class RestService {
 
     @Value("${miw.admin.password}")
     private String adminPassword;
+    
+    @PostConstruct
+    public void constructor() {
+        this.reLoadTestDB();
+    }
     
     private TokenOutputDto tokenDto;
 
@@ -78,8 +88,7 @@ public class RestService {
     }
     
     public void reLoadTestDB() {
-        this.loginAdmin().restBuilder().path(AdminResource.ADMINS).path(AdminResource.DB).delete().build();
-        this.loginAdmin().restBuilder().path(AdminResource.ADMINS).path(AdminResource.DB).file("test.yml").post().build();        
+        this.databaseSeederService.initializeDB();
     }
 
     public TokenOutputDto getTokenDto() {
