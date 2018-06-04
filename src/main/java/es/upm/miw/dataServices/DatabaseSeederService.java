@@ -116,6 +116,50 @@ public class DatabaseSeederService {
     }
 
     public void initializeDB() {
+        this.initializeEan13();
+        this.createAdminIfNotExist();
+        this.createArticleVariousIfNotExist();
+        this.createCashierClosureIfNotExist();
+    }
+
+    private void initializeEan13() {
+        Article article = this.articleRepository.findFirstByCodeStartingWithOrderByCodeDesc("84000000");
+        if (article == null) {
+            this.ean13 = 840000000000L;
+            Logger.getLogger(this.getClass()).warn("Code 84000000* doesn't exist... initialize");
+        } else {
+            this.ean13 = Long.parseLong(article.getCode().substring(0, 12));
+        }
+    }
+
+    private void createAdminIfNotExist() {
+        if (this.userRepository.findByMobile(this.mobile) == null) {
+            User user = new User(this.mobile, this.username, this.password);
+            user.setRoles(new Role[] {Role.ADMIN});
+            this.userRepository.save(user);
+        }
+    }
+
+    private void createArticleVariousIfNotExist() {
+        if (this.articleRepository.findOne(VARIOUS_CODE) == null) {
+            Provider provider = Provider.builder().company(VARIOUS_NAME).build();
+            this.providerRepository.save(provider);
+            this.articleRepository.save(Article.builder().code(VARIOUS_CODE).reference(VARIOUS_NAME).description(VARIOUS_NAME)
+                    .retailPrice("100.00").stock(1000).provider(provider).build());
+        }
+    }
+
+    private void createCashierClosureIfNotExist() {
+        CashierClosure cashierClosure = this.cashierClosureRepository.findFirstByOrderByOpeningDateDesc();
+        if (cashierClosure == null) {
+            cashierClosure = new CashierClosure(BigDecimal.ZERO);
+            cashierClosure.close(BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, "Initial");
+            this.cashierClosureRepository.save(cashierClosure);
+        }
+
+    }
+
+    public void resetDB() {
         this.deleteAllAndCreateAdmin();
         if (ymlFileName.isPresent()) {
             try {
@@ -126,19 +170,7 @@ public class DatabaseSeederService {
         } else {
             Logger.getLogger(this.getClass()).error("File " + ymlFileName + " doesn't configured");
         }
-        this.initializeEan13();
-        this.createArticleVariousIfNotExist();
-        this.createCashierClosureIfNotExist();
-    }
-    
-    public void initializeEan13() {
-        Article article = this.articleRepository.findFirstByCodeStartingWithOrderByCodeDesc("84000000");
-        if (article == null) {
-            this.ean13 = 840000000000L;
-            Logger.getLogger(this.getClass()).warn("Code 84000000* doesn't exist... initialize");
-        } else {
-            this.ean13 = Long.parseLong(article.getCode().substring(0, 12));
-        }        
+        this.initializeDB();
     }
 
     public String createEan13() {
@@ -323,38 +355,8 @@ public class DatabaseSeederService {
         this.providerRepository.deleteAll();
         this.userRepository.deleteAll();
 
-        this.createAdminIfNotExist();
-        this.createArticleVariousIfNotExist();
-        this.createCashierClosureIfNotExist();
-        this.ean13 = 840000000000L;
+        this.initializeDB();
         // -----------------------------------------------------------------------
-    }
-
-    public void createAdminIfNotExist() {
-        if (this.userRepository.findByMobile(this.mobile) == null) {
-            User user = new User(this.mobile, this.username, this.password);
-            user.setRoles(new Role[] {Role.ADMIN});
-            this.userRepository.save(user);
-        }
-    }
-
-    private void createArticleVariousIfNotExist() {
-        if (this.articleRepository.findOne(VARIOUS_CODE) == null) {
-            Provider provider = Provider.builder().company(VARIOUS_NAME).build();
-            this.providerRepository.save(provider);
-            this.articleRepository.save(Article.builder().code(VARIOUS_CODE).reference(VARIOUS_NAME).description(VARIOUS_NAME)
-                    .retailPrice("100.00").stock(1000).provider(provider).build());
-        }
-    }
-
-    private void createCashierClosureIfNotExist() {
-        CashierClosure cashierClosure = this.cashierClosureRepository.findFirstByOrderByOpeningDateDesc();
-        if (cashierClosure == null) {
-            cashierClosure = new CashierClosure(BigDecimal.ZERO);
-            cashierClosure.close(BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, "Initial");
-            this.cashierClosureRepository.save(cashierClosure);
-        }
-
     }
 
 }

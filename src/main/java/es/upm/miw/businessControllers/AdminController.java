@@ -15,4 +15,9 @@ public class AdminController {
         this.databaseSeederService.deleteAllAndCreateAdmin();
     }
 
+    public void initializeDB() {
+        this.databaseSeederService.initializeDB();
+        
+    }
+
 }

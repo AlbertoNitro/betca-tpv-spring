@@ -44,7 +44,7 @@ public class ProviderResourceFunctionalTesting {
     @Test
     public void testCreateProvider() {
         this.restService.loginAdmin().restBuilder().path(ProviderResource.PROVIDERS).body(providerDto).post().build();
-        this.databaseSeederService.initializeDB();
+        this.databaseSeederService.resetDB();
     }
 
     @Test
@@ -64,7 +64,7 @@ public class ProviderResourceFunctionalTesting {
         providerDto = restService.restBuilder(new RestBuilder<ProviderDto>()).clazz(ProviderDto.class).path(ProviderResource.PROVIDERS)
                 .path(ProviderResource.ID_ID).expand("provider1").get().build();
         assertEquals("TAddress", providerDto.getAddress());
-        this.databaseSeederService.initializeDB();
+        this.databaseSeederService.resetDB();
     }
 
     @Test

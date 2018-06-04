@@ -88,7 +88,7 @@ public class RestService {
     }
     
     public void reLoadTestDB() {
-        this.databaseSeederService.initializeDB();
+        this.databaseSeederService.resetDB();
     }
 
     public TokenOutputDto getTokenDto() {
