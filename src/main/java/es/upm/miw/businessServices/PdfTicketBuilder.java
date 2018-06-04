@@ -3,12 +3,10 @@ package es.upm.miw.businessServices;
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
-import java.net.URISyntaxException;
-import java.net.URL;
 import java.nio.file.Files;
-import java.nio.file.Paths;
 
 import org.apache.log4j.LogManager;
+import org.springframework.core.io.ClassPathResource;
 
 import com.itextpdf.barcodes.Barcode128;
 import com.itextpdf.barcodes.BarcodeQRCode;
@@ -105,26 +103,18 @@ public class PdfTicketBuilder extends PdfBuilder {
         return this;
     }
 
-    private String absolutePathOfResource(String resource) throws PdfException {
-        URL resourceURL = getClass().getClassLoader().getResource(resource);
-        try {
-            return Paths.get(resourceURL.toURI()).toFile().getAbsolutePath();
-        } catch (URISyntaxException use) {
-            LogManager.getLogger(this.getClass())
-                    .error("PdfTicketBuilder::absolutePathOfResource. Error when get resource URL(" + resource + "). " + use);
-            throw new PdfException("Can’t find image to PDF (" + resource + ")");
-        }
-    }
-
     public PdfTicketBuilder addImage(String fileName) throws PdfException {
         try {
-            Image img = new Image(ImageDataFactory.create(this.absolutePathOfResource("img/" + fileName)));
+            Image img = new Image(ImageDataFactory.create(new ClassPathResource("img/" + fileName).getURL()));
             img.setWidth(IMAGE_WIDTH);
             img.setHorizontalAlignment(HorizontalAlignment.CENTER);
             this.getDocument().add(img);
         } catch (MalformedURLException mue) {
             LogManager.getLogger(this.getClass())
                     .error("PdfTicketBuilder::addImage. Error when add image to PDF (" + fileName + "). " + mue);
+            throw new PdfException("Can’t add image to PDF (" + fileName + ")");
+        } catch (IOException e) {
+            LogManager.getLogger(this.getClass()).error("PdfTicketBuilder::addImage. Error when add image to PDF (" + fileName + "). " + e);
             throw new PdfException("Can’t add image to PDF (" + fileName + ")");
         }
         return this;
