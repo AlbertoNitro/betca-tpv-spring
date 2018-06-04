@@ -29,13 +29,23 @@ public class PdfServiceIT {
     private PdfService pdfService;
 
     @Test
-    public void testGenerateLabels48() throws PdfException {
+    public void testGenerateLabels24() throws PdfException {
         List<Article> articles = new ArrayList<>();
         for (long i = 0; i < 48; i++) {
             articles.add(Article.builder().code(new Barcode().generateEan13code(840000005000L + i)).description("d" + i).reference("r" + i)
                     .build());
         }
         pdfService.generateLabels24(articles);
+    }
+    
+    @Test
+    public void testGenerateLabels65() throws PdfException {
+        List<Article> articles = new ArrayList<>();
+        for (long i = 0; i <65; i++) {
+            articles.add(Article.builder().code(new Barcode().generateEan13code(840000005000L + i)).description("d" + i).reference("reference large - " + i)
+                    .build());
+        }
+        pdfService.generateLabels65(articles);
     }
 
     @Test

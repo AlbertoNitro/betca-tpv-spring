@@ -88,10 +88,20 @@ public class PdfService {
 
     public byte[] generateLabels24(List<Article> articles) throws PdfException {
         final String path = "/labels/label24-" + new SimpleDateFormat("yyyyMMdd-HH-mm").format(new Date().getTime());
-        PdfTag24Builder pdf = new PdfTag24Builder(path);
+        PdfTag3x8Builder pdf = new PdfTag3x8Builder(path);
         for (Article article : articles) {
             String reference = (article.getReference().length() > 24) ? article.getReference().substring(0, 24) : article.getReference();
             pdf.addTag24(reference, article.getCode());
+        }
+        return pdf.build();
+    }
+    
+    public byte[] generateLabels65(List<Article> articles) throws PdfException {
+        final String path = "/labels/label65-" + new SimpleDateFormat("yyyyMMdd-HH-mm").format(new Date().getTime());
+        PdfTag5x13Builder pdf = new PdfTag5x13Builder(path);
+        for (Article article : articles) {
+            String reference = (article.getReference().length() > 22) ? article.getReference().substring(0, 22) : article.getReference();
+            pdf.addTag65(reference, article.getCode());
         }
         return pdf.build();
     }
