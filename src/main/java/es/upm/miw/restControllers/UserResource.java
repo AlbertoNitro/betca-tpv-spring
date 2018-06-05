@@ -44,14 +44,14 @@ public class UserResource {
 
     @PostMapping
     public void createCustomer(@Valid @RequestBody UserDto userDto) throws MethodArgumentNotValidException, FieldAlreadyExistException {
-        this.userController.createUser(userDto, new Role[] {Role.CUSTOMER});
+        this.userController.createUser(userDto, new Role[]{Role.CUSTOMER});
     }
 
     @GetMapping(value = MOBILE_ID)
     public UserDto read(@PathVariable String mobile, @RequestParam(defaultValue = "true") boolean customer,
-            @AuthenticationPrincipal User activeUser) throws NotFoundException, ForbiddenException {
+                        @AuthenticationPrincipal User activeUser) throws NotFoundException, ForbiddenException {
         if (customer) {
-            return this.userController.readUser(mobile, new Role[] {Role.CUSTOMER});
+            return this.userController.readUser(mobile, new Role[]{Role.CUSTOMER});
         } else {
             return this.userController.readUser(mobile, activeUser.getUsername());
         }
@@ -60,7 +60,7 @@ public class UserResource {
     @PutMapping(value = MOBILE_ID)
     public void putCustomer(@PathVariable String mobile, @Valid @RequestBody UserDto userDto)
             throws MethodArgumentNotValidException, ForbiddenException, NotFoundException, FieldAlreadyExistException {
-        this.userController.updateUser(mobile, userDto, new Role[] {Role.CUSTOMER});
+        this.userController.updateUser(mobile, userDto, new Role[]{Role.CUSTOMER});
     }
 
     @PatchMapping(value = MOBILE_ID)
@@ -71,7 +71,7 @@ public class UserResource {
 
     @DeleteMapping(value = MOBILE_ID)
     public void deleteCustomer(@PathVariable String mobile) throws ForbiddenException {
-        this.userController.deleteUser(mobile, new Role[] {Role.CUSTOMER});
+        this.userController.deleteUser(mobile, new Role[]{Role.CUSTOMER});
     }
 
     @GetMapping
@@ -81,8 +81,8 @@ public class UserResource {
 
     @GetMapping(value = SEARCH)
     public List<UserMinimumDto> readFilterUser(@RequestParam(required = false) String mobile,
-            @RequestParam(required = false) String username, @RequestParam(required = false) String dni,
-            @RequestParam(required = false) String address) {
+                                               @RequestParam(required = false) String username, @RequestParam(required = false) String dni,
+                                               @RequestParam(required = false) String address) {
         return this.userController.find(mobile, username, dni, address);
     }
 

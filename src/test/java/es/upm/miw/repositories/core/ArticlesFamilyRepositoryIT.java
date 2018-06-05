@@ -29,21 +29,20 @@ public class ArticlesFamilyRepositoryIT {
     public void testSaveAndFindOne() {
         Article article = Article.builder().code("8000000000001").reference("reference1").description("description1").retailPrice("10").build();
         this.articleRepository.save(article);
-        
+
         FamilyArticle familyArticle = new FamilyArticle(article);
         this.articlesFamilyRepository.save(familyArticle);
-        
+
         FamilyComposite familyComposite = new FamilyComposite(FamilyType.ARTICLES, "FM1", "familia1");
         familyComposite.add(familyArticle);
         this.articlesFamilyRepository.save(familyComposite);
 
         assertNotNull(this.articlesFamilyRepository.findOne(familyComposite.getId()));
-        
+
         this.articlesFamilyRepository.delete(familyComposite);
         this.articlesFamilyRepository.delete(familyArticle);
         this.articleRepository.delete(article);
     }
-  
-    
+
 
 }

@@ -132,6 +132,10 @@ public class CashierClosure {
         return openingDate;
     }
 
+    public void setOpeningDate(Date openingDate) {
+        this.openingDate = openingDate;
+    }
+
     public Date getClosureDate() {
         return closureDate;
     }
@@ -142,10 +146,6 @@ public class CashierClosure {
 
     public void setComment(String comment) {
         this.comment = comment;
-    }
-
-    public void setOpeningDate(Date openingDate) {
-        this.openingDate = openingDate;
     }
 
     @Override

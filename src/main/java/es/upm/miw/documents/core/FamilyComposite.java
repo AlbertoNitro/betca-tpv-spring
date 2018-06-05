@@ -37,13 +37,13 @@ public class FamilyComposite extends ArticlesFamily {
         this.reference = reference;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
     @Override
     public String getDescription() {
         return this.description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     @Override

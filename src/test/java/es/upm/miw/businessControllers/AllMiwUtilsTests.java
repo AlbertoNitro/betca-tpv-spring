@@ -6,8 +6,8 @@ import org.junit.runners.Suite.SuiteClasses;
 
 @RunWith(Suite.class)
 @SuiteClasses({
-    BarcodeTest.class,
-    EncryptingTest.class
+        BarcodeTest.class,
+        EncryptingTest.class
 })
 public class AllMiwUtilsTests {
 

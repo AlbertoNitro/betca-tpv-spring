@@ -74,13 +74,13 @@ public class TicketRepositoryIT {
 
     @Test
     public void testFindByShoopingListShoppingArticleNotCommited() {
-        List<Ticket> ticketList = this.ticketRepository.findByShoopingListArticleIdNotCommited(new String[] {"8400000000024"});
+        List<Ticket> ticketList = this.ticketRepository.findByShoopingListArticleIdNotCommited(new String[]{"8400000000024"});
         assertTrue(ticketList.size() >= 1);
     }
-    
+
     @Test
     public void testFindByShoopingListShoppingArticle() {
-        List<Ticket> ticketList = this.ticketRepository.findByShoopingListArticleIdNotCommited(new String[] {"8400000000017"});
+        List<Ticket> ticketList = this.ticketRepository.findByShoopingListArticleIdNotCommited(new String[]{"8400000000017"});
         assertTrue(ticketList.size() == 0);
     }
 

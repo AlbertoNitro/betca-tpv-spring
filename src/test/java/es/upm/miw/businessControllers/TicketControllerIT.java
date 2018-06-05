@@ -34,10 +34,10 @@ public class TicketControllerIT {
 
     @Autowired
     private TicketRepository ticketRepository;
-    
+
     @Autowired
     private CashierClosureController cashierClosureController;
-    
+
     @Before
     public void before() {
         this.cashierClosureController.readCashierClosureLast();
@@ -62,9 +62,9 @@ public class TicketControllerIT {
 
     @Test
     public void testGetTicket() throws NotFoundException {
-       this.ticketController.read("201801121");
-       this.ticketController.read("201801122");
-       this.ticketController.read("201801123");
+        this.ticketController.read("201801121");
+        this.ticketController.read("201801122");
+        this.ticketController.read("201801123");
     }
 
     @Test

@@ -37,58 +37,6 @@ public class Article {
         return new Builder();
     }
 
-    public static class Builder {
-        private Article article;
-
-        private Builder() {
-            this.article = new Article();
-            this.article.registrationDate = new Date();
-            this.article.discontinued = false;
-            this.article.stock = 0;
-            this.article.tax = Tax.GENERAL;
-        }
-
-        public Builder code(String code) {
-            this.article.code = code;
-            return this;
-        }
-
-        public Builder reference(String reference) {
-            this.article.reference = reference;
-            return this;
-        }
-
-        public Builder description(String description) {
-            this.article.description = description;
-            return this;
-
-        }
-
-        public Builder retailPrice(String retailPrice) {
-            this.article.retailPrice = new BigDecimal(retailPrice);
-            return this;
-        }
-
-        public Builder retailPrice(BigDecimal retailPrice) {
-            this.article.retailPrice = retailPrice;
-            return this;
-        }
-
-        public Builder stock(Integer stock) {
-            this.article.stock = stock;
-            return this;
-        }
-
-        public Builder provider(Provider provider) {
-            this.article.provider = provider;
-            return this;
-        }
-
-        public Article build() {
-            return this.article;
-        }
-    }
-
     public String getCode() {
         return code;
     }
@@ -129,12 +77,12 @@ public class Article {
         this.stock = stock;
     }
 
-    public void setDiscontinued(Boolean discontinued) {
-        this.discontinued = discontinued;
-    }
-
     public Boolean getDiscontinued() {
         return discontinued;
+    }
+
+    public void setDiscontinued(Boolean discontinued) {
+        this.discontinued = discontinued;
     }
 
     public Provider getProvider() {
@@ -185,6 +133,58 @@ public class Article {
         return "Article [code=" + code + ", registrationDate=" + registrationDate + ", reference=" + reference + ", description="
                 + description + ", retailPrice=" + retailPrice + ", stock=" + stock + ", discontinued=" + discontinued + ", tax=" + tax
                 + ", provider=" + provider + "]";
+    }
+
+    public static class Builder {
+        private Article article;
+
+        private Builder() {
+            this.article = new Article();
+            this.article.registrationDate = new Date();
+            this.article.discontinued = false;
+            this.article.stock = 0;
+            this.article.tax = Tax.GENERAL;
+        }
+
+        public Builder code(String code) {
+            this.article.code = code;
+            return this;
+        }
+
+        public Builder reference(String reference) {
+            this.article.reference = reference;
+            return this;
+        }
+
+        public Builder description(String description) {
+            this.article.description = description;
+            return this;
+
+        }
+
+        public Builder retailPrice(String retailPrice) {
+            this.article.retailPrice = new BigDecimal(retailPrice);
+            return this;
+        }
+
+        public Builder retailPrice(BigDecimal retailPrice) {
+            this.article.retailPrice = retailPrice;
+            return this;
+        }
+
+        public Builder stock(Integer stock) {
+            this.article.stock = stock;
+            return this;
+        }
+
+        public Builder provider(Provider provider) {
+            this.article.provider = provider;
+            return this;
+        }
+
+        public Article build() {
+            return this.article;
+        }
     }
 
 }

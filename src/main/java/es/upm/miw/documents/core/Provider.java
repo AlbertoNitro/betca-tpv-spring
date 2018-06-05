@@ -29,50 +29,6 @@ public class Provider {
         return new Builder();
     }
 
-    public static class Builder {
-        private Provider provider;
-
-        private Builder() {
-            this.provider = new Provider();
-            this.provider.setActive(true);
-        }
-
-        public Builder company(String company) {
-            this.provider.company = company;
-            return this;
-        }
-
-        public Builder nif(String nif) {
-            this.provider.nif = nif;
-            return this;
-        }
-
-        public Builder address(String address) {
-            this.provider.address = address;
-            return this;
-        }
-
-        public Builder phone(String phone) {
-            this.provider.phone = phone;
-            return this;
-        }
-
-        public Builder email(String email) {
-            this.provider.email = email;
-            return this;
-        }
-
-        public Builder note(String note) {
-            this.provider.note = note;
-            return this;
-        }
-
-        public Provider build() {
-            return this.provider;
-        }
-
-    }
-
     public String getId() {
         return id;
     }
@@ -133,12 +89,12 @@ public class Provider {
         return active;
     }
 
-    public Boolean isActive() {
-        return active;
-    }
-
     public void setActive(Boolean active) {
         this.active = active;
+    }
+
+    public Boolean isActive() {
+        return active;
     }
 
     @Override
@@ -164,6 +120,50 @@ public class Provider {
     public String toString() {
         return "Provider [id=" + id + ", company=" + company + ", nif=" + nif + ", address=" + address + ", phone=" + phone + ", email="
                 + email + ", note=" + note + ", active=" + active + "]";
+    }
+
+    public static class Builder {
+        private Provider provider;
+
+        private Builder() {
+            this.provider = new Provider();
+            this.provider.setActive(true);
+        }
+
+        public Builder company(String company) {
+            this.provider.company = company;
+            return this;
+        }
+
+        public Builder nif(String nif) {
+            this.provider.nif = nif;
+            return this;
+        }
+
+        public Builder address(String address) {
+            this.provider.address = address;
+            return this;
+        }
+
+        public Builder phone(String phone) {
+            this.provider.phone = phone;
+            return this;
+        }
+
+        public Builder email(String email) {
+            this.provider.email = email;
+            return this;
+        }
+
+        public Builder note(String note) {
+            this.provider.note = note;
+            return this;
+        }
+
+        public Provider build() {
+            return this.provider;
+        }
+
     }
 
 }

@@ -40,7 +40,7 @@ public class ArticlesFamilyResource {
     public static final String LIST = "/list";
 
     public static final String ARTICLE = "/article";
-    
+
     public static final String DB = "/db";
 
     @Autowired
@@ -102,7 +102,7 @@ public class ArticlesFamilyResource {
         }
         this.articlesFamilyController.updateReferenceAndDescription(id, articlesFamilyDto);
     }
-    
+
     @PostMapping(value = DB)
     public void seedDb(@RequestParam("file") MultipartFile file) throws SeederException {
         String filename = StringUtils.cleanPath(file.getOriginalFilename());

@@ -68,22 +68,22 @@ public class InvoiceController {
         BigDecimal uno = BigDecimal.ONE.setScale(4);
         for (Shopping shopping : ticket.getShoppingList()) {
             switch (shopping.getArticle().getTax()) {
-            case GENERAL:
-                taxBaseTotal = taxBaseTotal.add(shopping.getShoppingTotal().divide(ivaGeneral.add(uno), 4, RoundingMode.HALF_UP))
-                        .setScale(2, RoundingMode.HALF_UP);
-                break;
-            case REDUCED:
-                taxBaseTotal = taxBaseTotal.add(shopping.getShoppingTotal().divide(ivaReduced.add(uno), 4, RoundingMode.HALF_UP))
-                        .setScale(2, RoundingMode.HALF_UP);
-                break;
-            case SUPER_REDUCED:
-                taxBaseTotal = taxBaseTotal.add(shopping.getShoppingTotal().divide(ivaSuperReduced.add(uno), 4, RoundingMode.HALF_UP))
-                        .setScale(2, RoundingMode.HALF_UP);
-                break;
-            case FREE:
-                break;
-            default:
-                assert false;
+                case GENERAL:
+                    taxBaseTotal = taxBaseTotal.add(shopping.getShoppingTotal().divide(ivaGeneral.add(uno), 4, RoundingMode.HALF_UP))
+                            .setScale(2, RoundingMode.HALF_UP);
+                    break;
+                case REDUCED:
+                    taxBaseTotal = taxBaseTotal.add(shopping.getShoppingTotal().divide(ivaReduced.add(uno), 4, RoundingMode.HALF_UP))
+                            .setScale(2, RoundingMode.HALF_UP);
+                    break;
+                case SUPER_REDUCED:
+                    taxBaseTotal = taxBaseTotal.add(shopping.getShoppingTotal().divide(ivaSuperReduced.add(uno), 4, RoundingMode.HALF_UP))
+                            .setScale(2, RoundingMode.HALF_UP);
+                    break;
+                case FREE:
+                    break;
+                default:
+                    assert false;
             }
         }
         Invoice invoice = new Invoice(this.nextInvoiceId(), taxBaseTotal,

@@ -35,7 +35,7 @@ public class VoucherControllerIT {
         this.voucher = new Voucher(new BigDecimal(32));
         this.voucherRepository.save(this.voucher);
     }
-    
+
     @Test
     public void testConsumedVoucherTrue() throws NotFoundException, BadRequestException {
         this.voucherController.consumeVoucher(this.voucher.getId());

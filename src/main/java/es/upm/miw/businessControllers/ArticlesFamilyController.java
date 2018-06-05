@@ -39,7 +39,7 @@ public class ArticlesFamilyController {
 
     @Autowired
     private ArticleRepository articlesRepository;
-    
+
     @Autowired
     private DatabaseSeederService databaseSeederService;
 
@@ -139,10 +139,10 @@ public class ArticlesFamilyController {
         family.setDescription(articlesFamilyDto.getDescription());
         this.familyCompositeRepository.save(family);
     }
-    
+
     public void seedArticlesDatabase(InputStream inputStream) throws SeederException {
         this.databaseSeederService.seedArticlesDatabase(inputStream);
-}
+    }
 
 
 }

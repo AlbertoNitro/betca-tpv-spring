@@ -19,14 +19,14 @@ public class ProviderControllerIT {
 
     @Autowired
     private ProviderController providerController;
-    
-   
+
+
     @Test(expected = NotFoundException.class)
     public void testPutProviderNotFoundException() throws NotFoundException, FieldAlreadyExistException {
-        ProviderDto providerDto= new ProviderDto();
+        ProviderDto providerDto = new ProviderDto();
         providerDto.setCompany("");
         this.providerController.putProvider("0", providerDto);
     }
 
-        
+
 }

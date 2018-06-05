@@ -6,17 +6,17 @@ import org.junit.runners.Suite.SuiteClasses;
 
 @RunWith(Suite.class)
 @SuiteClasses({
-    ArticleRepositoryIT.class,
-    ArticlesFamilyRepositoryIT.class,
-    CashierClosureRepositoryIT.class,
-    CashMovementRepositoryIT.class,
-    InvoiceRepositoryIT.class,
-    ProviderRepositoryIT.class,
-    TicketRepositoryIT.class,
-    UserRepositoryIT.class,
-    VoucherRepositoryIT.class,
-    OrderRepositoryIT.class,
-    })
+        ArticleRepositoryIT.class,
+        ArticlesFamilyRepositoryIT.class,
+        CashierClosureRepositoryIT.class,
+        CashMovementRepositoryIT.class,
+        InvoiceRepositoryIT.class,
+        ProviderRepositoryIT.class,
+        TicketRepositoryIT.class,
+        UserRepositoryIT.class,
+        VoucherRepositoryIT.class,
+        OrderRepositoryIT.class,
+})
 public class AllMiwRepositoriesCoreIntegrationTests {
 
 }

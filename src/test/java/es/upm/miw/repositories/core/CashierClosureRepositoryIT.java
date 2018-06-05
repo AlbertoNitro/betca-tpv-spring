@@ -26,17 +26,15 @@ import es.upm.miw.documents.core.CashierClosure;
 @TestPropertySource(locations = "classpath:test.properties")
 public class CashierClosureRepositoryIT {
 
+    CashierClosure cashierClosure1;
+    CashierClosure cashierClosure2;
     @Autowired
     private CashierClosureRepository cashierClosureRepository;
-
-    CashierClosure cashierClosure1;
-
-    CashierClosure cashierClosure2;
 
     @Before
     public void before() {
         cashierClosure1 = new CashierClosure();
-        cashierClosure1.close(new BigDecimal("0"),new BigDecimal("100"), new BigDecimal("0"), "");
+        cashierClosure1.close(new BigDecimal("0"), new BigDecimal("100"), new BigDecimal("0"), "");
         cashierClosureRepository.save(cashierClosure1);
         cashierClosure2 = new CashierClosure();
         cashierClosureRepository.save(cashierClosure2);

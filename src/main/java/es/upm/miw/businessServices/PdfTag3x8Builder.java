@@ -29,7 +29,7 @@ public class PdfTag3x8Builder extends PdfBuilder {
     }
 
     private void prepareTags24() {
-        this.setTable(new Table(new float[] {1, 1, 1}, true));
+        this.setTable(new Table(new float[]{1, 1, 1}, true));
         this.getTable().setBorder(Border.NO_BORDER);
         this.getDocument().setMargins(35, 15, 0, 15);
     }
@@ -77,7 +77,7 @@ public class PdfTag3x8Builder extends PdfBuilder {
             return Files.readAllBytes(new File(this.getFullPath()).toPath());
         } catch (IOException ioe) {
             LogManager.getLogger(this.getClass())
-            .error("PdfTicketBuilder::build. Error when read bytes to PDF. " + ioe);
+                    .error("PdfTicketBuilder::build. Error when read bytes to PDF. " + ioe);
             throw new PdfException("Can’t read PDF (" + this.getFullPath() + ")");
         }
     }

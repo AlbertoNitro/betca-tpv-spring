@@ -8,8 +8,8 @@ import es.upm.miw.businessServices.PdfServiceIT;
 
 @RunWith(Suite.class)
 @SuiteClasses({
-    DatabaseSeederServiceIT.class,
-    PdfServiceIT.class
+        DatabaseSeederServiceIT.class,
+        PdfServiceIT.class
 })
 public class AllMiwDataServicesIntegrationTests {
 

@@ -30,7 +30,7 @@ public class UserDto extends UserMinimumDto {
     }
 
     public UserDto(String mobile, String username, String password, String email, String dni, String address, Boolean active,
-            Role[] roles) {
+                   Role[] roles) {
         super(mobile, username);
         this.setPassword(password);
         this.email = email;
@@ -41,7 +41,7 @@ public class UserDto extends UserMinimumDto {
     }
 
     public UserDto(String mobileNamePass) {
-        this(mobileNamePass, "name" + mobileNamePass, "pass" + mobileNamePass, null, null, null, true, new Role[] {Role.CUSTOMER});
+        this(mobileNamePass, "name" + mobileNamePass, "pass" + mobileNamePass, null, null, null, true, new Role[]{Role.CUSTOMER});
     }
 
     public UserDto(User user) {
@@ -60,7 +60,7 @@ public class UserDto extends UserMinimumDto {
     }
 
     public void setPassword(String password) {
-           this.password = password;
+        this.password = password;
     }
 
     public String getEmail() {

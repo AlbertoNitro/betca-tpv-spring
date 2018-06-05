@@ -79,7 +79,7 @@ public class TicketResource {
     }
 
     @GetMapping(value = SEARCH_MOBILE_LAST)
-    public TicketDto findLastByMobile(@RequestParam String mobile) throws NotFoundException   {
+    public TicketDto findLastByMobile(@RequestParam String mobile) throws NotFoundException {
         return this.ticketController.findLastByMobile(mobile);
     }
 

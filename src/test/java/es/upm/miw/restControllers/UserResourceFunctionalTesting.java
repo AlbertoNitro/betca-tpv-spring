@@ -47,25 +47,25 @@ public class UserResourceFunctionalTesting {
         this.userDto.setPassword(null);
         restService.loginAdmin().restBuilder().path(UserResource.USERS).body(this.userDto).post().build();
     }
-    
+
     @Test
     public void testCreateUserAdmin() {
-        this.userDto.setRoles(new Role[] { Role.ADMIN });
+        this.userDto.setRoles(new Role[]{Role.ADMIN});
         restService.loginAdmin().restBuilder().path(UserResource.USERS).body(this.userDto).post().build();
     }
-    
+
     @Test
     public void testCreateUserSetRoles() {
-        this.userDto.setRoles(new Role[] { Role.ADMIN, Role.MANAGER, Role.OPERATOR });
+        this.userDto.setRoles(new Role[]{Role.ADMIN, Role.MANAGER, Role.OPERATOR});
         restService.loginAdmin().restBuilder().path(UserResource.USERS).body(this.userDto).post().build();
     }
-    
+
     @Test
     public void testCreateUserRolesSetNull() {
-        this.userDto.setRoles(new Role[] {});
+        this.userDto.setRoles(new Role[]{});
         restService.loginAdmin().restBuilder().path(UserResource.USERS).body(this.userDto).post().build();
     }
-    
+
     @Test
     public void testCreateCustomerWithoutUserException() {
         thrown.expect(new HttpMatcher(HttpStatus.BAD_REQUEST));
@@ -126,7 +126,7 @@ public class UserResourceFunctionalTesting {
         assertEquals("new@gmail.com", userDto2.getEmail());
         userDto.setMobile("666000000");
         restService.restBuilder().path(UserResource.USERS).path(UserResource.MOBILE_ID).expand("666000003").body(this.userDto).put()
-        .build();
+                .build();
     }
 
     @Test
@@ -170,8 +170,8 @@ public class UserResourceFunctionalTesting {
 
     @Test
     public void testReadUser() {
-        String json=restService.loginAdmin().restBuilder(new RestBuilder<String>()).clazz(String.class).path(UserResource.USERS).path(UserResource.MOBILE_ID).expand(666666002).get().build();
-        System.out.println("------------>"+json);
+        String json = restService.loginAdmin().restBuilder(new RestBuilder<String>()).clazz(String.class).path(UserResource.USERS).path(UserResource.MOBILE_ID).expand(666666002).get().build();
+        System.out.println("------------>" + json);
     }
 
     @Test

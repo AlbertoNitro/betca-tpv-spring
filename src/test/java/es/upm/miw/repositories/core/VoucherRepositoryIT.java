@@ -28,7 +28,7 @@ public class VoucherRepositoryIT {
     public void testFindByDateOfUseGreaterThan() throws ParseException {
         Date date = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss").parse("2018-01-06 00:00:22");
         List<Voucher> voucherList = this.voucherRepository.findByDateOfUseGreaterThan(date);
-        assertTrue(voucherList.size()==0);
+        assertTrue(voucherList.size() == 0);
     }
 
     @Test

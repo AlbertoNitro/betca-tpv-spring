@@ -30,7 +30,7 @@ public class ShoppingDto {
     }
 
     public ShoppingDto(String code, String description, BigDecimal retailPrice, int amount, BigDecimal discount, BigDecimal total,
-            Boolean committed) {
+                       Boolean committed) {
         this.code = code;
         this.description = description;
         this.retailPrice = retailPrice;

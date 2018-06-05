@@ -13,10 +13,10 @@ import es.upm.miw.restControllers.TokenResource;
 
 @Service
 public class RestService {
-    
+
     @Autowired
     private Environment environment;
-    
+
     @Autowired
     private DatabaseSeederService databaseSeederService;
 
@@ -28,13 +28,12 @@ public class RestService {
 
     @Value("${miw.admin.password}")
     private String adminPassword;
-    
+    private TokenOutputDto tokenDto;
+
     @PostConstruct
     public void constructor() {
         this.reLoadTestDB();
     }
-    
-    private TokenOutputDto tokenDto;
 
     private int port() {
         return Integer.parseInt(environment.getProperty("local.server.port"));
@@ -86,7 +85,7 @@ public class RestService {
         this.tokenDto = null;
         return this;
     }
-    
+
     public void reLoadTestDB() {
         this.databaseSeederService.resetDB();
     }

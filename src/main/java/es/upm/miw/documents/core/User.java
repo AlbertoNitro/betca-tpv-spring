@@ -49,7 +49,7 @@ public class User {
         this.address = address;
         this.email = email;
         this.setPassword(password);
-        this.roles = new Role[] {Role.CUSTOMER};
+        this.roles = new Role[]{Role.CUSTOMER};
     }
 
     public User(String mobile, String username, String password) {

@@ -17,7 +17,7 @@ public class AdminController {
 
     public void initializeDB() {
         this.databaseSeederService.initializeDB();
-        
+
     }
 
 }

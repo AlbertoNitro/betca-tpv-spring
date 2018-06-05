@@ -12,7 +12,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 @TestPropertySource(locations = "classpath:test.properties")
 public class AdminResourceFunctionalTesting {
-  
+
     @Autowired
     private RestService restService;
 
@@ -20,5 +20,4 @@ public class AdminResourceFunctionalTesting {
     public void testInitializeDB() {
         restService.loginAdmin().restBuilder().path(AdminResource.ADMINS).path(AdminResource.DB).post().build();
     }
-
 }

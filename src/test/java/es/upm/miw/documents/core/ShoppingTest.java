@@ -13,7 +13,7 @@ public class ShoppingTest {
         Article article = new Article();
         article.setRetailPrice(new BigDecimal("100.10"));
         Shopping shopping = new Shopping(2, new BigDecimal("20"), article);
-        assertEquals(160.16,shopping.getShoppingTotal().doubleValue(),10-10);
+        assertEquals(160.16, shopping.getShoppingTotal().doubleValue(), 10 - 10);
     }
 
 }

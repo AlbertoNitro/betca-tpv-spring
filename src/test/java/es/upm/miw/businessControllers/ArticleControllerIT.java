@@ -94,7 +94,7 @@ public class ArticleControllerIT {
 
     @Test(expected = NotFoundException.class)
     public void testUpdateArticleStockNotFound() throws NotFoundException {
-       this.articleController.updateArticleStock("666", 10);
+        this.articleController.updateArticleStock("666", 10);
     }
 
     @After

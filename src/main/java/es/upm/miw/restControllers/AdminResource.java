@@ -18,12 +18,12 @@ public class AdminResource {
     public static final String ADMINS = "/admins";
 
     public static final String STATE = "/state";
-    
+
     public static final String DB = "/db";
-    
+
     @Autowired
     private AdminController adminController;
-    
+
     @Autowired
     private ConfigurableApplicationContext configurableApplicationContext;
 
@@ -32,7 +32,7 @@ public class AdminResource {
     public void shutDown() {
         configurableApplicationContext.close();
     }
-    
+
     @PostMapping(value = DB)
     public void initializeBD() {
         this.adminController.initializeDB();

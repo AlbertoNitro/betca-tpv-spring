@@ -13,14 +13,14 @@ import es.upm.miw.restControllers.AllMiwResourcesFunctionalTests;
 
 @RunWith(Suite.class)
 @SuiteClasses({
-    AllMiwDocumentsCoreTests.class,
-    AllMiwUtilsTests.class,
-    
-    AllMiwBusinessControllersIntegrationTests.class,
-    AllMiwRepositoriesCoreIntegrationTests.class,
-    AllMiwDataServicesIntegrationTests.class,
-    
-    AllMiwResourcesFunctionalTests.class,
+        AllMiwDocumentsCoreTests.class,
+        AllMiwUtilsTests.class,
+
+        AllMiwBusinessControllersIntegrationTests.class,
+        AllMiwRepositoriesCoreIntegrationTests.class,
+        AllMiwDataServicesIntegrationTests.class,
+
+        AllMiwResourcesFunctionalTests.class,
 })
 public class AllMiwTests {
 }

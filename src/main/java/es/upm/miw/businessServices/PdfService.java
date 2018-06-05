@@ -24,46 +24,27 @@ import es.upm.miw.repositories.core.PropertyRepository;
 @Service
 public class PdfService {
 
+    private static final String[] TABLE_COLUMNS_HEADERS = {" ", "Desc.", "Ud.", "Dto.%", "€", "E."};
+    private static final float[] TABLE_COLUMNS_SIZES_TICKETS = {15, 90, 15, 25, 35, 15};
+    private static final String[] TABLE_COLUMNS_HEADERS_BUDGETS = {" ", "Desc.", "Ud.", "Dto.%", "€"};
+    private static final float[] TABLE_COLUMNS_SIZES_BUDGETS = {15, 95, 15, 25, 40};
+    private static final String DATE_FORMAT = "yyyy-MM-dd HH:mm";
     public static String LOGO = "miw.company.logo";
-
     public static String NAME = "miw.company.name";
-
     public static String NIF = "miw.company.nif";
-
     public static String PHONE = "miw.company.phone";
-
     public static String ADDRESS = "miw.company.address";
-
     public static String EMAIL = "miw.company.email";
-
     public static String WEB = "miw.company.web";
-
     @Autowired
     private PropertyRepository propertyRepository;
-
     private String logo;
-
     private String name;
-
     private String nif;
-
     private String phone;
-
     private String address;
-
     private String email;
-
     private String web;
-
-    private static final String[] TABLE_COLUMNS_HEADERS = {" ", "Desc.", "Ud.", "Dto.%", "€", "E."};
-
-    private static final float[] TABLE_COLUMNS_SIZES_TICKETS = {15, 90, 15, 25, 35, 15};
-
-    private static final String[] TABLE_COLUMNS_HEADERS_BUDGETS = {" ", "Desc.", "Ud.", "Dto.%", "€"};
-
-    private static final float[] TABLE_COLUMNS_SIZES_BUDGETS = {15, 95, 15, 25, 40};
-
-    private static final String DATE_FORMAT = "yyyy-MM-dd HH:mm";
 
     @PostConstruct
     public void constructor() {
@@ -95,7 +76,7 @@ public class PdfService {
         }
         return pdf.build();
     }
-    
+
     public byte[] generateLabels65(List<Article> articles) throws PdfException {
         final String path = "/labels/label65-" + new SimpleDateFormat("yyyyMMdd-HH-mm").format(new Date().getTime());
         PdfTag5x13Builder pdf = new PdfTag5x13Builder(path);

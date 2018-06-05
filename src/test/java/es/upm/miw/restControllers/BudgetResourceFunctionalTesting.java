@@ -29,7 +29,7 @@ public class BudgetResourceFunctionalTesting {
 
     @Autowired
     private RestService restService;
-    
+
     @Test
     public void testCreateBudget() {
         List<ShoppingDto> shoppingList = new ArrayList<ShoppingDto>();

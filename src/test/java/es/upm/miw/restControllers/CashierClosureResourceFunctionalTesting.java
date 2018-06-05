@@ -91,7 +91,7 @@ public class CashierClosureResourceFunctionalTesting {
                 .path(CashierClosureResource.MOVEMENTS).body(cashMovementDto).post().build();
         restService.reLoadTestDB();
     }
-    
+
     @Test
     public void testCreateCashMovementClosedException() {
         thrown.expect(new HttpMatcher(HttpStatus.BAD_REQUEST));

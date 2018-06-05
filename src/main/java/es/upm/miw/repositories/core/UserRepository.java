@@ -27,7 +27,7 @@ public interface UserRepository extends MongoRepository<User, String> {
             + "?#{ [0] == null ? { $where : 'true'} : { 'mobile' :   {$regex:[0]} } },"
             + "?#{ [1] == null ? { $where : 'true'} : { 'username' : {$regex:[1], $options: 'i'} } },"
             + "?#{ [2] == null ? { $where : 'true'} : { 'dni' :      {$regex:[2], $options: 'i'} } },"
-            + "?#{ [3] == null ? { $where : 'true'} : { 'address' :  {$regex:[3], $options: 'i'} } }" 
+            + "?#{ [3] == null ? { $where : 'true'} : { 'address' :  {$regex:[3], $options: 'i'} } }"
             + "]}", fields = "{ '_id' : 0, 'mobile' : 1, 'username' : 1}")
     List<UserMinimumDto> findCustomersByMobileLikeAndUsernameLikeAndDniLikeAndAddressLike(String mobile, String username, String dni, String address);
 

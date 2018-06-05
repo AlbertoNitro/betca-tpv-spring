@@ -50,43 +50,30 @@ public class DatabaseSeederService {
     private static final String VARIOUS_CODE = "1";
 
     private static final String VARIOUS_NAME = "Varios";
-
-    @Value("${miw.admin.mobile}")
-    private String mobile;
-
-    @Value("${miw.admin.username}")
-    private String username;
-
-    @Value("${miw.admin.password}")
-    private String password;
-
-    @Value("${miw.databaseSeeder.ymlFileName:#{null}}")
-    private Optional<String> ymlFileName;
-
-    @Autowired
-    private UserRepository userRepository;
-
-    @Autowired
-    private VoucherRepository voucherRepository;
-
-    @Autowired
-    private CashMovementRepository cashMovementRepository;
-
-    @Autowired
-    private ProviderRepository providerRepository;
-
-    @Autowired
-    private ArticleRepository articleRepository;
-
     @Autowired
     public TicketRepository ticketRepository;
-
     @Autowired
     public InvoiceRepository invoiceRepository;
-
     @Autowired
     public CashierClosureRepository cashierClosureRepository;
-
+    @Value("${miw.admin.mobile}")
+    private String mobile;
+    @Value("${miw.admin.username}")
+    private String username;
+    @Value("${miw.admin.password}")
+    private String password;
+    @Value("${miw.databaseSeeder.ymlFileName:#{null}}")
+    private Optional<String> ymlFileName;
+    @Autowired
+    private UserRepository userRepository;
+    @Autowired
+    private VoucherRepository voucherRepository;
+    @Autowired
+    private CashMovementRepository cashMovementRepository;
+    @Autowired
+    private ProviderRepository providerRepository;
+    @Autowired
+    private ArticleRepository articleRepository;
     @Autowired
     private BudgetRepository budgetRepository;
 
@@ -135,7 +122,7 @@ public class DatabaseSeederService {
     private void createAdminIfNotExist() {
         if (this.userRepository.findByMobile(this.mobile) == null) {
             User user = new User(this.mobile, this.username, this.password);
-            user.setRoles(new Role[] {Role.ADMIN});
+            user.setRoles(new Role[]{Role.ADMIN});
             this.userRepository.save(user);
         }
     }

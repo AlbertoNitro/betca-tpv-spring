@@ -27,15 +27,15 @@ public class InvoiceResourceFunctionalTesting {
 
     @Test
     public void testCreateInvoice() {
-        InvoiceCreationInputDto invoiceCreationInputDto = new InvoiceCreationInputDto("666666004","201801123");
-         restService.loginAdmin().restBuilder(new RestBuilder<byte[]>()).path(InvoiceResource.INVOICES).body(invoiceCreationInputDto)
+        InvoiceCreationInputDto invoiceCreationInputDto = new InvoiceCreationInputDto("666666004", "201801123");
+        restService.loginAdmin().restBuilder(new RestBuilder<byte[]>()).path(InvoiceResource.INVOICES).body(invoiceCreationInputDto)
                 .clazz(byte[].class).post().build();
     }
 
     @Test
     public void testCreateInvoiceTicketNullException() {
         thrown.expect(new HttpMatcher(HttpStatus.BAD_REQUEST));
-        InvoiceCreationInputDto invoiceCreationInputDto = new InvoiceCreationInputDto("666666004",null);
+        InvoiceCreationInputDto invoiceCreationInputDto = new InvoiceCreationInputDto("666666004", null);
         restService.loginAdmin().restBuilder(new RestBuilder<byte[]>()).path(InvoiceResource.INVOICES).body(invoiceCreationInputDto)
                 .clazz(byte[].class).post().build();
     }
@@ -43,9 +43,9 @@ public class InvoiceResourceFunctionalTesting {
     @Test
     public void testCreateInvoiceMobileNullException() {
         thrown.expect(new HttpMatcher(HttpStatus.BAD_REQUEST));
-        InvoiceCreationInputDto invoiceCreationInputDto = new InvoiceCreationInputDto(null,"20180112-3");
+        InvoiceCreationInputDto invoiceCreationInputDto = new InvoiceCreationInputDto(null, "20180112-3");
         restService.loginAdmin().restBuilder(new RestBuilder<byte[]>()).path(InvoiceResource.INVOICES).body(invoiceCreationInputDto)
                 .clazz(byte[].class).post().build();
-   }
+    }
 
- }
+}

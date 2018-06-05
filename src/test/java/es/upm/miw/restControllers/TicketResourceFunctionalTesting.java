@@ -111,5 +111,5 @@ public class TicketResourceFunctionalTesting {
         restService.loginAdmin().restBuilder(new RestBuilder<byte[]>()).path(TicketResource.TICKETS).path(TicketResource.ID_ID)
                 .expand("not").clazz(byte[].class).get().log().build();
     }
- 
+
 }

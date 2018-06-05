@@ -18,13 +18,13 @@ public class Token {
         return value;
     }
 
-    public Date getCreationDate() {
-        return creationDate;
-    }
-
     public void setValue(String value) {
         this.value = value;
         this.creationDate = new Date();
+    }
+
+    public Date getCreationDate() {
+        return creationDate;
     }
 
     @Override

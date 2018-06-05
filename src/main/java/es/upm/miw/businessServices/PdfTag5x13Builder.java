@@ -29,7 +29,7 @@ public class PdfTag5x13Builder extends PdfBuilder {
     }
 
     private void prepareTags65() {
-        this.setTable(new Table(new float[] {1, 1, 1, 1, 1}, true));
+        this.setTable(new Table(new float[]{1, 1, 1, 1, 1}, true));
         this.getTable().setBorder(Border.NO_BORDER);
         this.getDocument().setMargins(5, 25, 0, 25);
     }

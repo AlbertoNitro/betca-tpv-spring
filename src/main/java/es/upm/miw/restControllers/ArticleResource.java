@@ -66,7 +66,7 @@ public class ArticleResource {
 
     @GetMapping(value = SEARCH)
     public List<ArticleDto> findByFieldsWithAnd(@RequestParam(required = false) String reference,
-            @RequestParam(required = false) String description, @RequestParam(required = false) String provider) {
+                                                @RequestParam(required = false) String description, @RequestParam(required = false) String provider) {
         return this.articleController.findByFieldsWithAnd(reference, description, provider);
     }
 

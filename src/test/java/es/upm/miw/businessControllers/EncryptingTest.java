@@ -18,13 +18,13 @@ public class EncryptingTest {
 
     @Test
     public void testEncodeHexInBase64UrlSafeDecode() {
-       String encode = new Encrypting().encodeHexInBase64UrlSafe("ff00b83445");
-       assertEquals("ff00b83445",new Encrypting().decodeBase64InHex(encode));
+        String encode = new Encrypting().encodeHexInBase64UrlSafe("ff00b83445");
+        assertEquals("ff00b83445", new Encrypting().decodeBase64InHex(encode));
     }
-    
+
     @Test
     public void testShortId64UrlSafe() {
-       assertEquals(8,new Encrypting().shortId64UrlSafe().length());
+        assertEquals(8, new Encrypting().shortId64UrlSafe().length());
     }
 
 }
